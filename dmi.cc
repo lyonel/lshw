@@ -1144,6 +1144,11 @@ static void dmi_table(int fd,
 	dmi_decode_cache(data[13]);
 	printf("\n");
 
+	if ((dm->length > 0x0F) && (data[0x0F] != 0))
+	{
+	  newnode.setClock(1000 / data[0x0F]);
+	}
+
 	newnode.setHandle(handle);
 
 	hardwarenode->addChild(newnode);
