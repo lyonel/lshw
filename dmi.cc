@@ -1342,9 +1342,6 @@ static void dmi_table(int fd,
 	newnode.setSize(size);
 	newnode.setClock(clock);
 
-	if (size == 0)
-	  newnode.setProduct("");
-
 	hardwarenode->addChild(newnode);
       }
       break;
