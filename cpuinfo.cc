@@ -7,6 +7,9 @@
 #include <stdio.h>
 #include <vector>
 
+static char *id =
+  "@(#) $Id: cpuinfo.cc,v 1.18 2003/04/30 08:25:47 ezix Exp $";
+
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
 {
@@ -42,6 +45,7 @@ static hwNode *getcpu(hwNode & node,
     return NULL;
 }
 
+#ifdef __powerpc__
 static void cpuinfo_ppc(hwNode & node,
 			string id,
 			string value)
@@ -59,7 +63,9 @@ static void cpuinfo_ppc(hwNode & node,
       cpu->setProduct(value);
   }
 }
+#endif
 
+#ifdef __ia64__
 static void cpuinfo_ia64(hwNode & node,
 			 string id,
 			 string value)
@@ -112,13 +118,14 @@ static void cpuinfo_ia64(hwNode & node,
     }
   }
 }
+#endif
 
+#ifdef __hppa__
 static void cpuinfo_hppa(hwNode & node,
 			 string id,
 			 string value)
 {
   unsigned long long frequency = 0;
-  int i;
   static int currentcpu = -1;
 
   if (id == "processor")
@@ -150,7 +157,9 @@ static void cpuinfo_hppa(hwNode & node,
     }
   }
 }
+#endif
 
+#ifdef __alpha__
 static void cpuinfo_alpha(hwNode & node,
 			  string id,
 			  string value)
@@ -208,7 +217,9 @@ static void cpuinfo_alpha(hwNode & node,
       mycpu->enable();
   }
 }
+#endif
 
+#ifdef __i386__
 static void cpuinfo_x86(hwNode & node,
 			string id,
 			string value)
@@ -271,6 +282,7 @@ static void cpuinfo_x86(hwNode & node,
       }
   }
 }
+#endif
 
 bool scan_cpuinfo(hwNode & n)
 {
@@ -318,7 +330,9 @@ bool scan_cpuinfo(hwNode & n)
 #ifdef __i386__
 	cpuinfo_x86(n, id, value);
 #endif
-	//cpuinfo_ppc(n, id, value);
+#ifdef __powerpc__
+	cpuinfo_ppc(n, id, value);
+#endif
 #ifdef __hppa__
 	cpuinfo_hppa(n, id, value);
 #endif
@@ -337,8 +351,7 @@ bool scan_cpuinfo(hwNode & n)
     return false;
   }
 
+  (void) &id;			// avoid warning "id defined but not used"
+
   return true;
 }
-
-static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.17 2003/04/29 16:45:06 ezix Exp $";

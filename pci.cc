@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
+static char *id = "@(#) $Id: pci.cc,v 1.26 2003/04/30 08:25:47 ezix Exp $";
+
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
 
@@ -503,15 +505,6 @@ static string pci_bushandle(u_int8_t bus)
   return "PCIBUS:" + string(buffer);
 }
 
-static string cardbushandle(u_int8_t bus)
-{
-  char buffer[10];
-
-  snprintf(buffer, sizeof(buffer), "%02x", bus);
-
-  return "CARDBUS:" + string(buffer);
-}
-
 static string pci_handle(u_int16_t bus,
 			 u_int8_t dev,
 			 u_int8_t fct)
@@ -521,11 +514,6 @@ static string pci_handle(u_int16_t bus,
   snprintf(buffer, sizeof(buffer), "PCI:%02x:%02x.%x", bus, dev, fct);
 
   return string(buffer);
-}
-
-static void add_pci(hwNode & n,
-		    hwNode & core)
-{
 }
 
 bool scan_pci(hwNode & n)
@@ -598,7 +586,6 @@ bool scan_pci(hwNode & n)
       u_int16_t status = get_conf_word(d, PCI_STATUS);
       u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
       u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
-      u_int8_t htype = get_conf_byte(d, PCI_HEADER_TYPE) & 0x7f;
 
       char revision[10];
       snprintf(revision, sizeof(revision), "%02x", rev);
@@ -752,7 +739,7 @@ bool scan_pci(hwNode & n)
       core->addChild(host);
   }
 
+  (void) &id;			// avoid warning "id defined but not used"
+
   return false;
 }
-
-static char *id = "@(#) $Id: pci.cc,v 1.25 2003/03/24 18:50:43 ezix Exp $";

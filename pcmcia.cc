@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <errno.h>
 
+static char *id = "@(#) $Id: pcmcia.cc,v 1.10 2003/04/30 08:25:47 ezix Exp $";
+
 /* parts of this code come from the excellent pcmcia-cs package written by
  * David A. Hinds <dahinds@users.sourceforge.net>.
  */
@@ -828,10 +830,8 @@ static bool pcmcia_ident(int socket,
 {
   ds_ioctl_arg_t arg;
   cistpl_vers_1_t *vers = &arg.tuple_parse.parse.version_1;
-  cistpl_manfid_t *manfid = &arg.tuple_parse.parse.manfid;
   cistpl_funcid_t *funcid = &arg.tuple_parse.parse.funcid;
   config_info_t config;
-  bind_info_t bind;
   vector < string > product_info;
   hwNode device("pccard",
 		hw::generic);
@@ -953,7 +953,7 @@ static hwNode *find_pcmciaparent(int slot,
 				 hwNode & root)
 {
   hwNode *result = NULL;
-  int i;
+  unsigned int i;
   int currentslot = 0;
 
   if (slot < 0)
@@ -989,8 +989,8 @@ bool scan_pcmcia(hwNode & n)
 {
   int fd[MAX_SOCK];
   int major = lookup_dev("pcmcia");
-  int sockets = 0;
-  int i;
+  unsigned int sockets = 0;
+  unsigned int i;
   vector < string > stab;
 
   if (major < 0)		// pcmcia support not loaded, there isn't much
@@ -999,7 +999,6 @@ bool scan_pcmcia(hwNode & n)
   memset(fd, 0, sizeof(fd));
   for (i = 0; i < MAX_SOCK; i++)
   {
-    config_info_t cfg;
     fd[i] = open_dev((dev_t) ((major << 8) + i));
 
     if (fd[i] >= 0)
@@ -1026,7 +1025,7 @@ bool scan_pcmcia(hwNode & n)
       break;
   }
 
-  for (int j = 0; j < sockets; j++)
+  for (unsigned int j = 0; j < sockets; j++)
   {
     close(fd[j]);
   }
@@ -1040,7 +1039,7 @@ bool scan_pcmcia(hwNode & n)
     {
       if (stab[i][0] == 'S')
       {
-	int pos = stab[i].find(':');
+	unsigned int pos = stab[i].find(':');
 
 	socketname = "";
 	carddescription = "";
@@ -1077,7 +1076,7 @@ bool scan_pcmcia(hwNode & n)
 	  string devclassstr = string(devclass);
 	  hwNode *parent = n.findChildByHandle(pcmcia_handle(socket));
 
-	  if (socket >= sockets)
+	  if (socket >= (int) sockets)
 	    sockets = socket + 1;
 
 	  hwNode device = hwNode(devclass, hw::generic);
@@ -1126,7 +1125,7 @@ bool scan_pcmcia(hwNode & n)
     }
   }
 
+  (void) &id;			// avoid warning "id defined but not used"
+
   return true;
 }
-
-static char *id = "@(#) $Id: pcmcia.cc,v 1.9 2003/02/14 00:21:32 ezix Exp $";
