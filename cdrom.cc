@@ -6,6 +6,22 @@
 #include <unistd.h>
 #include <linux/cdrom.h>
 
+#ifndef CDC_CD_R
+#define CDC_CD_R 0x2000
+#endif
+#ifndef CDC_CD_RW
+#define CDC_CD_RW 0x4000
+#endif
+#ifndef CDC_DVD
+#define CDC_DVD 0x8000
+#endif
+#ifndef CDC_DVD_R
+#define CDC_DVD_R 0x10000
+#endif
+#ifndef CDC_DVD_RAM
+#define CDC_DVD_RAM 0x20000
+#endif
+
 bool scan_cdrom(hwNode & n)
 {
   if (n.getLogicalName() == "")
@@ -62,4 +78,4 @@ bool scan_cdrom(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: cdrom.cc,v 1.2 2003/02/06 23:24:53 ezix Exp $";
+static char *id = "@(#) $Id: cdrom.cc,v 1.3 2003/02/17 17:43:12 ezix Exp $";
