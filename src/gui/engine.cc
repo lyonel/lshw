@@ -235,17 +235,7 @@ void browse(unsigned list, GtkTreeView *treeview)
   switch(list)
   {
     case 1:
-      if((n == selected1) && (find_parent(selected1, &container)!= &container))
-      {
-        selected3 = selected2;
-        selected2 = selected1;
-        selected1 = find_parent(selected1, &container);
-        if(selected1 == &container) selected1 = container.getChild(0);
-        populate_sublist(list1, find_parent(selected1, &container), selected1);
-        populate_sublist(list2, selected1, selected2);
-        populate_sublist(list3, selected2, selected3);
-      }
-      else
+      //if(n!=selected1)
       {
         selected1 = n;
         selected2 = NULL;
@@ -255,21 +245,27 @@ void browse(unsigned list, GtkTreeView *treeview)
       }
       break;
     case 2:
-      selected2 = n;
-      selected3 = NULL;
-      populate_sublist(list3, selected2, selected3);
-      break;
-    case 3:
-      selected3 = n;
-      if(n->countChildren()>0)
+      //if(n!=selected2)
       {
-        hwNode *oldselected1 = selected1;
-        selected1 = selected2;
         selected2 = n;
         selected3 = NULL;
-        populate_sublist(list1, oldselected1, selected1);
-        populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2, selected3);
+      }
+      break;
+    case 3:
+      //if(n!=selected3)
+      {
+        selected3 = n;
+        if(n->countChildren()>0)
+        {
+          hwNode *oldselected1 = selected1;
+          selected1 = selected2;
+          selected2 = n;
+          selected3 = NULL;
+          populate_sublist(list1, oldselected1, selected1);
+          populate_sublist(list2, selected1, selected2);
+          populate_sublist(list3, selected2, selected3);
+        }
       }
       break;
   }
