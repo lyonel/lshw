@@ -1145,7 +1145,7 @@ static void dmi_table(int fd,
 	  || ((dmiversionmaj == 2) && (dmiversionmin < 1)))
       {
 	unsigned long long size = 0;
-	hwNode newnode("ram",
+	hwNode newnode("memory",
 		       hw::memory);
 
 	newnode.setHandle(handle);
@@ -1476,7 +1476,7 @@ static void dmi_table(int fd,
 	  memoryarray->addChild(newnode);
 	else
 	{
-	  hwNode ramnode("ram",
+	  hwNode ramnode("memory",
 			 hw::memory);
 
 	  ramnode.addChild(newnode);
@@ -1698,4 +1698,4 @@ bool scan_dmi(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: dmi.cc,v 1.58 2003/01/29 22:00:08 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.59 2003/01/29 23:51:13 ezix Exp $";
