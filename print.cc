@@ -98,19 +98,6 @@ void print(hwNode & node,
     cout << endl;
   }
 #endif
-  if (node.getHandle() != "")
-  {
-    tab(level + 1, false);
-    if (html)
-      cout << "<tr><td>";
-    cout << "handle: ";
-    if (html)
-      cout << "</td><td>";
-    cout << node.getHandle();
-    if (html)
-      cout << "</td></tr>";
-    cout << endl;
-  }
 
   if (node.getDescription() != "")
   {
@@ -364,4 +351,4 @@ void print(hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.33 2003/02/16 19:55:29 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.34 2003/02/18 08:49:21 ezix Exp $";

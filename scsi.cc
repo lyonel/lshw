@@ -110,7 +110,7 @@ static const char *scsi_type(int type)
   switch (type)
   {
   case 0:
-    return "Hard Disk";
+    return "Disk";
   case 1:
     return "Tape";
   case 3:
@@ -395,4 +395,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.11 2003/02/17 23:57:31 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.12 2003/02/18 08:49:21 ezix Exp $";
