@@ -1225,36 +1225,36 @@ static void dmi_table(int fd,
 	switch (data[5])
 	{
 	case 0x03:
-	  id = "ram";
+	  description = "System Memory";
 	  break;
 	case 0x04:
-	  id = "video";
+	  description = "Video Memory";
 	  break;
 	case 0x05:
-	  id = "flash";
+	  description = "Flash Memory";
 	  break;
 	case 0x06:
-	  id = "nvram";
+	  description = "NVRAM";
 	  break;
 	case 0x07:
-	  id = "cache";
+	  description = "Cache Memory";
 	  break;
 	default:
-	  id = "genericmemory";
+	  description = "Generic Memory";
 	}
 
-	hwNode newnode(id,
+	hwNode newnode("memory",
 		       hw::memory);
 
 	newnode.setHandle(handle);
+	newnode.setDescription(description);
 
 	newnode.setSlot(dmi_memory_array_location(data[4]));
-	printf("\t\tError Correction Type: %s\n",
-	       dmi_memory_array_error_correction_type(data[6]));
+	//printf("\t\tError Correction Type: %s\n",
+	//dmi_memory_array_error_correction_type(data[6]));
 	u2 = data[10] << 24 | data[9] << 16 | data[8] << 8 | data[7];
 	if (u2 != 0x80000000)	// magic value for "unknown"
 	  newnode.setCapacity(u2 * 1024);
-	printf("\t\tNumber of Devices: %u\n", data[14] << 8 | data[13]);
 
 	hardwarenode->addChild(newnode);
       }
