@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: print.cc,v 1.55 2004/02/24 23:19:54 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.56 2004/02/26 16:26:36 ezix Exp $";
 
 static void spaces(unsigned int count,
 		   string space = " ")
@@ -746,7 +746,8 @@ static void printhwnode(hwNode & node,
   entry.path = "";
   if (node.getPhysId() != "")
     entry.path = prefix + "/" + node.getPhysId();
-  entry.description = node.getProduct();
+  if (node.getProduct() != "")
+    entry.description = hw::strip(node.getVendor() + " " + node.getProduct());
   if (entry.description == "")
     entry.description = node.getDescription();
   entry.devname = node.getLogicalName();
