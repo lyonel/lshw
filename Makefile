@@ -1,5 +1,5 @@
 PACKAGENAME = lshw
-SNAPSHOT=`date +0.%Y%m%d`
+SNAPSHOT=0.`cat .timestamp`
 
 DESTDIR=
 PREFIX=/usr
@@ -37,6 +37,9 @@ clean:
 
 .tag: .version
 	cat $< | sed -e 'y/./_/' > $@
+
+.timestamp:
+	date --utc +%Y%m%d%H%M%S > $@
                                                                                
 release: .tag
 	cvs tag -cF `cat .tag`
@@ -46,12 +49,13 @@ release: .tag
 	tar cfz $(PACKAGENAME)-`cat .version`.tar.gz $(PACKAGENAME)-`cat .version`
 	rm -rf $(PACKAGENAME)-`cat .version`
 
-snapshot:
+snapshot: .timestamp
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
 	cvs export -r HEAD -d $(PACKAGENAME)-$(SNAPSHOT) `cat CVS/Repository`
 	cat $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/$(SNAPSHOT)/g" > $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec
 	tar cfz $(PACKAGENAME)-$(SNAPSHOT).tar.gz $(PACKAGENAME)-$(SNAPSHOT)
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
+	rm -f .timestamp
 
 depend:
 	@makedepend -Y $(SRCS) 2> /dev/null > /dev/null
