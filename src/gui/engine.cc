@@ -103,7 +103,14 @@ static void display(GtkWidget * mainwindow)
   if(!displayed)
     gtk_label_set_text(GTK_LABEL(description), "<i>Please select a node to display.</i>");
   else
-    gtk_label_set_text(GTK_LABEL(description), printmarkup(*displayed).c_str());
+  {
+    string markup = printmarkup(*displayed);
+    string hwpath = printhwpath(*displayed, container);
+
+    if(hwpath!="") markup += "\n<b>path:</b> <tt>" + hwpath + "</tt>";
+
+    gtk_label_set_text(GTK_LABEL(description), markup.c_str());
+  }
   gtk_label_set_use_markup (GTK_LABEL(description), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL(description), TRUE);
 }

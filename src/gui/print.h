@@ -5,4 +5,6 @@
 
 string printmarkup(const hwNode & node);
 
+string printhwpath(hwNode & node, hwNode & base);
+
 #endif

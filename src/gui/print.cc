@@ -86,7 +86,16 @@ string printmarkup(const hwNode & node)
 
   resources = node.getResources(":");
 
-  out << "<b><i>" + node.getId();
+  out << "<big><b>";
+  if(node.getDescription()!="")
+    out << node.getDescription();
+  else
+  {
+    if(node.getProduct()!="")
+      out << node.getProduct();
+    else
+      out << node.getId();
+  }
   if(!node.claimed() || node.disabled())
     out << "<span color=\"gray\">";
   if(node.disabled())
@@ -95,9 +104,9 @@ string printmarkup(const hwNode & node)
     out << " UNCLAIMED";
   if(!node.claimed() || node.disabled())
     out << "</span>";
-  out << "</i></b>" << endl << endl;
+  out << "</b></big>" << endl << endl;
 
-  out << printattr("description", node.getDescription());
+  //out << printattr("description", node.getDescription());
   out << printattr("product", node.getProduct());
   out << printattr("vendor", node.getVendor());
   out << printattr("bus info", node.getBusInfo());
@@ -249,6 +258,34 @@ string printmarkup(const hwNode & node)
 
 #endif
   (void) &id;			// avoid "id defined but not used" warning
+
+  return out.str();
+}
+
+static hwNode * find_parent(hwNode * n, hwNode *sub)
+{
+  if(!n) return NULL;
+                                                                                
+  if(n == sub) return n;
+                                                                                
+  for(unsigned i=0; i<sub->countChildren(); i++)
+  {
+    if(sub->getChild(i) == n) return sub;
+                                                                                
+    hwNode *r = find_parent(n, sub->getChild(i));
+    if(r) return r;
+  }
+                                                                                
+  return NULL;
+}
+
+string printhwpath( hwNode & n, hwNode & base)
+{
+  ostringstream out;
+  hwNode *parent = find_parent(&n, &base);
+
+  if(parent && (parent != &base))
+    out << printhwpath(*parent, base) << "/" << n.getPhysId();
 
   return out.str();
 }
