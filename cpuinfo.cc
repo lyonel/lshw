@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <vector>
 
 static int splitlines(const string & s,
@@ -166,4 +167,4 @@ bool scan_cpuinfo(hwNode & n)
   }
 }
 
-static char *id = "@(#) $Id: cpuinfo.cc,v 1.3 2003/01/19 19:01:18 ezix Exp $";
+static char *id = "@(#) $Id: cpuinfo.cc,v 1.4 2003/01/19 19:06:28 ezix Exp $";
