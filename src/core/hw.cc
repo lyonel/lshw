@@ -602,7 +602,7 @@ hwNode *hwNode::findChildByBusInfo(const string & businfo)
   if (strip(businfo) == "")
     return NULL;
 
-  if (strip(This->businfo) == strip(businfo))
+  if (lowercase(strip(This->businfo)) == lowercase(strip(businfo)))
     return this;
 
   for (unsigned int i = 0; i < This->children.size(); i++)

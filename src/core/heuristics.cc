@@ -20,13 +20,19 @@ string guessBusInfo(const string & info)
     return "pci@" + info;
   }
 
-  //	1-2.4:1.0	->	usb@1:2.4
   if(matches(info, "^[0-9]+-[0-9]+(\\.[0-9]+)*:[0-9]+\\.[0-9]+$")) // USB: host-port[.port]:config.interface
   {
     size_t colon = info.rfind(":");
     size_t dash = info.find("-");
     
     return "usb@" + info.substr(0, dash) + ":" + info.substr(dash+1, colon-dash-1);
+  }
+
+  if(matches(info, "^[[:xdigit:]]+-[0-9]+$")) // Firewire: guid-function
+  {
+    size_t dash = info.find("-");
+    
+    return "firewire@" + info.substr(0, dash);
   }
 
   if(matches(info, "^parisc[0-9]+(:parisc[0-9]+)*$")) // PA-RISC: pariscx:y:z:t
