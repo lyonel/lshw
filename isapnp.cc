@@ -1,6 +1,8 @@
 #include "isapnp.h"
 #include "pnp.h"
 
+#ifdef __i386__
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -1015,9 +1017,12 @@ static int isapnp_build_device_list(
   return 0;
 }
 
+#endif
+
 bool scan_isapnp(
   hwNode & n)
 {
+#ifdef __i386__
   int cards;
 
   /*
@@ -1044,5 +1049,6 @@ bool scan_isapnp(
 
   isapnp_build_device_list(n);
 
+#endif
   return true;
 }
