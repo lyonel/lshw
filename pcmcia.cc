@@ -820,6 +820,7 @@ static bool pcmcia_ident(int socket,
   vector < string > product_info;
   hwNode device("pccard",
 		hw::generic);
+  char buffer[20];
   int i;
 
   if (get_tuple(fd, CISTPL_VERS_1, arg) == 0)
@@ -892,14 +893,15 @@ static bool pcmcia_ident(int socket,
       device.setDescription(product_info[0]);
   }
 
+  snprintf(buffer, sizeof(buffer), "Socket %d", socket);
+  device.setSlot(buffer);
+
   for (int fct = 0; fct < 4; fct++)
   {
     memset(&config, 0, sizeof(config));
     config.Function = fct;
     if (ioctl(fd, DS_GET_CONFIGURATION_INFO, &config) == 0)
     {
-      char buffer[10];
-
       if (config.AssignedIRQ != 0)
       {
 	snprintf(buffer, sizeof(buffer), "%d", config.AssignedIRQ);
@@ -1020,4 +1022,4 @@ bool scan_pcmcia(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.5 2003/02/11 09:11:11 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.6 2003/02/11 09:13:20 ezix Exp $";
