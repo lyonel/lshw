@@ -638,6 +638,15 @@ bool scan_pci(hwNode & n)
 	      device->setConfig("irq", irq);
 	  }
 	  device->setDescription(get_class_description(dclass));
+
+	  string moredescription = get_class_description(dclass, progif);
+	  if (moredescription != ""
+	      && moredescription != device->getDescription())
+	  {
+	    device->addCapability(moredescription);
+	    device->setDescription(device->getDescription() + " (" +
+				   moredescription + ")");
+	  }
 	  device->setVendor(get_device_description(d.vendor_id));
 	  device->setVersion(revision);
 	  device->
@@ -670,4 +679,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.13 2003/01/29 19:38:03 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.14 2003/01/29 21:30:08 ezix Exp $";
