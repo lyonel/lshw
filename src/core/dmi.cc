@@ -1558,14 +1558,14 @@ bool scan_dmi(hwNode & n)
   if (smmajver != 0)
   {
     char buffer[20];
-    snprintf(buffer, sizeof(buffer), "smbios-%d.%d", smmajver, smminver);
-    n.addCapability(string(buffer), "SMBIOS version");
+    snprintf(buffer, sizeof(buffer), "%d.%d", smmajver, smminver);
+    n.addCapability("smbios-"+string(buffer), "SMBIOS version "+string(buffer));
   }
   if (dmimaj != 0)
   {
     char buffer[20];
-    snprintf(buffer, sizeof(buffer), "dmi-%d.%d", dmimaj, dmimin);
-    n.addCapability(string(buffer), "DMI version");
+    snprintf(buffer, sizeof(buffer), "%d.%d", dmimaj, dmimin);
+    n.addCapability("dmi-"+string(buffer), "DMI version "+string(buffer));
   }
 
   (void) &id;			// avoid "id defined but not used" warning
