@@ -1361,9 +1361,51 @@ static void dmi_table(int fd,
       break;
     case 19:
       // Memory Array Mapped Address
+      {
+	hwNode newnode("range",
+		       hw::address);
+	unsigned long start, end;
+	string arrayhandle = dmi_handle(data[0x0D] << 8 | data[0x0C]);
+
+	start =
+	  ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16) * 1024;
+	end =
+	  ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16) *
+	  1024;
+
+	newnode.setStart(start);
+	newnode.setSize(end - start + 1024 - 1);
+	newnode.setHandle(handle);
+
+	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
+
+	if (memoryarray)
+	  memoryarray->addChild(newnode);
+      }
       break;
     case 20:
       // Memory Device Mapped Address
+      {
+	hwNode newnode("range",
+		       hw::address);
+	unsigned long start, end;
+	string devicehandle = dmi_handle(data[0x0D] << 8 | data[0x0C]);
+
+	start =
+	  ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16) * 1024;
+	end =
+	  ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16) *
+	  1024;
+
+	newnode.setStart(start);
+	newnode.setSize(end - start + 1024 - 1);
+	newnode.setHandle(handle);
+
+	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
+
+	if (memorydevice)
+	  memorydevice->addChild(newnode);
+      }
       break;
     case 21:
       // Built-In Pointing Device
@@ -1371,7 +1413,6 @@ static void dmi_table(int fd,
     case 22:
       // Portable Battery
       break;
-
     case 23:
       // System Reset
       break;

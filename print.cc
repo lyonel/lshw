@@ -1,5 +1,6 @@
 #include "print.h"
 #include <iostream>
+#include <iomanip>
 
 static void tab(int level,
 		bool connect = true)
@@ -15,7 +16,7 @@ static void tab(int level,
     cout << "  ";
 }
 
-void decimalkilos(unsigned long long value)
+static void decimalkilos(unsigned long long value)
 {
   const char *prefixes = "KMGTPH";
   int i = 0;
@@ -31,7 +32,7 @@ void decimalkilos(unsigned long long value)
     cout << prefixes[i - 1];
 }
 
-void kilobytes(unsigned long long value)
+static void kilobytes(unsigned long long value)
 {
   const char *prefixes = "KMGTPH";
   int i = 0;
@@ -100,6 +101,7 @@ void print(const hwNode & node,
     switch (node.getClass())
     {
     case hw::memory:
+    case hw::address:
     case hw::storage:
       kilobytes(node.getSize());
       break;
@@ -124,6 +126,7 @@ void print(const hwNode & node,
     switch (node.getClass())
     {
     case hw::memory:
+    case hw::address:
     case hw::storage:
       kilobytes(node.getCapacity());
       break;
@@ -138,6 +141,19 @@ void print(const hwNode & node,
     default:
       cout << node.getCapacity();
     }
+    cout << endl;
+  }
+
+  if (node.getClass() == hw::address)
+  {
+    tab(level + 1, false);
+    if (node.getSize() == 0)
+      cout << "address: " << hex << setfill('0') << setw(8) << node.
+	getStart() << dec;
+    else
+      cout << "range: " << hex << setfill('0') << setw(8) << node.
+	getStart() << " - " << hex << setfill('0') << setw(8) << node.
+	getStart() + node.getSize() << dec;
     cout << endl;
   }
 

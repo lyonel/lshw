@@ -9,6 +9,7 @@ namespace hw {
 
 typedef enum {processor,
 	memory,
+	address,
 	storage,
 	system,
 	bridge,
@@ -63,6 +64,9 @@ class hwNode
 
 	string getSerial() const;
 	void setSerial(const string & serial);
+
+	unsigned long long getStart() const;
+	void setStart(unsigned long long start);
 
 	unsigned long long getSize() const;
 	void setSize(unsigned long long size);

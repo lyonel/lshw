@@ -10,6 +10,7 @@ struct hwNode_i
   hwClass deviceclass;
   string id, vendor, product, version, serial, slot, handle, description;
   bool enabled;
+  unsigned long long start;
   unsigned long long size;
   unsigned long long capacity;
   unsigned long long clock;
@@ -65,6 +66,7 @@ hwNode::hwNode(const string & id,
   This->vendor = strip(vendor);
   This->product = strip(product);
   This->version = strip(version);
+  This->start = 0;
   This->size = 0;
   This->capacity = 0;
   This->clock = 0;
@@ -251,6 +253,20 @@ void hwNode::setSlot(const string & slot)
 {
   if (This)
     This->slot = strip(slot);
+}
+
+unsigned long long hwNode::getStart() const
+{
+  if (This)
+    return This->start;
+  else
+    return 0;
+}
+
+void hwNode::setStart(unsigned long long start)
+{
+  if (This)
+    This->start = start;
 }
 
 unsigned long long hwNode::getSize() const
