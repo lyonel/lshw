@@ -12,7 +12,8 @@ int main(int argc,
 
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
-    hwNode computer(hostname);
+    hwNode computer(hostname,
+		    hw::system);
 
     scan_memory(computer);
 
