@@ -16,7 +16,8 @@
 #include <sys/types.h>
 #include <sys/mount.h>
 
-static char *id = "@(#) $Id: sysfs.cc,v 1.4 2004/04/14 20:04:44 ezix Exp $";
+static char *id =
+  "@(#) $Revision: 1.5 $";
 
 struct sysfs_t
 {
