@@ -34,11 +34,12 @@
 #include "fb.h"
 #include "usb.h"
 #include "sysfs.h"
+#include "display.h"
 
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.38 2004/01/19 16:15:15 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 bool scan_system(hwNode & system)
 {
@@ -94,6 +95,9 @@ bool scan_system(hwNode & system)
     status("Framebuffer devices");
     if (enabled("fb"))
       scan_fb(computer);
+    status("Display");
+    if (enabled("display"))
+      scan_display(computer);
     status("");
 
     if (computer.getDescription() == "")

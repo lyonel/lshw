@@ -13,7 +13,7 @@ LDFLAGS=
 LDSTATIC=-static
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o sysfs.o
+OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o sysfs.o display.o
 SRCS = $(OBJS:.o=.cc)
 
 DATAFILES = pci.ids
@@ -93,7 +93,7 @@ depend:
 hw.o: hw.h osutils.h
 main.o: hw.h print.h version.h options.h mem.h dmi.h cpuinfo.h cpuid.h
 main.o: device-tree.h pci.h pcmcia.h ide.h scsi.h spd.h network.h isapnp.h
-main.o: fb.h usb.h sysfs.h
+main.o: fb.h usb.h sysfs.h display.h
 print.o: print.h hw.h options.h version.h osutils.h
 mem.o: mem.h hw.h
 dmi.o: dmi.h hw.h osutils.h
@@ -117,3 +117,4 @@ options.o: options.h osutils.h
 lshw.o: hw.h print.h main.h version.h options.h
 usb.o: usb.h hw.h osutils.h
 sysfs.o: sysfs.h hw.h osutils.h
+display.o: fb.h hw.h
