@@ -3,7 +3,7 @@ IMPROVEMENTS:
 * report wireless-related information (SSID, channel, AP, mode, etc.) - cf. iwconfig
 * SCSI clean-up (cf. newest versions of sg_utils)
 * on 2.6 kernels, use SG_IO directly on devices, not their sg counterpart
-* on FC3, sg* devices are not created; create them in /var ?
+* for emulated SCSI devices, don't report fake host/channel, just target
 
 BUGS:
 * USB mass storage and IDE-SCSI devices are not connected properly
