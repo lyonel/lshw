@@ -3,7 +3,8 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "28 September 2003" "$Name:  $" ""
+.TH "LSHW" "1" "29 September 2003" "$Name:  $" ""
+
 .SH NAME
 lshw \- list hardware
 .SH SYNOPSIS
@@ -41,6 +42,11 @@ Outputs the device tree as an XML tree.
 .TP
 \fB-short\fR
 Outputs the device tree showing hardware paths, very much like the output of HP-UX's \fBioscan\fR.
+.TP
+\fB-enable \fItest\fB\fR
+.TP
+\fB-disable \fItest\fB\fR
+Enables or disables a test. \fItest\fR can be \fBdmi\fR (for DMI/SMBIOS extensions), \fBdevice-tree\fR (for OpenFirmware device tree), \fBspd\fR (for memory Serial Presence Detect), \fBmemory\fR (for memory-size guessing heuristics), \fBcpuinfo\fR (for kernel-reported CPU detection), \fBcpuid\fR (for CPU detection), \fBpci\fR (for PCI/AGP access), \fBisapnp\fR (for ISA PnP extensions), \fBpcmcia\fR (for PCMCIA/PCCARD), \fBide\fR (for IDE/ATAPI), \fBscsi\fR (for SCSI) or \fBnetwork\fR (for network interfaces detection).
 .SH "BUGS"
 .PP
 \fBlshw\fR currently does not detect 

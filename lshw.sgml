@@ -64,7 +64,11 @@ Outputs the device tree as an XML tree.
 </para></listitem></varlistentry>
 <varlistentry><term>-short</term>
 <listitem><para>
-Outputs the device tree showing hardware paths, very much like the output of <productname>HP-UX</productname>'s <application>ioscan</application>.
+Outputs the device tree showing hardware paths, very much like the output of <productname>HP-UX</productname>'s <command>ioscan</command>.
+</para></listitem></varlistentry>
+<varlistentry><term>-enable <replaceable class="parameter">test</replaceable></term><term>-disable <replaceable class="parameter">test</replaceable></term>
+<listitem><para>
+Enables or disables a test. <replaceable class="parameter">test</replaceable> can be <command>dmi</command> (for <productname>DMI</productname>/<productname>SMBIOS</productname> extensions), <command>device-tree</command> (for <productname>OpenFirmware</productname> device tree), <command>spd</command> (for memory <productname>Serial Presence Detect</productname>), <command>memory</command> (for memory-size guessing heuristics), <command>cpuinfo</command> (for kernel-reported CPU detection), <command>cpuid</command> (for CPU detection), <command>pci</command> (for <productname>PCI</productname>/<productname>AGP access</productname>), <command>isapnp</command> (for <productname>ISA PnP</productname> extensions), <command>pcmcia</command> (for <productname>PCMCIA</productname>/<productname>PCCARD</productname>), <command>ide</command> (for <productname>IDE</productname>/<productname>ATAPI</productname>), <command>scsi</command> (for <productname>SCSI</productname>) or <command>network</command> (for network interfaces detection).
 </para></listitem></varlistentry>
 </variablelist>
 </para>
