@@ -200,12 +200,8 @@ static void display(GtkWidget * mainwindow)
   {
     create_tags(buffer);
 
-    printmarkup(*displayed, buffer);
     string hwpath = printhwpath(*displayed, container);
-
-    if(hwpath!="")
-    {
-    }
+    printmarkup(*displayed, GTK_TEXT_VIEW(description), hwpath);
   }
 }
 

@@ -107,12 +107,28 @@ static void printsize(long long value, const hwNode & node, const string & name,
     }
 }
 
-void printmarkup(const hwNode & node, GtkTextBuffer *buffer)
+static  void inserticon(const string & icon, const string & comment, GtkTextBuffer *buffer, GtkTextIter &iter, GtkTextView * textview)
+{
+  GdkPixbuf *pixbuf;
+
+  pixbuf = gtk_widget_render_icon(GTK_WIDGET(textview),
+                                  icon.c_str(),
+                                  GTK_ICON_SIZE_MENU, /* size */
+                                  NULL);
+  gtk_text_buffer_insert_pixbuf(buffer, &iter, pixbuf);
+  gtk_text_buffer_insert(buffer, &iter, comment.c_str(), -1);
+  gtk_text_buffer_insert(buffer, &iter, "\n", -1);
+}
+
+void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath)
 {
   vector < string > config;
   vector < string > resources;
   ostringstream out;
   GtkTextIter iter;
+  GtkTextBuffer *buffer;
+
+  buffer = gtk_text_view_get_buffer(textview);
 
   gtk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
 
@@ -135,7 +151,19 @@ void printmarkup(const hwNode & node, GtkTextBuffer *buffer)
     out << " UNCLAIMED";
   if(!node.claimed() || node.disabled())
     out << "</span>";
-  gtk_text_buffer_insert (buffer, &iter, "\n\n\n", -1);
+
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, hwpath.c_str(), -1, "monospace", NULL);
+
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
+  if(!node.claimed())
+    inserticon(GTK_STOCK_DIALOG_QUESTION, "this device hasn't been claimed", buffer, iter, textview);
+
+  if(!node.enabled())
+    inserticon(GTK_STOCK_NO, "this device has been disabled", buffer, iter, textview);
+
+  gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
 
   //out << printattr("description", node.getDescription());
   printattr("product", node.getProduct(), buffer, iter);

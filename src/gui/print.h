@@ -4,7 +4,7 @@
 #include "hw.h"
 #include <gtk/gtk.h>
 
-void printmarkup(const hwNode & node, GtkTextBuffer *buffer);
+void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath);
 
 string printhwpath(hwNode & node, hwNode & base);
 
