@@ -57,14 +57,14 @@ http://www.ezix.org/software/lshw.html
 %{__rm} -rf "%{buildroot}"
 
 %{__make} \
-	DESTDIR="${buildroot}" \
+	DESTDIR="%{buildroot}" \
 	PREFIX="%{_prefix}" \
 	SBINDIR="%{_sbindir}" \
 	MANDIR="%{_mandir}" \
 	install
 %if %{?_with_gui:1}%{!?_with_gui:0}
 %{__make} \
-	DESTDIR="${buildroot}" \
+	DESTDIR="%{buildroot}" \
 	PREFIX="%{_prefix}" \
 	SBINDIR="%{_sbindir}" \
 	MANDIR="%{_mandir}" \
@@ -76,7 +76,7 @@ http://www.ezix.org/software/lshw.html
 
 %files
 %defattr(-,root,root, 0755)
-%doc COPYING TODO
+%doc COPYING TODO docs/Changelog
 %attr(555,bin,bin) %{_sbindir}/lshw
 %doc %{_mandir}/man?/*
 %{_datadir}/lshw/

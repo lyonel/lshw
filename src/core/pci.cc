@@ -795,11 +795,11 @@ bool scan_pci(hwNode & n)
 	  device->setProduct(get_device_description(d.vendor_id, d.device_id));
 
 	  if (cmd & PCI_COMMAND_MASTER)
-	    device->addCapability("bus master", "Bus mastering");
+	    device->addCapability("bus master", "bus mastering");
 	  if (cmd & PCI_COMMAND_VGA_PALETTE)
 	    device->addCapability("VGA palette", "VGA palette");
 	  if (status & PCI_STATUS_CAP_LIST)
-	    device->addCapability("cap list", "capabilities listing");
+	    device->addCapability("cap list", "PCI capabilities listing");
 	  if (status & PCI_STATUS_66MHZ)
 	    device->setClock(66000000UL);	// 66MHz
 	  else

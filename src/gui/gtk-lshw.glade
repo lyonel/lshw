@@ -130,6 +130,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="refreshbutton">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Rescan the hardware</property>
 	      <property name="stock_id">gtk-refresh</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>

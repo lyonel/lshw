@@ -1,0 +1,95 @@
+*  B.02.01
+  better support for emulated SCSI devices: USB mass storage devices are now properly handled
+  added a "go-up" button to the GUI
+  lshw now reports x86-64 capability
+  minor fixes to give better descriptions of capabilities
+  automatically create ghost (removed after use) /dev/sgxx entries when needed (affects Fedora Core 3 and other distributions that don't include these entries)
+  USB code clean-up
+  portability fixes for Gentoo Linux
+*  B.02.00
+  various fixes
+  added a GTK+ GUI
+* A.01.09
+  code cleanup
+  added support for USB devices
+  various fixes
+  updated list of recognised PCI devices
+  added list of recognised USB devices
+  source code reorganisation
+  preparation for the development of a GTK+-based GUI
+* A.01.08
+  code cleanup
+  added support for static and compressed (UPX) static builds
+  added support for HT (hyper-threading); lshw now reports "virtual" CPUs
+  DMI fixes (thanks to Erwan Velu from MandrakeSoft)
+  XML output filtering
+  packaging system fixes (thanks to Oron Peled)
+  updated list of recognised PCI devices
+* A.01.07
+  fixed annoying IDE-related bug that caused un-necessary kernel error messages
+  portability fixes
+  migrated lshw's source code to Subversion
+  build system updates
+  more work on sysfs
+  report WLAN capabilities
+  report speed of network links
+  bugfixes
+* A.01.06
+  code cleanup
+  support for EFI-based (IA-64) systems, thanks to Bruno Cornec from HP
+  the output of lshw can now be restricted to certain classes of hardware (disks, memory, etc.)
+  preliminary support for 2.6 kernel using sysfs
+  very preliminary support for USB devices (disabled by default)
+  fixed typos
+* A.01.05
+  code cleanup
+  PCI and PCMCIA now correctly report resources (ports, memory and IRQs)
+  support for framebuffer devices
+  report detailed DIMM info on PowerPC machines
+  fixed compilation problem for older distributions
+* A.01.04
+  beginning of resources reporting
+  bug fixes for multi-host bridge machines (servers, PowerMacs)
+  fixes for OpenFirmware machines (PowerMacs)
+  SCSI-over-IDE fixes (now connected to the right IDE device)
+  new ability to disable some tests
+  ISA PnP is now disabled by default (was too long)
+* A.01.03
+  new ioscan (HP-UX) -like output format
+  added detection of ISA Plug & Play cards on x86 machines
+  lshw now reports more detailed information on network interfaces
+* A.01.02
+  cosmetic changes
+  added detection of Apple model names for Macs
+  1st try of SPD memory DIMM support
+  lshw now reports information on network interfaces
+* A.01.01
+  fixed memory reporting for systems with more than 2GB of memory
+* A.01.00
+  minor bug fixes
+  support for more platforms (PA-RISC, IA-64 and Alpha)
+  lshw can now generate XML
+* T.00.07
+  minor bug fixes
+  lshw now generates correct HTML (thanks to Ola Lundqvist)
+  SCSI support
+  added a manpage (thanks to Helge Kreutzmann)
+* T.00.06
+  minor bug fixes
+  PCMCIA support
+  support for device claiming
+  preliminary support for non-PCI IDE controllers/devices
+* T.00.05
+  code clean-up
+  probing of IDE devices
+* T.00.04
+  activated HTML mode
+  reporting of video memory
+  bug fixes
+* T.00.03
+  fixes for GCC 3.2
+* T.00.02
+  second public test release
+  PCI busses listing
+* T.00.01
+  first public test release
