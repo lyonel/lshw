@@ -146,6 +146,13 @@ static char *id = "@(#) $Id$";
 #define  PCI_BASE_ADDRESS_MEM_MASK      (~0x0fUL)
 #define  PCI_BASE_ADDRESS_IO_MASK       (~0x03UL)
 
+#define PCI_SUBSYSTEM_VENDOR_ID 0x2c
+#define PCI_SUBSYSTEM_ID        0x2e
+
+#define PCI_CB_SUBSYSTEM_VENDOR_ID 0x40
+#define PCI_CB_SUBSYSTEM_ID     0x42
+
+
 typedef unsigned long long pciaddr_t;
 typedef enum
 { pcidevice,
@@ -684,11 +691,28 @@ bool scan_pci(hwNode & n)
       u_int16_t status = get_conf_word(d, PCI_STATUS);
       u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
       u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
+      u_int8_t htype = get_conf_byte(d, PCI_HEADER_TYPE) & 0x7f;
+      u_int16_t subsys_v = 0, subsys_d = 0;
 
       char revision[10];
       snprintf(revision, sizeof(revision), "%02x", rev);
       string moredescription = get_class_description(dclass, progif);
       string drivername = hw::strip(driver);
+
+      switch (htype)
+      {
+        case PCI_HEADER_TYPE_NORMAL:
+          subsys_v = get_conf_word(d, PCI_SUBSYSTEM_VENDOR_ID);
+          subsys_d = get_conf_word(d, PCI_SUBSYSTEM_ID);
+          break;
+        case PCI_HEADER_TYPE_BRIDGE:
+          subsys_v = subsys_d = 0;
+          break;
+        case PCI_HEADER_TYPE_CARDBUS:
+          subsys_v = get_conf_word(d, PCI_CB_SUBSYSTEM_VENDOR_ID);
+          subsys_d = get_conf_word(d, PCI_CB_SUBSYSTEM_ID);
+          break;
+      }
 
       if (dclass == PCI_CLASS_BRIDGE_HOST)
       {
@@ -700,7 +724,7 @@ bool scan_pci(hwNode & n)
 	host.setProduct(get_device_description(d.vendor_id, d.device_id));
 	host.setHandle(pci_bushandle(d.bus));
 	host.setVersion(revision);
-        addHints(host, d.vendor_id, d.device_id, 0, 0, dclass);
+        addHints(host, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
 	host.claim();
 	host.setBusInfo(businfo);
 	if (d.size[0] > 0)
@@ -774,6 +798,7 @@ bool scan_pci(hwNode & n)
 	{
 	  device->setBusInfo(businfo);
 	  device->setPhysId(PCI_SLOT(dfn & 0xff), PCI_FUNC(dfn & 0xff));
+          addHints(*device, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
 
 	  if (deviceclass == hw::bridge || deviceclass == hw::storage)
 	    device->addCapability(devicename);
