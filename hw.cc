@@ -332,12 +332,28 @@ const hwNode *hwNode::getChild(unsigned int i) const
 
 hwNode *hwNode::getChild(const string & id)
 {
+  string baseid = id, path = "";
+  size_t pos = 0;
+
   if (!This)
     return NULL;
 
+  pos = id.find('/');
+  if (pos != string::npos)
+  {
+    baseid = id.substr(0, pos);
+    if (pos < id.length() - 1)
+      path = id.substr(pos + 1);
+  }
+
   for (int i = 0; i < This->children.size(); i++)
-    if (This->children[i].getId() == id)
-      return &(This->children[i]);
+    if (This->children[i].getId() == baseid)
+    {
+      if (path == "")
+	return &(This->children[i]);
+      else
+	return This->children[i].getChild(path);
+    }
   return NULL;
 }
 

@@ -6,58 +6,36 @@
 
 bool scan_memory(hwNode & n)
 {
-  hwNode memory("memory",
-		hw::memory);
   struct stat buf;
 
   if (stat("/proc/kcore", &buf) == 0)
   {
-    memory.setSize(buf.st_size);
+    hwNode *memory = n.getChild("core/ram");
 
-    if (stat("/proc/device-tree/memory@0/slot-names", &buf) == 0)
+    if (!memory)
     {
-      unsigned long bitmap = 0;
-      char *slotnames = NULL;
-      char *slotname = NULL;
-      int fd = open("/proc/device-tree/memory@0/slot-names", O_RDONLY);
-      int fd2 = open("/proc/device-tree/memory@0/reg", O_RDONLY);
+      hwNode *core = n.getChild("core");
 
-      if ((fd >= 0) && (fd2 >= 0))
+      if (!core)
       {
-	unsigned long slot = 1;
-	slotnames = (char *) malloc(buf.st_size + 1);
-	slotname = slotnames;
-	memset(slotnames, 0, buf.st_size + 1);
-	read(fd, &bitmap, sizeof(bitmap));
-	read(fd, slotnames, buf.st_size + 1);
+	n.addChild(hwNode("core", hw::system));
+	core = n.getChild("core");
+      }
 
-	while (strlen(slotname) > 0)
-	{
-	  unsigned long base = 0;
-	  unsigned long size = 0;
-	  if (bitmap & slot)	// slot is active
-	  {
-	    hwNode bank("ram",
-			hw::memory);
-
-	    read(fd2, &base, sizeof(base));
-	    read(fd2, &size, sizeof(size));
-
-	    bank.setSlot(slotname);
-	    bank.setSize(size);
-	    memory.addChild(bank);
-	  }
-	  slot *= 2;
-	  slotname += strlen(slotname) + 1;
-	}
-	close(fd);
-	close(fd2);
-
-	free(slotnames);
+      if (core)
+      {
+	core->addChild(hwNode("ram", hw::memory));
+	memory = core->getChild("ram");
       }
     }
 
+    if (memory)
+    {
+      memory->setSize(buf.st_size);
+      memory->setSlot("logical");
+      return true;
+    }
   }
 
-  return n.addChild(memory);
+  return false;
 }
