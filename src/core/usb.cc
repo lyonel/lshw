@@ -5,6 +5,7 @@
 
 #include "usb.h"
 #include "osutils.h"
+#include "heuristics.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -97,7 +98,19 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
   }
   else
   {
-    n.addChild(device);
+    if(lev==0)		// USB host
+    {
+      string businfo = guessBusInfo(device.getSerial());
+      parent = n.findChildByBusInfo(businfo);
+      device.setSerial("");	// serial# has no meaning for USB hosts
+    }
+    if(parent)
+    {
+      parent->addChild(device);
+      return true;
+    }
+    else
+      n.addChild(device);
     return false;
   }
 }
@@ -237,7 +250,7 @@ bool scan_usb(hwNode & n)
                 device.setVendor(hw::strip(strval));
               if(strcasecmp(strname, "Product")==0)
                 device.setProduct(hw::strip(strval));
-              if((lev>0) && (strcasecmp(strname, "SerialNumber")==0))
+              if(strcasecmp(strname, "SerialNumber")==0)
                 device.setSerial(hw::strip(strval));
             }
             break;
