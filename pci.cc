@@ -114,6 +114,15 @@
 #define PCI_CLASS_OTHERS		0xff
 
 typedef unsigned long long pciaddr_t;
+typedef enum
+{ pcidevice,
+  pcisubsystem,
+  pciclass,
+  pcisubclass,
+  pcivendor,
+  pciprogif
+}
+catalog;
 
 struct pci_dev
 {
@@ -199,7 +208,7 @@ static bool parse_pcidb(vector < string > &list)
 {
   u_int16_t u[4];
   string line = "";
-  bool in_class = false;
+  catalog current_catalog = pcivendor;
   int level = 0;
 
   memset(u, 0, sizeof(u));
@@ -208,21 +217,82 @@ static bool parse_pcidb(vector < string > &list)
   {
     line = hw::strip(list[i]);
 
-    if (line.length() == 0 || line[0] == '#')	// ignore empty or commented-out lines
+    // ignore empty or commented-out lines
+    if (line.length() == 0 || line[0] == '#')
       continue;
 
     level = 0;
     while (level < list[i].length() && list[i][level] == '\t')
       level++;
 
-    if (in_class || line[0] == 'C')	// class
+    switch (level)
     {
-      in_class = true;
+    case 0:
+      if (line[0] == 'C' && line.length() > 1 && line[1] == ' ')
+      {
+	current_catalog = pciclass;
+	line = line.substr(2);	// get rid of 'C '
+
+	if (line.length() < 3 || line[2] != ' ')
+	  return false;
+	if (sscanf(line.c_str(), "%x", &u[0]) != 1)
+	  return false;
+	line = line.substr(3);
+	line = hw::strip(line);
+      }
+      else
+      {
+	current_catalog = pcivendor;
+
+	if (line.length() < 5 || line[4] != ' ')
+	  return false;
+	if (sscanf(line.c_str(), "%x", &u[0]) != 1)
+	  return false;
+	line = line.substr(5);
+	line = hw::strip(line);
+      }
+      u[1] = u[2] = u[3] = 0;
+      break;
+    case 1:
+      if (current_catalog == pciclass)
+      {
+	current_catalog = pcisubclass;
+
+	if (line.length() < 3 || line[2] != ' ')
+	  return false;
+	if (sscanf(line.c_str(), "%x", &u[1]) != 1)
+	  return false;
+	line = line.substr(3);
+	line = hw::strip(line);
+      }
+      else
+      {
+	current_catalog = pcidevice;
+
+	if (line.length() < 5 || line[4] != ' ')
+	  return false;
+	if (sscanf(line.c_str(), "%x", &u[1]) != 1)
+	  return false;
+	line = line.substr(5);
+	line = hw::strip(line);
+      }
+      u[2] = u[3] = 0;
+      break;
+    case 2:
+      if (current_catalog != pcidevice)
+	return false;
+      if (line.length() < 10 || line[4] != ' ' || line[9] != ' ')
+	return false;
+      if (sscanf(line.c_str(), "%x%x", &u[2], &u[3]) != 2)
+	return false;
+      line = line.substr(9);
+      line = hw::strip(line);
+      break;
+    default:
+      return false;
     }
-    else
-    {
-      in_class = false;
-    }
+
+    printf("%s\n", line.c_str());
   }
   return true;
 }
@@ -236,6 +306,7 @@ static bool load_pcidb()
   for (int i = filenames.size() - 1; i >= 0; i--)
   {
     lines.clear();
+    printf("%s\n", filenames[i].c_str());
     if (loadfile(filenames[i], lines))
       parse_pcidb(lines);
   }
@@ -487,4 +558,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.5 2003/01/27 17:39:31 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.6 2003/01/27 20:49:40 ezix Exp $";
