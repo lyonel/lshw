@@ -6,6 +6,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <dirent.h>
 #include <stdio.h>
 #include <scsi/sg.h>
 #include <scsi/scsi.h>
@@ -572,16 +573,75 @@ static bool scan_sg(int sg,
   return true;
 }
 
-static bool scan_hosts(hwNode & n)
+static int selectdir(const struct dirent *d)
 {
+  struct stat buf;
+
+  if (d->d_name[0] == '.')
+    return 0;
+
+  if (lstat(d->d_name, &buf) != 0)
+    return 0;
+
+  return S_ISDIR(buf.st_mode);
+}
+
+static bool scan_hosts(hwNode & node)
+{
+  struct dirent **namelist = NULL;
+  int n;
   vector < string > host_strs;
+
+  if (!pushd("/proc/scsi"))
+    return false;
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+  if ((n < 0) || !namelist)
+    return false;
+
+  pushd("/proc/scsi");
+  for (int i = 0; i < n; i++)
+  {
+    struct dirent **filelist = NULL;
+    int m = 0;
+
+    pushd(namelist[i]->d_name);
+    m = scandir(".", &filelist, NULL, alphasort);
+    popd();
+
+    if (m >= 0)
+    {
+      for (int j = 0; j < m; j++)
+      {
+	char *end = NULL;
+	long number = -1;
+
+	number = strtol(filelist[j]->d_name, &end, 0);
+
+	if ((number >= 0) && (end != filelist[j]->d_name))
+	{
+	  hwNode *controller =
+	    node.findChildByLogicalName("scsi" + string(filelist[j]->d_name));
+
+	  if (controller)
+	    controller->setConfig(string("driver"),
+				  string(namelist[i]->d_name));
+	}
+	free(filelist[j]);
+      }
+      free(filelist);
+    }
+    free(namelist[i]);
+  }
+  free(namelist);
+  popd();
 
   if (!loadfile("/proc/scsi/sg/host_strs", host_strs))
     return false;
 
   for (int i = 0; i < host_strs.size(); i++)
   {
-    hwNode *host = n.findChildByLogicalName(host_logicalname(i));
+    hwNode *host = node.findChildByLogicalName(host_logicalname(i));
 
     if (host)
       host->setDescription(host_strs[i]);
@@ -599,9 +659,9 @@ bool scan_scsi(hwNode & n)
   while (scan_sg(i, n))
     i++;
 
-  //scan_hosts(n);
+  scan_hosts(n);
 
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.18 2003/02/23 18:21:59 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.19 2003/02/24 12:16:45 ezix Exp $";
