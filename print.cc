@@ -20,7 +20,7 @@ void decimalkilos(unsigned long long value)
   const char *prefixes = "KMGTPH";
   int i = 0;
 
-  while ((i <= strlen(prefixes)) && (value > 10000))
+  while ((i <= strlen(prefixes)) && ((value > 10000) || (value % 1000 == 0)))
   {
     value = value / 1000;
     i++;
@@ -36,7 +36,7 @@ void kilobytes(unsigned long long value)
   const char *prefixes = "KMGTPH";
   int i = 0;
 
-  while ((i <= strlen(prefixes)) && (value > 1024))
+  while ((i <= strlen(prefixes)) && ((value > 10240) || (value % 1024 == 0)))
   {
     value = value >> 10;
     i++;
