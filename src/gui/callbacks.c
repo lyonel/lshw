@@ -110,3 +110,11 @@ on_treeview3_cursor_changed            (GtkTreeView     *treeview,
 
 
 
+
+void
+go_up                                  (GtkToolButton   *toolbutton,
+                                        gpointer         user_data)
+{
+	go_back(mainwindow);
+}
+

@@ -112,6 +112,22 @@
 	  <property name="show_arrow">True</property>
 
 	  <child>
+	    <widget class="GtkToolButton" id="upbutton">
+	      <property name="visible">True</property>
+	      <property name="sensitive">False</property>
+	      <property name="stock_id">gtk-go-up</property>
+	      <property name="visible_horizontal">True</property>
+	      <property name="visible_vertical">True</property>
+	      <property name="is_important">False</property>
+	      <signal name="clicked" handler="go_up" last_modification_time="Wed, 05 Jan 2005 10:27:10 GMT"/>
+	    </widget>
+	    <packing>
+	      <property name="expand">False</property>
+	      <property name="homogeneous">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
 	    <widget class="GtkToolButton" id="refreshbutton">
 	      <property name="visible">True</property>
 	      <property name="stock_id">gtk-refresh</property>

@@ -13,6 +13,7 @@ void change_selection(unsigned list, GtkTreeView *treeview);
 
 void browse(unsigned list, GtkTreeView *treeview);
 
+void go_back(GtkWidget *);
 
 #ifdef __cplusplus
 };

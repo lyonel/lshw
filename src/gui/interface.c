@@ -43,6 +43,7 @@ create_lshw (void)
   GtkWidget *about1;
   GtkWidget *toolbar1;
   gint tmp_toolbar_icon_size;
+  GtkWidget *upbutton;
   GtkWidget *refreshbutton;
   GtkWidget *quitbutton;
   GtkWidget *scrolledwindow1;
@@ -114,6 +115,11 @@ create_lshw (void)
   gtk_box_pack_start (GTK_BOX (vbox1), toolbar1, FALSE, FALSE, 0);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar1), GTK_TOOLBAR_BOTH);
   tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbar1));
+
+  upbutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-go-up");
+  gtk_widget_show (upbutton);
+  gtk_container_add (GTK_CONTAINER (toolbar1), upbutton);
+  gtk_widget_set_sensitive (upbutton, FALSE);
 
   refreshbutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-refresh");
   gtk_widget_show (refreshbutton);
@@ -219,6 +225,9 @@ create_lshw (void)
   g_signal_connect ((gpointer) about1, "activate",
                     G_CALLBACK (on_about1_activate),
                     NULL);
+  g_signal_connect ((gpointer) upbutton, "clicked",
+                    G_CALLBACK (go_up),
+                    NULL);
   g_signal_connect ((gpointer) refreshbutton, "clicked",
                     G_CALLBACK (refresh_display),
                     NULL);
@@ -258,6 +267,7 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, menuitem7_menu, "menuitem7_menu");
   GLADE_HOOKUP_OBJECT (lshw, about1, "about1");
   GLADE_HOOKUP_OBJECT (lshw, toolbar1, "toolbar1");
+  GLADE_HOOKUP_OBJECT (lshw, upbutton, "upbutton");
   GLADE_HOOKUP_OBJECT (lshw, refreshbutton, "refreshbutton");
   GLADE_HOOKUP_OBJECT (lshw, quitbutton, "quitbutton");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow1, "scrolledwindow1");

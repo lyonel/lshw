@@ -220,7 +220,6 @@ void browse(unsigned list, GtkTreeView *treeview)
   GtkTreeModel     *model;
   GtkTreeIter       iter;
   hwNode *n = NULL;
-
   GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
   GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
   GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
@@ -273,4 +272,29 @@ void browse(unsigned list, GtkTreeView *treeview)
   }
 
   (void) &::id;                 // avoid warning "id defined but not used"
+}
+
+void go_back(GtkWidget *mainwindow)
+{
+  GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
+  GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
+  GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
+
+  if(!displayed);
+
+  if(selected1 && (find_parent(selected1, &container)!= &container))
+  {
+    selected3 = selected2;
+    selected2 = selected1;
+    selected1 = find_parent(selected1, &container);
+    if(selected1 == &container) selected1 = container.getChild(0);
+    populate_sublist(list1, find_parent(selected1, &container), selected1);
+    populate_sublist(list2, selected1, selected2);
+    populate_sublist(list3, selected2, selected3);
+
+    if(find_parent(displayed, &container)!= &container)
+      displayed = find_parent(displayed, &container);
+  }
+
+  display(mainwindow);
 }
