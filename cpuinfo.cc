@@ -71,8 +71,26 @@ static void cpuinfo_hppa(hwNode & node,
 
   if (id == "model" && node.getProduct() == "")
     node.setProduct(value);
+  if (id == "model name" && node.getDescription() == "")
+    node.setDescription(value);
   if (id == "software id" && node.getSerial() == "")
     node.setSerial(value);
+
+  if (cpu)
+  {
+
+    if (id == "cpu" && cpu->getVersion() == "")
+      cpu->setVersion(value);
+    if (id == "cpu family" && cpu->getProduct() == "")
+      cpu->setProduct(value);
+    if (id == "cpu MHz" && cpu->getSize() == 0)
+    {
+      double frequency = 0.0;
+
+      frequency = atof(value.c_str());
+      cpu->setSize((unsigned long long) (frequency * 1E6));
+    }
+  }
 }
 
 static void cpuinfo_alpha(hwNode & node,
@@ -238,7 +256,9 @@ bool scan_cpuinfo(hwNode & n)
 	id = hw::strip(cpuinfo_lines[i].substr(0, pos));
 	value = hw::strip(cpuinfo_lines[i].substr(pos + 1));
 
+#ifdef __i386__
 	cpuinfo_x86(n, id, value);
+#endif
 	//cpuinfo_ppc(n, id, value);
 #ifdef __hppa__
 	cpuinfo_hppa(n, id, value);
@@ -257,4 +277,4 @@ bool scan_cpuinfo(hwNode & n)
 }
 
 static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.14 2003/03/12 10:45:18 ezix Exp $";
+  "@(#) $Id: cpuinfo.cc,v 1.15 2003/03/12 13:06:01 ezix Exp $";

@@ -4,7 +4,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <linux/fs.h>
+//#include <linux/fs.h>
 
 #ifndef BLKROGET
 #define BLKROGET   _IO(0x12,94)	/* get read-only status (0 = read_write) */
@@ -45,4 +45,4 @@ bool scan_disk(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: disk.cc,v 1.1 2003/02/25 08:57:32 ezix Exp $";
+static char *id = "@(#) $Id: disk.cc,v 1.2 2003/03/12 13:06:01 ezix Exp $";
