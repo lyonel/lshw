@@ -1,3 +1,19 @@
+/*
+ * main.cc
+ *
+ * this module is shared between the command-line and graphical interfaces of
+ * lshw (currently, only the text interface is available).
+ *
+ * It calls all the defined scans in a certain order that tries to ensure
+ * that devices are only reported once and that information coming from
+ * different sources about a given device is kept consistent.
+ *
+ * Individual tests can be disabled on the command-line by using the -disable
+ * option.
+ * Status is reported during the execution of tests.
+ *
+ */
+
 #include "hw.h"
 #include "print.h"
 
@@ -19,69 +35,11 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.33 2003/10/01 12:27:06 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.34 2003/10/13 09:57:00 ezix Exp $";
 
-void usage(const char *progname)
-{
-  fprintf(stderr, "Harware Lister (lshw) - %s\n", getpackageversion());
-  fprintf(stderr, "usage: %s [-options ...]\n", progname);
-  fprintf(stderr, "\t-version        print program version\n");
-  fprintf(stderr, "\t-html           output hardware tree as HTML\n");
-  fprintf(stderr, "\t-xml            output hardware tree as XML\n");
-  fprintf(stderr, "\t-short          output hardware paths\n");
-  fprintf(stderr,
-	  "\t-disable test   disable a test (like pci, isapnp, cpuid, etc. )\n");
-  fprintf(stderr, "\n");
-}
-
-int main(int argc,
-	 char **argv)
+bool scan_system(hwNode & system)
 {
   char hostname[80];
-  bool htmloutput = false;
-  bool xmloutput = false;
-  bool hwpath = false;
-
-  if (!parse_options(argc, argv))
-  {
-    usage(argv[0]);
-    exit(1);
-  }
-
-  if (argc == 2)
-  {
-    if (strcmp(argv[1], "-version") == 0)
-    {
-      printf("%s\n", getpackageversion());
-      exit(0);
-    }
-    if (strcmp(argv[1], "-help") == 0 || strcmp(argv[1], "--help") == 0)
-    {
-      usage(argv[0]);
-      exit(0);
-    }
-    if (strcmp(argv[1], "-xml") == 0)
-      xmloutput = true;
-
-    if (strcmp(argv[1], "-html") == 0)
-      htmloutput = true;
-
-    if (strcmp(argv[1], "-short") == 0)
-      hwpath = true;
-
-    if (!xmloutput && !htmloutput && !hwpath)
-    {
-      usage(argv[0]);
-      exit(1);
-    }
-  }
-
-  if (geteuid() != 0)
-  {
-    fprintf(stderr, "WARNING: you should run this program as super-user.\n");
-  }
-
-  disable("isapnp");
 
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
@@ -130,18 +88,12 @@ int main(int argc,
       computer.setDescription("Computer");
     computer.assignPhysIds();
 
-    if (hwpath)
-      printhwpath(computer);
-    else
-    {
-      if (xmloutput)
-	printxml(computer);
-      else
-	print(computer, htmloutput);
-    }
+    system = computer;
   }
+  else
+    return false;
 
   (void) &id;			// avoid warning "id defined but not used"
 
-  return 0;
+  return true;
 }

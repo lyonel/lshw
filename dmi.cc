@@ -1,7 +1,15 @@
 /*
- * this file is based on Alan Cox's excellent DMI decoder rev 1.7
- * it has endured severe modification so don't blame Alan for the
+ * dmi.cc
+ *
+ * This file is based on Alan Cox's excellent DMI decoder rev 1.7
+ * it has endured severe modifications so don't blame Alan for the
  * bugs, they're probably mine.
+ *
+ * This scan searches the BIOS memory for SMBIOS (DMI) extensions and reports
+ * DMI information like CPU type, memory banks and size, serial numbers, BIOS
+ * capabilities, etc.
+ * As the BIOS is supposed to be the most authoritative source of information,
+ * this scan should be executed first.
  *
  * Original credits for dmidecode.c:
  *
@@ -76,7 +84,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.69 2003/08/11 22:54:32 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.70 2003/10/13 09:57:00 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;

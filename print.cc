@@ -1,3 +1,12 @@
+/*
+ * print.cc
+ *
+ * This module prints out the hardware tree depending on options passed
+ * Output can be plain text (good for human beings), HTML (good for web brow-
+ * sers), XML (good for programs) or "hardware path" (ioscan-like).
+ *
+ */
+
 #include "print.h"
 #include "version.h"
 #include "osutils.h"
@@ -6,7 +15,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: print.cc,v 1.51 2003/10/01 15:24:24 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.52 2003/10/13 09:57:00 ezix Exp $";
 
 static void spaces(unsigned int count,
 		   string space = " ")

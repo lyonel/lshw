@@ -1,3 +1,10 @@
+/*
+ * options.cc
+ *
+ * This module handles global options passed on the command-line.
+ *
+ */
+
 #include "options.h"
 
 #include <set>
@@ -5,7 +12,7 @@
 
 using namespace std;
 
-static char *id = "@(#) $Id: options.cc,v 1.1 2003/09/27 22:34:09 ezix Exp $";
+static char *id = "@(#) $Id: options.cc,v 1.2 2003/10/13 09:57:00 ezix Exp $";
 
 static set < string > disabled_tests;
 

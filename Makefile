@@ -11,7 +11,7 @@ CXXFLAGS=-g -Wall
 LDFLAGS=
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o options.o
+OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o options.o lshw.o
 SRCS = $(OBJS:.o=.cc)
 
 all: $(PACKAGENAME) $(PACKAGENAME).1
@@ -90,3 +90,4 @@ network.o: network.h hw.h osutils.h
 isapnp.o: isapnp.h hw.h pnp.h
 pnp.o: pnp.h hw.h
 options.o: options.h
+lshw.o: hw.h print.h main.h version.h options.h

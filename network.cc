@@ -1,3 +1,19 @@
+/*
+ * network.cc
+ *
+ * This scan uses the same IOCTLs as ethtool, ifconfig or mii-diag to report
+ * information about network interfaces like:
+ * - medium type (ethernet, token ring, PPP, etc.)
+ * - hardware address (MAC address)
+ * - link status (link detected, in error, etc.)
+ * - speed (10Mbits, 100Mbits, etc.)
+ * - IP addressing
+ *
+ * As network interfaces can be plugged on PCI, PCMCIA, ISA, USB, etc. this
+ * scan should be executed after all bus-related scans.
+ *
+ */
+
 #include "network.h"
 #include "osutils.h"
 #include <sys/socket.h>
@@ -15,7 +31,8 @@
 #include <sys/types.h>
 using namespace std;
 
-static char *id = "@(#) $Id: network.cc,v 1.10 2003/08/11 22:54:32 ezix Exp $";
+static char *id =
+  "@(#) $Id: network.cc,v 1.11 2003/10/13 09:57:00 ezix Exp $";
 
 #ifndef SIOCETHTOOL
 #define SIOCETHTOOL     0x8946

@@ -1,10 +1,27 @@
+/*
+ * mem.cc
+ *
+ * This scan tries to guess the size of system memory by looking at several
+ * sources:
+ * - the size of /proc/kcore
+ * - the value returned by the sysconf libc function
+ * - the sum of sizes of individual memory banks
+ *
+ * NOTE: Except in last case, this guess can be widely inaccurate, as the
+ * kernel itself limits the memory addressable by userspace processes.
+ * Because of that, this module reports the biggest value found if it can't
+ * access the size of individual memory banks (information filled in by other
+ * scans like DMI (on PCs) or OpenFirmare device-tree (on Macs).
+ *
+ */
+
 #include "mem.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
-static char *id = "@(#) $Id: mem.cc,v 1.20 2003/06/26 21:30:27 ezix Exp $";
+static char *id = "@(#) $Id: mem.cc,v 1.21 2003/10/13 09:57:00 ezix Exp $";
 
 static unsigned long long get_kcore_size()
 {
