@@ -65,7 +65,7 @@ release: .tag
 
 snapshot: .timestamp
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
-	cvs export -r HEAD -d $(PACKAGENAME)-$(SNAPSHOT) `cat CVS/Repository`
+	svn export -r HEAD . $(PACKAGENAME)-$(SNAPSHOT)
 	cat $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/$(SNAPSHOT)/g" > $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec
 	tar cfz $(PACKAGENAME)-$(SNAPSHOT).tar.gz $(PACKAGENAME)-$(SNAPSHOT)
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
@@ -80,9 +80,9 @@ hw.o: hw.h osutils.h
 main.o: hw.h print.h version.h options.h mem.h dmi.h cpuinfo.h cpuid.h
 main.o: device-tree.h pci.h pcmcia.h ide.h scsi.h spd.h network.h isapnp.h
 main.o: fb.h usb.h sysfs.h
-print.o: print.h hw.h version.h osutils.h
+print.o: print.h hw.h options.h version.h osutils.h
 mem.o: mem.h hw.h
-dmi.o: dmi.h hw.h
+dmi.o: dmi.h hw.h osutils.h
 device-tree.o: device-tree.h hw.h osutils.h
 cpuinfo.o: cpuinfo.h hw.h osutils.h
 osutils.o: osutils.h
@@ -99,7 +99,7 @@ network.o: network.h hw.h osutils.h sysfs.h
 isapnp.o: isapnp.h hw.h pnp.h
 pnp.o: pnp.h hw.h
 fb.o: fb.h hw.h
-options.o: options.h
+options.o: options.h osutils.h
 lshw.o: hw.h print.h main.h version.h options.h
 usb.o: usb.h hw.h osutils.h
-sysfs.o: sysfs.h hw.h
+sysfs.o: sysfs.h hw.h osutils.h
