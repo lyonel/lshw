@@ -14,6 +14,8 @@ void activate(GtkTreeView *treeview,
               GtkTreeViewColumn *column,
               gpointer         user_data);
 
+void browse(unsigned list, GtkTreeView *treeview);
+
 
 #ifdef __cplusplus
 };

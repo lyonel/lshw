@@ -192,3 +192,23 @@ void activate(GtkTreeView *treeview,
   display(mainwindow);
 }
 
+void browse(unsigned list, GtkTreeView *treeview)
+{
+  GtkTreeSelection *selection;
+  GtkTreeModel     *model;
+  GtkTreeIter       iter;
+
+  selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+  if (gtk_tree_selection_get_selected(selection, &model, &iter))
+  {
+    hwNode *n;
+
+    gtk_tree_model_get (model, &iter, COL_NODE, &n, -1);
+
+    printf ("selected row is: %s\n", n->getId().c_str());
+  }
+  else
+  {
+    printf ("no row selected!\n");
+  }
+}

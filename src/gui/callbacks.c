@@ -104,27 +104,24 @@ on_treeview3_row_activated             (GtkTreeView     *treeview,
   activate(treeview, path, column, user_data);
 }
 
-
-void
-on_treeview3_cursor_changed            (GtkTreeView     *treeview,
-                                        gpointer         user_data)
-{
-  printf("on_treeview3_cursor_changed\n");
-}
-
-
 void
 on_treeview1_cursor_changed            (GtkTreeView     *treeview,
                                         gpointer         user_data)
 {
-  printf("on_treeview1_cursor_changed\n");
+  browse(1, treeview);
 }
-
 
 void
 on_treeview2_cursor_changed            (GtkTreeView     *treeview,
                                         gpointer         user_data)
 {
-  printf("on_treeview2_cursor_changed\n");
+  browse(2, treeview);
+}
+
+void
+on_treeview3_cursor_changed            (GtkTreeView     *treeview,
+                                        gpointer         user_data)
+{
+  browse(3, treeview);
 }
 
