@@ -1,6 +1,7 @@
 #include "hw.h"
 #include <vector>
 #include <stdio.h>
+#include <ctype.h>
 
 using namespace hw;
 
