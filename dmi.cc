@@ -1016,6 +1016,7 @@ static void dmi_table(int fd,
 	newnode.setCapacity(64 * data[9] * 1024);
 	newnode.setSize(16 * (0x10000 - (data[7] << 8 | data[6])));
 	newnode.setDescription("BIOS");
+	newnode.claim();
 
 	dmi_bios_features(data[13] << 24 | data[12] << 16 | data[11] << 8 |
 			  data[10],
@@ -1651,4 +1652,4 @@ bool scan_dmi(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: dmi.cc,v 1.62 2003/02/02 00:27:11 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.63 2003/03/18 16:56:07 ezix Exp $";
