@@ -17,6 +17,6 @@ int splitlines(const std::string & s,
 		char separator = '\n');
 std::string get_string(const std::string & path, const std::string & def = "");
 
-string find_deventry(mode_t mode, dev_t device);
+std::string find_deventry(mode_t mode, dev_t device);
 
 #endif
