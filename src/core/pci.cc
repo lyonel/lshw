@@ -816,6 +816,8 @@ bool scan_pci(hwNode & n)
 	  bus = n.findChildByHandle(pci_bushandle(d.bus));
 
 	  device->describeCapability("vga", "VGA graphical framebuffer");
+	  device->describeCapability("pcmcia", "PC-Card (PCMCIA)");
+	  device->describeCapability("generic", "Generic interface");
 	  device->describeCapability("ohci", "Open Host Controller Interface (USB1)");
 	  device->describeCapability("uhci",
 				  "Universal Host Controller Interface (USB1)");
