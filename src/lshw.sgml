@@ -51,7 +51,7 @@ machines (<productname>PowerMac G4</productname> is known to work).
 </para>
 <para>
 It currently supports <hardware>DMI</hardware> (x86 and IA-64 only), <productname>OpenFirmware</productname> device tree (<productname>PowerPC</productname> only),
-<hardware>PCI/AGP</hardware>, <hardware>CPUID</hardware> (x86), <hardware>IDE/ATA/ATAPI</hardware>, <hardware>PCMCIA</hardware> (only tested on x86) and <hardware>SCSI</hardware>.
+<hardware>PCI/AGP</hardware>, <hardware>CPUID</hardware> (x86), <hardware>IDE/ATA/ATAPI</hardware>, <hardware>PCMCIA</hardware> (only tested on x86), <hardware>SCSI</hardware> and <hardware>USB</hardware>.
 </para>
 
 <para>
@@ -86,7 +86,7 @@ Alias for <command>-class</command> <replaceable class="parameter">class</replac
 </para></listitem></varlistentry>
 <varlistentry><term>-enable <replaceable class="parameter">test</replaceable></term><term>-disable <replaceable class="parameter">test</replaceable></term>
 <listitem><para>
-Enables or disables a test. <replaceable class="parameter">test</replaceable> can be <command>dmi</command> (for <productname>DMI</productname>/<productname>SMBIOS</productname> extensions), <command>device-tree</command> (for <productname>OpenFirmware</productname> device tree), <command>spd</command> (for memory <productname>Serial Presence Detect</productname>), <command>memory</command> (for memory-size guessing heuristics), <command>cpuinfo</command> (for kernel-reported CPU detection), <command>cpuid</command> (for CPU detection), <command>pci</command> (for <productname>PCI</productname>/<productname>AGP access</productname>), <command>isapnp</command> (for <productname>ISA PnP</productname> extensions), <command>pcmcia</command> (for <productname>PCMCIA</productname>/<productname>PCCARD</productname>), <command>ide</command> (for <productname>IDE</productname>/<productname>ATAPI</productname>), <command>scsi</command> (for <productname>SCSI</productname>) or <command>network</command> (for network interfaces detection).
+Enables or disables a test. <replaceable class="parameter">test</replaceable> can be <command>dmi</command> (for <productname>DMI</productname>/<productname>SMBIOS</productname> extensions), <command>device-tree</command> (for <productname>OpenFirmware</productname> device tree), <command>spd</command> (for memory <productname>Serial Presence Detect</productname>), <command>memory</command> (for memory-size guessing heuristics), <command>cpuinfo</command> (for kernel-reported CPU detection), <command>cpuid</command> (for CPU detection), <command>pci</command> (for <productname>PCI</productname>/<productname>AGP access</productname>), <command>isapnp</command> (for <productname>ISA PnP</productname> extensions), <command>pcmcia</command> (for <productname>PCMCIA</productname>/<productname>PCCARD</productname>), <command>ide</command> (for <productname>IDE</productname>/<productname>ATAPI</productname>), <command>usb</command> (for <productname>USB</productname> devices),<command>scsi</command> (for <productname>SCSI</productname>) or <command>network</command> (for network interfaces detection).
 </para></listitem></varlistentry>
 </variablelist>
 </para>
