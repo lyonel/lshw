@@ -372,6 +372,18 @@ bool scan_ide(hwNode & n)
 	    parent->addChild(ide);
 	  }
 	}
+	else
+	{
+	  for (int k = 0; k < ide.countChildren(); k++)
+	  {
+	    hwNode *candidate =
+	      n.findChildByLogicalName(ide.getChild(k)->getLogicalName());
+
+	    if (candidate)
+	      candidate->merge(*ide.getChild(k));
+	  }
+	  //n.addChild(ide);
+	}
       }
 
     }
@@ -383,4 +395,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.11 2003/02/07 12:09:40 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.12 2003/02/14 00:21:32 ezix Exp $";

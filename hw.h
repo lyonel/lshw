@@ -108,6 +108,8 @@ class hwNode
 
 	string getLogicalName() const;
 	void setLogicalName(const string & name);
+
+	void merge(const hwNode & node);
   private:
 
 	void setId(const string & id);

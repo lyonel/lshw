@@ -1,4 +1,5 @@
 #include "hw.h"
+#include "osutils.h"
 #include <vector>
 #include <map>
 #include <stdio.h>
@@ -639,7 +640,54 @@ string hwNode::getLogicalName() const
 void hwNode::setLogicalName(const string & name)
 {
   if (This)
-    This->logicalname = strip(name);
+  {
+    if (exists("/dev/" + strip(name)))
+      This->logicalname = "/dev/" + strip(name);
+    else
+      This->logicalname = strip(name);
+  }
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.35 2003/02/13 23:20:25 ezix Exp $";
+void hwNode::merge(const hwNode & node)
+{
+  if (!This)
+    return;
+  if (!node.This)
+    return;
+
+  if (This->deviceclass == hw::generic)
+    This->deviceclass = node.getClass();
+  if (This->vendor == "")
+    This->vendor = node.getVendor();
+  if (This->product == "")
+    This->product = node.getProduct();
+  if (This->version == "")
+    This->version = node.getVersion();
+  if (This->start == 0)
+    This->start = node.getStart();
+  if (This->size == 0)
+    This->size = node.getSize();
+  if (This->capacity == 0)
+    This->capacity = node.getCapacity();
+  if (This->clock == 0)
+    This->clock = node.getClock();
+  if (node.enabled())
+    enable();
+  if (node.claimed())
+    claim();
+  if (This->handle == "")
+    This->handle = node.getHandle();
+  if (This->description == "")
+    This->description = node.getDescription();
+  if (This->logicalname == "")
+    This->logicalname = node.getLogicalName();
+
+  for (int i = 0; i < node.This->features.size(); i++)
+    addCapability(node.This->features[i]);
+
+  for (map < string, string >::iterator i = node.This->config.begin();
+       i != node.This->config.end(); i++)
+    setConfig(i->first, i->second);
+}
+
+static char *id = "@(#) $Id: hw.cc,v 1.36 2003/02/14 00:21:32 ezix Exp $";

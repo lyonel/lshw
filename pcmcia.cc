@@ -1074,14 +1074,22 @@ bool scan_pcmcia(hwNode & n)
 
 	if ((cnt == 7) || (cnt == 5))	// we found a correct entry
 	{
+	  string devclassstr = string(devclass);
 	  hwNode *parent = n.findChildByHandle(pcmcia_handle(socket));
 
 	  if (socket >= sockets)
 	    sockets = socket + 1;
 
-	  //printf("%s in socket %d = %s\n", devclass, socket, logicalname);
-
 	  hwNode device = hwNode(devclass, hw::generic);
+
+	  if (devclassstr == "serial")
+	    device = hwNode(devclass, hw::communication);
+	  else if (devclassstr == "ide")
+	    device = hwNode(devclass, hw::storage);
+	  else if (devclassstr == "memory")
+	    device = hwNode(devclass, hw::memory);
+	  else if (devclassstr == "network")
+	    device = hwNode(devclass, hw::network);
 
 	  device.setLogicalName(logicalname);
 	  device.setConfig("driver", driver);
@@ -1121,4 +1129,4 @@ bool scan_pcmcia(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.8 2003/02/13 23:20:25 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.9 2003/02/14 00:21:32 ezix Exp $";
