@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.32 2003/05/27 21:21:19 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.33 2003/06/13 09:29:55 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -569,6 +569,39 @@ static void find_logicalname(hwNode & n)
   }
 }
 
+static string scsi_businfo(int host,
+			   int channel = -1,
+			   int target = -1,
+			   int lun = -1)
+{
+  char businfo[20];
+  string result;
+
+  snprintf(businfo, sizeof(businfo), "scsi@%d", host);
+
+  result = string(businfo);
+
+  if (channel >= 0)
+  {
+    snprintf(businfo, sizeof(businfo), ":%d", channel);
+    result += string(businfo);
+
+    if (target >= 0)
+    {
+      snprintf(businfo, sizeof(businfo), ":%d", target);
+      result += string(businfo);
+
+      if (lun >= 0)
+      {
+	snprintf(businfo, sizeof(businfo), ".%d", lun);
+	result += string(businfo);
+      }
+    }
+  }
+
+  return result;
+}
+
 static string host_logicalname(int i)
 {
   char host[20];
@@ -586,6 +619,7 @@ static bool scan_sg(int sg,
   My_sg_scsi_id m_id;
   char slot_name[16];
   string host = "";
+  string businfo = "";
   hwNode *parent = NULL;
   hwNode *channel = NULL;
   int emulated = 0;
@@ -604,6 +638,7 @@ static bool scan_sg(int sg,
   }
 
   host = host_logicalname(m_id.host_no);
+  businfo = scsi_businfo(m_id.host_no);
 
   memset(slot_name, 0, sizeof(slot_name));
   if (ioctl(fd, SCSI_IOCTL_GET_PCI, slot_name) >= 0)
@@ -634,6 +669,7 @@ static bool scan_sg(int sg,
   }
 
   parent->setLogicalName(host);
+  parent->setBusInfo(businfo);
   parent->claim();
 
   emulated = 0;
@@ -658,6 +694,7 @@ static bool scan_sg(int sg,
   snprintf(buffer, sizeof(buffer), "Channel %d", m_id.channel);
   channel->setDescription(buffer);
   channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
+  channel->setBusInfo(scsi_businfo(m_id.host_no, m_id.channel));
   channel->claim();
 
   hwNode device = hwNode("generic");
@@ -694,6 +731,8 @@ static bool scan_sg(int sg,
   device.setDescription(scsi_type(m_id.scsi_type));
   device.setHandle(scsi_handle(m_id.host_no,
 			       m_id.channel, m_id.scsi_id, m_id.lun));
+  device.setBusInfo(scsi_businfo(m_id.host_no,
+				 m_id.channel, m_id.scsi_id, m_id.lun));
   find_logicalname(device);
   do_inquiry(fd, device);
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
@@ -762,7 +801,10 @@ static bool scan_hosts(hwNode & node)
 	  {
 	    controller = node.addChild(hwNode::hwNode("scsi", hw::storage));
 	    if (controller)
+	    {
 	      controller->setLogicalName(host_logicalname(number));
+	      controller->setBusInfo(scsi_businfo(number));
+	    }
 	  }
 
 	  if (controller)
