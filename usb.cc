@@ -122,7 +122,7 @@ struct usbdevfs_ctrltransfer
 
 #define USBDEVFS_CONTROL	_IOWR('U', 0, struct usbdevfs_ctrltransfer)
 
-static char *id = "@(#) $Id: usb.cc,v 1.6 2003/11/21 08:25:07 ezix Exp $";
+static char *id = "@(#) $Id: usb.cc,v 1.7 2004/01/17 13:55:39 ezix Exp $";
 
 static int usb_control_msg(int fd,
 			   u_int8_t requesttype,
@@ -159,7 +159,7 @@ static string get_string(int fd,
   unsigned char b[256];
   wchar_t w[128];
   char buf[256];
-  unsigned int i;
+  int i;
   int ret;
 
   /*

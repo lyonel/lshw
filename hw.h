@@ -159,6 +159,8 @@ class hwNode
 	bool usesResource(const hw::resource &) const;
 	vector<string> getResources(const string & separator = "") const;
 
+        void setSpeed(double s, const string & units = "");
+
 	void merge(const hwNode & node);
 
         void fixInconsistencies();
