@@ -2,6 +2,7 @@
 #include "osutils.h"
 #include <sys/socket.h>
 #include <sys/ioctl.h>
+#include <net/if_arp.h>
 #include <linux/sockios.h>
 #include <net/if.h>
 #include <fcntl.h>
@@ -107,6 +108,35 @@ static string getmac(const unsigned char *mac)
   return result;
 }
 
+static const char *hwname(int t)
+{
+  switch (t)
+  {
+  case ARPHRD_ETHER:
+    return "ethernet";
+  case ARPHRD_SLIP:
+    return "slip";
+  case ARPHRD_LOOPBACK:
+    return "loopback";
+  case ARPHRD_FDDI:
+    return "fddi";
+  case ARPHRD_IRDA:
+    return "irda";
+  case ARPHRD_PPP:
+    return "ppp";
+  case ARPHRD_X25:
+    return "x25";
+  case ARPHRD_TUNNEL:
+    return "iptunnel";
+  case ARPHRD_DLCI:
+    return "framerelay.dlci";
+  case ARPHRD_FRAD:
+    return "framerelay.ad";
+  default:
+    return "";
+  }
+}
+
 bool scan_network(hwNode & n)
 {
   vector < string > interfaces;
@@ -136,6 +166,7 @@ bool scan_network(hwNode & n)
       if (ioctl(fd, SIOCGIFHWADDR, &ifr) == 0)
       {
 	string hwaddr = getmac((unsigned char *) ifr.ifr_hwaddr.sa_data);
+	interface.addCapability(hwname(ifr.ifr_hwaddr.sa_family));
 	interface.setSerial(hwaddr);
       }
 
@@ -164,4 +195,4 @@ bool scan_network(hwNode & n)
     return false;
 }
 
-static char *id = "@(#) $Id: network.cc,v 1.2 2003/06/12 14:23:34 ezix Exp $";
+static char *id = "@(#) $Id: network.cc,v 1.3 2003/06/13 07:15:15 ezix Exp $";

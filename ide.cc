@@ -14,7 +14,7 @@
 #include <vector>
 #include <linux/hdreg.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.19 2003/06/12 14:23:34 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.20 2003/06/13 07:15:15 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 

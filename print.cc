@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
-static char *id = "@(#) $Id: print.cc,v 1.45 2003/06/12 14:23:34 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.46 2003/06/13 07:15:15 ezix Exp $";
 
 static void tab(int level,
 		bool connect = true)
