@@ -55,6 +55,9 @@ make gui
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT PREFIX=%_prefix SBINDIR=%_sbindir MANDIR=%_mandir install
+%if %{?_with_gui:1}%{!?_with_gui:0}
+make DESTDIR=$RPM_BUILD_ROOT PREFIX=%_prefix SBINDIR=%_sbindir MANDIR=%_mandir install-gui
+%endif
 
 %files
 %defattr(-,root,root)
