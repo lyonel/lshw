@@ -317,13 +317,11 @@ bool scan_ide(hwNode & n)
 	  string pciid = get_pciid(identify[2], identify[4]);
 	  hwNode *parent = n.findChildByHandle(pciid);
 
-	  ide.setDescription("Channel " + identify[10]);
+	  ide.setDescription(hw::strip("Channel " + hw::strip(identify[10])));
 
 	  if (parent)
 	  {
 	    parent->claim();
-	    ide.setProduct(parent->getProduct());
-	    ide.setVendor(parent->getVendor());
 	    ide.setClock(parent->getClock());
 	    parent->addChild(ide);
 	  }
@@ -339,4 +337,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.6 2003/02/06 10:40:37 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.7 2003/02/06 17:26:16 ezix Exp $";
