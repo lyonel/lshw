@@ -32,7 +32,14 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.13 2004/01/13 13:01:09 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.14 2004/01/13 13:03:56 ezix Exp $";
+
+#ifndef ARPHRD_IEEE1394
+#define ARPHRD_IEEE1394	24
+#endif
+#ifndef ARPHRD_SIT
+#define ARPHRD_SIT	776
+#endif
 
 #ifndef SIOCETHTOOL
 #define SIOCETHTOOL     0x8946
