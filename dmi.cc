@@ -1251,7 +1251,8 @@ static void dmi_table(int fd,
 	newnode.setSize(dmi_cache_size(data[7] | data[8] << 8));
 	newnode.setCapacity(dmi_cache_size(data[9] | data[10] << 8));
 	if (newnode.getCapacity() < newnode.getSize())
-	  newnode.setCapacity(newnode.getCapacity() * 64);
+	  newnode.setCapacity(0);
+	//newnode.setCapacity(newnode.getCapacity() * 64);
 
 	if ((dm->length > 0x0F) && (data[0x0F] != 0))
 	{
@@ -1697,4 +1698,4 @@ bool scan_dmi(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: dmi.cc,v 1.57 2003/01/25 11:14:04 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.58 2003/01/29 22:00:08 ezix Exp $";

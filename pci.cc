@@ -603,6 +603,11 @@ bool scan_pci(hwNode & n)
 	  host.setDescription(device->getDescription() + " (" +
 			      moredescription + ")");
 	}
+
+	if (status & PCI_STATUS_66MHZ)
+	  host.setClock(66000000UL);	// 66MHz
+	else
+	  host.setClock(33000000UL);	// 33MHz
       }
       else
       {
@@ -682,7 +687,9 @@ bool scan_pci(hwNode & n)
 	  if (status & PCI_STATUS_CAP_LIST)
 	    device->addCapability("cap list");
 	  if (status & PCI_STATUS_66MHZ)
-	    device->addCapability("66MHz");
+	    device->setClock(66000000UL);	// 66MHz
+	  else
+	    device->setClock(33000000UL);	// 33MHz
 
 	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
 
@@ -711,4 +718,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.17 2003/01/29 21:50:40 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.18 2003/01/29 22:00:08 ezix Exp $";
