@@ -152,6 +152,9 @@ void print(const hwNode & node,
     cout << endl;
   }
 
+  tab(level + 1, false);
+  cout << "capabilities: " << node.getCapabilities() << endl;
+
   for (int i = 0; i < node.countChildren(); i++)
   {
     print(*node.getChild(i), level + 1);

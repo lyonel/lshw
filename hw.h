@@ -86,6 +86,10 @@ class hwNode
 	  return countChildren()>0;
 	}
 
+	bool isCapable(const string & feature) const;
+	void addCapability(const string & feature);
+	string getCapabilities() const;
+
 	void attractHandle(const string & handle);
 
   private:

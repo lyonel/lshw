@@ -15,6 +15,7 @@ struct hwNode_i
   unsigned long long clock;
     vector < hwNode > children;
     vector < string > attracted;
+    vector < string > features;
 };
 
 string hw::strip(const string & s)
@@ -417,4 +418,41 @@ bool hwNode::attractsNode(const hwNode & node) const
     return false;
 
   return attractsHandle(node.This->handle);
+}
+
+bool hwNode::isCapable(const string & feature) const
+{
+  string featureid = cleanupId(feature);
+
+  if (!This)
+    return false;
+
+  for (int i = 0; i < This->features.size(); i++)
+    if (This->features[i] == featureid)
+      return true;
+
+  false;
+}
+
+void hwNode::addCapability(const string & feature)
+{
+  string featureid = cleanupId(feature);
+
+  if (!This)
+    return;
+
+  This->features.push_back(featureid);
+}
+
+string hwNode::getCapabilities() const
+{
+  string result = "";
+
+  if (!This)
+    return "";
+
+  for (int i = 0; i < This->features.size(); i++)
+    result += This->features[i] + " ";
+
+  return strip(result);
 }

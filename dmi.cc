@@ -62,6 +62,63 @@ static string dmi_decode_ram(u16 data)
   return hw::strip(result);
 }
 
+static void dmi_bios_features(u32 data1,
+			      u32 data2,
+			      hwNode & bios)
+{
+  if (data1 & (1 << 3))		// BIOS characteristics not supported
+    return;
+
+  if (data1 & (1 << 4))		// ISA
+    bios.addCapability("ISA");
+  if (data1 & (1 << 5))		// MCA
+    bios.addCapability("MCA");
+  if (data1 & (1 << 6))		// EISA
+    bios.addCapability("EISA");
+  if (data1 & (1 << 7))		// PCI
+    bios.addCapability("PCI");
+  if (data1 & (1 << 8))		// PCMCIA
+    bios.addCapability("PCMCIA");
+  if (data1 & (1 << 9))		// PNP
+    bios.addCapability("PNP");
+  if (data1 & (1 << 10))	// APM
+    bios.addCapability("APM");
+  if (data1 & (1 << 11))	// flashable BIOS
+    bios.addCapability("upgrade");
+  if (data1 & (1 << 12))	// BIOS shadowing
+    bios.addCapability("shadowing");
+  if (data1 & (1 << 13))	// VL-VESA
+    bios.addCapability("VESA");
+  if (data1 & (1 << 14))	// ESCD
+    bios.addCapability("ESCD");
+  if (data1 & (1 << 15))	// boot from CD
+    bios.addCapability("cdboot");
+  if (data1 & (1 << 16))	// selectable boot
+    bios.addCapability("bootselect");
+  if (data1 & (1 << 17))	// BIOS ROM is socketed
+    bios.addCapability("socketedrom");
+  if (data1 & (1 << 18))	// PCMCIA boot
+    bios.addCapability("pcmciaboot");
+  if (data1 & (1 << 19))	// Enhanced Disk Drive
+    bios.addCapability("EDD");
+  if (data1 & (1 << 20))	// NEC 9800 floppy
+    bios.addCapability("floppynec");
+  if (data1 & (1 << 21))	// Toshiba floppy
+    bios.addCapability("floppytoshiba");
+  if (data1 & (1 << 22))	// 5.25" 360KB floppy
+    bios.addCapability("floppy360");
+  if (data1 & (1 << 23))	// 5.25" 1.2MB floppy
+    bios.addCapability("floppy1200");
+  if (data1 & (1 << 24))	// 3.5" 720KB floppy
+    bios.addCapability("floppy720");
+  if (data1 & (1 << 25))	// 3.5" 2.88MB floppy
+  {
+    bios.addCapability("floppy1440");
+    bios.addCapability("floppy2880");
+  }
+
+}
+
 static unsigned long dmi_cache_size(u16 n)
 {
   if (n & (1 << 15))
@@ -797,6 +854,11 @@ static void dmi_table(int fd,
 	newnode.setCapacity(64 * data[9] * 1024);
 	newnode.setSize(16 * (0x10000 - (data[7] << 8 | data[6])));
 	newnode.setDescription("BIOS");
+
+	dmi_bios_features(data[13] << 24 | data[12] << 16 | data[11] << 8 |
+			  data[10],
+			  data[17] << 24 | data[16] << 16 | data[15] << 8 |
+			  data[14], newnode);
 
 	if (release != "")
 	  newnode.setVersion(newnode.getVersion() + " (" + release + ")");
