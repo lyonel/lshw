@@ -276,7 +276,7 @@ static void cpuinfo_x86(hwNode & node,
     if ((id == "wp") && (value == "yes"))
       cpu->addCapability("wp");
     if ((id == "fpu_exception") && (value == "yes"))
-      cpu->addCapability("fpu_exception");
+      cpu->addCapability("fpu_exception", "FPU exceptions reporting");
     if (id == "flags")
       while (value.length() > 0)
       {
