@@ -138,6 +138,7 @@ static bool do_inquiry(int sg_fd,
     { INQ_CMD_CODE, 0, 0, 0, INQ_REPLY_LEN, 0 };
   unsigned char inqBuff[INQ_REPLY_LEN];
   unsigned char sense_buffer[32];
+  char version[5];
   sg_io_hdr_t io_hdr;
   int k;
 
@@ -150,7 +151,7 @@ static bool do_inquiry(int sg_fd,
   /*
    * io_hdr.iovec_count = 0; 
  *//*
- * * memset takes care of this 
+ * * * memset takes care of this 
  */
   io_hdr.mx_sb_len = sizeof(sense_buffer);
   io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
@@ -162,7 +163,7 @@ static bool do_inquiry(int sg_fd,
   /*
    * io_hdr.flags = 0; 
  *//*
- * * take defaults: indirect IO, etc 
+ * * * take defaults: indirect IO, etc 
  */
   /*
    * io_hdr.pack_id = 0; 
@@ -180,19 +181,25 @@ static bool do_inquiry(int sg_fd,
   char *p = (char *) inqBuff;
   int f = (int) *(p + 7);
   unsigned g = (unsigned char) *(p + 1);
+  unsigned ansiversion = ((unsigned char) *(p + 2)) & 7;
 
   node.setVendor(string(p + 8, 8));
   node.setProduct(string(p + 16, 16));
   node.setVersion(string(p + 32, 4));
 
+  node.setConfig("width", "8");
   if (!(f & 0x40))
-    node.setConfig("wide", "32");
+    node.setConfig("width", "32");
   if (!(f & 0x20))
-    node.setConfig("wide", "16");
+    node.setConfig("width", "16");
   if (!(f & 0x10))
     node.addCapability("sync");
   if (g & 0x80)
     node.addCapability("removable");
+
+  snprintf(version, sizeof(version), "%d", ansiversion);
+  if (ansiversion)
+    node.setConfig("ansiversion", version);
 
   return true;
 }
@@ -376,4 +383,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.9 2003/02/17 21:21:08 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.10 2003/02/17 21:41:43 ezix Exp $";
