@@ -76,10 +76,8 @@ struct isapnp_device_id
   unsigned long driver_data;	/* data private to the driver */
 };
 
-static int isapnp_disable;	/* Disable ISA PnP */
 static int isapnp_rdp;		/* Read Data Port */
 static int isapnp_reset = 0;	/* reset all PnP cards (deactivate) */
-static int isapnp_verbose = 1;	/* verbose mode */
 
 #define _PIDXR		0x279
 #define _PNPWRP		0xa79
@@ -109,7 +107,8 @@ static int isapnp_detected;
 
 /* some prototypes */
 
-static void udelay(unsigned long l)
+static void udelay(
+  unsigned long l)
 {
   struct timespec delay;
 
@@ -119,7 +118,8 @@ static void udelay(unsigned long l)
   nanosleep(&delay, NULL);
 }
 
-static inline void write_data(unsigned char x)
+static inline void write_data(
+  unsigned char x)
 {
   int fd = open("/dev/port", O_WRONLY);
 
@@ -131,7 +131,8 @@ static inline void write_data(unsigned char x)
   }
 }
 
-static inline void write_address(unsigned char x)
+static inline void write_address(
+  unsigned char x)
 {
   int fd = open("/dev/port", O_WRONLY);
 
@@ -144,7 +145,8 @@ static inline void write_address(unsigned char x)
   udelay(20);
 }
 
-static inline unsigned char read_data(void)
+static inline unsigned char read_data(
+  void)
 {
   int fd = open("/dev/port", O_RDONLY);
   unsigned char val = 0;
@@ -158,13 +160,15 @@ static inline unsigned char read_data(void)
   return val;
 }
 
-static unsigned char isapnp_read_byte(unsigned char idx)
+static unsigned char isapnp_read_byte(
+  unsigned char idx)
 {
   write_address(idx);
   return read_data();
 }
 
-static unsigned short isapnp_read_word(unsigned char idx)
+static unsigned short isapnp_read_word(
+  unsigned char idx)
 {
   unsigned short val;
 
@@ -173,7 +177,8 @@ static unsigned short isapnp_read_word(unsigned char idx)
   return val;
 }
 
-static unsigned int isapnp_read_dword(unsigned char idx)
+static unsigned int isapnp_read_dword(
+  unsigned char idx)
 {
   unsigned int val;
 
@@ -184,22 +189,25 @@ static unsigned int isapnp_read_dword(unsigned char idx)
   return val;
 }
 
-static void isapnp_write_byte(unsigned char idx,
-			      unsigned char val)
+static void isapnp_write_byte(
+  unsigned char idx,
+  unsigned char val)
 {
   write_address(idx);
   write_data(val);
 }
 
-static void isapnp_write_word(unsigned char idx,
-			      unsigned short val)
+static void isapnp_write_word(
+  unsigned char idx,
+  unsigned short val)
 {
   isapnp_write_byte(idx, val >> 8);
   isapnp_write_byte(idx + 1, val);
 }
 
-static void isapnp_write_dword(unsigned char idx,
-			       unsigned int val)
+static void isapnp_write_dword(
+  unsigned char idx,
+  unsigned int val)
 {
   isapnp_write_byte(idx, val >> 24);
   isapnp_write_byte(idx + 1, val >> 16);
@@ -207,18 +215,8 @@ static void isapnp_write_dword(unsigned char idx,
   isapnp_write_byte(idx + 3, val);
 }
 
-static void *isapnp_alloc(size_t size)
-{
-  void *result = NULL;
-
-  result = malloc(size);
-  if (!result)
-    return NULL;
-  memset(result, 0, size);
-  return result;
-}
-
-static void isapnp_key(void)
+static void isapnp_key(
+  void)
 {
   unsigned char code = 0x6a, msb;
   int i;
@@ -238,37 +236,21 @@ static void isapnp_key(void)
 }
 
 /* place all pnp cards in wait-for-key state */
-static void isapnp_wait(void)
+static void isapnp_wait(
+  void)
 {
   isapnp_write_byte(0x02, 0x02);
 }
 
-static void isapnp_wake(unsigned char csn)
+static void isapnp_wake(
+  unsigned char csn)
 {
   isapnp_write_byte(0x03, csn);
 }
 
-static void isapnp_device(unsigned char logdev)
-{
-  isapnp_write_byte(0x07, logdev);
-}
-
-static void isapnp_activate(unsigned char logdev)
-{
-  isapnp_device(logdev);
-  isapnp_write_byte(ISAPNP_CFG_ACTIVATE, 1);
-  udelay(250);
-}
-
-static void isapnp_deactivate(unsigned char logdev)
-{
-  isapnp_device(logdev);
-  isapnp_write_byte(ISAPNP_CFG_ACTIVATE, 0);
-  udelay(500);
-}
-
-static void isapnp_peek(unsigned char *data,
-			int bytes)
+static void isapnp_peek(
+  unsigned char *data,
+  int bytes)
 {
   int i, j;
   unsigned char d = 0;
@@ -297,7 +279,8 @@ static void isapnp_peek(unsigned char *data,
 
 #define RDP_STEP	32	/* minimum is 4 */
 
-static int isapnp_next_rdp(void)
+static int isapnp_next_rdp(
+  void)
 {
   int rdp = isapnp_rdp;
   while (rdp <= 0x3ff)
@@ -317,7 +300,8 @@ static int isapnp_next_rdp(void)
 }
 
 /* Set read port address */
-static inline void isapnp_set_rdp(void)
+static inline void isapnp_set_rdp(
+  void)
 {
   isapnp_write_byte(0x00, isapnp_rdp >> 2);
   udelay(100);
@@ -328,7 +312,8 @@ static inline void isapnp_set_rdp(void)
  *	"dangerous to read" ports.
  */
 
-static int isapnp_isolate_rdp_select(void)
+static int isapnp_isolate_rdp_select(
+  void)
 {
   isapnp_wait();
   isapnp_key();
@@ -360,7 +345,8 @@ static int isapnp_isolate_rdp_select(void)
  *  Isolate (assign uniqued CSN) to all ISA PnP devices.
  */
 
-static int isapnp_isolate(void)
+static int isapnp_isolate(
+  void)
 {
   unsigned char checksum = 0x6a;
   unsigned char chksum = 0x00;
@@ -435,8 +421,9 @@ static int isapnp_isolate(void)
  *  Read one tag from stream.
  */
 
-static int isapnp_read_tag(unsigned char *type,
-			   unsigned short *size)
+static int isapnp_read_tag(
+  unsigned char *type,
+  unsigned short *size)
 {
   unsigned char tag, tmp[2];
 
@@ -469,7 +456,8 @@ static int isapnp_read_tag(unsigned char *type,
  *  Skip specified number of bytes from stream.
  */
 
-static void isapnp_skip_bytes(int count)
+static void isapnp_skip_bytes(
+  int count)
 {
   isapnp_peek(NULL, count);
 }
@@ -478,8 +466,9 @@ static void isapnp_skip_bytes(int count)
  *  Parse EISA id.
  */
 
-static const char *isapnp_parse_id(unsigned short vendor,
-				   unsigned short device)
+static const char *isapnp_parse_id(
+  unsigned short vendor,
+  unsigned short device)
 {
   static char id[8];
   snprintf(id, sizeof(id), "%c%c%c%x%x%x%x",
@@ -496,9 +485,10 @@ static const char *isapnp_parse_id(unsigned short vendor,
  *  Parse logical device tag.
  */
 
-static hwNode *isapnp_parse_device(hwNode & card,
-				   int size,
-				   int number)
+static hwNode *isapnp_parse_device(
+  hwNode & card,
+  int size,
+  int number)
 {
   unsigned char tmp[6];
 
@@ -513,7 +503,9 @@ static hwNode *isapnp_parse_device(hwNode & card,
  *  Add IRQ resource to resources list.
  */
 
-static void isapnp_parse_irq_resource(int size)
+static void isapnp_parse_irq_resource(
+  hwNode & n,
+  int size)
 {
   unsigned char tmp[3];
 
@@ -535,7 +527,8 @@ static void isapnp_parse_irq_resource(int size)
  *  Add DMA resource to resources list.
  */
 
-static void isapnp_parse_dma_resource(int size)
+static void isapnp_parse_dma_resource(
+  int size)
 {
   unsigned char tmp[2];
 
@@ -554,9 +547,12 @@ static void isapnp_parse_dma_resource(int size)
  *  Add port resource to resources list.
  */
 
-static void isapnp_parse_port_resource(int size)
+static void isapnp_parse_port_resource(
+  hwNode & n,
+  int size)
 {
   unsigned char tmp[7];
+  char portrange[40];
 
   isapnp_peek(tmp, size);
   /*
@@ -576,7 +572,8 @@ static void isapnp_parse_port_resource(int size)
  *  Add fixed port resource to resources list.
  */
 
-static void isapnp_parse_fixed_port_resource(int size)
+static void isapnp_parse_fixed_port_resource(
+  int size)
 {
   unsigned char tmp[3];
 
@@ -597,7 +594,8 @@ static void isapnp_parse_fixed_port_resource(int size)
  *  Add memory resource to resources list.
  */
 
-static void isapnp_parse_mem_resource(int size)
+static void isapnp_parse_mem_resource(
+  int size)
 {
   unsigned char tmp[9];
 
@@ -619,7 +617,8 @@ static void isapnp_parse_mem_resource(int size)
  *  Add 32-bit memory resource to resources list.
  */
 
-static void isapnp_parse_mem32_resource(int size)
+static void isapnp_parse_mem32_resource(
+  int size)
 {
   unsigned char tmp[17];
 
@@ -640,7 +639,8 @@ static void isapnp_parse_mem32_resource(int size)
  *  Add 32-bit fixed memory resource to resources list.
  */
 
-static void isapnp_parse_fixed_mem32_resource(int size)
+static void isapnp_parse_fixed_mem32_resource(
+  int size)
 {
   unsigned char tmp[9];
 
@@ -660,7 +660,8 @@ static void isapnp_parse_fixed_mem32_resource(int size)
  *  Parse card name for ISA PnP device.
  */
 
-static string isapnp_parse_name(unsigned short &size)
+static string isapnp_parse_name(
+  unsigned short &size)
 {
   char buffer[1024];
   unsigned short size1 = size >= sizeof(buffer) ? (sizeof(buffer) - 1) : size;
@@ -675,8 +676,9 @@ static string isapnp_parse_name(unsigned short &size)
  *  Parse resource map for logical device.
  */
 
-static int isapnp_create_device(hwNode & card,
-				unsigned short size)
+static int isapnp_create_device(
+  hwNode & card,
+  unsigned short size)
 {
   int number = 0, skip = 0, priority = 0, compat = 0;
   unsigned char type, tmp[17];
@@ -740,7 +742,7 @@ static int isapnp_create_device(hwNode & card,
     case _STAG_IRQ:
       if (size < 2 || size > 3)
 	goto __skip;
-      isapnp_parse_irq_resource(size);
+      isapnp_parse_irq_resource(card, size);
       size = 0;
       break;
     case _STAG_DMA:
@@ -773,7 +775,7 @@ static int isapnp_create_device(hwNode & card,
     case _STAG_IOPORT:
       if (size != 7)
 	goto __skip;
-      isapnp_parse_port_resource(size);
+      isapnp_parse_port_resource(*dev, size);
       size = 0;
       break;
     case _STAG_FIXEDIO:
@@ -829,8 +831,9 @@ static int isapnp_create_device(hwNode & card,
   return 0;
 }
 
-static string bcd_version(unsigned char v,
-			  const char *separator = "")
+static string bcd_version(
+  unsigned char v,
+  const char *separator = "")
 {
   char version[10];
 
@@ -844,7 +847,8 @@ static string bcd_version(unsigned char v,
  *  Parse resource map for ISA PnP card.
  */
 
-static bool isapnp_parse_resource_map(hwNode & card)
+static bool isapnp_parse_resource_map(
+  hwNode & card)
 {
   unsigned char type, tmp[17];
   unsigned short size;
@@ -905,7 +909,8 @@ static bool isapnp_parse_resource_map(hwNode & card)
  *  Compute ISA PnP checksum for first eight bytes.
  */
 
-static unsigned char isapnp_checksum(unsigned char *data)
+static unsigned char isapnp_checksum(
+  unsigned char *data)
 {
   int i, j;
   unsigned char checksum = 0x6a, bit, b;
@@ -930,8 +935,9 @@ static unsigned char isapnp_checksum(unsigned char *data)
  *  Parse EISA id for ISA PnP card.
  */
 
-static const char *isapnp_parse_card_id(unsigned short vendor,
-					unsigned short device)
+static const char *isapnp_parse_card_id(
+  unsigned short vendor,
+  unsigned short device)
 {
   static char id[8];
 
@@ -948,7 +954,8 @@ static const char *isapnp_parse_card_id(unsigned short vendor,
  *  Build device list for all present ISA PnP devices.
  */
 
-static int isapnp_build_device_list(hwNode & n)
+static int isapnp_build_device_list(
+  hwNode & n)
 {
   int csn;
   unsigned char header[9], checksum;
@@ -962,7 +969,9 @@ static int isapnp_build_device_list(hwNode & n)
     isapnp_wake(csn);
     isapnp_peek(header, 9);
 
-    hwNode card("pnp");
+    hwNode card(
+  isapnp_parse_card_id((header[1] << 8) | header[0],
+		         (header[3] << 8) | header[2]));
 
     checksum = isapnp_checksum(header);
     /*
@@ -974,15 +983,14 @@ static int isapnp_build_device_list(hwNode & n)
     else if (checksum == 0x00 || checksum != header[8])	/* not valid CSN */
       continue;
 
-    card.setConfig("pnpid",
-		   isapnp_parse_card_id((header[1] << 8) | header[0],
-					(header[3] << 8) | header[2]));
     card.setPhysId(csn);
     card.
       setVendor(vendorname
 		(isapnp_parse_card_id
 		 ((header[1] << 8) | header[0],
 		  (header[3] << 8) | header[2])));
+    card.addCapability("pnp");
+    card.addCapability("isapnp");
     card.setBusInfo("isapnp@" + card.getPhysId());
     serial =
       (header[7] << 24) | (header[6] << 16) | (header[5] << 8) | header[4];
@@ -995,9 +1003,11 @@ static int isapnp_build_device_list(hwNode & n)
     }
     isapnp_checksum_value = 0x00;
     isapnp_parse_resource_map(card);
-    if (isapnp_checksum_value != 0x00)
-      fprintf(stderr, "isapnp: checksum for device %i is not valid (0x%x)\n",
-	      csn, isapnp_checksum_value);
+    /*
+     * if (isapnp_checksum_value != 0x00)
+     * fprintf(stderr, "isapnp: checksum for device %i is not valid (0x%x)\n",
+     * csn, isapnp_checksum_value);
+     */
 
     n.addChild(card);
   }
@@ -1005,7 +1015,8 @@ static int isapnp_build_device_list(hwNode & n)
   return 0;
 }
 
-bool scan_isapnp(hwNode & n)
+bool scan_isapnp(
+  hwNode & n)
 {
   int cards;
 
@@ -1014,7 +1025,7 @@ bool scan_isapnp(hwNode & n)
    *      so let the user know where.
    */
 
-  printf("isapnp: Scanning for PnP cards...\n");
+  //printf("isapnp: Scanning for PnP cards...\n");
   if (isapnp_rdp >= 0x203 && isapnp_rdp <= 0x3ff)
   {
     isapnp_rdp |= 3;
