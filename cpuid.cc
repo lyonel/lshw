@@ -1,8 +1,39 @@
 #include "cpuid.h"
 #include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
-#define cpuid(in,a,b,c,d)\
+#define cpuid_up(in,a,b,c,d)\
   asm("cpuid": "=a" (a), "=b" (b), "=c" (c), "=d" (d) : "a" (in));
+
+static void cpuid(int cpunumber,
+		  unsigned long idx,
+		  unsigned long &eax,
+		  unsigned long &ebx,
+		  unsigned long &ecx,
+		  unsigned long &edx)
+{
+  char cpuname[50];
+  int fd = -1;
+  unsigned char buffer[16];
+
+  snprintf(cpuname, sizeof(cpuname), "/dev/cpu/%d/cpuid", cpunumber);
+  fd = open(cpuname, O_RDONLY);
+  if (fd >= 0)
+  {
+    lseek(fd, idx, SEEK_CUR);
+    memset(buffer, 0, sizeof(buffer));
+    read(fd, buffer, sizeof(buffer));
+    close(fd);
+    eax = (*(unsigned long *) buffer);
+    ebx = (*(unsigned long *) (buffer + 4));
+    ecx = (*(unsigned long *) (buffer + 8));
+    edx = (*(unsigned long *) (buffer + 12));
+  }
+  else
+    cpuid_up(idx, eax, ebx, ecx, edx);
+}
 
 static hwNode *getcache(hwNode & node,
 			int n = 0)
@@ -176,7 +207,7 @@ static bool dointel(unsigned long maxi,
 
   if (maxi >= 1)
   {
-    cpuid(1, eax, ebx, ecx, edx);
+    cpuid(cpunumber, 1, eax, ebx, ecx, edx);
 
     signature = eax;
 
@@ -199,7 +230,7 @@ static bool dointel(unsigned long maxi,
     ntlb = 255;
     for (i = 0; i < ntlb; i++)
     {
-      cpuid(2, eax, ebx, ecx, edx);
+      cpuid(cpunumber, 2, eax, ebx, ecx, edx);
       ntlb = eax & 0xff;
       decode_intel_tlb(eax >> 8, l1cache, l2cache);
       decode_intel_tlb(eax >> 16, l1cache, l2cache);
@@ -228,7 +259,7 @@ static bool dointel(unsigned long maxi,
       }
     }
 
-    if (l1cache != 0 && l2cache != 0)
+    if (l1cache != 0)
     {
       hwNode *l1 = cpu->getChild("cache:0");
       hwNode *l2 = cpu->getChild("cache:1");
@@ -255,14 +286,15 @@ static bool dointel(unsigned long maxi,
 	newl2.setDescription("L2 cache");
 	newl2.setSize(l2cache);
 
-	cpu->addChild(newl2);
+	if (l2cache)
+	  cpu->addChild(newl2);
       }
     }
   }
 
   if (maxi >= 3)
   {
-    cpuid(3, unused, unused, ecx, edx);
+    cpuid(cpunumber, 3, unused, unused, ecx, edx);
 
     snprintf(buffer, sizeof(buffer),
 	     "%04lX-%04lX-%04lX-%04lX-%04lX-%04lX",
@@ -332,7 +364,7 @@ bool scan_cpuid(hwNode & n)
 
   while (cpu = getcpu(n, currentcpu))
   {
-    cpuid(0, maxi, ebx, ecx, edx);
+    cpuid(currentcpu, 0, maxi, ebx, ecx, edx);
     maxi &= 0xffff;
 
     switch (ebx)
@@ -356,4 +388,4 @@ bool scan_cpuid(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.2 2003/02/02 15:56:40 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.3 2003/02/02 16:46:08 ezix Exp $";
