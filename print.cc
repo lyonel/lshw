@@ -140,7 +140,10 @@ void print(const hwNode & node,
     tab(level + 1, false);
     cout << "clock: ";
     decimalkilos(node.getClock());
-    cout << "Hz" << endl;
+    cout << "Hz";
+    if (node.getClass() == hw::memory)
+      cout << " (" << 1.0e9 / node.getClock() << "ns)";
+    cout << endl;
   }
 
   for (int i = 0; i < node.countChildren(); i++)

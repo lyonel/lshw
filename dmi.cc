@@ -914,14 +914,20 @@ static void dmi_table(int fd,
       break;
 
     case 6:
-      // Memory Bank
+      // Memory Bank (obsolete in DMI 2.1+)
+      // therefore ignore the entry if the DMI version is recent enough
+      //if ((dmiversionmaj < 2)
+      //|| ((dmiversionmaj == 2) && (dmiversionmin < 1)))
       {
 	hwNode newnode("bank",
 		       hw::memory);
+	unsigned long long clock = 0;
 
 	newnode.setSlot(dmi_string(dm, data[4]).c_str());
 	if (data[6])
 	  printf("\t\tSpeed: %dnS\n", data[6]);
+	clock = 1000000000 / data[6];	// convert value from ns to Hz
+	newnode.setClock(clock);
 	newnode.setProduct(dmi_decode_ram(data[8] << 8 | data[7]));
 	printf("\t\tInstalled Size: ");
 	switch (data[9] & 0x7F)
