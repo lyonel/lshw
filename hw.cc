@@ -445,6 +445,25 @@ hwNode *hwNode::findChildByHandle(const string & handle)
   return NULL;
 }
 
+hwNode *hwNode::findChildByLogicalName(const string & name)
+{
+  if (!This)
+    return NULL;
+
+  if (This->logicalname == name)
+    return this;
+
+  for (int i = 0; i < This->children.size(); i++)
+  {
+    hwNode *result = This->children[i].findChildByLogicalName(name);
+
+    if (result)
+      return result;
+  }
+
+  return NULL;
+}
+
 static string generateId(const string & radical,
 			 int count)
 {
@@ -623,4 +642,4 @@ void hwNode::setLogicalName(const string & name)
     This->logicalname = strip(name);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.33 2003/02/08 14:05:18 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.34 2003/02/12 09:02:15 ezix Exp $";

@@ -89,6 +89,7 @@ class hwNode
 	const hwNode * getChild(unsigned int) const;
 	hwNode * getChild(const string & id);
 	hwNode * findChildByHandle(const string & handle);
+	hwNode * findChildByLogicalName(const string & handle);
 	hwNode * addChild(const hwNode & node);
 	bool isBus() const
 	{

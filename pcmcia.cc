@@ -12,6 +12,8 @@
  * David A. Hinds <dahinds@users.sourceforge.net>.
  */
 
+#define VARLIBPCMCIASTAB	"/var/lib/pcmcia/stab"
+
 #ifdef __arm__
 typedef u_int ioaddr_t;
 #else
@@ -69,6 +71,8 @@ typedef struct bind_info_t
   void *next;
 }
 bind_info_t;
+
+#define BIND_FN_ALL	0xff
 
 #define CISTPL_NULL		0x00
 #define CISTPL_DEVICE		0x01
@@ -744,7 +748,9 @@ ds_ioctl_arg_t;
 #define DS_GET_TUPLE_DATA               _IOWR('d', 6, tuple_parse_t)
 #define DS_PARSE_TUPLE                  _IOWR('d', 7, tuple_parse_t)
 #define DS_GET_STATUS                   _IOWR('d', 9, cs_status_t)
+#define DS_BIND_REQUEST                 _IOWR('d', 60, bind_info_t)
 #define DS_GET_DEVICE_INFO              _IOWR('d', 61, bind_info_t)
+#define DS_GET_NEXT_DEVICE              _IOWR('d', 62, bind_info_t)
 
 #define MAX_SOCK 8
 
@@ -809,7 +815,7 @@ static int get_tuple(int fd,
 
 static bool pcmcia_ident(int socket,
 			 int fd,
-			 hwNode & parent)
+			 hwNode * parent)
 {
   ds_ioctl_arg_t arg;
   cistpl_vers_1_t *vers = &arg.tuple_parse.parse.version_1;
@@ -917,31 +923,20 @@ static bool pcmcia_ident(int socket,
     }
   }
 
-  memset(&bind, 0, sizeof(bind));
-  strcpy(bind.dev_info, "eth1");
-  for (int j = 0; j < 10; j++)
-  {
-    int ret = ioctl(fd, DS_GET_DEVICE_INFO, &bind);
+  //memset(&bind, 0, sizeof(bind));
+  //strcpy(bind.dev_info, "cb_enabler");
+  //bind.function = 0;
+  //ioctl(fd, DS_GET_NEXT_DEVICE, &bind);
+  //printf("%s : %s -> %d\n", bind.dev_info, bind.name, errno);
 
-    if (ret == 0)
-    {
-      printf("%s\n", bind.name);
-    }
-
-    if ((ret == 0) || (errno != EAGAIN))
-      break;
-
-    usleep(100000);
-  }
-
-  parent.addChild(device);
+  parent->addChild(device);
 
   return true;
 }
 
-static bool is_cardbus(const hwNode & n)
+static bool is_cardbus(const hwNode * n)
 {
-  return (n.getClass() == hw::bridge) && n.isCapable("pcmcia");
+  return (n->getClass() == hw::bridge) && n->isCapable("pcmcia");
 }
 
 static hwNode *find_pcmciaparent(int slot,
@@ -956,7 +951,7 @@ static hwNode *find_pcmciaparent(int slot,
 
   for (i = 0; i < root.countChildren(); i++)
   {
-    if (is_cardbus(*root.getChild(i)));
+    if (is_cardbus(root.getChild(i)))
     {
       if (currentslot == slot)
 	return (hwNode *) root.getChild(i);
@@ -966,6 +961,7 @@ static hwNode *find_pcmciaparent(int slot,
 
   for (i = 0; i < root.countChildren(); i++)
   {
+    result = NULL;
     result = find_pcmciaparent(slot - currentslot, *root.getChild(i));
     if (result)
       return result;
@@ -979,21 +975,53 @@ bool scan_pcmcia(hwNode & n)
   int fd[MAX_SOCK];
   int major = lookup_dev("pcmcia");
   int sockets = 0;
+  int i;
+  vector < string > stab;
 
-  if (major < 0)
-    return false;
+  if (major < 0)		// pcmcia support not loaded, there isn't much
+    return false;		// we can do
+
+  if (loadfile(VARLIBPCMCIASTAB, stab))
+    for (i = 0; i < stab.size(); i++)
+    {
+      if (stab[i][0] != 'S')
+      {
+	int cnt = 0;
+	int unused = 0;
+	int socket = -1, devmajor = 0, devminor = 0;
+	char devclass[20], driver[20], logicalname[20];
+
+	memset(devclass, 0, sizeof(devclass));
+	memset(driver, 0, sizeof(driver));
+	memset(logicalname, 0, sizeof(logicalname));
+
+	cnt = sscanf(stab[i].c_str(),
+		     "%d %s %s %d %s %d %d",
+		     &socket, devclass, driver, &unused, logicalname,
+		     &devmajor, &devminor);
+
+	if ((cnt == 7) || (cnt == 5))	// we found a correct entry
+	{
+	  if (socket >= sockets)
+	    sockets = socket + 1;
+
+	  //printf("%s in socket %d = %s\n", devclass, socket, logicalname);
+	}
+      }
+    }
 
   memset(fd, 0, sizeof(fd));
-  for (int i = 0; i < MAX_SOCK; i++)
+  for (i = 0; i < MAX_SOCK; i++)
   {
     config_info_t cfg;
-    hwNode *parent = find_pcmciaparent(i, n);
     fd[i] = open_dev((dev_t) ((major << 8) + i));
 
     if (fd[i] >= 0)
     {
+      hwNode *parent = find_pcmciaparent(i, n);
       cs_status_t status;
-      sockets++;
+      if (i >= sockets)
+	sockets = i + 1;
 
       // check that slot is populated
       memset(&status, 0, sizeof(status));
@@ -1002,12 +1030,10 @@ bool scan_pcmcia(hwNode & n)
       ioctl(fd[i], DS_GET_STATUS, &status);
       if (status.CardState & CS_EVENT_CARD_DETECT)
       {
-	/*
-	 * if (parent)
-	 * pcmcia_ident(i, fd[i], *parent);
-	 * else
-	 */
-	pcmcia_ident(i, fd[i], n);
+	if (parent)
+	  pcmcia_ident(i, fd[i], parent);
+	else
+	  pcmcia_ident(i, fd[i], &n);
       }
     }
     else
@@ -1022,4 +1048,4 @@ bool scan_pcmcia(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.6 2003/02/11 09:13:20 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.7 2003/02/12 09:02:15 ezix Exp $";
