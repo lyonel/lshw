@@ -172,7 +172,7 @@ void hwNode::setHandle(const string & handle)
 string hwNode::getDescription() const
 {
   if (This)
-    return This->description;
+    return This->description + " " + This->handle;
   else
     return "";
 }
@@ -200,7 +200,7 @@ void hwNode::setVendor(const string & vendor)
 string hwNode::getProduct() const
 {
   if (This)
-    return This->product + " (" + This->handle + ")";
+    return This->product;
   else
     return "";
 }

@@ -36,7 +36,7 @@ void kilobytes(unsigned long long value)
   const char *prefixes = "KMGTPH";
   int i = 0;
 
-  while ((i <= strlen(prefixes)) && (value > 10240))
+  while ((i <= strlen(prefixes)) && (value > 1024))
   {
     value = value >> 10;
     i++;
@@ -152,8 +152,11 @@ void print(const hwNode & node,
     cout << endl;
   }
 
-  tab(level + 1, false);
-  cout << "capabilities: " << node.getCapabilities() << endl;
+  if (node.getCapabilities() != "")
+  {
+    tab(level + 1, false);
+    cout << "capabilities: " << node.getCapabilities() << endl;
+  }
 
   for (int i = 0; i < node.countChildren(); i++)
   {

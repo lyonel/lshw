@@ -102,29 +102,38 @@ static void dmi_bios_features(u32 data1,
   if (data1 & (1 << 19))	// Enhanced Disk Drive
     bios.addCapability("EDD");
   if (data1 & (1 << 20))	// NEC 9800 floppy
-    bios.addCapability("floppynec");
+    bios.addCapability("int13floppynec");
   if (data1 & (1 << 21))	// Toshiba floppy
-    bios.addCapability("floppytoshiba");
+    bios.addCapability("int13floppytoshiba");
   if (data1 & (1 << 22))	// 5.25" 360KB floppy
-    bios.addCapability("floppy360");
+    bios.addCapability("int13floppy360");
   if (data1 & (1 << 23))	// 5.25" 1.2MB floppy
-    bios.addCapability("floppy1200");
+    bios.addCapability("int13floppy1200");
   if (data1 & (1 << 24))	// 3.5" 720KB floppy
-    bios.addCapability("floppy720");
+    bios.addCapability("int13floppy720");
   if (data1 & (1 << 25))	// 3.5" 2.88MB floppy
-  {
-    bios.addCapability("floppy1440");
-    bios.addCapability("floppy2880");
-  }
+    bios.addCapability("int13floppy2880");
+  if (data1 & (1 << 26))	// print screen key
+    bios.addCapability("int5printscreen");
+  if (data1 & (1 << 27))	// 8042 kbd controller
+    bios.addCapability("int9keyboard");
+  if (data1 & (1 << 28))	// serial line control
+    bios.addCapability("int14serial");
+  if (data1 & (1 << 29))	// printer
+    bios.addCapability("int17printer");
+  if (data1 & (1 << 30))	// CGA/Mono video
+    bios.addCapability("int10video");
+  if (data1 & (1 << 31))	// NEC PC-98
+    bios.addCapability("pc98");
 
 }
 
 static unsigned long dmi_cache_size(u16 n)
 {
   if (n & (1 << 15))
-    return (n & 0x7FFF) * 64 * 1024;
+    return (n & 0x7FFF) * 64 * 1024;	// value is in 64K blocks
   else
-    return (n & 0x7FFF) * 1024;
+    return (n & 0x7FFF) * 1024;	// value is in 1K blocks
 }
 
 static void dmi_decode_cache(u16 c)
@@ -868,6 +877,7 @@ static void dmi_table(int fd,
 
     case 1:
       // System Information Block
+      node.setHandle(handle);
       node.setVendor(dmi_string(dm, data[4]));
       node.setProduct(dmi_string(dm, data[5]));
       node.setVersion(dmi_string(dm, data[6]));
@@ -1106,6 +1116,8 @@ static void dmi_table(int fd,
 	printf("\t\tL%d Cache Size: ", 1 + (u & 7));
 	newnode.setSize(dmi_cache_size(data[7] | data[8] << 8));
 	newnode.setCapacity(dmi_cache_size(data[9] | data[10] << 8));
+	if (newnode.getCapacity() < newnode.getSize())
+	  newnode.setCapacity(newnode.getCapacity() * 64);
 	printf("\t\tL%d Cache Type: ", 1 + (u & 7));
 	dmi_decode_cache(data[13]);
 	printf("\n");
@@ -1307,12 +1319,12 @@ static void dmi_table(int fd,
 	if (dm->length > 24)
 	  newnode.setSerial(dmi_string(dm, data[24]));
 	if (dm->length > 26)
-	  description += " P/N: " + string(dmi_string(dm, data[26]));
+	  newnode.setProduct(dmi_string(dm, data[26]));
 
 	if (strlen(bits))
 	  description += " " + string(bits) + " bits";
 
-	newnode.setProduct(description);
+	newnode.setDescription(description);
 	newnode.setSize(size);
 	newnode.setClock(clock);
 
