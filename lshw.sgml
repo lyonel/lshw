@@ -131,10 +131,22 @@ Used on PowerPC platforms to access OpenFirmware configuration.
 </para>
 </refsect1>
 
+<refsect1><title>COPYING</title>
+<para>
+<application>lshw</application> is distributed under the GNU GENERAL PUBLIC LICENSE (GPL) version 2.
+</para>
+</refsect1>
+
 <refsect1><title>AUTHOR</title>
 <para>
 <application>lshw</application> is maintained by Lyonel Vincent
 <email>vincentl@ec-lyon.fr</email>.
+</para>
+</refsect1>
+
+<refsect1><title>OTHER INFO</title>
+<para>
+The webpage for <application>lshw</application> is at 
 <ulink url="http://ezix.org/software/lshw.html"></ulink></para>
 </refsect1>
 
