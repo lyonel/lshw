@@ -143,6 +143,7 @@ class hwNode
 	string getConfig(const string & key) const;
 	vector<string> getConfigValues(const string & separator = "") const;
 
+	vector<string> getLogicalNames() const;
 	string getLogicalName() const;
 	void setLogicalName(const string &);
 

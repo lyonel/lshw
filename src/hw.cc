@@ -13,7 +13,7 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, serial, slot, handle, description,
-    logicalname, businfo, physid, dev;
+    businfo, physid, dev;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -23,11 +23,10 @@ struct hwNode_i
     vector < hwNode > children;
     vector < string > attracted;
     vector < string > features;
-    map < string,
-    string > features_descriptions;
+    vector < string > logicalnames;
+    map < string, string > features_descriptions;
     vector < resource > resources;
-    map < string,
-    string > config;
+    map < string, string > config;
 };
 
 string hw::strip(const string & s)
@@ -86,7 +85,6 @@ hwNode::hwNode(const string & id,
   This->claimed = false;
   This->handle = string("");
   This->description = string("");
-  This->logicalname = string("");
   This->businfo = string("");
   This->physid = string("");
   This->dev = string("");
@@ -576,13 +574,16 @@ hwNode *hwNode::findChildByHandle(const string & handle)
 
 hwNode *hwNode::findChildByLogicalName(const string & name)
 {
+  unsigned int i = 0;
+
   if (!This)
     return NULL;
 
-  if (This->logicalname == name)
-    return this;
+  for (i = 0; i < This->logicalnames.size(); i++)
+    if (This->logicalnames[i] == name)
+      return this;
 
-  for (unsigned int i = 0; i < This->children.size(); i++)
+  for (i = 0; i < This->children.size(); i++)
   {
     hwNode *result = This->children[i].findChildByLogicalName(name);
 
@@ -849,10 +850,18 @@ vector < string > hwNode::getConfigValues(const string & separator) const
 
 string hwNode::getLogicalName() const
 {
-  if (This)
-    return This->logicalname;
+  if (This && (This->logicalnames.size()>0))
+    return This->logicalnames[0];
   else
     return "";
+}
+
+vector<string> hwNode::getLogicalNames() const
+{
+  if (This)
+    return This->logicalnames;
+  else
+    return vector<string>();
 }
 
 void hwNode::setLogicalName(const string & name)
@@ -861,12 +870,12 @@ void hwNode::setLogicalName(const string & name)
   {
     if (exists("/dev/" + strip(name)))
     {
-      This->logicalname = "/dev/" + strip(name);
+      This->logicalnames.push_back("/dev/" + strip(name));
     }
     else
-      This->logicalname = strip(name);
+      This->logicalnames.push_back(strip(name));
 
-    This->dev = get_devid(This->logicalname);
+    This->dev = get_devid(strip(name));
   }
 }
 
@@ -1041,8 +1050,8 @@ void hwNode::merge(const hwNode & node)
     This->handle = node.getHandle();
   if (This->description == "")
     This->description = node.getDescription();
-  if (This->logicalname == "")
-    This->logicalname = node.getLogicalName();
+  if (This->logicalnames.size() == 0)
+    This->logicalnames = node.getLogicalNames();
   if (This->businfo == "")
     This->businfo = node.getBusInfo();
   if (This->physid == "")

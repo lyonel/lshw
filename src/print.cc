@@ -218,16 +218,21 @@ void print(hwNode & node,
 
     if (node.getLogicalName() != "")
     {
-      tab(level + 1, false);
-      if (html)
-	cout << "<tr><td>";
-      cout << "logical name: ";
-      if (html)
-	cout << "</td><td>";
-      cout << node.getLogicalName();
-      if (html)
-	cout << "</td></tr>";
-      cout << endl;
+      vector<string> logicalnames = node.getLogicalNames();
+
+      for(unsigned int i = 0; i<logicalnames.size(); i++)
+      {
+      	tab(level + 1, false);
+      	if (html)
+		cout << "<tr><td>";
+      	cout << "logical name: ";
+      	if (html)
+		cout << "</td><td>";
+      	cout << logicalnames[i];
+      	if (html)
+		cout << "</td></tr>";
+      	cout << endl;
+      }
     }
 
     if (node.getVersion() != "")
@@ -571,11 +576,16 @@ void printxml(hwNode & node,
 
     if (node.getLogicalName() != "")
     {
-      tab(level + 1, false);
-      cout << "<logicalname>";
-      cout << escape(node.getLogicalName());
-      cout << "</logicalname>";
-      cout << endl;
+      vector<string> logicalnames = node.getLogicalNames();
+
+      for(unsigned int i = 0; i<logicalnames.size(); i++)
+      {
+      	tab(level + 1, false);
+        cout << "<logicalname>";
+      	cout << logicalnames[i];
+        cout << "</logicalname>";
+      	cout << endl;
+      }
     }
 
     if (node.getDev() != "")

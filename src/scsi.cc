@@ -543,10 +543,9 @@ static void scan_devices()
 	memset(&m_idlun, 0, sizeof(m_idlun));
 	if (ioctl(fd, SCSI_IOCTL_GET_IDLUN, &m_idlun) >= 0)
 	{
-	  sg_map[scsi_handle(bus, (m_idlun.mux4 >> 16) & 0xff,
+	  sg_map[string(devices[i])] = scsi_handle(bus, (m_idlun.mux4 >> 16) & 0xff,
 			     m_idlun.mux4 & 0xff,
-			     (m_idlun.mux4 >> 8) & 0xff)] =
-	    string(devices[i]);
+			     (m_idlun.mux4 >> 8) & 0xff);
 	}
       }
       close(fd);
@@ -560,11 +559,10 @@ static void find_logicalname(hwNode & n)
 
   for (i = sg_map.begin(); i != sg_map.end(); i++)
   {
-    if (i->first == n.getHandle())
+    if (i->second == n.getHandle())
     {
-      n.setLogicalName(i->second);
+      n.setLogicalName(i->first);
       n.claim();
-      return;
     }
   }
 }
