@@ -33,7 +33,7 @@ string hw::strip(const string & s)
     result.erase(0, 1);
   while ((result.length() > 0) && (result[result.length() - 1] <= ' '))
     result.erase(result.length() - 1, 1);
-  for (int i = 0; i < result.length(); i++)
+  for (unsigned int i = 0; i < result.length(); i++)
     if (result[0] <= ' ')
     {
       result.erase(i, 1);
@@ -47,7 +47,7 @@ static string cleanupId(const string & id)
 {
   string result = strip(id);
 
-  for (int i = 0; i < result.length(); i++)
+  for (unsigned int i = 0; i < result.length(); i++)
   {
     result[i] = tolower(result[i]);
     if (!strchr("0123456789abcdefghijklmnopqrstuvwxyz_.:-", result[i]))
@@ -227,7 +227,7 @@ bool hwNode::claimed() const
   if (This->claimed)
     return true;
 
-  for (int i = 0; i < This->children.size(); i++)
+  for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].claimed())
     {
       This->claimed = true;
@@ -247,7 +247,7 @@ void hwNode::claim(bool claimchildren)
   if (!claimchildren)
     return;
 
-  for (int i = 0; i < This->children.size(); i++)
+  for (unsigned int i = 0; i < This->children.size(); i++)
     This->children[i].claim(claimchildren);
 }
 
@@ -441,7 +441,7 @@ unsigned int hwNode::countChildren(hw::hwClass c) const
   if (c == hw::generic)
     return This->children.size();
 
-  for (int i = 0; i < This->children.size(); i++)
+  for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].getClass() == c)
       count++;
 
@@ -475,7 +475,7 @@ hwNode *hwNode::getChild(const string & id)
       path = id.substr(pos + 1);
   }
 
-  for (int i = 0; i < This->children.size(); i++)
+  for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].getId() == baseid)
     {
       if (path == "")
@@ -494,7 +494,7 @@ hwNode *hwNode::findChildByHandle(const string & handle)
   if (This->handle == handle)
     return this;
 
-  for (int i = 0; i < This->children.size(); i++)
+  for (unsigned int i = 0; i < This->children.size(); i++)
   {
     hwNode *result = This->children[i].findChildByHandle(handle);
 
@@ -513,7 +513,7 @@ hwNode *hwNode::findChildByLogicalName(const string & name)
   if (This->logicalname == name)
     return this;
 
-  for (int i = 0; i < This->children.size(); i++)
+  for (unsigned int i = 0; i < This->children.size(); i++)
   {
     hwNode *result = This->children[i].findChildByLogicalName(name);
 
@@ -544,7 +544,7 @@ hwNode *hwNode::addChild(const hwNode & node)
     return NULL;
 
   // first see if the new node is attracted by one of our children
-  for (int i = 0; i < This->children.size(); i++)
+  for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].attractsNode(node))
       return This->children[i].addChild(node);
 
@@ -577,7 +577,7 @@ void hwNode::attractHandle(const string & handle)
 
 bool hwNode::attractsHandle(const string & handle) const
 {
-  int i = 0;
+  unsigned int i = 0;
   if (handle == "" || !This)
     return false;
 
@@ -607,7 +607,7 @@ bool hwNode::isCapable(const string & feature) const
   if (!This)
     return false;
 
-  for (int i = 0; i < This->features.size(); i++)
+  for (unsigned int i = 0; i < This->features.size(); i++)
     if (This->features[i] == featureid)
       return true;
 
@@ -648,7 +648,7 @@ string hwNode::getCapabilities() const
   if (!This)
     return "";
 
-  for (int i = 0; i < This->features.size(); i++)
+  for (unsigned int i = 0; i < This->features.size(); i++)
     result += This->features[i] + " ";
 
   return strip(result);
@@ -741,7 +741,7 @@ void hwNode::merge(const hwNode & node)
   if (This->logicalname == "")
     This->logicalname = node.getLogicalName();
 
-  for (int i = 0; i < node.This->features.size(); i++)
+  for (unsigned int i = 0; i < node.This->features.size(); i++)
     addCapability(node.This->features[i]);
 
   for (map < string, string >::iterator i = node.This->config.begin();
@@ -749,4 +749,4 @@ void hwNode::merge(const hwNode & node)
     setConfig(i->first, i->second);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.39 2003/03/11 09:06:08 ezix Exp $";
+static char *rcs_id = "@(#) $Id: hw.cc,v 1.40 2003/04/29 07:14:19 ezix Exp $";
