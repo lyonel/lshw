@@ -6,7 +6,6 @@ PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share/$(PACKAGENAME)
-SVNURL='$URL$'
 
 CXX=c++
 CXXFLAGS=-g -Wall
@@ -54,7 +53,9 @@ clean:
 	date --utc +%Y%m%d%H%M%S > $@
                                                                                
 release:
+	mkdir -fp ../releases
 	svn copy . `dirname ${PWD}`/releases/`cat .version`
+	svn commit `dirname ${PWD}`/releases/`cat .version` -m "release:"`cat .version`
 	rm -rf $(PACKAGENAME)-`cat .version`
 	svn export ../releases/`cat .version` $(PACKAGENAME)-`cat .version`
 	cat $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat .version`/g" > $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec
