@@ -34,7 +34,7 @@ core/lib$(PACKAGENAME).a:
 	make -C core all
 
 $(PACKAGENAME): core/lib$(PACKAGENAME).a $(PACKAGENAME).o
-	$(CXX) $(LDFLAGS) -o $@ $(LIBS) $(PACKAGENAME).o
+	$(CXX) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS) 
 
 .PHONY: static
 static: $(PACKAGENAME)-static
