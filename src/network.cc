@@ -492,7 +492,7 @@ bool scan_network(hwNode & n)
       strncpy(buffer, interfaces[i].c_str(), sizeof(buffer));
       if (ioctl(fd, SIOCGIWNAME, &buffer) == 0)
       {
-	interface.addCapability("wlan", "Wireless-LAN");
+	interface.addCapability("wireless", "Wireless-LAN");
 	interface.setConfig("wireless", hw::strip(buffer + IFNAMSIZ));
 	interface.setDescription("Wireless interface");
       }
