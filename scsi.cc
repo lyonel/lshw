@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.34 2003/06/26 21:30:27 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.35 2003/06/27 12:44:50 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -683,7 +683,7 @@ static bool scan_sg(int sg,
   channel =
     parent->findChildByHandle(scsi_handle(m_id.host_no, m_id.channel));
   if (!channel)
-    channel = parent->addChild(hwNode("channel", hw::storage));
+    channel = parent->addChild(hwNode("channel", hw::bus));
 
   if (!channel)
   {
@@ -835,7 +835,7 @@ static bool scan_hosts(hwNode & node)
     if (host)
     {
       if ((host->getProduct() == "") && (host->getDescription() == ""))
-	host->setDescription(host_strs[i]);
+	host->setDescription("SCSI storage controller");
     }
   }
 
@@ -847,10 +847,11 @@ bool scan_scsi(hwNode & n)
   int i = 0;
 
   scan_devices();
-  scan_hosts(n);
 
   while (scan_sg(i, n))
     i++;
+
+  scan_hosts(n);
 
   (void) &id;
 

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
-static char *id = "@(#) $Id: print.cc,v 1.47 2003/06/26 21:30:27 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.48 2003/06/27 12:44:50 ezix Exp $";
 
 static void spaces(unsigned int count,
 		   string space = " ")
@@ -683,9 +683,9 @@ static void printhwnode(hwNode & node,
 }
 
 static const char *cols[] = { "H/W path",
-  "device",
-  "class",
-  "description"
+  "Device",
+  "Class",
+  "Description"
 };
 
 void printhwpath(hwNode & node)
@@ -717,7 +717,7 @@ void printhwpath(hwNode & node)
   cout << cols[3];
   cout << endl;
 
-  spaces(l1 + l2 + l3 + strlen(cols[3]) + 3, "-");
+  spaces(l1 + l2 + l3 + strlen(cols[3]) + 6, "=");
   cout << endl;
 
   for (i = 0; i < l.size(); i++)

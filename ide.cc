@@ -14,7 +14,7 @@
 #include <vector>
 #include <linux/hdreg.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.22 2003/06/26 21:30:27 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.23 2003/06/27 12:44:50 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -347,7 +347,7 @@ bool scan_ide(hwNode & n)
   {
     vector < string > config;
     hwNode ide("ide",
-	       hw::storage);
+	       hw::bus);
 
     ide.setLogicalName(namelist[i]->d_name);
     ide.setHandle("IDE:" + string(namelist[i]->d_name));

@@ -25,6 +25,12 @@ $(PACKAGENAME): $(OBJS)
 $(PACKAGENAME).1: $(PACKAGENAME).sgml
 	docbook2man $<
 
+oui.txt:
+	wget http://standards.ieee.org/regauth/oui/oui.txt
+
+manuf.txt:
+	wget http://www.ethereal.com/distribution/manuf.txt
+
 install: all
 	-mkdir -p $(DESTDIR)
 	-mkdir -p $(DESTDIR)/$(SBINDIR)
