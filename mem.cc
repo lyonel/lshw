@@ -23,7 +23,8 @@ static unsigned long long get_sysconf_size()
   pagesize = sysconf(_SC_PAGESIZE);
   physpages = sysconf(_SC_PHYS_PAGES);
   if ((pagesize > 0) && (physpages > 0))
-    logicalmem = pagesize * physpages;
+    logicalmem =
+      (unsigned long long) pagesize *(unsigned long long) physpages;
 
   return logicalmem;
 }
@@ -95,4 +96,4 @@ bool scan_memory(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: mem.cc,v 1.17 2003/04/14 08:57:53 ezix Exp $";
+static char *id = "@(#) $Id: mem.cc,v 1.18 2003/04/16 07:25:06 ezix Exp $";
