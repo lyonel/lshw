@@ -16,8 +16,6 @@
 
 #include "support.h"
 
-static char *id = "@(#) $Id$";
-
 GtkWidget*
 lookup_widget                          (GtkWidget       *widget,
                                         const gchar     *widget_name)
@@ -142,7 +140,5 @@ glade_set_atk_action_description       (AtkAction       *action,
       if (!strcmp (atk_action_get_name (action, i), action_name))
         atk_action_set_description (action, i, description);
     }
-
-  (void) &id;                 // avoid warning "id defined but not used"
 }
 

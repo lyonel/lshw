@@ -26,8 +26,6 @@
 #define GLADE_HOOKUP_OBJECT_NO_REF(component,widget,name) \
   g_object_set_data (G_OBJECT (component), name, widget)
 
-static char *id = "@(#) $Id$";
-
 GtkWidget*
 create_lshw (void)
 {
@@ -68,7 +66,7 @@ create_lshw (void)
 
   lshw = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (lshw), "lshw");
-  gtk_window_set_default_size (GTK_WINDOW (lshw), 638, 480);
+  gtk_window_set_default_size (GTK_WINDOW (lshw), 700, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox1);
@@ -156,6 +154,7 @@ create_lshw (void)
   treeview1 = gtk_tree_view_new ();
   gtk_widget_show (treeview1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow10), treeview1);
+  gtk_widget_set_size_request (treeview1, 128, -1);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview1), FALSE);
 
   scrolledwindow11 = gtk_scrolled_window_new (NULL, NULL);
@@ -168,6 +167,7 @@ create_lshw (void)
   treeview2 = gtk_tree_view_new ();
   gtk_widget_show (treeview2);
   gtk_container_add (GTK_CONTAINER (scrolledwindow11), treeview2);
+  gtk_widget_set_size_request (treeview2, 128, -1);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview2), FALSE);
 
   scrolledwindow12 = gtk_scrolled_window_new (NULL, NULL);
@@ -180,6 +180,7 @@ create_lshw (void)
   treeview3 = gtk_tree_view_new ();
   gtk_widget_show (treeview3);
   gtk_container_add (GTK_CONTAINER (scrolledwindow12), treeview3);
+  gtk_widget_set_size_request (treeview3, 128, -1);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview3), FALSE);
 
   scrolledwindow13 = gtk_scrolled_window_new (NULL, NULL);
@@ -340,8 +341,6 @@ create_aboutlshw (void)
   GLADE_HOOKUP_OBJECT (aboutlshw, version, "version");
   GLADE_HOOKUP_OBJECT_NO_REF (aboutlshw, dialog_action_area1, "dialog_action_area1");
   GLADE_HOOKUP_OBJECT (aboutlshw, closebutton1, "closebutton1");
-
-  (void) &id;                 // avoid warning "id defined but not used"
 
   return aboutlshw;
 }
