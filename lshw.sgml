@@ -20,7 +20,7 @@ list hardware
         <arg choice="opt">-version</arg>
         <arg choice="opt">-help</arg>
 	<arg choice="opt">-html</arg>
-	<arg choice="opt">-xml</arg>
+	<arg choice="opt">-short</arg>
    </cmdsynopsis>
 </refsynopsisdiv>
 
@@ -59,6 +59,10 @@ Outputs the device tree as an HTML page.
 <varlistentry><term>-xml</term>
 <listitem><para>
 Outputs the device tree as an XML tree.
+</para></listitem></varlistentry>
+<varlistentry><term>-short</term>
+<listitem><para>
+Outputs the device tree showing hardware paths, very much like the output of <productname>HP-UX</productname>'s <application>ioscan</application>.
 </para></listitem></varlistentry>
 </variablelist>
 </para>

@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.26 2003/06/26 21:30:27 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.27 2003/06/27 13:56:56 ezix Exp $";
 
 void usage(const char *progname)
 {
@@ -26,7 +26,7 @@ void usage(const char *progname)
   fprintf(stderr, "\t-version      print program version\n");
   fprintf(stderr, "\t-html         output hardware tree as HTML\n");
   fprintf(stderr, "\t-xml          output hardware tree as XML\n");
-  fprintf(stderr, "\t-hwpath       output hardware paths\n");
+  fprintf(stderr, "\t-short        output hardware paths\n");
   fprintf(stderr, "\n");
 }
 
@@ -62,7 +62,7 @@ int main(int argc,
     if (strcmp(argv[1], "-html") == 0)
       htmloutput = true;
 
-    if (strcmp(argv[1], "-hwpath") == 0)
+    if (strcmp(argv[1], "-short") == 0)
       hwpath = true;
 
     if (!xmloutput && !htmloutput && !hwpath)
