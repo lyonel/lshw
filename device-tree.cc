@@ -8,11 +8,12 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.19 2003/06/29 07:44:04 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.20 2003/08/11 21:38:39 ezix Exp $";
 
 #define DEVICETREE "/proc/device-tree"
 
-static unsigned long get_long(const string & path)
+static unsigned long get_long(
+  const string & path)
 {
   unsigned long result = 0;
   int fd = open(path.c_str(), O_RDONLY);
@@ -27,17 +28,20 @@ static unsigned long get_long(const string & path)
   return result;
 }
 
-static void scan_devtree_root(hwNode & core)
+static void scan_devtree_root(
+  hwNode & core)
 {
   core.setClock(get_long(DEVICETREE "/clock-frequency"));
 }
 
-static void scan_devtree_bootrom(hwNode & core)
+static void scan_devtree_bootrom(
+  hwNode & core)
 {
   if (exists(DEVICETREE "/rom/boot-rom"))
   {
-    hwNode bootrom("firmware",
-		   hw::memory);
+    hwNode bootrom(
+  "firmware",
+  hw::memory);
     string upgrade = "";
     unsigned long base = 0;
     unsigned long size = 0;
@@ -60,6 +64,7 @@ static void scan_devtree_bootrom(hwNode & core)
       read(fd, &base, sizeof(base));
       read(fd, &size, sizeof(size));
 
+      bootrom.setPhysId(base);
       bootrom.setSize(size);
       close(fd);
     }
@@ -71,8 +76,9 @@ static void scan_devtree_bootrom(hwNode & core)
 
   if (exists(DEVICETREE "/openprom"))
   {
-    hwNode openprom("firmware",
-		    hw::memory);
+    hwNode openprom(
+  "firmware",
+  hw::memory);
 
     openprom.setProduct(get_string(DEVICETREE "/openprom/model"));
 
@@ -86,7 +92,8 @@ static void scan_devtree_bootrom(hwNode & core)
   }
 }
 
-static int selectdir(const struct dirent *d)
+static int selectdir(
+  const struct dirent *d)
 {
   struct stat buf;
 
@@ -99,7 +106,8 @@ static int selectdir(const struct dirent *d)
   return S_ISDIR(buf.st_mode);
 }
 
-static void scan_devtree_cpu(hwNode & core)
+static void scan_devtree_cpu(
+  hwNode & core)
 {
   struct dirent **namelist;
   int n;
@@ -116,8 +124,9 @@ static void scan_devtree_cpu(hwNode & core)
       string basepath =
 	string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
       unsigned long version = 0;
-      hwNode cpu("cpu",
-		 hw::processor);
+      hwNode cpu(
+  "cpu",
+  hw::processor);
       struct dirent **cachelist;
       int ncache;
 
@@ -151,8 +160,9 @@ static void scan_devtree_cpu(hwNode & core)
 
       if (exists(basepath + "/d-cache-size"))
       {
-	hwNode cache("cache",
-		     hw::memory);
+	hwNode cache(
+  "cache",
+  hw::memory);
 
 	cache.setDescription("L1 Cache");
 	cache.setSize(get_long(basepath + "/d-cache-size"));
@@ -167,8 +177,9 @@ static void scan_devtree_cpu(hwNode & core)
       {
 	for (int j = 0; j < ncache; j++)
 	{
-	  hwNode cache("cache",
-		       hw::memory);
+	  hwNode cache(
+  "cache",
+  hw::memory);
 	  string cachebase = basepath + "/" + cachelist[j]->d_name;
 
 	  if (hw::strip(get_string(cachebase + "/device_type")) != "cache" &&
@@ -208,7 +219,8 @@ static void scan_devtree_cpu(hwNode & core)
   }
 }
 
-static void scan_devtree_memory(hwNode & core)
+static void scan_devtree_memory(
+  hwNode & core)
 {
   struct stat buf;
   unsigned int currentmc = 0;	// current memory controller
@@ -254,8 +266,9 @@ static void scan_devtree_memory(hwNode & core)
 	  unsigned long size = 0;
 	  if (bitmap & slot)	// slot is active
 	  {
-	    hwNode bank("bank",
-			hw::memory);
+	    hwNode bank(
+  "bank",
+  hw::memory);
 
 	    read(fd2, &base, sizeof(base));
 	    read(fd2, &size, sizeof(size));
@@ -335,7 +348,8 @@ static struct pmac_mb_def pmac_mb_defs[] = {
   {"PowerMac6,1", "PowerBook G4 12\""},
 };
 
-static bool get_apple_model(hwNode & n)
+static bool get_apple_model(
+  hwNode & n)
 {
   string model = n.getProduct();
   if (model == "")
@@ -349,7 +363,8 @@ static bool get_apple_model(hwNode & n)
   return false;
 }
 
-bool scan_device_tree(hwNode & n)
+bool scan_device_tree(
+  hwNode & n)
 {
   hwNode *core = n.getChild("core");
 
