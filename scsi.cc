@@ -467,7 +467,7 @@ static bool do_inquiry(int sg_fd,
   if (do_inq(sg_fd, 0, 1, 0x80, rsp_buff, MX_ALLOC_LEN, 0))
   {
     len = rsp_buff[3];
-    if (len > 0)
+    if ((len > 0) && (rsp_buff[0] > ' '))
       node.setSerial(string(rsp_buff + 4, len));
   }
 
@@ -793,4 +793,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.26 2003/02/27 00:17:33 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.27 2003/02/28 22:16:04 ezix Exp $";

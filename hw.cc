@@ -601,7 +601,7 @@ void hwNode::setConfig(const string & key,
   if (!This)
     return;
 
-  This->config[key] = value;
+  This->config[key] = strip(value);
 }
 
 string hwNode::getConfig(const string & key) const
@@ -690,4 +690,4 @@ void hwNode::merge(const hwNode & node)
     setConfig(i->first, i->second);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.36 2003/02/14 00:21:32 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.37 2003/02/28 22:16:04 ezix Exp $";
