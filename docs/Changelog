@@ -1,3 +1,14 @@
+*  B.02.03
+  added support for PA-RISC devices (IODC-controlled) on 2.6 kernels
+  the GUI can now be launched by invoking lshw with the '-X' option
+  network devices clean-up (removed last bits of MII-diag, replaced by ethtool); gigabit-ethernet is now reported
+  cosmetic fixes
+  simplified reporting of SCSI devices
+  added an XML Schema Definition (XSD)
+  fixes for Apple machines (serial # reporting, more models identified)
+  added reporting of "width" (32 or 64 bits) for various components (PCI devices, memory banks, CPUs)
+  documentation updates
+  allow parallel builds
 *  B.02.02
   added reporting of battery-related information using DMI
   added reporting of hardware security (DMI): admin/user/power-on passwords
