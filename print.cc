@@ -409,7 +409,8 @@ void printxml(hwNode & node,
   config = node.getConfigValues("\" value=\"");
 
   if (level == 0)
-    cout << "<?xml version=\"1.0\" standalone=\"yes\"?>" << endl;
+    cout << "<?xml version=\"1.0\" standalone=\"yes\" " <<
+      "generator=\"lshw " << getpackageversion() << "\"" << "?>" << endl;
 
   tab(level, false);
   cout << "<node id=\"" << node.getId() << "\"";
@@ -584,4 +585,4 @@ void printxml(hwNode & node,
   cout << "</node>" << endl;
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.39 2003/03/18 16:56:07 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.40 2003/04/13 09:19:03 ezix Exp $";
