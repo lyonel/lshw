@@ -16,8 +16,9 @@
 #define PROCBUSUSB "/proc/bus/usb/"
 
 #define	USB_DT_DEVICE_SIZE	0x12
-#define USB_CTRL_TIMEOUT    100	/* milliseconds */
-#define USB_CTRL_RETRIES     50
+#define	USB_DT_CONFIG_SIZE	9
+#define USB_CTRL_TIMEOUT    5000	/* milliseconds */
+#define USB_CTRL_RETRIES     2
 
 #define USB_CLASS_PER_INTERFACE         0	/* for DeviceClass */
 #define USB_CLASS_AUDIO                 1
@@ -89,6 +90,21 @@ struct usb_device_descriptor
 }
 __attribute__ ((packed));
 
+struct usb_config_descriptor
+{
+  u_int8_t bLength;
+  u_int8_t bDescriptorType;
+  u_int16_t wTotalLength;
+  u_int8_t bNumInterfaces;
+  u_int8_t bConfigurationValue;
+  u_int8_t iConfiguration;
+  u_int8_t bmAttributes;
+  u_int8_t MaxPower;
+
+  struct usb_interface *interface;
+}
+__attribute__ ((packed));
+
 #define USBDEVICE_SUPER_MAGIC 0x9fa2
 
 /* usbdevfs ioctl codes */
@@ -106,7 +122,7 @@ struct usbdevfs_ctrltransfer
 
 #define USBDEVFS_CONTROL	_IOWR('U', 0, struct usbdevfs_ctrltransfer)
 
-static char *id = "@(#) $Id: usb.cc,v 1.5 2003/11/19 17:28:33 ezix Exp $";
+static char *id = "@(#) $Id: usb.cc,v 1.6 2003/11/21 08:25:07 ezix Exp $";
 
 static int usb_control_msg(int fd,
 			   u_int8_t requesttype,
@@ -173,6 +189,23 @@ static string get_string(int fd,
   wcstombs(buf, w, sizeof(buf));
 
   return string(buf);
+}
+
+static bool get_config(int fd,
+		       u_int8_t id,
+		       usb_config_descriptor & config)
+{
+  memset(&config, 0, sizeof(config));
+
+  if (usb_control_msg
+      (fd, USB_DIR_IN, USB_REQ_GET_DESCRIPTOR, (USB_DT_CONFIG << 8) | id, 0,
+       sizeof(config), &config) >= 0)
+    return true;
+  else
+  {
+    memset(&config, 0, sizeof(config));	// just to be sure
+    return false;
+  }
 }
 
 static string BCDversion(u_int16_t v)
@@ -295,6 +328,16 @@ bool scan_usb(hwNode & n)
 		device.setHandle(string("USB:") + string(hubs[i]->d_name));
 		device.setBusInfo("usb@" + string(hubs[i]->d_name));
 		device.setPhysId(string(hubs[i]->d_name));
+	      }
+
+	      for (unsigned int i = 0; i < descriptor.bNumConfigurations; i++)
+	      {
+		usb_config_descriptor config;
+
+		if (get_config(fd, i, config))
+		{
+		  printf("config: %d\n", config.iConfiguration);
+		}
 	      }
 	    }
 	  }
