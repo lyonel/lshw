@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "dmi.h"
 #include "cpuinfo.h"
+#include "device-tree.h"
 
 #include <unistd.h>
 
@@ -18,6 +19,7 @@ int main(int argc,
 		    hw::system);
 
     scan_dmi(computer);
+    scan_device_tree(computer);
     scan_memory(computer);
     scan_cpuinfo(computer);
 

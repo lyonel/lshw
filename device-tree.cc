@@ -4,24 +4,33 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-bool scan_device_tree(hwNode & n)
+#define DEVICETREE "/proc/device-tree"
+
+static void scan_devtree_memory(hwNode & core)
 {
-#if 0
-  hwNode memory("memory",
-		hw::memory);
   struct stat buf;
+  unsigned int currentmc = 0;	// current memory controller
+  hwNode *memory = core.getChild("memory");
 
-  if (stat("/proc/kcore", &buf) == 0)
+  while (true)
   {
-    memory.setSize(buf.st_size);
+    string mcbase =
+      string(DEVICETREE "/memory@") + string('0' + currentmc, 1);
+    string devtreeslotnames = mcbase + string("/slot-names");
+    string reg = mcbase + string("/reg");
 
-    if (stat("/proc/device-tree/memory@0/slot-names", &buf) == 0)
+    if (!memory || (currentmc != 0))
+    {
+      memory = core.addChild(hwNode("memory", hw::memory));
+    }
+
+    if (memory && (stat(devtreeslotnames.c_str(), &buf) == 0))
     {
       unsigned long bitmap = 0;
       char *slotnames = NULL;
       char *slotname = NULL;
-      int fd = open("/proc/device-tree/memory@0/slot-names", O_RDONLY);
-      int fd2 = open("/proc/device-tree/memory@0/reg", O_RDONLY);
+      int fd = open(devtreeslotnames.c_str(), O_RDONLY);
+      int fd2 = open(reg.c_str(), O_RDONLY);
 
       if ((fd >= 0) && (fd2 >= 0))
       {
@@ -38,7 +47,7 @@ bool scan_device_tree(hwNode & n)
 	  unsigned long size = 0;
 	  if (bitmap & slot)	// slot is active
 	  {
-	    hwNode bank("memory",
+	    hwNode bank("bank",
 			hw::memory);
 
 	    read(fd2, &base, sizeof(base));
@@ -46,7 +55,82 @@ bool scan_device_tree(hwNode & n)
 
 	    bank.setSlot(slotname);
 	    bank.setSize(size);
-	    memory.addChild(bank);
+	    memory->addChild(bank);
+	  }
+	  slot *= 2;
+	  slotname += strlen(slotname) + 1;
+	}
+	close(fd);
+	close(fd2);
+
+	free(slotnames);
+      }
+
+      currentmc++;
+    }
+    else
+      break;
+
+    memory = NULL;
+  }
+}
+
+bool scan_device_tree(hwNode & n)
+{
+  hwNode *core = n.getChild("core");
+  struct stat buf;
+
+  if (stat(DEVICETREE, &buf) != 0)
+    return false;
+
+  if (!core)
+  {
+    n.addChild(hwNode("core", hw::system));
+    core = n.getChild("core");
+  }
+
+  if (core)
+  {
+    hwNode *memory = core->getChild("memory");
+
+    if (!memory)
+    {
+      core->addChild(hwNode("memory", hw::memory));
+      memory = core->getChild("memory");
+    }
+
+    if (memory && (stat(DEVICETREE "/memory@0/slot-names", &buf) == 0))
+    {
+      unsigned long bitmap = 0;
+      char *slotnames = NULL;
+      char *slotname = NULL;
+      int fd = open(DEVICETREE "/memory@0/slot-names", O_RDONLY);
+      int fd2 = open(DEVICETREE "/memory@0/reg", O_RDONLY);
+
+      if ((fd >= 0) && (fd2 >= 0))
+      {
+	unsigned long slot = 1;
+	slotnames = (char *) malloc(buf.st_size + 1);
+	slotname = slotnames;
+	memset(slotnames, 0, buf.st_size + 1);
+	read(fd, &bitmap, sizeof(bitmap));
+	read(fd, slotnames, buf.st_size + 1);
+
+	while (strlen(slotname) > 0)
+	{
+	  unsigned long base = 0;
+	  unsigned long size = 0;
+	  if (bitmap & slot)	// slot is active
+	  {
+	    hwNode bank("bank",
+			hw::memory);
+
+	    read(fd2, &base, sizeof(base));
+	    read(fd2, &size, sizeof(size));
+
+	    bank.setSlot(slotname);
+	    bank.setSize(size);
+	    memory->addChild(bank);
 	  }
 	  slot *= 2;
 	  slotname += strlen(slotname) + 1;
@@ -57,11 +141,7 @@ bool scan_device_tree(hwNode & n)
 	free(slotnames);
       }
     }
-
   }
-
-  return n.addChild(memory);
-#endif
 
   return true;
 }

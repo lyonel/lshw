@@ -60,6 +60,23 @@ static hwNode *getcpu(hwNode & node,
     return NULL;
 }
 
+static void cpuinfo_ppc(hwNode & node,
+			string id,
+			string value)
+{
+  static int currentcpu = 0;
+
+  hwNode *cpu = getcpu(node, currentcpu);
+
+  if (cpu)
+  {
+    if (id == "revision")
+      cpu->setVersion(value);
+    if (id == "cpu")
+      cpu->setProduct(value);
+  }
+}
+
 static void cpuinfo_x86(hwNode & node,
 			string id,
 			string value)
@@ -157,6 +174,7 @@ bool scan_cpuinfo(hwNode & n)
 	value = hw::strip(cpuinfo_lines[i].substr(pos + 1));
 
 	cpuinfo_x86(n, id, value);
+	cpuinfo_ppc(n, id, value);
       }
     }
   }
@@ -167,4 +185,4 @@ bool scan_cpuinfo(hwNode & n)
   }
 }
 
-static char *id = "@(#) $Id: cpuinfo.cc,v 1.5 2003/01/19 20:55:31 ezix Exp $";
+static char *id = "@(#) $Id: cpuinfo.cc,v 1.6 2003/01/20 22:48:44 ezix Exp $";
