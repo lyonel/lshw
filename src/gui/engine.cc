@@ -10,7 +10,7 @@ extern "C" {
 #define YIELD()  while(gtk_events_pending()) gtk_main_iteration()
 
 static hwNode computer("computer", hw::system);
-static hwNode *selected = NULL;
+static hwNode *displayed = NULL;
 static hwNode *selected1 = NULL;
 static hwNode *selected2 = NULL;
 static hwNode *selected3 = NULL;
@@ -33,7 +33,7 @@ static void clear_list(GtkWidget * list1)
 {
   GtkTreeViewColumn *col;
 
-  while(col = gtk_tree_view_get_column(GTK_TREE_VIEW(list1), 0))
+  while((col = gtk_tree_view_get_column(GTK_TREE_VIEW(list1), 0)))
     gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
 }
 
@@ -93,8 +93,6 @@ static void populate_list(GtkWidget * list1, hwNode * root)
 
   gtk_tree_selection_set_mode(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), GTK_SELECTION_BROWSE);
   gtk_tree_selection_select_iter(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), &iter);
-
-  YIELD();
 }
 
 static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=NULL)
@@ -156,18 +154,16 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
   gtk_tree_selection_set_mode(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), GTK_SELECTION_BROWSE);
   if(current)
     gtk_tree_selection_select_iter(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), &current_iter);
-
-  YIELD();
 }
 
 static void display(GtkWidget * mainwindow)
 {
   GtkWidget * description = lookup_widget(mainwindow, "description");
 
-  if(!selected)
+  if(!displayed)
     gtk_label_set_text(GTK_LABEL(description), printmarkup(computer).c_str());
   else
-    gtk_label_set_text(GTK_LABEL(description), printmarkup(*selected).c_str());
+    gtk_label_set_text(GTK_LABEL(description), printmarkup(*displayed).c_str());
   gtk_label_set_use_markup (GTK_LABEL(description), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL(description), TRUE);
 
@@ -204,7 +200,7 @@ void refresh(GtkWidget *mainwindow)
   status(NULL);
 
 
-  //selected = computer.getChild("core");
+  //displayed = computer.getChild("core");
 
   selected1 = NULL;
   selected2 = NULL;
@@ -226,10 +222,10 @@ void activate(GtkTreeView *treeview,
 
   model = gtk_tree_view_get_model(treeview);
 
-  selected = NULL;
+  displayed = NULL;
 
   if(gtk_tree_model_get_iter(model, &iter, path))
-    gtk_tree_model_get(model, &iter, COL_NODE, &selected, -1);
+    gtk_tree_model_get(model, &iter, COL_NODE, &displayed, -1);
 
   display(mainwindow);
 }
@@ -270,7 +266,7 @@ void browse(unsigned list, GtkTreeView *treeview)
 
   //if(n->countChildren()==0)
   {
-    selected = n;
+    displayed = n;
     display(mainwindow);
   }
 
@@ -281,9 +277,8 @@ void browse(unsigned list, GtkTreeView *treeview)
       /*{
         selected3 = selected2;
         selected2 = selected1;
-        selected1 = find_parent(selected2, &computer);
-
-        populate_list(list1, selected1);
+        selected1 = find_parent(selected1, &computer);
+        populate_sublist(list1, find_parent(selected1, &computer), selected1);
         populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2, selected3);
       }
@@ -309,7 +304,7 @@ void browse(unsigned list, GtkTreeView *treeview)
         selected1 = selected2;
         selected2 = n;
         selected3 = NULL;
-        populate_list(list1, selected1);
+        populate_sublist(list1, selected1);
         populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2);
       }
