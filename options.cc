@@ -14,7 +14,7 @@
 
 using namespace std;
 
-static char *id = "@(#) $Id: options.cc,v 1.4 2004/02/26 16:05:00 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 static set < string > disabled_tests;
 static set < string > visible_classes;
@@ -33,10 +33,13 @@ bool parse_options(int &argc,
 		   char *argv[])
 {
   int i = 1;
+  string option = "";
 
   while (i < argc)
   {
-    if (strcmp(argv[i], "-disable") == 0)
+    option = string(argv[i]);
+
+    if (option == "-disable")
     {
       if (i + 1 >= argc)
 	return false;		// -disable requires an argument
@@ -45,7 +48,7 @@ bool parse_options(int &argc,
 
       remove_option_argument(i, argc, argv);
     }
-    else if (strcmp(argv[i], "-enable") == 0)
+    else if (option == "-enable")
     {
       if (i + 1 >= argc)
 	return false;		// -enable requires an argument
@@ -54,7 +57,7 @@ bool parse_options(int &argc,
 
       remove_option_argument(i, argc, argv);
     }
-    else if ((strcmp(argv[i], "-class") == 0) || (strcmp(argv[i], "-C") == 0))
+    else if ( (option == "-class") || (option == "-C") )
     {
       vector < string > classes;
 
