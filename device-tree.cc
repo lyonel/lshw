@@ -8,7 +8,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.14 2003/04/30 13:27:49 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.15 2003/05/01 19:13:38 ezix Exp $";
 
 #define DEVICETREE "/proc/device-tree"
 
@@ -64,6 +64,8 @@ static void scan_devtree_bootrom(hwNode & core)
       close(fd);
     }
 
+    bootrom.claim();
+    bootrom.setLogicalName(DEVICETREE "/rom");
     core.addChild(bootrom);
   }
 
@@ -77,6 +79,8 @@ static void scan_devtree_bootrom(hwNode & core)
     if (exists(DEVICETREE "/openprom/supports-bootinfo"))
       openprom.addCapability("bootinfo");
 
+    openprom.setLogicalName(DEVICETREE "/openprom");
+    openprom.claim();
     core.addChild(openprom);
   }
 }
