@@ -83,8 +83,9 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/mman.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.71 2003/10/21 15:06:21 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.72 2004/02/10 13:24:48 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -521,6 +522,8 @@ static void dmi_table(int fd,
   int i = 0;
   int r = 0, r2 = 0;
   string handle;
+  u32 mmoffset = 0;
+  void *mmp = NULL;
 
   if (len == 0)
     // no data
@@ -530,6 +533,7 @@ static void dmi_table(int fd,
     // memory exhausted
     return;
 
+#ifdef USE_LSEEK
   if (lseek(fd, (long) base, SEEK_SET) == -1)
     // i/o error
     return;
@@ -539,6 +543,20 @@ static void dmi_table(int fd,
   if (r == 0)
     // i/o error
     return;
+
+#else
+  mmoffset = base % getpagesize();
+
+  mmp = mmap(0, mmoffset + len, PROT_READ, MAP_SHARED, fd, base - mmoffset);
+  if (mmp == MAP_FAILED)
+  {
+    free(buf);
+    return;
+  }
+  memcpy(buf, (u8 *) mmp + mmoffset, len);
+
+  munmap(mmp, mmoffset + len);
+#endif
 
   data = buf;
   while (data + sizeof(struct dmi_header) <= (u8 *) buf + len)
@@ -1163,6 +1181,8 @@ bool scan_dmi(hwNode & n)
   int fd = open("/dev/mem",
 		O_RDONLY);
   long fp = 0xE0000L;
+  u32 mmoffset = 0;
+  void *mmp = NULL;
   u8 smmajver = 0, smminver = 0;
   u16 dmimaj = 0, dmimin = 0;
   if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4)
@@ -1170,17 +1190,31 @@ bool scan_dmi(hwNode & n)
     return false;
   if (fd == -1)
     return false;
+#ifdef USE_LSEEK
   if (lseek(fd, fp, SEEK_SET) == -1)
   {
     close(fd);
     return false;
   }
+#endif
 
   fp -= 16;
   while (fp < 0xFFFFF)
   {
     fp += 16;
+#ifdef USE_LSEEK
     if (read(fd, buf, 16) != 16)
+#else
+    mmoffset = fp % getpagesize();
+    mmp = mmap(0, mmoffset + 0x20, PROT_READ, MAP_SHARED, fd, fp - mmoffset);
+    memset(buf, 0, sizeof(buf));
+    if (mmp != MAP_FAILED)
+    {
+      memcpy(buf, (u8 *) mmp + mmoffset, sizeof(buf));
+      munmap(mmp, mmoffset + 0x20);
+    }
+    if (mmp == MAP_FAILED)
+#endif
     {
       close(fd);
       return false;
@@ -1199,10 +1233,12 @@ bool scan_dmi(hwNode & n)
       dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
       dmimin = buf[14] ? buf[14] & 0x0F : smminver;
       dmi_table(fd, base, len, num, n, dmimaj, dmimin);
+#ifdef USE_LSEEK
       /*
        * dmi_table moved us far away 
        */
       lseek(fd, fp + 16, SEEK_SET);
+#endif
     }
   }
   close(fd);
