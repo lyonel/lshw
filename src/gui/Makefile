@@ -28,6 +28,7 @@ gtk-$(PACKAGENAME): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 install: all
+	strip gtk-$(PACKAGENAME)
 	
 clean:
 	rm -f $(OBJS) gtk-$(PACKAGENAME) gtk-lshw.glade.bak gtk-lshw.gladep.bak interface.c.bak interface.h.bak callbacks.c.bak callbacks.h.bak Makefile.bak

@@ -66,7 +66,7 @@ oui.txt:
 manuf.txt:
 	wget http://www.ethereal.com/distribution/manuf.txt
 
-install: all
+install: all install-gui
 	-mkdir -p $(DESTDIR)
 	-mkdir -p $(DESTDIR)/$(SBINDIR)
 	cp $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
@@ -75,6 +75,11 @@ install: all
 	cp $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
 	-mkdir -p $(DESTDIR)/$(DATADIR)
 	cp $(DATAFILES) $(DESTDIR)/$(DATADIR)
+
+install-gui: gui
+	-mkdir -p $(DESTDIR)
+	-mkdir -p $(DESTDIR)/$(SBINDIR)
+	cp gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
 	
 clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
@@ -83,14 +88,17 @@ clean:
 
 .timestamp:
 	date --utc +%Y%m%d%H%M%S > $@
+
+$(PACKAGENAME).spec: $(PACKAGENAME).spec.in
+	cat $^ | sed -e "s/\@VERSION\@/`cat ../.version`/g" > $@
                                                                                
-release:
+release: $(PACKAGENAME).spec
 	mkdir -p ../../releases
 	svn copy .. `dirname ${PWD}`/releases/`cat ../.version`
 	svn commit `dirname ${PWD}`/releases/`cat ../.version` -m "released version "`cat ../.version`" of "$(PACKAGENAME)
 	rm -rf $(PACKAGENAME)-`cat ../.version`
 	svn export ../../releases/`cat ../.version` $(PACKAGENAME)-`cat ../.version`
-	cat $(PACKAGENAME)-`cat ../.version`/src/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat ../.version`/g" > $(PACKAGENAME)-`cat ../.version`/$(PACKAGENAME).spec
+	cp $^ $(PACKAGENAME)-`cat ../.version`/$(PACKAGENAME).spec
 	tar cfz $(PACKAGENAME)-`cat ../.version`.tar.gz --owner=0 --group=0 --numeric-owner --mode="go-w" $(PACKAGENAME)-`cat ../.version`
 	rm -rf $(PACKAGENAME)-`cat ../.version`
 

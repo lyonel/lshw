@@ -1,3 +1,6 @@
+# Conditional build (--with/--without option)
+#   --without gui
+
 %define name lshw
 %define version @VERSION@
 %define release 1
@@ -11,7 +14,7 @@ Source: %{name}-%{version}.tar.gz
 URL: http://www.ezix.org/software/lshw.html
 License: GPL
 Group: Applications/System
-Buildroot: /var/tmp/%{name}-%{version}-%{release}-root
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 lshw (Hardware Lister) is a small tool to provide detailed informaton on the hardware configuration of the machine. It can report exact memory configuration, firmware version, mainboard configuration, CPU version and speed, cache configuration, bus speed, etc. on DMI-capable x86 systems and on some PowerPC machines (PowerMac G4 is known to work).
@@ -22,11 +25,33 @@ For detailed information on lshw features and usage, please see the
 included documentation or go to the lshw Web page,
 http://www.ezix.org/software/lshw.html
 
+%if %{?_with_gui:1}%{!?_with_gui:0}
+%package gui
+Summary: HardWare LiSter (GUI version)
+Group: Applications/System
+Requires: %{name}
+Requires: gtk2
+BuildRequires: gtk2-devel
+
+%description gui
+lshw (Hardware Lister) is a small tool to provide detailed informaton on the hardware configuration of the machine. It can report exact memory configuration, firmware version, mainboard configuration, CPU version and speed, cache configuration, bus speed, etc. on DMI-capable x86 systems and on some PowerPC machines (PowerMac G4 is known to work).
+
+This package provides a graphical user interface to display hardware information.
+
+For detailed information on lshw features and usage, please see the
+included documentation or go to the lshw Web page,
+http://www.ezix.org/software/lshw.html
+
+%endif
+
 %prep
 %setup
 
 %build
 make
+%if %{?_with_gui:1}%{!?_with_gui:0}
+make gui
+%endif
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT PREFIX=%_prefix SBINDIR=%_sbindir MANDIR=%_mandir install
@@ -37,6 +62,13 @@ make DESTDIR=$RPM_BUILD_ROOT PREFIX=%_prefix SBINDIR=%_sbindir MANDIR=%_mandir i
 %attr(555,bin,bin) %_sbindir/lshw
 %doc %_mandir/man?/*
 %_datadir/lshw/*
+
+%if %{?_with_gui:1}%{!?_with_gui:0}
+%files gui
+%defattr(-,root,root)
+%doc COPYING
+%attr(555,bin,bin) %_sbindir/gtk-lshw
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
