@@ -67,9 +67,19 @@ static void cpuinfo_x86(hwNode & node,
   if (cpu)
   {
     if (id == "vendor_id")
+    {
+      if (value == "AuthenticAMD")
+	value = "Advanced Micro Devices [AMD]";
+      if (value == "GenuineIntel")
+	value = "Intel Corp.";
       cpu->setVendor(value);
+    }
     if (id == "model name")
       cpu->setProduct(value);
+    if ((id == "cpu MHz") && (cpu->getSize() == 0))
+    {
+      cpu->setSize((long long) (1000000L * atof(value.c_str())));
+    }
     if (id == "Physical processor ID")
       cpu->setSerial(value);
     if ((id == "fdiv_bug") && (value == "yes"))
@@ -161,4 +171,4 @@ bool scan_cpuinfo(hwNode & n)
   }
 }
 
-static char *id = "@(#) $Id: cpuinfo.cc,v 1.8 2003/01/27 14:25:08 ezix Exp $";
+static char *id = "@(#) $Id: cpuinfo.cc,v 1.9 2003/02/02 00:27:11 ezix Exp $";

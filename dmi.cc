@@ -1127,6 +1127,9 @@ static void dmi_table(int fd,
 	u = data[0x17] << 8 | data[0x16];
 	newnode.setSize(u * 1000000);
 
+	if (newnode.getCapacity() < newnode.getSize())
+	  newnode.setCapacity(0);
+
 	// CPU enabled/disabled by BIOS?
 	u = data[0x18] & 0x07;
 	if ((u == 2) || (u == 3) || (u == 4))
@@ -1648,4 +1651,4 @@ bool scan_dmi(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: dmi.cc,v 1.61 2003/01/30 17:34:56 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.62 2003/02/02 00:27:11 ezix Exp $";
