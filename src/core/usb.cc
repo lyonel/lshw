@@ -45,6 +45,15 @@
 
 static char *id = "@(#) $Id$";
 
+static string usbhost(unsigned bus)
+{
+  char buffer[10];
+
+  snprintf(buffer, sizeof(buffer), "usb%u", bus);
+
+  return string(buffer);
+}
+
 static string usbhandle(unsigned bus, unsigned level, unsigned dev)
 {
   char buffer[10];
@@ -54,11 +63,23 @@ static string usbhandle(unsigned bus, unsigned level, unsigned dev)
   return string(buffer);
 }
 
-static string usbbusinfo(unsigned bus, unsigned port)
+static string usbbusinfo(unsigned bus, unsigned level, unsigned port)
 {
   char buffer[10];
 
-  snprintf(buffer, sizeof(buffer), "usb@%u:%u", bus, port);
+  if(level>0)
+    snprintf(buffer, sizeof(buffer), "usb@%u:%u", bus, port);
+  else
+    snprintf(buffer, sizeof(buffer), "usb@%u", bus);
+
+  return string(buffer);
+}
+
+static string usbspeed(float speed)
+{
+  char buffer[10];
+
+  snprintf(buffer, sizeof(buffer), "%.1fMB/s", speed);
 
   return string(buffer);
 }
@@ -117,12 +138,18 @@ bool scan_usb(hwNode & n)
             {
               defined = true;
               if(lev==0)
+              {
                 device = hwNode("usbhost", hw::bus);
+                device.claim();
+                device.setLogicalName(usbhost(bus));
+              }
               else
                 device = hwNode("usb");
               device.setHandle(usbhandle(bus, lev, devnum));
-              device.setBusInfo(usbbusinfo(bus, port));
+              device.setBusInfo(usbbusinfo(bus, lev, port));
               device.setPhysId(port);
+              device.setConfig("speed", usbspeed(speed));
+              //device.setSpeed(speed*1.0E6, "B/s");
             }
             break;
           case 'D':
