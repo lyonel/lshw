@@ -402,6 +402,9 @@ bool scan_usb(hwNode & n)
             {
               setUSBClass(device, cls, sub, prot);
               device.addCapability(string("usb-")+string(ver));
+              device.describeCapability("usb-1.00", "USB 1.0");
+              device.describeCapability("usb-1.10", "USB 1.1");
+              device.describeCapability("usb-2.00", "USB 2.0");
             }
             break;
           case 'P':
