@@ -1,7 +1,7 @@
 PACKAGENAME = lshw
 SNAPSHOT=0.`cat .timestamp`
 
-DESTDIR=
+DESTDIR=/
 PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
