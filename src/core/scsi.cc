@@ -632,7 +632,7 @@ static bool scan_sg(int sg,
   char buffer[20];
   int fd = -1;
   My_sg_scsi_id m_id;
-  char slot_name[32];		// should be 16 but some 2.6 kernels require 32 bytes
+  char slot_name[64];		// should be 16 but some 2.6 kernels require 32 bytes
   string host = "";
   string businfo = "";
   hwNode *parent = NULL;
