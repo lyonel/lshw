@@ -42,6 +42,71 @@ static char *id =
 #define TP_MC		0x0f
 #define TP_FAULTY	0x1f
 
+struct parisc_device
+{
+  long sversion;
+  hw::hwClass device_class;
+  const char * description;
+};
+
+static struct parisc_device parisc_device_list[] = {
+	{0x00004, hw::processor, "Processor"},
+	{0x0000d, hw::communication, "MUX"},
+	{0x0000e, hw::communication, "RS-232"},
+	{0x0000f, hw::display, "Graphics"},
+	{0x00014, hw::input, "HIL"},
+	{0x00015, hw::display, "Graphics"},
+	{0x0003a, hw::printer, "Centronics"},
+	{0x000a8, hw::input, "Keyboard"},
+	{0x00039, hw::storage, "Core SCSI"},
+	{0x0003b, hw::storage, "FW-SCSI"},
+	{0x0005e, hw::network, "Token Ring"},
+	{0x00089, hw::storage, "FW-SCSI"},
+	{0x00091, hw::storage, "Fibre Channel"},
+	{0x0009a, hw::network, "ATM"},
+	{0x000a7, hw::storage, "Fibre Channel"},
+	{0x00070, hw::bus, "Core Bus"},
+	{0x00076, hw::bus, "EISA Bus"},
+	{0x00078, hw::bus, "VME Bus"},
+	{0x00081, hw::bus, "Core Bus"},
+	{0x0008e, hw::bus, "Wax Bus"},
+	{0x00090, hw::bus, "Wax EISA Bus"},
+	{0x00093, hw::bus, "TIMI Bus"},
+	{0x0000c, hw::bridge, "Bus Converter"},
+	{0x0000a, hw::bridge, "PCI Bridge"},
+	{0x000a5, hw::bridge, "PCI Bridge"},
+	{0x00052, hw::network, "LAN/Console"},
+	{0x00060, hw::network, "LAN/Console"},
+	{0x00071, hw::storage, "Core SCSI"},
+	{0x00072, hw::network, "Core Ethernet"},
+	{0x00072, hw::input, "Core HIL"},
+	{0x00074, hw::printer, "Core Centronics"},
+	{0x00075, hw::communication, "Core RS-232"},
+	{0x00077, hw::display, "Graphics"},
+	{0x0007a, hw::multimedia, "Audio"},
+	{0x0007b, hw::multimedia, "Audio"},
+	{0x0007c, hw::storage, "FW-SCSI"},
+	{0x0007d, hw::network, "FDDI"},
+	{0x0007e, hw::multimedia, "Audio"},
+	{0x0007f, hw::multimedia, "Audio"},
+	{0x00082, hw::storage, "SCSI"},
+	{0x00083, hw::storage, "Floppy"},
+	{0x00084, hw::input, "PS/2 port"},
+	{0x00085, hw::display, "Graphics"},
+	{0x00086, hw::network, "Token Ring"},
+	{0x00087, hw::communication, "ISDN"},
+	{0x00088, hw::network, "VME Networking"},
+	{0x0008a, hw::network, "Core Ethernet"},
+	{0x0008c, hw::communication, "RS-232"},
+	{0x0008d, hw::communication, "RJ-16"},
+	{0x0008f, hw::memory, "Boot ROM"},
+	{0x00096, hw::input, "PS/2 port"},
+	{0x00097, hw::network, "100VG LAN"},
+	{0x000a2, hw::network, "10/100BT LAN"},
+	{0x000a3, hw::storage, "Ultra2 SCSI"},
+	{0x00000, hw::generic, NULL},
+};
+
 static long get_long(const string & path)
 {
   long result = -1;
@@ -64,6 +129,21 @@ static string cpubusinfo(int cpu)
   snprintf(buffer, sizeof(buffer), "cpu@%d", cpu);
 
   return string(buffer);
+}
+
+
+static bool describe_device(hwNode & n, long sversion)
+{
+  for(unsigned i=0; parisc_device_list[i].description!=NULL; i++)
+  {
+    if(sversion == parisc_device_list[i].sversion)
+    {
+      n.setDescription(parisc_device_list[i].description);
+      return true;
+    }
+  }
+
+  return false;
 }
 
 static int currentcpu = 0;
