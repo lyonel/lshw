@@ -8,7 +8,7 @@
 #include <dirent.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: spd.cc,v 1.4 2003/08/11 22:54:32 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 /* SPD is 2048-bit long */
 #define SPD_MAXSIZE (2048/8)

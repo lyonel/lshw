@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <linux/cdrom.h>
 
-static char *id = "@(#) $Id: cdrom.cc,v 1.5 2003/10/17 22:23:40 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 #ifndef CDC_CD_R
 #define CDC_CD_R 0x2000

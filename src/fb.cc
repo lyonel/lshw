@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id: fb.cc,v 1.4 2003/11/03 17:33:57 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 #define FB_MODES_SHIFT	5	/* 32 modes per framebuffer */
 #define FB_NUM_MINORS	256	/* 256 Minors               */
