@@ -9,7 +9,7 @@
 #include <ctype.h>
 
 static char *id =
-  "@(#) $Id: osutils.cc,v 1.11 2004/04/14 20:04:44 ezix Exp $";
+  "@(#) $Id$";
 
 using namespace std;
 
@@ -269,4 +269,12 @@ string lowercase(const string & s)
     result += tolower(s[i]);
 
   return result;
+}
+
+string join(const string & j, const string & s1, const string & s2)
+{
+  if(s1 == "") return s2;
+  if(s2 == "") return s1;
+
+  return s1 + j + s2;
 }

@@ -24,4 +24,6 @@ std::string find_deventry(mode_t mode, dev_t device);
 std::string uppercase(const std::string &);
 std::string lowercase(const std::string &);
 
+std::string join(const std::string &, const std::string &, const std::string &);
+
 #endif
