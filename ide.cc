@@ -99,25 +99,11 @@ static string get_pciid(const string & bus,
   return string(buffer);
 }
 
-static string print_ascii(const char *base,
-			  int length)
-{
-  string result = "";
-
-  for (int i = 0; i < length; i++)
-  {
-    if (i < length - 1)
-      result += base[i + 1];
-    result += base[i];
-    i++;
-  }
-  return hw::strip(result);
-}
-
 static bool probe_ide(const string & name,
 		      hwNode & device)
 {
-  static struct hd_driveid id;
+  struct hd_driveid id;
+  const u_int8_t *id_regs = (const u_int8_t *) &id;
   int fd = open(device.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
 
   if (fd < 0)
@@ -131,12 +117,19 @@ static bool probe_ide(const string & name,
   }
 
   if (id.model[0])
-    device.setProduct(string((char *) id.model));
+    device.setProduct(hw::strip(string((char *) id.model, sizeof(id.model))));
   if (id.fw_rev[0])
-    device.setVersion(string((char *) id.fw_rev));
+    device.
+      setVersion(hw::strip(string((char *) id.fw_rev, sizeof(id.fw_rev))));
   if (id.serial_no[0])
-    device.setSerial(string((char *) id.serial_no));
+    device.
+      setSerial(hw::
+		strip(string((char *) id.serial_no, sizeof(id.serial_no))));
 
+  if (id.config & (1 << 7))
+    device.addCapability("removable");
+  if (!(id.config & (1 << 15)))
+    device.addCapability("magnetic");
   if (id.capability & 1)
     device.addCapability("dma");
   if (id.capability & 2)
@@ -151,9 +144,44 @@ static bool probe_ide(const string & name,
     device.addCapability("removable");
   if (id.command_set_1 & 8)
     device.addCapability("pm");
+  if (id.command_set_2 & 8)
+    device.addCapability("apm");
 
-  if (device.isCapable("iordy") && (id.capability & 4))
-    device.setConfig("iordy", "yes");
+  if ((id.capability & 8) || (id.field_valid & 2))
+  {
+    if (id.field_valid & 4)
+    {
+      if (id.dma_ultra & 0x100)
+	device.setConfig("mode", "udma0");
+      if (id.dma_ultra & 0x200)
+	device.setConfig("mode", "udma1");
+      if (id.dma_ultra & 0x400)
+	device.setConfig("mode", "udma2");
+#ifdef __NEW_HD_DRIVE_ID
+      if (id.hw_config & 0x2000)
+#else
+      if (id.word93 & 0x2000)
+#endif
+      {
+	if (id.dma_ultra & 0x800)
+	  device.setConfig("mode", "udma3");
+	if (id.dma_ultra & 0x1000)
+	  device.setConfig("mode", "udma4");
+	if (id.dma_ultra & 0x2000)
+	  device.setConfig("mode", "udma5");
+	if (id.dma_ultra & 0x4000)
+	  device.setConfig("mode", "udma6");
+	if (id.dma_ultra & 0x8000)
+	  device.setConfig("mode", "udma7");
+      }
+    }
+  }
+
+  if (id_regs[83] & 8)
+    device.addCapability("apm");
+
+  //if (device.isCapable("iordy") && (id.capability & 4))
+  //device.setConfig("iordy", "yes");
 
   if (device.isCapable("smart"))
   {
@@ -162,6 +190,20 @@ static bool probe_ide(const string & name,
     else
       device.setConfig("smart", "off");
   }
+
+  if (device.isCapable("apm"))
+  {
+    if (!(id_regs[86] & 8))
+      device.setConfig("apm", "off");
+    else
+      device.setConfig("apm", "on");
+  }
+
+  if (device.isCapable("lba"))
+    device.setSize((unsigned long long) id.lba_capacity * 512);
+  if (device.isCapable("removable"))
+    device.setSize(0);		// we'll first have to make sure we have a disk
+
 #if 0
   if (!(iddata[GEN_CONFIG] & NOT_ATA))
     device.addCapability("ata");
@@ -224,7 +266,7 @@ bool scan_ide(hwNode & n)
   for (int i = 0; i < nentries; i++)
   {
     vector < string > config;
-    hwNode ide("bus",
+    hwNode ide("ide",
 	       hw::storage);
 
     if (loadfile
@@ -297,4 +339,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.4 2003/02/05 20:38:39 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.5 2003/02/05 22:21:13 ezix Exp $";
