@@ -308,7 +308,7 @@ void print(hwNode & node,
 
       case hw::network:
 	decimalkilos(node.getSize());
-	cout << "bps";
+	cout << "B/s";
 	if (html)
 	  cout << "</td></tr>";
 	break;
@@ -352,6 +352,13 @@ void print(hwNode & node,
       case hw::system:
 	decimalkilos(node.getCapacity());
 	cout << "Hz";
+	if (html)
+	  cout << "</td></tr>";
+	break;
+
+      case hw::network:
+	decimalkilos(node.getCapacity());
+	cout << "B/s";
 	if (html)
 	  cout << "</td></tr>";
 	break;

@@ -144,7 +144,7 @@ string printmarkup(const hwNode & node)
 
       case hw::network:
 	decimalkilos(out, node.getSize());
-	out << "bps";
+	out << "B/s";
 	break;
 
       case hw::power:
@@ -175,6 +175,11 @@ string printmarkup(const hwNode & node)
       case hw::system:
 	decimalkilos(out, node.getCapacity());
 	out << "Hz";
+	break;
+
+      case hw::network:
+	decimalkilos(out, node.getCapacity());
+	out << "B/s";
 	break;
 
       case hw::power:
