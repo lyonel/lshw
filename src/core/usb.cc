@@ -6,6 +6,7 @@
 #include "usb.h"
 #include "osutils.h"
 #include "heuristics.h"
+#include <map>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -16,6 +17,7 @@
 #include <stdio.h>
 
 #define PROCBUSUSBDEVICES "/proc/bus/usb/devices"
+#define USBID_PATH "/usr/share/lshw/usb.ids:/usr/local/share/usb.ids:/usr/share/usb.ids:/etc/usb.ids:/usr/share/hwdata/usb.ids:/usr/share/misc/usb.ids"
 
 #define USB_CLASS_PER_INTERFACE         0	/* for DeviceClass */
 #define USB_CLASS_AUDIO                 1
@@ -27,22 +29,10 @@
 #define USB_CLASS_DATA                  10
 #define USB_CLASS_VENDOR_SPEC           0xff
 
-#define USB_DIR_OUT                     0
-#define USB_DIR_IN                      0x80
+static map<u_int16_t,string> usbvendors;
+static map<u_int32_t,string> usbproducts;
 
-/*
- * Descriptor types
- */
-#define USB_DT_DEVICE                   0x01
-#define USB_DT_CONFIG                   0x02
-#define USB_DT_STRING                   0x03
-#define USB_DT_INTERFACE                0x04
-#define USB_DT_ENDPOINT                 0x05
-
-#define USB_DT_HID                      (USB_TYPE_CLASS | 0x01)
-#define USB_DT_REPORT                   (USB_TYPE_CLASS | 0x02)
-#define USB_DT_PHYSICAL                 (USB_TYPE_CLASS | 0x03)
-#define USB_DT_HUB                      (USB_TYPE_CLASS | 0x09)
+#define PRODID(x, y) ((x << 16) + y)
 
 static char *id = "@(#) $Id$";
 
@@ -159,6 +149,67 @@ static bool setUSBClass(hwNode & device, unsigned cls)
   return true;
 }
 
+static bool describeUSB(hwNode & device, unsigned vendor, unsigned prodid)
+{
+  if(usbvendors.find(vendor)==usbvendors.end()) return false;
+
+  device.setVendor(usbvendors[vendor]);
+
+  if(usbproducts.find(PRODID(vendor, prodid))!=usbproducts.end())
+    device.setProduct(usbproducts[PRODID(vendor, prodid)]);
+
+  return true;
+}
+
+static bool load_usbids(const string & name)
+{
+  FILE * usbids = NULL;
+  u_int16_t vendorid = 0;
+
+  usbids = fopen(name.c_str(), "r");
+  if(!usbids) return false;
+
+  while(!feof(usbids))
+  {
+    char * buffer = NULL;
+    size_t linelen;
+    unsigned t = 0;
+    char description[100];
+
+    if(getline(&buffer, &linelen, usbids)>0)
+    {
+      if(buffer[linelen-1]<' ')
+        buffer[linelen-1] = '\0';	// chop \n
+      string line = string(buffer);
+      free(buffer);
+      memset(description, 0, sizeof(description));
+      
+      if(line.length()>0)
+      {
+        if(line[0] == '\t')	// product id entry
+        {
+          if(sscanf(line.c_str(), "%x %[ -z]", &t, description)>0)
+          {
+            usbproducts[PRODID(vendorid,t)] = hw::strip(description);
+          }
+        }
+        else			// vendor id entry
+        {
+          if(sscanf(line.c_str(), "%x %[ -z]", &t, description)>0)
+          {
+            vendorid = t;
+            usbvendors[t] = hw::strip(description);
+          }
+        }
+      }
+    }
+  }
+
+  fclose(usbids);
+
+  return true;
+}
+
 bool scan_usb(hwNode & n)
 {
   hwNode device("device");
@@ -177,6 +228,14 @@ bool scan_usb(hwNode & n)
 
   if (!exists(PROCBUSUSBDEVICES))
     return false;
+
+  vector < string > filenames;
+  splitlines(USBID_PATH, filenames, ':');
+  for (int i = filenames.size() - 1; i >= 0; i--)
+  {
+    load_usbids(filenames[i]);
+  }
+  filenames.clear();
 
   usbdevices = fopen(PROCBUSUSBDEVICES, "r");
 
@@ -243,6 +302,7 @@ bool scan_usb(hwNode & n)
             strcpy(rev, "");
             if(sscanf(line.c_str(), "P: Vendor=%x ProdID=%x Rev=%s", &vendor, &prodid, rev)>0)
             {
+              describeUSB(device, vendor, prodid);
               device.setVersion(hw::strip(rev));
             }
             break;
