@@ -38,17 +38,14 @@ bool scan_memory(hwNode & n)
 	  unsigned long size = 0;
 	  if (bitmap & slot)	// slot is active
 	  {
+	    hwNode bank(slotname,
+			hw::memory);
+
 	    read(fd2, &base, sizeof(base));
 	    read(fd2, &size, sizeof(size));
 
-	    if (size > 0)
-	    {
-	      hwNode bank(slotname,
-			  hw::memory);
-
-	      bank.setSize(size);
-	      memory.addChild(bank);
-	    }
+	    bank.setSize(size);
+	    memory.addChild(bank);
 	  }
 	  slot *= 2;
 	  slotname += strlen(slotname) + 1;
