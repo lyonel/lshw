@@ -15,10 +15,20 @@
 
 static char *id = "@(#) $Id$";
 
-static void decimalkilos(ostringstream & out, unsigned long long value)
+static string itos(unsigned long long value)
+{
+  ostringstream out;
+
+  out << value;
+
+  return out.str();
+}
+
+static string decimalkilos(unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
   unsigned int i = 0;
+  ostringstream out;
 
   while ((i <= strlen(prefixes)) && ((value > 10000) || (value % 1000 == 0)))
   {
@@ -29,12 +39,15 @@ static void decimalkilos(ostringstream & out, unsigned long long value)
   out << value;
   if ((i > 0) && (i <= strlen(prefixes)))
     out << prefixes[i - 1];
+
+  return out.str();
 }
 
-static void kilobytes(ostringstream & out, unsigned long long value)
+static string kilobytes(unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
   unsigned int i = 0;
+  ostringstream out;
 
   while ((i <= strlen(prefixes)) && ((value > 10240) || (value % 1024 == 0)))
   {
@@ -46,32 +59,39 @@ static void kilobytes(ostringstream & out, unsigned long long value)
   if ((i > 0) && (i <= strlen(prefixes)))
     out << prefixes[i - 1];
   out << "B";
+
+  return out.str();
 }
 
-static string printattr(const string & name, const string & value)
+static void printattr(const string & name, const string & value, GtkTextBuffer *buffer, GtkTextIter &iter)
 {
-  if(value == "") return "";
+  if(value == "") return;
 
-  return "<b>" + name + ":</b> " + escape(value) + "\n";
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, name.c_str(), -1, "bold", NULL);
+  gtk_text_buffer_insert (buffer, &iter, ": ", -1);
+  gtk_text_buffer_insert (buffer, &iter, escape(value).c_str(), -1);
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 }
 
-string printmarkup(const hwNode & node)
+void printmarkup(const hwNode & node, GtkTextBuffer *buffer)
 {
   vector < string > config;
   vector < string > resources;
   ostringstream out;
+  GtkTextIter iter;
+
+  gtk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
 
   resources = node.getResources(":");
 
-  out << "<big><b>";
   if(node.getDescription()!="")
-    out << node.getDescription();
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, node.getDescription().c_str(), -1, "heading", NULL);
   else
   {
     if(node.getProduct()!="")
-      out << node.getProduct();
+      gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, node.getProduct().c_str(), -1, "heading", NULL);
     else
-      out << node.getId();
+      gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, node.getId().c_str(), -1, "heading", NULL);
   }
   if(!node.claimed() || node.disabled())
     out << "<span color=\"gray\">";
@@ -81,27 +101,26 @@ string printmarkup(const hwNode & node)
     out << " UNCLAIMED";
   if(!node.claimed() || node.disabled())
     out << "</span>";
-  out << "</b></big>" << endl << endl;
+  gtk_text_buffer_insert (buffer, &iter, "\n\n\n", -1);
 
   //out << printattr("description", node.getDescription());
-  out << printattr("product", node.getProduct());
-  out << printattr("vendor", node.getVendor());
-  out << printattr("bus info", node.getBusInfo());
+  printattr("product", node.getProduct(), buffer, iter);
+  printattr("vendor", node.getVendor(), buffer, iter);
+  printattr("bus info", node.getBusInfo(), buffer, iter);
   if (node.getLogicalName() != "")
   {
     vector<string> logicalnames = node.getLogicalNames();
 
     for(unsigned int i = 0; i<logicalnames.size(); i++)
-    	out << printattr("logical name", logicalnames[i]);
+    	printattr("logical name", logicalnames[i], buffer, iter);
   }
 
-  out << printattr("version", node.getVersion());
-  out << printattr("serial", node.getSerial());
-  out << printattr("slot", node.getSlot());
+  printattr("version", node.getVersion(), buffer, iter);
+  printattr("serial", node.getSerial(), buffer, iter);
+  printattr("slot", node.getSlot(), buffer, iter);
 
   if (node.getSize() > 0)
     {
-      out << "<b>size:</b> ";
       switch (node.getClass())
       {
       case hw::display:
@@ -109,65 +128,57 @@ string printmarkup(const hwNode & node)
       case hw::address:
       case hw::storage:
       case hw::disk:
-	kilobytes(out, node.getSize());
+	printattr("size",kilobytes(node.getSize()), buffer, iter);
 	break;
 
       case hw::processor:
       case hw::bus:
       case hw::system:
-	decimalkilos(out, node.getSize());
-	out << "Hz";
+	printattr("size",decimalkilos(node.getSize())+"Hz", buffer, iter);
 	break;
 
       case hw::network:
-	decimalkilos(out, node.getSize());
-	out << "B/s";
+	printattr("size",decimalkilos(node.getSize())+"/s", buffer, iter);
 	break;
 
       case hw::power:
-	out << node.getSize();
-	out << "mWh";
+	printattr("size",itos(node.getSize())+"mWh", buffer, iter);
 	break;
 
       default:
-	out << node.getSize();
+	printattr("size",itos(node.getSize()), buffer, iter);
       }
-      out << endl;
     }
 
-    if (node.getCapacity() > 0)
+  if (node.getCapacity() > 0)
     {
-      out << "<b>capacity:</b> ";
       switch (node.getClass())
       {
+      case hw::display:
       case hw::memory:
       case hw::address:
       case hw::storage:
       case hw::disk:
-	kilobytes(out, node.getCapacity());
+	printattr("capacity",kilobytes(node.getCapacity()), buffer, iter);
 	break;
 
       case hw::processor:
       case hw::bus:
       case hw::system:
-	decimalkilos(out, node.getCapacity());
-	out << "Hz";
+	printattr("capacity",decimalkilos(node.getCapacity())+"Hz", buffer, iter);
 	break;
 
       case hw::network:
-	decimalkilos(out, node.getCapacity());
-	out << "B/s";
+	printattr("capacity",decimalkilos(node.getCapacity())+"/s", buffer, iter);
 	break;
 
       case hw::power:
-	out << node.getCapacity();
-	out << "mWh";
+	printattr("capacity",itos(node.getCapacity())+"mWh", buffer, iter);
 	break;
 
       default:
-	out << node.getCapacity();
+	printattr("capacity",itos(node.getCapacity()), buffer, iter);
       }
-      out << endl;
     }
 
     if (node.getClass() == hw::address)
@@ -183,20 +194,11 @@ string printmarkup(const hwNode & node)
     }
 
     if (node.getWidth() > 0)
-    {
-      out << "<b>width:</b> ";
-      out << node.getWidth() << " bits";
-      out << endl;
-    }
+      printattr("width",itos(node.getWidth())+" bits", buffer, iter);
 
     if (node.getClock() > 0)
     {
-      out << "<b>clock:</b> ";
-      decimalkilos(out, node.getClock());
-      out << "Hz";
-      if (node.getClass() == hw::memory)
-	out << " (" << 1.0e9 / node.getClock() << "ns)";
-      out << endl;
+      printattr("clock", decimalkilos(node.getClock())+string("Hz") + ((node.getClass() == hw::memory)?(string(" (")+itos((long long)(1.0e9 / node.getClock())) + string("ns)")):string("")), buffer, iter);
     }
 
   config.clear();
@@ -257,8 +259,6 @@ string printmarkup(const hwNode & node)
 
 #endif
   (void) &id;			// avoid "id defined but not used" warning
-
-  return out.str();
 }
 
 static hwNode * find_parent(hwNode * n, hwNode *sub)

@@ -58,9 +58,9 @@ create_lshw (void)
   GtkWidget *scrolledwindow12;
   GtkWidget *treeview3;
   GtkWidget *vbox2;
-  GtkWidget *icon;
   GtkWidget *scrolledwindow13;
   GtkWidget *viewport3;
+  GtkWidget *scrolledwindow14;
   GtkWidget *description;
   GtkWidget *statusbar;
   GtkAccelGroup *accel_group;
@@ -199,11 +199,6 @@ create_lshw (void)
   gtk_widget_show (vbox2);
   gtk_paned_pack2 (GTK_PANED (hpaned1), vbox2, TRUE, TRUE);
 
-  icon = create_pixmap (lshw, NULL);
-  gtk_widget_show (icon);
-  gtk_box_pack_start (GTK_BOX (vbox2), icon, FALSE, FALSE, 0);
-  gtk_misc_set_padding (GTK_MISC (icon), 0, 5);
-
   scrolledwindow13 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow13);
   gtk_box_pack_start (GTK_BOX (vbox2), scrolledwindow13, TRUE, TRUE, 0);
@@ -214,12 +209,22 @@ create_lshw (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow13), viewport3);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport3), GTK_SHADOW_NONE);
 
-  description = gtk_label_new ("<i>no information available</i>\n\nclick on <i>Refresh</i> to query hardware");
+  scrolledwindow14 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow14);
+  gtk_container_add (GTK_CONTAINER (viewport3), scrolledwindow14);
+  gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow14), 2);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow14), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow14), GTK_SHADOW_ETCHED_IN);
+
+  description = gtk_text_view_new ();
   gtk_widget_show (description);
-  gtk_container_add (GTK_CONTAINER (viewport3), description);
-  gtk_label_set_use_markup (GTK_LABEL (description), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (description), 0, 0);
-  gtk_misc_set_padding (GTK_MISC (description), 8, 8);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow14), description);
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (description), FALSE);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (description), FALSE);
+  gtk_text_view_set_left_margin (GTK_TEXT_VIEW (description), 10);
+  gtk_text_view_set_right_margin (GTK_TEXT_VIEW (description), 10);
+  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (description)),
+	"no information available.\n\nclick on Refresh to query hardware", -1);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
@@ -295,9 +300,9 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow12, "scrolledwindow12");
   GLADE_HOOKUP_OBJECT (lshw, treeview3, "treeview3");
   GLADE_HOOKUP_OBJECT (lshw, vbox2, "vbox2");
-  GLADE_HOOKUP_OBJECT (lshw, icon, "icon");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow13, "scrolledwindow13");
   GLADE_HOOKUP_OBJECT (lshw, viewport3, "viewport3");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow14, "scrolledwindow14");
   GLADE_HOOKUP_OBJECT (lshw, description, "description");
   GLADE_HOOKUP_OBJECT (lshw, statusbar, "statusbar");
   GLADE_HOOKUP_OBJECT_NO_REF (lshw, tooltips, "tooltips");

@@ -98,23 +98,115 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
     gtk_tree_selection_select_iter(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), &current_iter);
 }
 
+static void create_tags (GtkTextBuffer *buffer)
+{
+  static bool initialized = false;
+
+  if(initialized) return;
+
+  initialized = true;
+
+  gtk_text_buffer_create_tag (buffer, "heading",
+			      "weight", PANGO_WEIGHT_BOLD,
+			      "size", 15 * PANGO_SCALE,
+			      NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "italic",
+			      "style", PANGO_STYLE_ITALIC, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "bold",
+			      "weight", PANGO_WEIGHT_BOLD, NULL);  
+  
+  gtk_text_buffer_create_tag (buffer, "big",
+			      /* points times the PANGO_SCALE factor */
+			      "size", 20 * PANGO_SCALE, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "xx-small",
+			      "scale", PANGO_SCALE_XX_SMALL, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "x-large",
+			      "scale", PANGO_SCALE_X_LARGE, NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "monospace",
+			      "family", "monospace", NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "blue_foreground",
+			      "foreground", "blue", NULL);  
+
+  gtk_text_buffer_create_tag (buffer, "red_background",
+			      "background", "red", NULL);
+
+  gtk_text_buffer_create_tag (buffer, "big_gap_before_line",
+			      "pixels_above_lines", 30, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "big_gap_after_line",
+			      "pixels_below_lines", 30, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "double_spaced_line",
+			      "pixels_inside_wrap", 10, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "not_editable",
+			      "editable", FALSE, NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "word_wrap",
+			      "wrap_mode", GTK_WRAP_WORD, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "char_wrap",
+			      "wrap_mode", GTK_WRAP_CHAR, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "no_wrap",
+			      "wrap_mode", GTK_WRAP_NONE, NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "center",
+			      "justification", GTK_JUSTIFY_CENTER, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "right_justify",
+			      "justification", GTK_JUSTIFY_RIGHT, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "wide_margins",
+			      "left_margin", 50, "right_margin", 50,
+			      NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "strikethrough",
+			      "strikethrough", TRUE, NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "underline",
+			      "underline", PANGO_UNDERLINE_SINGLE, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "double_underline",
+			      "underline", PANGO_UNDERLINE_DOUBLE, NULL);
+
+  gtk_text_buffer_create_tag (buffer, "superscript",
+			      "rise", 10 * PANGO_SCALE,	  /* 10 pixels */
+			      "size", 8 * PANGO_SCALE,	  /* 8 points */
+			      NULL);
+  
+  gtk_text_buffer_create_tag (buffer, "subscript",
+			      "rise", -10 * PANGO_SCALE,   /* 10 pixels */
+			      "size", 8 * PANGO_SCALE,	   /* 8 points */
+			      NULL);
+}
+
 static void display(GtkWidget * mainwindow)
 {
   GtkWidget * description = lookup_widget(mainwindow, "description");
+  GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (description));
+
+  gtk_text_buffer_set_text(buffer, "", -1);
 
   if(!displayed)
-    gtk_label_set_text(GTK_LABEL(description), "<i>Please select a node to display.</i>");
+    gtk_text_buffer_set_text(buffer, "Please select a node to display.", -1);
   else
   {
-    string markup = printmarkup(*displayed);
+    create_tags(buffer);
+
+    printmarkup(*displayed, buffer);
     string hwpath = printhwpath(*displayed, container);
 
-    if(hwpath!="") markup += "\n<b>path:</b> <tt>" + hwpath + "</tt>";
-
-    gtk_label_set_text(GTK_LABEL(description), markup.c_str());
+    if(hwpath!="")
+    {
+    }
   }
-  gtk_label_set_use_markup (GTK_LABEL(description), TRUE);
-  gtk_label_set_line_wrap (GTK_LABEL(description), TRUE);
 }
 
 void status(const char *message)
@@ -154,8 +246,7 @@ void refresh(GtkWidget *mainwindow)
   populate_sublist(list2, NULL);
   populate_sublist(list3, NULL);
   displayed = NULL;
-  gtk_label_set_text(GTK_LABEL(description), "<i>scanning...</i>");
-  gtk_label_set_use_markup (GTK_LABEL(description), TRUE);
+  gtk_text_buffer_set_text(gtk_text_view_get_buffer(GTK_TEXT_VIEW(description)), "scanning...", -1);
 
   container = hwNode("container", hw::generic);
   status("Scanning...");

@@ -2,8 +2,9 @@
 #define _PRINT_H_
 
 #include "hw.h"
+#include <gtk/gtk.h>
 
-string printmarkup(const hwNode & node);
+void printmarkup(const hwNode & node, GtkTextBuffer *buffer);
 
 string printhwpath(hwNode & node, hwNode & base);
 
