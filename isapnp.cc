@@ -1,4 +1,5 @@
 #include "isapnp.h"
+#include "pnp.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -75,54 +76,10 @@ struct isapnp_device_id
   unsigned long driver_data;	/* data private to the driver */
 };
 
-const char *pnp_vendors[] = {
-  "ACC", "Accton",
-  "ADP", "Adaptec",
-  "ADV", "AMD",
-  "ATI", "ATI",
-  "ATK", "Allied Telesyn",
-  "AZT", "Aztech",
-  "BRI", "Boca Research",
-  "BUS", "Buslogic",
-  "CPQ", "Compaq",
-  "CSC", "Crystal",
-  "CTL", "Creative Labs",
-  "DBK", "Databook",
-  "ESS", "ESS",
-  "FAR", "Farallon",
-  "FDC", "Future Domain",
-  "HWP", "Hewlett-Packard",
-  "IBM", "IBM",
-  "INT", "Intel",
-  "ISA", "Iomega",
-  "MDG", "Madge",
-  "MDY", "Microdyne",
-  "NEC", "NEC",
-  "NVL", "Novell",
-  "OLC", "Olicom",
-  "PRO", "Proteon",
-  "RII", "Racal",
-  "RTL", "Realtek",
-  "SCM", "SCM",
-  "SKD", "SysKonnect",
-  "SMC", "SMC",
-  "SUP", "SupraExpress",
-  "SVE", "SVEC",
-  "TCI", "Tulip",
-  "TCM", "3Com",
-  "TCO", "Thomas-Conrad",
-  "TOS", "Toshiba",
-  "USC", "UltraStor",
-  "VDM", "Vadem",
-  "WDC", "Future Domain",
-  "ZDS", "Zeos",
-  NULL, NULL
-};
-
-int isapnp_disable;		/* Disable ISA PnP */
-int isapnp_rdp;			/* Read Data Port */
-int isapnp_reset = 0;		/* reset all PnP cards (deactivate) */
-int isapnp_verbose = 1;		/* verbose mode */
+static int isapnp_disable;	/* Disable ISA PnP */
+static int isapnp_rdp;		/* Read Data Port */
+static int isapnp_reset = 0;	/* reset all PnP cards (deactivate) */
+static int isapnp_verbose = 1;	/* verbose mode */
 
 #define _PIDXR		0x279
 #define _PNPWRP		0xa79
@@ -152,28 +109,12 @@ static int isapnp_detected;
 
 /* some prototypes */
 
-static const char *vendorname(const char *id)
-{
-  int i = 0;
-  if (id == NULL)
-    return "";
-
-  while (pnp_vendors[i])
-  {
-    if (strncmp(pnp_vendors[i], id, strlen(pnp_vendors[i])) == 0)
-      return pnp_vendors[i + 1];
-    i += 2;
-  }
-
-  return "";
-}
-
 static void udelay(unsigned long l)
 {
   struct timespec delay;
 
   delay.tv_sec = 0;
-  delay.tv_nsec = l;
+  delay.tv_nsec = l / 100;
 
   nanosleep(&delay, NULL);
 }
@@ -555,24 +496,17 @@ static const char *isapnp_parse_id(unsigned short vendor,
  *  Parse logical device tag.
  */
 
-static void isapnp_parse_device(void *card,
-				int size,
-				int number)
+static hwNode *isapnp_parse_device(hwNode & card,
+				   int size,
+				   int number)
 {
   unsigned char tmp[6];
 
   isapnp_peek(tmp, size);
-  printf("device: %s\n",
-	 isapnp_parse_id((tmp[1] << 8) | tmp[0], (tmp[3] << 8) | tmp[2]));
-  /*
-   * dev->regs = tmp[4];
-   * if (size > 5)
-   * dev->regs |= tmp[5] << 8;
-   * dev->capabilities |= PNP_CONFIGURABLE;
-   * dev->capabilities |= PNP_READ;
-   * dev->capabilities |= PNP_WRITE;
-   * dev->capabilities |= PNP_DISABLE;
-   */
+  return card.
+    addChild(hwNode
+	     (isapnp_parse_id
+	      ((tmp[1] << 8) | tmp[0], (tmp[3] << 8) | tmp[2])));
 }
 
 /*
@@ -726,42 +660,34 @@ static void isapnp_parse_fixed_mem32_resource(int size)
  *  Parse card name for ISA PnP device.
  */
 
-static void isapnp_parse_name(char *name,
-			      unsigned int name_max,
-			      unsigned short *size)
+static string isapnp_parse_name(unsigned short &size)
 {
-  if (name[0] == '\0')
-  {
-    unsigned short size1 = *size >= name_max ? (name_max - 1) : *size;
-    isapnp_peek((unsigned char *) name, size1);
-    name[size1] = '\0';
-    *size -= size1;
+  char buffer[1024];
+  unsigned short size1 = size >= sizeof(buffer) ? (sizeof(buffer) - 1) : size;
+  isapnp_peek((unsigned char *) buffer, size1);
+  buffer[size1] = '\0';
+  size -= size1;
 
-    /*
-     * clean whitespace from end of string 
-     */
-    while (size1 > 0 && name[--size1] == ' ')
-      name[size1] = '\0';
-  }
+  return hw::strip(buffer);
 }
 
-#if 0
 /*
  *  Parse resource map for logical device.
  */
 
-static int isapnp_create_device(void *card,
+static int isapnp_create_device(hwNode & card,
 				unsigned short size)
 {
   int number = 0, skip = 0, priority = 0, compat = 0;
   unsigned char type, tmp[17];
+  hwNode *dev = NULL;
+
   if ((dev = isapnp_parse_device(card, size, number++)) == NULL)
     return 1;
-  option = pnp_register_independent_option(dev);
-  if (!option)
-    return 1;
   /*
-   * pnp_add_card_device(card,dev);
+   * option = pnp_register_independent_option(dev);
+   * if (!option)
+   * return 1;
    */
 
   while (1)
@@ -779,10 +705,12 @@ static int isapnp_create_device(void *card,
 	  return 1;
 	size = 0;
 	skip = 0;
-	option = pnp_register_independent_option(dev);
-	if (!option)
-	  return 1;
-	pnp_add_card_device(card, dev);
+	/*
+	 * option = pnp_register_independent_option(dev);
+	 * if (!option)
+	 * return 1;
+	 * pnp_add_card_device(card,dev);
+	 */
       }
       else
       {
@@ -795,7 +723,14 @@ static int isapnp_create_device(void *card,
       if (size == 4 && compat < DEVICE_COUNT_COMPATIBLE)
       {
 	isapnp_peek(tmp, 4);
-	isapnp_parse_id(dev, (tmp[1] << 8) | tmp[0], (tmp[3] << 8) | tmp[2]);
+	if (dev->getClass() == hw::generic)
+	  dev->
+	    setClass(pnp_class
+		     (isapnp_parse_id
+		      ((tmp[1] << 8) | tmp[0], (tmp[3] << 8) | tmp[2])));
+	dev->
+	  addCapability(isapnp_parse_id
+			((tmp[1] << 8) | tmp[0], (tmp[3] << 8) | tmp[2]));
 	compat++;
 	size = 0;
       }
@@ -803,28 +738,30 @@ static int isapnp_create_device(void *card,
     case _STAG_IRQ:
       if (size < 2 || size > 3)
 	goto __skip;
-      isapnp_parse_irq_resource(option, size);
+      isapnp_parse_irq_resource(size);
       size = 0;
       break;
     case _STAG_DMA:
       if (size != 2)
 	goto __skip;
-      isapnp_parse_dma_resource(option, size);
+      isapnp_parse_dma_resource(size);
       size = 0;
       break;
     case _STAG_STARTDEP:
       if (size > 1)
 	goto __skip;
-      priority = 0x100 | PNP_RES_PRIORITY_ACCEPTABLE;
+      //priority = 0x100 | PNP_RES_PRIORITY_ACCEPTABLE;
       if (size > 0)
       {
 	isapnp_peek(tmp, size);
 	priority = 0x100 | tmp[0];
 	size = 0;
       }
-      option = pnp_register_dependent_option(dev, priority);
-      if (!option)
-	return 1;
+      /*
+       * option = pnp_register_dependent_option(dev,priority);
+       * if (!option)
+       * return 1;
+       */
       break;
     case _STAG_ENDDEP:
       if (size != 0)
@@ -834,13 +771,13 @@ static int isapnp_create_device(void *card,
     case _STAG_IOPORT:
       if (size != 7)
 	goto __skip;
-      isapnp_parse_port_resource(option, size);
+      isapnp_parse_port_resource(size);
       size = 0;
       break;
     case _STAG_FIXEDIO:
       if (size != 3)
 	goto __skip;
-      isapnp_parse_fixed_port_resource(option, size);
+      isapnp_parse_fixed_port_resource(size);
       size = 0;
       break;
     case _STAG_VENDOR:
@@ -848,11 +785,11 @@ static int isapnp_create_device(void *card,
     case _LTAG_MEMRANGE:
       if (size != 9)
 	goto __skip;
-      isapnp_parse_mem_resource(option, size);
+      isapnp_parse_mem_resource(size);
       size = 0;
       break;
     case _LTAG_ANSISTR:
-      isapnp_parse_name(dev->dev.name, sizeof(dev->dev.name), &size);
+      dev->setProduct(isapnp_parse_name(size));
       break;
     case _LTAG_UNICODESTR:
       /*
@@ -867,13 +804,13 @@ static int isapnp_create_device(void *card,
     case _LTAG_MEM32RANGE:
       if (size != 17)
 	goto __skip;
-      isapnp_parse_mem32_resource(option, size);
+      isapnp_parse_mem32_resource(size);
       size = 0;
       break;
     case _LTAG_FIXEDMEM32RANGE:
       if (size != 9)
 	goto __skip;
-      isapnp_parse_fixed_mem32_resource(option, size);
+      isapnp_parse_fixed_mem32_resource(size);
       size = 0;
       break;
     case _STAG_END:
@@ -881,9 +818,7 @@ static int isapnp_create_device(void *card,
 	isapnp_skip_bytes(size);
       return 1;
     default:
-      fprintf(stderr,
-	      "isapnp: unexpected or unknown tag type 0x%x for logical device %i (device %i), ignored\n",
-	      type, dev->number, card->number);
+      break;
     }
   __skip:
     if (size > 0)
@@ -892,11 +827,22 @@ static int isapnp_create_device(void *card,
   return 0;
 }
 
+static string bcd_version(unsigned char v,
+			  const char *separator = "")
+{
+  char version[10];
+
+  snprintf(version, sizeof(version), "%d%s%d", (v & 0xf0) >> 4, separator,
+	   v & 0x0f);
+
+  return string(version);
+}
+
 /*
  *  Parse resource map for ISA PnP card.
  */
 
-static void isapnp_parse_resource_map(void *card)
+static bool isapnp_parse_resource_map(hwNode & card)
 {
   unsigned char type, tmp[17];
   unsigned short size;
@@ -904,36 +850,36 @@ static void isapnp_parse_resource_map(void *card)
   while (1)
   {
     if (isapnp_read_tag(&type, &size) < 0)
-      return;
+      return false;
     switch (type)
     {
     case _STAG_PNPVERNO:
       if (size != 2)
 	goto __skip;
       isapnp_peek(tmp, 2);
-      card->pnpver = tmp[0];
-      card->productver = tmp[1];
+      card.addCapability("pnp-" + bcd_version(tmp[0], "."));
+      card.setVersion(bcd_version(tmp[1]));
       size = 0;
       break;
     case _STAG_LOGDEVID:
       if (size >= 5 && size <= 6)
       {
 	if (isapnp_create_device(card, size) == 1)
-	  return;
+	  return false;
 	size = 0;
       }
       break;
     case _STAG_VENDOR:
       break;
     case _LTAG_ANSISTR:
-      isapnp_parse_name(card, &size);
+      card.setProduct(isapnp_parse_name(size));
       break;
     case _LTAG_UNICODESTR:
       /*
        * silently ignore 
        */
       /*
-       * who use unicode for hardware identification? 
+       * who uses unicode for hardware identification? 
        */
       break;
     case _LTAG_VENDOR:
@@ -941,17 +887,17 @@ static void isapnp_parse_resource_map(void *card)
     case _STAG_END:
       if (size > 0)
 	isapnp_skip_bytes(size);
-      return;
+      return true;
     default:
-      fprintf(stderr,
-	      "isapnp: unexpected or unknown tag type 0x%x, ignored\n", type);
+      break;
     }
   __skip:
     if (size > 0)
       isapnp_skip_bytes(size);
   }
+
+  return true;
 }
-#endif
 
 /*
  *  Compute ISA PnP checksum for first eight bytes.
@@ -1000,7 +946,7 @@ static const char *isapnp_parse_card_id(unsigned short vendor,
  *  Build device list for all present ISA PnP devices.
  */
 
-static int isapnp_build_device_list(void)
+static int isapnp_build_device_list(hwNode & n)
 {
   int csn;
   unsigned char header[9], checksum;
@@ -1009,8 +955,13 @@ static int isapnp_build_device_list(void)
   isapnp_key();
   for (csn = 1; csn <= 10; csn++)
   {
+    long serial = 0;
+
     isapnp_wake(csn);
     isapnp_peek(header, 9);
+
+    hwNode card("pnp");
+
     checksum = isapnp_checksum(header);
     /*
      * Don't be strict on the checksum, here !
@@ -1021,24 +972,32 @@ static int isapnp_build_device_list(void)
     else if (checksum == 0x00 || checksum != header[8])	/* not valid CSN */
       continue;
 
-    printf("card csn: %d\n", csn);
-    printf("card id: %s\n",
-	   isapnp_parse_card_id((header[1] << 8) | header[0],
-				(header[3] << 8) | header[2]));
-    printf("card vendor: %s\n",
-	   vendorname(isapnp_parse_card_id
-		      ((header[1] << 8) | header[0],
-		       (header[3] << 8) | header[2])));
-    printf("card serial: %lx\n",
-	   (header[7] << 24) | (header[6] << 16) | (header[5] << 8) |
-	   header[4]);
+    card.setConfig("pnpid",
+		   isapnp_parse_card_id((header[1] << 8) | header[0],
+					(header[3] << 8) | header[2]));
+    card.setPhysId(csn);
+    card.
+      setVendor(vendorname
+		(isapnp_parse_card_id
+		 ((header[1] << 8) | header[0],
+		  (header[3] << 8) | header[2])));
+    card.setBusInfo("isapnp@" + card.getPhysId());
+    serial =
+      (header[7] << 24) | (header[6] << 16) | (header[5] << 8) | header[4];
+    if (serial != -1)
+    {
+      char number[20];
+
+      snprintf(number, sizeof(number), "%ld", serial);
+      card.setSerial(number);
+    }
     isapnp_checksum_value = 0x00;
-    /*
-     * isapnp_parse_resource_map(NULL);
-     */
+    isapnp_parse_resource_map(card);
     if (isapnp_checksum_value != 0x00)
       fprintf(stderr, "isapnp: checksum for device %i is not valid (0x%x)\n",
 	      csn, isapnp_checksum_value);
+
+    n.addChild(card);
   }
   isapnp_wait();
   return 0;
@@ -1066,40 +1025,11 @@ bool scan_isapnp(hwNode & n)
     if (cards < 0 || (isapnp_rdp < 0x203 || isapnp_rdp > 0x3ff))
     {
       isapnp_detected = 0;
-      printf("isapnp: No Plug & Play device found\n");
-      return true;
+      return false;
     }
   }
-  isapnp_build_device_list();
-  cards = 0;
 
-#if 0
-  protocol_for_each_card(&isapnp_protocol, card)
-  {
-    cards++;
-    if (isapnp_verbose)
-    {
-      printf("isapnp: Card '%s'\n",
-	     card->dev.name[0] ? card->dev.name : "Unknown");
-      if (isapnp_verbose < 2)
-	continue;
-      card_for_each_dev(card, dev)
-      {
-	printf("isapnp:   Device '%s'\n",
-	       dev->dev.name[0] ? dev->dev.name : "Unknown");
-      }
-    }
-  }
-#endif
-  if (cards)
-  {
-    printf("isapnp: %i Plug & Play card%s detected total\n", cards,
-	   cards > 1 ? "s" : "");
-  }
-  else
-  {
-    printf("isapnp: No Plug & Play card found\n");
-  }
+  isapnp_build_device_list(n);
 
   return true;
 }
