@@ -1266,16 +1266,6 @@ static void dmi_table(int fd,
     data += 2;
     i++;
   }
-  if (i != num)
-  {
-    printf("Wrong DMI structures count: %d announced, %d decoded.\n", num, i);
-  }
-  if (data - (u8 *) buf != len)
-  {
-    printf
-      ("Wrong DMI structures length: %d bytes announced, %d bytes decoded.\n",
-       len, data - (u8 *) buf);
-  }
   free(buf);
 }
 
