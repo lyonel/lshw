@@ -506,9 +506,7 @@ static bool scan_sg(int sg,
 
   if (emulated)
   {
-    parent->setConfig("emulated", "true");
-    if (parent->getDescription() == "")
-      parent->setDescription("Virtual SCSI adapter");
+    parent->addCapability("emulated");
   }
 
   channel =
@@ -636,7 +634,6 @@ static bool scan_hosts(hwNode & node)
   free(namelist);
   popd();
 
-#if 0
   if (!loadfile("/proc/scsi/sg/host_strs", host_strs))
     return false;
 
@@ -645,9 +642,11 @@ static bool scan_hosts(hwNode & node)
     hwNode *host = node.findChildByLogicalName(host_logicalname(i));
 
     if (host)
-      host->setDescription(host_strs[i]);
+    {
+      if ((host->getProduct() == "") && (host->getDescription() == ""))
+	host->setDescription(host_strs[i]);
+    }
   }
-#endif
 
   return true;
 }
@@ -666,4 +665,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.20 2003/02/24 12:53:54 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.21 2003/02/24 22:47:03 ezix Exp $";
