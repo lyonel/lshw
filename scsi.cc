@@ -614,14 +614,14 @@ static bool scan_hosts(hwNode & node)
       for (int j = 0; j < m; j++)
       {
 	char *end = NULL;
-	long number = -1;
+	int number = -1;
 
 	number = strtol(filelist[j]->d_name, &end, 0);
 
 	if ((number >= 0) && (end != filelist[j]->d_name))
 	{
 	  hwNode *controller =
-	    node.findChildByLogicalName("scsi" + string(filelist[j]->d_name));
+	    node.findChildByLogicalName(host_logicalname(number));
 
 	  if (controller)
 	    controller->setConfig(string("driver"),
@@ -636,6 +636,7 @@ static bool scan_hosts(hwNode & node)
   free(namelist);
   popd();
 
+#if 0
   if (!loadfile("/proc/scsi/sg/host_strs", host_strs))
     return false;
 
@@ -646,6 +647,7 @@ static bool scan_hosts(hwNode & node)
     if (host)
       host->setDescription(host_strs[i]);
   }
+#endif
 
   return true;
 }
@@ -664,4 +666,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.19 2003/02/24 12:16:45 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.20 2003/02/24 12:53:54 ezix Exp $";
