@@ -13,7 +13,7 @@
 
 void usage(const char *progname)
 {
-  fprintf(stderr, "Harware Lister - lshw - %s\n", getpackageversion());
+  fprintf(stderr, "Harware Lister (lshw) - %s\n", getpackageversion());
   fprintf(stderr, "usage: %s [-options ...]\n", progname);
   fprintf(stderr, "\t-version      print program version\n");
   fprintf(stderr, "\t-html         output hardware tree as HTML\n");
@@ -70,4 +70,4 @@ int main(int argc,
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.15 2003/01/30 17:18:26 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.16 2003/01/31 09:52:41 ezix Exp $";
