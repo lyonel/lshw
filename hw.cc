@@ -12,7 +12,7 @@ struct hwNode_i
     vector < hwNode > children;
 };
 
-string strip(const string & s)
+static string strip(const string & s)
 {
   string result = s;
 
@@ -20,6 +20,26 @@ string strip(const string & s)
     result.erase(0, 1);
   while ((result.length() > 0) && (result[result.length() - 1] <= ' '))
     result.erase(result.length() - 1, 1);
+  for (int i = 0; i < result.length(); i++)
+    if (result[0] <= ' ')
+    {
+      result.erase(i, 1);
+      i--;
+    }
+
+  return result;
+}
+
+static string cleanupId(const string & id)
+{
+  string result = strip(id);
+
+  for (int i = 0; i < result.length(); i++)
+  {
+    result[i] = tolower(result[i]);
+    if (!strchr("0123456789abcdefghijklmnopqrstuvwxyz_.:-", result[i]))
+      result[i] = '_';
+  }
 
   return result;
 }
@@ -35,7 +55,7 @@ hwNode::hwNode(const string & id,
     return;
 
   This->deviceclass = c;
-  This->id = strip(id);
+  This->id = cleanupId(id);
   This->vendor = strip(vendor);
   This->product = strip(product);
   This->version = strip(version);
@@ -95,7 +115,7 @@ void hwNode::setId(const string & id)
   if (!This)
     return;
 
-  This->id = strip(id);
+  This->id = cleanupId(id);
 }
 
 string hwNode::getVendor() const
@@ -205,7 +225,7 @@ static string generateId(const string & radical,
 
   snprintf(buffer, sizeof(buffer), "%d", count);
 
-  return radical + "-" + string(buffer);
+  return radical + ":" + string(buffer);
 }
 
 bool hwNode::addChild(const hwNode & node)
