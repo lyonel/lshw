@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.32 2003/08/08 08:41:28 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.33 2003/08/10 16:52:58 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
