@@ -160,6 +160,7 @@ class hwNode
 	string getPhysId() const;
 	void setPhysId(long);
 	void setPhysId(unsigned, unsigned);
+	void setPhysId(unsigned, unsigned, unsigned);
 	void setPhysId(const string &);
         void assignPhysIds();
 

@@ -698,7 +698,7 @@ static bool scan_sg(int sg,
 			       m_id.channel, m_id.scsi_id, m_id.lun));
   device.setBusInfo(scsi_businfo(m_id.host_no,
 				 m_id.channel, m_id.scsi_id, m_id.lun));
-  device.setPhysId(m_id.scsi_id, m_id.lun);
+  device.setPhysId(m_id.channel, m_id.scsi_id, m_id.lun);
   find_logicalname(device);
   do_inquiry(fd, device);
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
@@ -747,29 +747,8 @@ static bool scan_sg(int sg,
   if (emulated)
   {
     parent->addCapability("emulated", "Emulated device");
-    parent->addChild(device);
   }
-  else
-  {
-    hwNode *channel =
-      parent->findChildByHandle(scsi_handle(m_id.host_no, m_id.channel));
-    if (!channel)
-      channel = parent->addChild(hwNode("channel", hw::bus));
-
-    if (!channel)
-    {
-      close(fd);
-      return true;
-    }
-  
-    snprintf(buffer, sizeof(buffer), "SCSI Channel %d", m_id.channel);
-    channel->setDescription(buffer);
-    channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
-    channel->setBusInfo(scsi_businfo(m_id.host_no, m_id.channel));
-    channel->setPhysId(m_id.channel);
-    channel->claim();
-    channel->addChild(device);
-  }
+  parent->addChild(device);
 
   close(fd);
 

@@ -972,6 +972,19 @@ void hwNode::setPhysId(unsigned physid1,
   }
 }
 
+void hwNode::setPhysId(unsigned physid1,
+		       unsigned physid2,
+		       unsigned physid3)
+{
+  if (This)
+  {
+    char buffer[40];
+
+    snprintf(buffer, sizeof(buffer), "%x.%x.%x", physid1, physid2, physid3);
+    This->physid = string(buffer);
+  }
+}
+
 void hwNode::setPhysId(const string & physid)
 {
   if (This)
