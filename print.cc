@@ -375,4 +375,190 @@ void print(hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.35 2003/02/28 22:06:04 ezix Exp $";
+static string escape(const string & s)
+{
+  string result = "";
+
+  for (int i = 0; i < s.length(); i++)
+    switch (s[i])
+    {
+    case '<':
+      result += "&lt;";
+      break;
+    case '>':
+      result += "&gt;";
+      break;
+    case '&':
+      result += "&ampersand;";
+      break;
+    default:
+      result += s[i];
+    }
+
+  return result;
+}
+
+void printxml(hwNode & node,
+	      int level)
+{
+  vector < string > config;
+
+  config = node.getConfigValues("\" value=\"");
+
+  if (level == 0)
+    cout << "<?xml version=\"1.0\"?>" << endl;
+
+  tab(level, false);
+  cout << "<item id=\"" << node.getId() << "\"";
+  if (node.disabled())
+    cout << " disabled=\"true\"";
+  if (node.claimed())
+    cout << " claimed=\"true\"";
+
+  cout << " class=\"" << node.getClassName() << "\"";
+  cout << ">" << endl;
+
+  if (node.getDescription() != "")
+  {
+    tab(level + 1, false);
+    cout << "<description>";
+    cout << escape(node.getDescription());
+    cout << "</description>";
+    cout << endl;
+  }
+
+  if (node.getProduct() != "")
+  {
+    tab(level + 1, false);
+    cout << "<product>";
+    cout << escape(node.getProduct());
+    cout << "</product>";
+    cout << endl;
+  }
+
+  if (node.getVendor() != "")
+  {
+    tab(level + 1, false);
+    cout << "<vendor>";
+    cout << escape(node.getVendor());
+    cout << "</vendor>";
+    cout << endl;
+  }
+
+  if (node.getLogicalName() != "")
+  {
+    tab(level + 1, false);
+    cout << "<logicalname>";
+    cout << escape(node.getLogicalName());
+    cout << "</logicalname>";
+    cout << endl;
+  }
+
+  if (node.getVersion() != "")
+  {
+    tab(level + 1, false);
+    cout << "<version>";
+    cout << escape(node.getVersion());
+    cout << "</version>";
+    cout << endl;
+  }
+
+  if (node.getSerial() != "")
+  {
+    tab(level + 1, false);
+    cout << "<serial>";
+    cout << escape(node.getSerial());
+    cout << "</serial>";
+    cout << endl;
+  }
+
+  if (node.getSlot() != "")
+  {
+    tab(level + 1, false);
+    cout << "<slot>";
+    cout << escape(node.getSlot());
+    cout << "</slot>";
+    cout << endl;
+  }
+
+  if (node.getSize() > 0)
+  {
+    tab(level + 1, false);
+    cout << "<size";
+    switch (node.getClass())
+    {
+    case hw::memory:
+    case hw::address:
+    case hw::storage:
+      cout << " units=\"bytes\"";
+      break;
+
+    case hw::processor:
+    case hw::bus:
+    case hw::system:
+      cout << " units=\"Hz\"";
+      break;
+    }
+    cout << ">";
+    cout << node.getSize();
+    cout << "</size>";
+    cout << endl;
+  }
+
+  if (node.getCapacity() > 0)
+  {
+    tab(level + 1, false);
+    cout << "<capacity";
+    switch (node.getClass())
+    {
+    case hw::memory:
+    case hw::address:
+    case hw::storage:
+      cout << " units=\"bytes\"";
+      break;
+
+    case hw::processor:
+    case hw::bus:
+    case hw::system:
+      cout << " units=\"Hz\"";
+      break;
+    }
+    cout << ">";
+    cout << node.getCapacity();
+    cout << "</capacity>";
+    cout << endl;
+  }
+
+  if (node.getClock() > 0)
+  {
+    tab(level + 1, false);
+    cout << "<clock units=\"Hz\">";
+    cout << node.getClock();
+    cout << "</clock>";
+    cout << endl;
+  }
+
+  if (config.size() > 0)
+  {
+    tab(level + 1, false);
+    cout << "<configuration>" << endl;
+    for (int j = 0; j < config.size(); j++)
+    {
+      tab(level + 2, false);
+      cout << "<setting id=\"" << escape(config[j]) << "\" />";
+      cout << endl;
+    }
+    tab(level + 1, false);
+    cout << "</configuration>" << endl;
+  }
+
+  for (int i = 0; i < node.countChildren(); i++)
+  {
+    printxml(*node.getChild(i), level + 1);
+  }
+
+  tab(level, false);
+  cout << "</item>" << endl;
+}
+
+static char *id = "@(#) $Id: print.cc,v 1.36 2003/03/11 00:59:26 ezix Exp $";

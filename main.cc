@@ -29,6 +29,7 @@ int main(int argc,
 {
   char hostname[80];
   bool htmloutput = false;
+  bool xmloutput = false;
 
   if (argc > 2)
   {
@@ -48,9 +49,13 @@ int main(int argc,
       usage(argv[0]);
       exit(0);
     }
+    if (strcmp(argv[1], "-xml") == 0)
+      xmloutput = true;
+
     if (strcmp(argv[1], "-html") == 0)
       htmloutput = true;
-    else
+
+    if (!xmloutput && !htmloutput)
     {
       usage(argv[0]);
       exit(1);
@@ -72,10 +77,13 @@ int main(int argc,
     scan_ide(computer);
     scan_scsi(computer);
 
-    print(computer, htmloutput);
+    if (xmloutput)
+      printxml(computer);
+    else
+      print(computer, htmloutput);
   }
 
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.20 2003/02/16 19:55:29 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.21 2003/03/11 00:59:26 ezix Exp $";

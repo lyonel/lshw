@@ -53,6 +53,7 @@ class hwNode
 	void unclaim();
 
 	hw::hwClass getClass() const;
+	const char * getClassName() const;
 	void setClass(hw::hwClass c);
 
 	string getDescription() const;

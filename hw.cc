@@ -120,6 +120,59 @@ hwClass hwNode::getClass() const
     return hw::generic;
 }
 
+const char *hwNode::getClassName() const
+{
+  if (This)
+  {
+    switch (This->deviceclass)
+    {
+    case processor:
+      return "processor";
+
+    case memory:
+      return "memory";
+
+    case address:
+      return "address";
+
+    case storage:
+      return "storage";
+
+    case hw::system:
+      return "system";
+
+    case bridge:
+      return "bridge";
+
+    case bus:
+      return "bus";
+
+    case network:
+      return "network";
+
+    case display:
+      return "display";
+
+    case input:
+      return "input";
+
+    case printer:
+      return "printer";
+
+    case multimedia:
+      return "multimedia";
+
+    case communication:
+      return "communication";
+
+    default:
+      return "generic";
+    }
+  }
+  else
+    return "generic";
+}
+
 void hwNode::setClass(hwClass c)
 {
   if (!This)
@@ -690,4 +743,4 @@ void hwNode::merge(const hwNode & node)
     setConfig(i->first, i->second);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.37 2003/02/28 22:16:04 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.38 2003/03/11 00:59:26 ezix Exp $";
