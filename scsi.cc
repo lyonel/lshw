@@ -508,15 +508,15 @@ static bool do_inquiry(int sg_fd,
 
     node.setCapacity(heads * cyl * sectors * sectsize);
 
-    if (rpm / 10000 >= 1)
+    if (rpm / 10000 == 1)
       node.addCapability("10000rpm");
     else
     {
-      if (rpm / 7200 >= 1)
+      if (rpm / 7200 == 1)
 	node.addCapability("7200rpm");
       else
       {
-	if (rpm / 5400 >= 1)
+	if (rpm / 5400 == 1)
 	  node.addCapability("5400rpm");
       }
     }
@@ -793,4 +793,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.25 2003/02/26 22:27:35 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.26 2003/02/27 00:17:33 ezix Exp $";
