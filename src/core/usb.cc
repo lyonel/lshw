@@ -107,7 +107,10 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
   if(prnt>0) parent = n.findChildByHandle(usbhandle(bus, lev-1, prnt));
   if(parent)
   {
-    device.setBusInfo(parent->getBusInfo()+":"+device.getPhysId());
+    if(parent->getBusInfo().find(":")==string::npos)
+      device.setBusInfo(parent->getBusInfo()+":"+device.getPhysId());
+    else
+      device.setBusInfo(parent->getBusInfo()+"."+device.getPhysId());
     parent->addChild(device);
     return true;
   }
@@ -386,7 +389,7 @@ bool scan_usb(hwNode & n)
                 device = hwNode("usb");
               device.setHandle(usbhandle(bus, lev, devnum));
               device.setBusInfo(usbbusinfo(bus, lev, port));
-              device.setPhysId(port);
+              device.setPhysId(port+1);
               device.setConfig("speed", usbspeed(speed));
               if(mxch>0)
               {
