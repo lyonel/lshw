@@ -1,5 +1,6 @@
 #include "mem.h"
 #include "cdrom.h"
+#include "disk.h"
 #include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -570,6 +571,8 @@ static bool scan_sg(int sg,
   do_inquiry(fd, device);
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
     scan_cdrom(device);
+  if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7))
+    scan_disk(device);
 
   channel->addChild(device);
 
@@ -672,4 +675,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.23 2003/02/25 00:24:21 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.24 2003/02/25 08:56:12 ezix Exp $";

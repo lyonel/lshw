@@ -1,6 +1,7 @@
 #include "cpuinfo.h"
 #include "osutils.h"
 #include "cdrom.h"
+#include "disk.h"
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
@@ -250,6 +251,8 @@ static bool probe_ide(const string & name,
 
   if (device.isCapable("cdrom"))
     scan_cdrom(device);
+  else
+    scan_disk(device);
 
 #if 0
   if (!(iddata[GEN_CONFIG] & NOT_ATA))
@@ -399,4 +402,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.14 2003/02/16 00:36:32 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.15 2003/02/25 08:56:12 ezix Exp $";
