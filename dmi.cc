@@ -71,19 +71,19 @@ static void dmi_cache_size(u16 n)
 static void dmi_decode_cache(u16 c)
 {
   if (c & (1 << 0))
-    printf("Other ");
+    printf(" Other");
   if (c & (1 << 1))
-    printf("Unknown ");
+    printf(" Unknown");
   if (c & (1 << 2))
-    printf("Non-burst ");
+    printf(" Non-burst");
   if (c & (1 << 3))
-    printf("Burst ");
+    printf(" Burst");
   if (c & (1 << 4))
-    printf("Pipeline burst ");
+    printf(" Pipeline burst");
   if (c & (1 << 5))
-    printf("Synchronous ");
+    printf(" Synchronous");
   if (c & (1 << 6))
-    printf("Asynchronous ");
+    printf(" Asynchronous");
 }
 
 static const char *dmi_bus_name(u8 num)
@@ -328,20 +328,20 @@ static char *dmi_memory_device_form_factor(u8 num)
 {
   static char *memory_device_form_factor[] = {
     "",
-    "Other",
-    "Unknown",
-    "SIMM",
-    "SIP",
-    "Chip",
-    "DIP",
-    "ZIP",
-    "Proprietary Card",
-    "DIMM",
-    "TSOP",
-    "Row of chips",
-    "RIMM",
-    "SODIMM",
-    "SRIMM",
+    "",
+    "",
+    " SIMM",
+    " SIP",
+    " Chip",
+    " DIP",
+    " ZIP",
+    " Proprietary Card",
+    " DIMM",
+    " TSOP",
+    " Row of chips",
+    " RIMM",
+    " SODIMM",
+    " SRIMM",
   };
   if (num > 0x0E)
     return "";
@@ -352,23 +352,23 @@ static char *dmi_memory_device_type(u8 num)
 {
   static char *memory_device_type[] = {
     "",
-    "Other",
-    "Unknown",
-    "DRAM",
-    "EDRAM",
-    "VRAM",
-    "SRAM",
-    "RAM",
-    "ROM",
-    "FLASH",
-    "EEPROM",
-    "FEPROM",
-    "EPROM",
-    "CDRAM",
-    "3DRAM",
-    "SDRAM",
-    "SGRAM",
-    "RDRAM",
+    "",
+    "",
+    " DRAM",
+    " EDRAM",
+    " VRAM",
+    " SRAM",
+    " RAM",
+    " ROM",
+    " FLASH",
+    " EEPROM",
+    " FEPROM",
+    " EPROM",
+    " CDRAM",
+    " 3DRAM",
+    " SDRAM",
+    " SGRAM",
+    " RDRAM",
   };
   if (num > 0x11)
     return "";
@@ -377,28 +377,28 @@ static char *dmi_memory_device_type(u8 num)
 
 static string dmi_memory_device_detail(u16 v)
 {
-  string result = " ";
+  string result = "";
 
   if (v & (1 << 3))
-    result += "Fast-paged ";
+    result += " Fast-paged";
   if (v & (1 << 4))
-    result += "Static column ";
+    result += " Static column";
   if (v & (1 << 5))
-    result += "Pseudo-static ";
+    result += " Pseudo-static";
   if (v & (1 << 6))
-    result += "RAMBUS ";
+    result += " RAMBUS";
   if (v & (1 << 7))
-    result += "Synchronous ";
+    result += " Synchronous";
   if (v & (1 << 8))
-    result += "CMOS ";
+    result += " CMOS";
   if (v & (1 << 9))
-    result += "EDO ";
+    result += " EDO";
   if (v & (1 << 10))
-    result += "Window DRAM ";
+    result += " Window DRAM";
   if (v & (1 << 11))
-    result += "Cache DRAM ";
+    result += " Cache DRAM";
   if (v & (1 << 12))
-    result += "Non-volatile ";
+    result += " Non-volatile";
 
   return result;
 }
@@ -1052,10 +1052,10 @@ static void dmi_table(int fd,
 	if (u != 0xffff)
 	  size = (1024 * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024));
 
-	description += " " + string(dmi_memory_device_form_factor(data[14]));
+	description += string(dmi_memory_device_form_factor(data[14]));
 	id = string(dmi_string(dm, data[16]));
 	//printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
-	description += " " + string(dmi_memory_device_type(data[18]));
+	description += string(dmi_memory_device_type(data[18]));
 
 	u = data[20] << 8 | data[19];
 	if (u & 0x1ffe)
@@ -1082,18 +1082,17 @@ static void dmi_table(int fd,
 	  newnode.setVendor(dmi_string(dm, data[23]));
 	if (dm->length > 24)
 	  newnode.setSerial(dmi_string(dm, data[24]));
-	if (dm->length > 25)
-	  printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[25]));
 	if (dm->length > 26)
 	  description += " P/N: " + string(dmi_string(dm, data[26]));
 
 	if (strlen(bits))
-	  description += string(bits) + " bits";
+	  description += " " + string(bits) + " bits";
 
 	newnode.setProduct(description);
 	newnode.setSize(size);
 
-	node.addChild(newnode);
+	if (size > 0)
+	  node.addChild(newnode);
       }
       break;
     case 18:
