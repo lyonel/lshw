@@ -48,6 +48,57 @@ static void scan_devtree_root(hwNode & core)
   }
 }
 
+static void scan_devtree_bootrom(hwNode & core)
+{
+  struct stat buf;
+
+  if (stat(DEVICETREE "/rom/boot-rom", &buf) == 0)
+  {
+    hwNode bootrom("firmware",
+		   hw::memory);
+    string upgrade = "";
+    unsigned long base = 0;
+    unsigned long size = 0;
+
+    bootrom.setProduct(get_string(DEVICETREE "/rom/boot-rom/model"));
+    bootrom.setDescription("BootROM");
+    bootrom.
+      setVersion(get_string(DEVICETREE "/rom/boot-rom/BootROM-version"));
+
+    if ((upgrade =
+	 get_string(DEVICETREE "/rom/boot-rom/write-characteristic")) != "")
+    {
+      bootrom.addCapability("upgrade");
+      bootrom.addCapability(upgrade);
+    }
+
+    int fd = open(DEVICETREE "/rom/boot-rom/reg", O_RDONLY);
+    if (fd >= 0)
+    {
+      read(fd, &base, sizeof(base));
+      read(fd, &size, sizeof(size));
+
+      bootrom.setSize(size);
+      close(fd);
+    }
+
+    core.addChild(bootrom);
+  }
+
+  if (stat(DEVICETREE "/openprom", &buf) == 0)
+  {
+    hwNode openprom("firmware",
+		    hw::memory);
+
+    openprom.setProduct(get_string(DEVICETREE "/openprom/model"));
+
+    if (stat(DEVICETREE "/openprom/supports-bootinfo", &buf) == 0)
+      openprom.addCapability("bootinfo");
+
+    core.addChild(openprom);
+  }
+}
+
 static void scan_devtree_memory(hwNode & core)
 {
   struct stat buf;
@@ -143,6 +194,7 @@ bool scan_device_tree(hwNode & n)
   if (core)
   {
     scan_devtree_root(*core);
+    scan_devtree_bootrom(*core);
     scan_devtree_memory(*core);
     core->addCapability(get_string(DEVICETREE "/compatible"));
   }
