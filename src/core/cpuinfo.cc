@@ -281,17 +281,16 @@ static void cpuinfo_x86(hwNode & node,
       while (value.length() > 0)
       {
 	size_t pos = value.find(' ');
+        string capability = (pos==string::npos)?value:value.substr(0, pos);
+
+        if(capability == "lm") capability = "x86-64";
+
+	cpu->addCapability(capability);
 
 	if (pos == string::npos)
-	{
-	  cpu->addCapability(value);
 	  value = "";
-	}
 	else
-	{
-	  cpu->addCapability(value.substr(0, pos));
 	  value = hw::strip(value.substr(pos));
-	}
       }
 
     cpu->describeCapability("fpu", "mathematical co-processor");
@@ -348,6 +347,7 @@ static void cpuinfo_x86(hwNode & node,
     cpu->describeCapability("ace_en", "advanced cryptography engine (enhanced)");
     cpu->describeCapability("ht", "HyperThreading");
     cpu->describeCapability("lm", "64bits extensions (x86-64)");
+    cpu->describeCapability("x86-64", "64bits extensions (x86-64)");
     cpu->describeCapability("mmx", "multimedia extensions (MMX)");
     cpu->describeCapability("pae", "4GB+ memory addressing (Physical Address Extension)");
   }
