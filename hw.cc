@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.54 2003/11/03 08:59:49 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.55 2003/11/11 00:51:19 ezix Exp $";
 
 struct hwNode_i
 {
@@ -958,6 +958,18 @@ void hwNode::assignPhysIds()
 
     This->children[i].assignPhysIds();
   }
+}
+
+void hwNode::fixInconsistencies()
+{
+  if (!This)
+    return;
+
+  if (getCapacity() < getSize())
+    setCapacity(0);
+
+  for (unsigned int i = 0; i < This->children.size(); i++)
+    This->children[i].fixInconsistencies();
 }
 
 void hwNode::merge(const hwNode & node)

@@ -36,7 +36,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.35 2003/11/03 08:59:49 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.36 2003/11/11 00:51:19 ezix Exp $";
 
 bool scan_system(hwNode & system)
 {
@@ -91,6 +91,7 @@ bool scan_system(hwNode & system)
     if (computer.getDescription() == "")
       computer.setDescription("Computer");
     computer.assignPhysIds();
+    computer.fixInconsistencies();
 
     system = computer;
   }

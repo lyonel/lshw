@@ -160,6 +160,8 @@ class hwNode
 	vector<string> getResources(const string & separator = "") const;
 
 	void merge(const hwNode & node);
+
+        void fixInconsistencies();
   private:
 
 	void setId(const string & id);
