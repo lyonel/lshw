@@ -924,12 +924,7 @@ void hwNode::setBusInfo(const string & businfo)
     {
       string info = strip(businfo);
 
-      if ((info.length() == 7) &&
-	  isxdigit(info[0]) &&
-	  isxdigit(info[1]) &&
-	  (info[2] == ':') &&
-	  isxdigit(info[3]) &&
-	  isxdigit(info[4]) && (info[5] == '.') && isxdigit(info[6]))
+      if(matches(info, "^[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
 	This->businfo = string("pci@") + info;
     }
   }

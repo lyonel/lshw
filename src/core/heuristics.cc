@@ -11,11 +11,11 @@ static char *id = "@(#) $Id$";
 
 string guessBusInfo(const string & info)
 {
-  if(matches(info,"^....:..:..\\..$")) // 2.6-style PCI
+  if(matches(info,"^[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$")) // 2.6-style PCI
   {
-    return "pci@" + info.substr(info.length() - 7);
+    return "pci@" + info.substr(5);
   }
-  if(matches(info,"^..:..\\..$")) // 2.4-style PCI
+  if(matches(info,"^[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$")) // 2.4-style PCI
   {
     return "pci@" + info;
   }
