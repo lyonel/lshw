@@ -11,6 +11,7 @@
 #include <set>
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -18,6 +19,20 @@ static char *id = "@(#) $Id$";
 
 static set < string > disabled_tests;
 static set < string > visible_classes;
+static map < string, string > aliases;
+
+void alias(const char * aname, const char * cname)
+{
+  aliases[lowercase(aname)] = lowercase(cname);
+}
+
+static string getcname(const char * aname)
+{
+  if(aliases.find(lowercase(aname)) != aliases.end())
+    return lowercase(aliases[lowercase(aname)]);
+  else
+    return lowercase(aname);
+}
 
 static void remove_option_argument(int i,
 				   int &argc,
@@ -67,7 +82,7 @@ bool parse_options(int &argc,
       splitlines(argv[i + 1], classes, ',');
 
       for (unsigned int j = 0; j < classes.size(); j++)
-	visible_classes.insert(classes[j]);
+	visible_classes.insert(getcname(classes[j].c_str()));
 
       remove_option_argument(i, argc, argv);
     }
@@ -80,12 +95,12 @@ bool parse_options(int &argc,
 
 bool enabled(const char *option)
 {
-  return !(disabled(option));
+  return !(disabled(lowercase(option).c_str()));
 }
 
 bool disabled(const char *option)
 {
-  return disabled_tests.find(string(option)) != disabled_tests.end();
+  return disabled_tests.find(lowercase(option)) != disabled_tests.end();
 }
 
 void enable(const char *option)
@@ -93,12 +108,12 @@ void enable(const char *option)
   if (!disabled(option))
     return;
 
-  disabled_tests.erase(string(option));
+  disabled_tests.erase(lowercase(option));
 }
 
 void disable(const char *option)
 {
-  disabled_tests.insert(string(option));
+  disabled_tests.insert(lowercase(option));
 
   (void) &id;			// avoid warning "id defined but not used"
 }
@@ -107,5 +122,5 @@ bool visible(const char *c)
 {
   if (visible_classes.size() == 0)
     return true;
-  return visible_classes.find(string(c)) != visible_classes.end();
+  return visible_classes.find(getcname(c)) != visible_classes.end();
 }
