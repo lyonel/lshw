@@ -225,10 +225,23 @@ static void cpuinfo_x86(hwNode & node,
 			string value)
 {
   static int currentcpu = -1;
-  static string currentcpuphysid = "";
+  static int siblings = -1;
+
+  if ((siblings<=0) && (id == "siblings"))
+  {
+    siblings = atoi(value.c_str());
+    siblings--;
+  }
 
   if (id == "processor")
-    currentcpu++;
+  {
+    siblings--;
+
+    if(siblings >= 0)
+      return;
+    else
+      currentcpu++;
+  }
 
   hwNode *cpu = getcpu(node, currentcpu);
 

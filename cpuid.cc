@@ -279,7 +279,10 @@ static bool dointel(unsigned long maxi,
       cpu->addCapability("ht", "HyperThreading");
 
       for(unsigned int i=0; i< nr_ht; i++)
+      {
+        logicalcpu.setPhysId(phys_id, i);
         cpu->addChild(logicalcpu);
+      }
     }
 
   }
