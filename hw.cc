@@ -9,6 +9,7 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, serial, slot;
+  bool enabled;
   unsigned long long size;
     vector < hwNode > children;
 };
@@ -61,6 +62,7 @@ hwNode::hwNode(const string & id,
   This->product = strip(product);
   This->version = strip(version);
   This->size = 0;
+  This->enabled = true;
 }
 
 hwNode::hwNode(const hwNode & o)
@@ -101,6 +103,38 @@ void hwNode::setClass(hwClass c)
     return;
 
   This->deviceclass = c;
+}
+
+bool hwNode::enabled() const
+{
+  if (!This)
+    return false;
+
+  return (This->enabled);
+}
+
+bool hwNode::disabled() const
+{
+  if (!This)
+    return true;
+
+  return !(This->enabled);
+}
+
+void hwNode::enable()
+{
+  if (!This)
+    return;
+
+  This->enabled = true;
+}
+
+void hwNode::disable()
+{
+  if (!This)
+    return;
+
+  This->enabled = false;
 }
 
 string hwNode::getId() const

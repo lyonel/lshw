@@ -5,11 +5,12 @@
 
 namespace hw {
 
-typedef enum {cpu,
+typedef enum {processor,
 	memory,
 	storage,
 	system,
 	bridge,
+	bus,
 	network,
 	display,
 	input,
@@ -35,6 +36,12 @@ class hwNode
 	hwNode & operator =(const hwNode & o);
 
 	string getId() const;
+
+	bool enabled() const;
+	bool disabled() const;
+	void enable();
+	void disable();
+
 	hw::hwClass getClass() const;
 	void setClass(hw::hwClass c);
 

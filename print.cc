@@ -15,6 +15,22 @@ static void tab(int level,
     cout << "  ";
 }
 
+void decimalkilos(unsigned long long value)
+{
+  const char *prefixes = "KMGTPH";
+  int i = 0;
+
+  while ((i <= strlen(prefixes)) && (value > 10000))
+  {
+    value = value / 1000;
+    i++;
+  }
+
+  cout << value;
+  if ((i > 0) && (i <= strlen(prefixes)))
+    cout << prefixes[i - 1];
+}
+
 void kilobytes(unsigned long long value)
 {
   const char *prefixes = "KMGTPH";
@@ -36,7 +52,10 @@ void print(const hwNode & node,
 	   int level)
 {
   tab(level);
-  cout << node.getId() << endl;
+  cout << node.getId();
+  if (node.disabled())
+    cout << " DISABLED";
+  cout << endl;
 
   if (node.getProduct() != "")
   {
@@ -77,6 +96,13 @@ void print(const hwNode & node,
     case hw::memory:
     case hw::storage:
       kilobytes(node.getSize());
+      break;
+
+    case hw::processor:
+    case hw::bus:
+    case hw::system:
+      decimalkilos(node.getSize());
+      cout << "Hz";
       break;
 
     default:

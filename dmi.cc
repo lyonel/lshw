@@ -829,10 +829,9 @@ static void dmi_table(int fd,
       // Processor
       {
 	hwNode newnode("cpu",
-		       hw::cpu);
+		       hw::processor);
 
 	newnode.setSlot(dmi_string(dm, data[4]));
-	//printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
 	newnode.setProduct(dmi_processor_family(data[6]));
 	newnode.setVersion(dmi_string(dm, data[0x10]));
 	newnode.setVendor(dmi_string(dm, data[7]));
@@ -840,9 +839,19 @@ static void dmi_table(int fd,
 	{
 	  newnode.setSerial(dmi_string(dm, data[0x20]));
 	  //printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[0x21]));
-	  newnode.setProduct(newnode.getProduct() + "(" +
+	  newnode.setProduct(newnode.getProduct() + " (" +
 			     string(dmi_string(dm, data[0x22])) + ")");
 	}
+	//printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
+
+	// current speed
+	u = data[0x17] << 8 | data[0x16];
+	newnode.setSize(u * 1000000);
+
+	// CPU enabled/disabled by BIOS?
+	u = data[0x18] & 0x07;
+	if ((u == 2) || (u == 3) || (u == 4))
+	  newnode.disable();
 
 	node.addChild(newnode);
       }
