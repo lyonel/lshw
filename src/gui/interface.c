@@ -59,7 +59,7 @@ create_lshw (void)
   accel_group = gtk_accel_group_new ();
 
   lshw = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (lshw), _("lshw"));
+  gtk_window_set_title (GTK_WINDOW (lshw), "lshw");
   gtk_window_set_default_size (GTK_WINDOW (lshw), 480, 640);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -70,7 +70,7 @@ create_lshw (void)
   gtk_widget_show (menubar1);
   gtk_box_pack_start (GTK_BOX (vbox1), menubar1, FALSE, FALSE, 0);
 
-  menuitem4 = gtk_menu_item_new_with_mnemonic (_("_File"));
+  menuitem4 = gtk_menu_item_new_with_mnemonic ("_File");
   gtk_widget_show (menuitem4);
   gtk_container_add (GTK_CONTAINER (menubar1), menuitem4);
 
@@ -90,7 +90,7 @@ create_lshw (void)
   gtk_widget_show (quit1);
   gtk_container_add (GTK_CONTAINER (menuitem4_menu), quit1);
 
-  menuitem5 = gtk_menu_item_new_with_mnemonic (_("_Edit"));
+  menuitem5 = gtk_menu_item_new_with_mnemonic ("_Edit");
   gtk_widget_show (menuitem5);
   gtk_container_add (GTK_CONTAINER (menubar1), menuitem5);
 
@@ -101,7 +101,7 @@ create_lshw (void)
   gtk_widget_show (copy1);
   gtk_container_add (GTK_CONTAINER (menuitem5_menu), copy1);
 
-  menuitem6 = gtk_menu_item_new_with_mnemonic (_("_View"));
+  menuitem6 = gtk_menu_item_new_with_mnemonic ("_View");
   gtk_widget_show (menuitem6);
   gtk_container_add (GTK_CONTAINER (menubar1), menuitem6);
 
@@ -112,14 +112,14 @@ create_lshw (void)
   gtk_widget_show (refresh1);
   gtk_container_add (GTK_CONTAINER (menuitem6_menu), refresh1);
 
-  menuitem7 = gtk_menu_item_new_with_mnemonic (_("_Help"));
+  menuitem7 = gtk_menu_item_new_with_mnemonic ("_Help");
   gtk_widget_show (menuitem7);
   gtk_container_add (GTK_CONTAINER (menubar1), menuitem7);
 
   menuitem7_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem7), menuitem7_menu);
 
-  about1 = gtk_menu_item_new_with_mnemonic (_("_About"));
+  about1 = gtk_menu_item_new_with_mnemonic ("_About");
   gtk_widget_show (about1);
   gtk_container_add (GTK_CONTAINER (menuitem7_menu), about1);
 
@@ -225,7 +225,7 @@ create_aboutlshw (void)
   GtkWidget *closebutton1;
 
   aboutlshw = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (aboutlshw), _("About"));
+  gtk_window_set_title (GTK_WINDOW (aboutlshw), "About");
   gtk_window_set_position (GTK_WINDOW (aboutlshw), GTK_WIN_POS_CENTER_ON_PARENT);
   gtk_window_set_resizable (GTK_WINDOW (aboutlshw), FALSE);
   gtk_window_set_destroy_with_parent (GTK_WINDOW (aboutlshw), TRUE);
@@ -236,14 +236,14 @@ create_aboutlshw (void)
   dialog_vbox1 = GTK_DIALOG (aboutlshw)->vbox;
   gtk_widget_show (dialog_vbox1);
 
-  aboutext = gtk_label_new (_("<big><b>GTK+ front-end for <tt>lshw</tt></b></big>\n\n(c) 2004, Lyonel Vincent\n<tt>lyonel@ezix.org</tt>\n\n<span foreground=\"blue\"><u>http://www.ezix.org/</u></span>"));
+  aboutext = gtk_label_new ("<big><b>GTK+ front-end for <tt>lshw</tt></b></big>\n\n(c) 2004, Lyonel Vincent\n<tt>lyonel@ezix.org</tt>\n\n<span foreground=\"blue\"><u>http://www.ezix.org/</u></span>");
   gtk_widget_show (aboutext);
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), aboutext, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (aboutext), TRUE);
   gtk_label_set_justify (GTK_LABEL (aboutext), GTK_JUSTIFY_CENTER);
   gtk_misc_set_padding (GTK_MISC (aboutext), 20, 20);
 
-  version = gtk_label_new (_("version"));
+  version = gtk_label_new ("version");
   gtk_widget_show (version);
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), version, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (version), GTK_JUSTIFY_CENTER);
