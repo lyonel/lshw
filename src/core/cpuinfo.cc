@@ -294,7 +294,65 @@ static void cpuinfo_x86(hwNode & node,
 	  value = hw::strip(value.substr(pos));
 	}
       }
+
+    cpu->describeCapability("fpu", "mathematical co-processor");
+    cpu->describeCapability("vme", "virtual mode extensions");
+    cpu->describeCapability("de", "debugging extensions");
+    cpu->describeCapability("pse", "page size extensions");
+    cpu->describeCapability("tsc", "time stamp counter");
+    cpu->describeCapability("msr", "model-specific registers");
+    cpu->describeCapability("mce", "machine check exceptions");
+    cpu->describeCapability("cx8", "compare and exchange 8-byte");
+    cpu->describeCapability("apic", "on-chip advanced programmable interrupt controller (APIC)");
+    cpu->describeCapability("sep", "fast system calls");
+    cpu->describeCapability("mtrr", "memory type range registers");
+    cpu->describeCapability("pge", "page global enable");
+    cpu->describeCapability("mca", "machine check architecture");
+    cpu->describeCapability("cmov", "conditional move instruction");
+    cpu->describeCapability("pat", "page attribute table");
+    cpu->describeCapability("pse36", "36-bit page size extensions");
+    cpu->describeCapability("pn", "processor serial number");
+    cpu->describeCapability("psn", "processor serial number");
+    //cpu->describeCapability("clflush", "");
+    cpu->describeCapability("dts", "debug trace and EMON store MSRs");
+    cpu->describeCapability("acpi", "thermal control (ACPI)");
+    cpu->describeCapability("fxsr", "fast floating point save/restore");
+    cpu->describeCapability("sse", "streaming SIMD extensions (SSE)");
+    cpu->describeCapability("sse2", "streaming SIMD extensions (SSE2)");
+    cpu->describeCapability("ss", "self-snoop");
+    cpu->describeCapability("tm", "thermal interrupt and status");
+    cpu->describeCapability("ia64", "IA-64 (64-bit Intel CPU)");
+    cpu->describeCapability("pbe", "pending break event");
+    cpu->describeCapability("syscall", "fast system calls");
+    cpu->describeCapability("mp", "multi-processor capable");
+    cpu->describeCapability("nx", "no-execute bit (NX)");
+    cpu->describeCapability("mmxext", "multimedia extensions (MMXExt)");
+    cpu->describeCapability("3dnowext", "multimedia extensions (3DNow!Ext)");
+    cpu->describeCapability("3dnow", "multimedia extensions (3DNow!)");
+    //cpu->describeCapability("recovery", "");
+    cpu->describeCapability("longrun", "LongRun Dynamic Power/Thermal Management");
+    cpu->describeCapability("lrti", "LongRun Table Interface");
+    cpu->describeCapability("cxmmx", "multimedia extensions (Cyrix MMX)");
+    cpu->describeCapability("k6_mtrr", "AMD K6 MTRRs");
+    //cpu->describeCapability("cyrix_arr", "");
+    //cpu->describeCapability("centaur_mcr", "");
+    //cpu->describeCapability("pni", "");
+    //cpu->describeCapability("monitor", "");
+    //cpu->describeCapability("ds_cpl", "");
+    //cpu->describeCapability("est", "");
+    //cpu->describeCapability("tm2", "");
+    //cpu->describeCapability("cid", "");
+    //cpu->describeCapability("xtpr", "");
+    cpu->describeCapability("rng", "random number generator");
+    cpu->describeCapability("rng_en", "random number generator (enhanced)");
+    cpu->describeCapability("ace", "advanced cryptography engine");
+    cpu->describeCapability("ace_en", "advanced cryptography engine (enhanced)");
+    cpu->describeCapability("ht", "HyperThreading");
+    cpu->describeCapability("lm", "64bits extensions (x86-64)");
+    cpu->describeCapability("mmx", "multimedia extensions (MMX)");
+    cpu->describeCapability("pae", "4GB+ memory addressing (Physical Address Extension)");
   }
+
 }
 #endif
 
