@@ -245,9 +245,9 @@ static bool probe_ide(const string & name,
   }
 
   if (device.isCapable("lba"))
-    device.setSize((unsigned long long) id.lba_capacity * 512);
+    device.setCapacity((unsigned long long) id.lba_capacity * 512);
   if (device.isCapable("removable"))
-    device.setSize(0);		// we'll first have to make sure we have a disk
+    device.setCapacity(0);	// we'll first have to make sure we have a disk
 
   if (device.isCapable("cdrom"))
     scan_cdrom(device);
@@ -351,7 +351,7 @@ bool scan_ide(hwNode & n)
 	  idedevice =
 	    hwNode(get_string(basepath + "/media", "disk"), hw::storage);
 
-	  idedevice.setSize(512 * get_longlong(basepath + "/capacity"));
+	  idedevice.setCapacity(512 * get_longlong(basepath + "/capacity"));
 	  idedevice.setLogicalName(string("/dev/") + devicelist[j]->d_name);
 	  idedevice.setProduct(get_string(basepath + "/model"));
 	  idedevice.claim();
@@ -402,4 +402,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.15 2003/02/25 08:56:12 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.16 2003/02/25 12:35:25 ezix Exp $";
