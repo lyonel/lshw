@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id: fb.cc,v 1.1 2003/11/03 08:59:49 ezix Exp $";
+static char *id = "@(#) $Id: fb.cc,v 1.2 2003/11/03 12:22:07 ezix Exp $";
 
 #define FB_MODES_SHIFT	5	/* 32 modes per framebuffer */
 #define FB_NUM_MINORS	256	/* 256 Minors               */
@@ -267,10 +267,10 @@ bool scan_fb(hwNode & n)
 	      fbconfig.hsync_len;
 	    switch (fbconfig.vmode & FB_VMODE_MASK)
 	    {
-	    case FB_VMODE_DOUBLE:
+	    case FB_VMODE_INTERLACED:
 	      vtotal <<= 2;
 	      break;
-	    case FB_VMODE_INTERLACED:
+	    case FB_VMODE_DOUBLE:
 	      vtotal <<= 1;
 	      break;
 	    }
