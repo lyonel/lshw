@@ -591,7 +591,7 @@ void dmi_chassis(u8 code, hwNode & n)
     {
        n.setConfig("chassis", chassis_type[3*code] );
        if(chassis_type[2+3*code])
-         n.addHint("icon", chassis_type[2+3*code]);
+         n.addHint("icon", string(chassis_type[2+3*code]));
     }
   }
 };
