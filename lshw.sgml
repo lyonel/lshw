@@ -17,10 +17,12 @@ list hardware
 <refsynopsisdiv>
  <cmdsynopsis>
    <command>lshw</command> 
-        <arg choice="opt">-version</arg>
-        <arg choice="opt">-help</arg>
-	<arg choice="opt">-html</arg>
-	<arg choice="opt">-short</arg>
+        <arg choice="opt"><option>-version</option></arg>
+        <arg choice="opt"><option>-help</option></arg>
+	<arg choice="opt"><option>-html</option></arg>
+	<arg choice="opt"><option>-short</option></arg>
+	<arg choice="opt" rep="repeat"><option>-disable </option><replaceable class="parameter">test</replaceable></arg>
+	<arg choice="opt" rep="repeat"><option>-enable </option><replaceable class="parameter">test</replaceable></arg>
    </cmdsynopsis>
 </refsynopsisdiv>
 
