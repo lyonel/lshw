@@ -88,7 +88,7 @@ http://www.ezix.org/software/lshw.html
 
 %files
 %defattr(-,root,root, 0755)
-%doc COPYING TODO docs/Changelog docs/lshw.xsd
+%doc README COPYING docs/TODO docs/Changelog docs/lshw.xsd
 %attr(555,bin,bin) %{_sbindir}/lshw
 %doc %{_mandir}/man?/*
 %{_datadir}/lshw/
