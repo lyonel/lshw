@@ -17,8 +17,8 @@ struct dmi_header
   u16 handle;
 };
 
-static char *dmi_string(struct dmi_header *dm,
-			u8 s)
+static string dmi_string(struct dmi_header *dm,
+			 u8 s)
 {
   char *bp = (char *) dm;
   if (!s)
@@ -31,7 +31,7 @@ static char *dmi_string(struct dmi_header *dm,
     bp++;
     s--;
   }
-  return bp;
+  return string(bp);
 }
 
 static void dmi_decode_ram(u8 data)
@@ -266,8 +266,8 @@ static char *dmi_memory_array_location(u8 num)
 {
   static char *memory_array_location[] = {
     "",
-    "Other",
-    "Unknown",
+    "",
+    "",
     "System board or motherboard",
     "ISA add-on card",
     "EISA add-on card",
@@ -281,7 +281,7 @@ static char *dmi_memory_array_location(u8 num)
     "PC-98/C20 add-on card",
     "PC-98/C24 add-on card",
     "PC-98/E add-on card",
-    "PC-98/Local buss add-on card",
+    "PC-98/Local bus add-on card",
   };
   if (num <= 0x0A)
     return memory_array_location[num];
@@ -872,7 +872,7 @@ static void dmi_table(int fd,
 
     case 6:
       printf("\tMemory Bank\n");
-      printf("\t\tSocket: %s\n", dmi_string(dm, data[4]));
+      printf("\t\tSocket: %s\n", dmi_string(dm, data[4]).c_str());
       if (data[5] != 0xFF)
       {
 	printf("\t\tBanks: ");
@@ -944,7 +944,7 @@ static void dmi_table(int fd,
 	};
 
 	printf("\tCache\n");
-	printf("\t\tSocket: %s\n", dmi_string(dm, data[4]));
+	printf("\t\tSocket: %s\n", dmi_string(dm, data[4]).c_str());
 	u = data[6] << 8 | data[5];
 	printf("\t\tL%d %s%sCache: ",
 	       1 + (u & 7), (u & (1 << 3)) ? "socketed " : "",
@@ -965,10 +965,12 @@ static void dmi_table(int fd,
 
     case 8:
       printf("\tPort Connector\n");
-      printf("\t\tInternal Designator: %s\n", dmi_string(dm, data[4]));
+      printf("\t\tInternal Designator: %s\n",
+	     dmi_string(dm, data[4]).c_str());
       printf("\t\tInternal Connector Type: %s\n",
 	     dmi_port_connector_type(data[5]));
-      printf("\t\tExternal Designator: %s\n", dmi_string(dm, data[6]));
+      printf("\t\tExternal Designator: %s\n",
+	     dmi_string(dm, data[6]).c_str());
       printf("\t\tExternal Connector Type: %s\n",
 	     dmi_port_connector_type(data[7]));
       printf("\t\tPort Type: %s\n", dmi_port_type(data[8]));
@@ -976,7 +978,7 @@ static void dmi_table(int fd,
 
     case 9:
       printf("\tCard Slot\n");
-      printf("\t\tSlot: %s\n", dmi_string(dm, data[4]));
+      printf("\t\tSlot: %s\n", dmi_string(dm, data[4]).c_str());
       printf("\t\tType: %s%s%s\n",
 	     dmi_bus_width(data[6]),
 	     dmi_card_size(data[8]), dmi_bus_name(data[5]));
@@ -993,7 +995,7 @@ static void dmi_table(int fd,
       for (u = 2; u * 2 + 1 < dm->length; u++)
       {
 	printf("\t\tDescription: %s : %s\n",
-	       dmi_string(dm, data[1 + 2 * u]),
+	       dmi_string(dm, data[1 + 2 * u]).c_str(),
 	       (data[2 * u]) & 0x80 ? "Enabled" : "Disabled");
 	printf("\t\tType: %s\n", dmi_onboard_type(data[2 * u]));
 
@@ -1013,10 +1015,10 @@ static void dmi_table(int fd,
       printf("\t\tInstallable Languages: %u\n", data[4]);
       for (u = 1; u <= data[4]; u++)
       {
-	printf("\t\t\t%s\n", dmi_string(dm, u));
+	printf("\t\t\t%s\n", dmi_string(dm, u).c_str());
       }
       printf("\t\tCurrently Installed Language: %s\n",
-	     dmi_string(dm, data[21]));
+	     dmi_string(dm, data[21]).c_str());
       break;
 
     case 14:
@@ -1028,32 +1030,53 @@ static void dmi_table(int fd,
       break;
 
     case 16:
-      printf("\tPhysical Memory Array\n");
-      printf("\t\tLocation: %s\n", dmi_memory_array_location(data[4]));
-      printf("\t\tUse: %s\n", dmi_memory_array_use(data[5]));
-      printf("\t\tError Correction Type: %s\n",
-	     dmi_memory_array_error_correction_type(data[6]));
-      u2 = data[10] << 24 | data[9] << 16 | data[8] << 8 | data[7];
-      printf("\t\tMaximum Capacity: ");
-      if (u2 == 0x80000000)
-	printf("Unknown\n");
-      else
-	printf("%u Kbyte\n", u2);
-      printf("\t\tError Information Handle: ");
-      u = data[12] << 8 | data[11];
-      if (u == 0xffff)
+      // Physical Memory Array
       {
-	printf("None\n");
+	string id = "";
+	string description = "";
+
+	switch (data[5])
+	{
+	case 0x03:
+	  id = "ram";
+	  break;
+	case 0x04:
+	  id = "video";
+	  break;
+	case 0x05:
+	  id = "flash";
+	  break;
+	case 0x06:
+	  id = "nvram";
+	  break;
+	case 0x07:
+	  id = "cache";
+	  break;
+	default:
+	  id = "genericmemory";
+	}
+
+	hwNode newnode(id,
+		       hw::memory);
+
+	newnode.setSlot(dmi_memory_array_location(data[4]));
+	printf("\t\tError Correction Type: %s\n",
+	       dmi_memory_array_error_correction_type(data[6]));
+	u2 = data[10] << 24 | data[9] << 16 | data[8] << 8 | data[7];
+	if (u2 != 0x80000000)	// magic value for "unknown"
+	  newnode.setCapacity(u2 * 1024);
+	printf("\t\tNumber of Devices: %u\n", data[14] << 8 | data[13]);
+
+	hwNode *memorynode = node.getChild("memory");
+	if (!memorynode)
+	{
+	  node.addChild(hwNode("memory", hw::memory));
+	  memorynode = node.getChild("memory");
+	}
+
+	if (memorynode)
+	  memorynode->addChild(newnode);
       }
-      else if (u == 0xfffe)
-      {
-	printf("Not Provided\n");
-      }
-      else
-      {
-	printf("0x%04X\n", u);
-      }
-      printf("\t\tNumber of Devices: %u\n", data[14] << 8 | data[13]);
       break;
     case 17:
       // Memory Device
