@@ -19,7 +19,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.23 2003/10/17 22:23:40 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.24 2003/10/30 23:14:03 ezix Exp $";
 
 #define DIMMINFOSIZE 0x80
 typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
@@ -41,6 +41,44 @@ static unsigned long get_long(const string & path)
   if (fd >= 0)
   {
     read(fd, &result, sizeof(result));
+
+    close(fd);
+  }
+
+  return result;
+}
+
+static vector < string > get_strings(const string & path,
+				     unsigned int offset = 0)
+{
+  vector < string > result;
+  char *strings = NULL;
+  char *curstring = NULL;
+
+  int fd = open(path.c_str(), O_RDONLY);
+
+  if (fd >= 0)
+  {
+    struct stat buf;
+
+    if (fstat(fd, &buf) == 0)
+    {
+      strings = (char *) malloc(buf.st_size + 1);
+      if (strings)
+      {
+	memset(strings, 0, buf.st_size + 1);
+	read(fd, strings, buf.st_size);
+	curstring = strings + offset;
+
+	while (strlen(curstring))
+	{
+	  result.push_back(string(curstring));
+	  curstring += strlen(curstring) + 1;
+	}
+
+	free(strings);
+      }
+    }
 
     close(fd);
   }
@@ -232,7 +270,6 @@ static void scan_devtree_cpu(hwNode & core)
 
 static void scan_devtree_memory(hwNode & core)
 {
-  struct stat buf;
   int currentmc = -1;		// current memory controller
   hwNode *memory = core.getChild("memory");
 
@@ -240,7 +277,9 @@ static void scan_devtree_memory(hwNode & core)
   {
     char buffer[10];
     string mcbase;
-    string devtreeslotnames;
+    vector < string > slotnames;
+    vector < string > dimmtypes;
+    vector < string > dimmspeeds;
     string reg;
 
     snprintf(buffer, sizeof(buffer), "%d", currentmc);
@@ -248,10 +287,13 @@ static void scan_devtree_memory(hwNode & core)
       mcbase = string(DEVICETREE "/memory@") + string(buffer);
     else
       mcbase = string(DEVICETREE "/memory");
-    devtreeslotnames = mcbase + string("/slot-names");
+    slotnames =
+      get_strings(mcbase + string("/slot-names"), sizeof(unsigned long));
+    dimmtypes = get_strings(mcbase + string("/dimm-types"));
+    dimmspeeds = get_strings(mcbase + string("/dimm-speeds"));
     reg = mcbase + string("/reg");
 
-    if (stat(devtreeslotnames.c_str(), &buf) != 0)
+    if (slotnames.size() == 0)
     {
       if (currentmc < 0)
       {
@@ -269,46 +311,32 @@ static void scan_devtree_memory(hwNode & core)
 
     if (memory)
     {
-      unsigned long bitmap = 0;
-      char *slotnames = NULL;
-      char *slotname = NULL;
-      int fd = open(devtreeslotnames.c_str(), O_RDONLY);
       int fd2 = open(reg.c_str(), O_RDONLY);
 
-      if ((fd >= 0) && (fd2 >= 0))
+      if (fd2 >= 0)
       {
-	unsigned long slot = 1;
-	slotnames = (char *) malloc(buf.st_size + 1);
-	slotname = slotnames;
-	memset(slotnames, 0, buf.st_size + 1);
-	read(fd, &bitmap, sizeof(bitmap));
-	read(fd, slotnames, buf.st_size + 1);
-
-	while (strlen(slotname) > 0)
+	for (unsigned int i = 0; i < slotnames.size(); i++)
 	{
 	  unsigned long base = 0;
 	  unsigned long size = 0;
-	  if (bitmap & slot)	// slot is active
-	  {
-	    hwNode bank("bank",
-			hw::memory);
+	  hwNode bank("bank",
+		      hw::memory);
 
-	    read(fd2, &base, sizeof(base));
-	    read(fd2, &size, sizeof(size));
+	  read(fd2, &base, sizeof(base));
+	  read(fd2, &size, sizeof(size));
 
-	    bank.setDescription("Memory bank");
-	    bank.setSlot(slotname);
-	    //bank.setPhysId(base);
-	    bank.setSize(size);
-	    memory->addChild(bank);
-	  }
-	  slot *= 2;
-	  slotname += strlen(slotname) + 1;
+	  bank.setDescription("Memory bank");
+	  bank.setSlot(slotnames[i]);
+	  //bank.setPhysId(base);
+	  if (i < dimmtypes.size())
+	    bank.setProduct(dimmtypes[i]);
+	  if (i < dimmspeeds.size())
+	    bank.
+	      setProduct(hw::strip(bank.getProduct() + " " + dimmspeeds[i]));
+	  bank.setSize(size);
+	  memory->addChild(bank);
 	}
-	close(fd);
 	close(fd2);
-
-	free(slotnames);
       }
 
       currentmc++;
