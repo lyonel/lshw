@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-static char *id = "@(#) $Id: sysfs.cc,v 1.2 2004/01/19 17:20:45 ezix Exp $";
+static char *id = "@(#) $Id: sysfs.cc,v 1.3 2004/03/02 09:11:21 ezix Exp $";
 
 #define SYS		"/sys"
 
@@ -97,6 +97,21 @@ string sysfs_getbusinfo(const string & devclass,
     return "";
 
   return sysfstobusinfo(hw::strip(buffer));
+}
+
+string sysfs_getdriver(const string & devclass,
+		       const string & devname)
+{
+  string driverpath =
+    string(SYS) + string("/class/") + devclass + string("/") + devname + "/";
+  string driver = driverpath + "/driver";
+  char buffer[PATH_MAX + 1];
+  int namelen = 0;
+
+  if ((namelen = readlink(driver.c_str(), buffer, sizeof(buffer))) < 0)
+    return "";
+
+  return string(basename(buffer));
 }
 
 bool scan_sysfs(hwNode & n)

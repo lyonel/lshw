@@ -7,4 +7,6 @@ bool scan_sysfs(hwNode & n);
 
 std::string sysfs_getbusinfo(const std::string & devclass, const std::string & devname);
 
+std::string sysfs_driver(const std::string & devclass, const std::string & devname);
+
 #endif
