@@ -14,7 +14,6 @@ static hwNode *selected = NULL;
 static hwNode *selected1 = NULL;
 static hwNode *selected2 = NULL;
 static hwNode *selected3 = NULL;
-static hwNode *root = NULL;
 static GtkWidget *statusbar = NULL;
 
 extern GtkWidget *mainwindow;
@@ -24,10 +23,19 @@ enum
     COL_NAME = 0,
     COL_NODE,
     COL_WEIGHT,
+    COL_CONTINUATION,
     NUM_COLS
   };
 
 static string curpath = "/";
+
+static void clear_list(GtkWidget * list1)
+{
+  GtkTreeViewColumn *col;
+
+  while(col = gtk_tree_view_get_column(GTK_TREE_VIEW(list1), 0))
+    gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
+}
 
 static void populate_list(GtkWidget * list1, hwNode * root)
 {
@@ -37,14 +45,11 @@ static void populate_list(GtkWidget * list1, hwNode * root)
   GtkTreeIter iter;
   string text;
 
-
-  col = gtk_tree_view_get_column (GTK_TREE_VIEW(list1), 0);
-  if(col)
-    gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
+  clear_list(list1);
 
   if(!root) return;
 
-  list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
+  list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
   gtk_list_store_append(list_store, &iter);
 
   text = root->getDescription();
@@ -57,16 +62,24 @@ static void populate_list(GtkWidget * list1, hwNode * root)
                     COL_NAME, text.c_str(),
                     COL_NODE, root,
                     COL_WEIGHT, (root->countChildren()>0)?PANGO_WEIGHT_BOLD:PANGO_WEIGHT_NORMAL,
+                    COL_CONTINUATION, (root->countChildren()>0)?">":"",
                     -1);
 
   col = gtk_tree_view_column_new();
   gtk_tree_view_append_column(GTK_TREE_VIEW(list1), col);
-
   renderer = gtk_cell_renderer_text_new();
-
   gtk_tree_view_column_pack_start(col, renderer, TRUE);
   gtk_tree_view_column_add_attribute(col, renderer, "text", COL_NAME);
   gtk_tree_view_column_add_attribute(col, renderer, "weight", COL_WEIGHT);
+
+  col = gtk_tree_view_column_new();
+  gtk_tree_view_append_column(GTK_TREE_VIEW(list1), col);
+  renderer = gtk_cell_renderer_text_new();
+  g_object_set(renderer, "xalign", (gfloat)1, NULL);
+  gtk_tree_view_column_pack_start(col, renderer, TRUE);
+  gtk_tree_view_column_add_attribute(col, renderer, "text", COL_CONTINUATION);
+  gtk_tree_view_column_add_attribute(col, renderer, "weight", COL_WEIGHT);
+
 
 #if 0
     col = gtk_tree_view_column_new();
@@ -92,13 +105,11 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
   GtkTreeIter iter;
   GtkTreeIter current_iter;
 
-  col = gtk_tree_view_get_column (GTK_TREE_VIEW(list1), 0);
-  if(col)
-    gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
+  clear_list(list1);
 
   if(!root) return;
 
-  list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
+  list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
 
   for(unsigned i = 0; i<root->countChildren(); i++)
   {
@@ -118,6 +129,7 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
                       COL_NAME, text.c_str(),
                       COL_NODE, root->getChild(i),
                       COL_WEIGHT, (root->getChild(i)->countChildren()>0)?PANGO_WEIGHT_BOLD:PANGO_WEIGHT_NORMAL,
+                      COL_CONTINUATION, (root->getChild(i)->countChildren()>0)?">":"",
                       -1);
   }
 
@@ -128,6 +140,14 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
 
   gtk_tree_view_column_pack_start(col, renderer, TRUE);
   gtk_tree_view_column_add_attribute(col, renderer, "text", COL_NAME);
+  gtk_tree_view_column_add_attribute(col, renderer, "weight", COL_WEIGHT);
+
+  col = gtk_tree_view_column_new();
+  gtk_tree_view_append_column(GTK_TREE_VIEW(list1), col);
+  renderer = gtk_cell_renderer_text_new();
+  g_object_set(renderer, "xalign", (gfloat)1, NULL);
+  gtk_tree_view_column_pack_start(col, renderer, TRUE);
+  gtk_tree_view_column_add_attribute(col, renderer, "text", COL_CONTINUATION);
   gtk_tree_view_column_add_attribute(col, renderer, "weight", COL_WEIGHT);
 
   gtk_tree_view_set_model(GTK_TREE_VIEW(list1), GTK_TREE_MODEL(list_store));
@@ -186,14 +206,12 @@ void refresh(GtkWidget *mainwindow)
 
   //selected = computer.getChild("core");
 
-  if(!root) root = &computer;
-
-  selected1 = &computer;
+  selected1 = NULL;
   selected2 = NULL;
   selected3 = NULL;
 
-  populate_list(list1, root);
-  populate_sublist(list2, root);
+  populate_list(list1, &computer);
+  populate_sublist(list2, NULL);
   populate_sublist(list3, NULL);
   display(mainwindow);
 }
