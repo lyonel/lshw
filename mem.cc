@@ -83,7 +83,8 @@ bool scan_memory(hwNode & n)
     if (memory->getSize() > logicalmem)	// we already have a value
       return true;
 
-    if (logicalmem == 0)
+    if ((logicalmem == 0)
+	|| ((kcore > logicalmem) && (kcore < 2 * logicalmem)))
       memory->setSize(kcore);
     else
       memory->setSize(logicalmem);
@@ -94,4 +95,4 @@ bool scan_memory(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: mem.cc,v 1.16 2003/04/13 09:19:03 ezix Exp $";
+static char *id = "@(#) $Id: mem.cc,v 1.17 2003/04/14 08:57:53 ezix Exp $";
