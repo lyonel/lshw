@@ -1146,7 +1146,7 @@ static void dmi_table(int fd,
 
 	if ((dm->length > 0x0F) && (data[0x0F] != 0))
 	{
-	  newnode.setClock(1000 / data[0x0F]);
+	  newnode.setClock(1000000000 / data[0x0F]);	// convert from ns to Hz
 	}
 
 	newnode.setHandle(handle);
