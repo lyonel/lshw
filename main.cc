@@ -31,11 +31,12 @@
 #include "spd.h"
 #include "network.h"
 #include "isapnp.h"
+#include "fb.h"
 
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.34 2003/10/13 09:57:00 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.35 2003/11/03 08:59:49 ezix Exp $";
 
 bool scan_system(hwNode & system)
 {
@@ -82,6 +83,9 @@ bool scan_system(hwNode & system)
     status("Network interfaces");
     if (enabled("network"))
       scan_network(computer);
+    status("Framebuffer devices");
+    if (enabled("fb"))
+      scan_fb(computer);
     status("");
 
     if (computer.getDescription() == "")

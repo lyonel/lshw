@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.10 2003/04/30 08:25:47 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.11 2003/11/03 08:59:50 ezix Exp $";
 
 /* parts of this code come from the excellent pcmcia-cs package written by
  * David A. Hinds <dahinds@users.sourceforge.net>.
@@ -918,17 +918,7 @@ static bool pcmcia_ident(int socket,
     if (ioctl(fd, DS_GET_CONFIGURATION_INFO, &config) == 0)
     {
       if (config.AssignedIRQ != 0)
-      {
-	snprintf(buffer, sizeof(buffer), "%d", config.AssignedIRQ);
-	if (fct == 0)
-	  device.setConfig("irq", string(buffer));
-	else
-	{
-	  char fctbuffer[10];
-	  snprintf(fctbuffer, sizeof(fctbuffer), "%d", fct);
-	  device.setConfig(string("irq") + string(fctbuffer), string(buffer));
-	}
-      }
+	device.addResource(hw::resource::irq(config.AssignedIRQ));
     }
   }
 

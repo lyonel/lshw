@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.53 2003/10/17 22:23:40 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.54 2003/11/03 08:59:49 ezix Exp $";
 
 struct hwNode_i
 {
@@ -606,6 +606,25 @@ hwNode *hwNode::findChildByBusInfo(const string & businfo)
   for (unsigned int i = 0; i < This->children.size(); i++)
   {
     hwNode *result = This->children[i].findChildByBusInfo(businfo);
+
+    if (result)
+      return result;
+  }
+
+  return NULL;
+}
+
+hwNode *hwNode::findChildByResource(const hw::resource & r)
+{
+  if (!This)
+    return NULL;
+
+  if (this->usesResource(r))
+    return this;
+
+  for (unsigned int i = 0; i < This->children.size(); i++)
+  {
+    hwNode *result = This->children[i].findChildByResource(r);
 
     if (result)
       return result;
@@ -1228,8 +1247,8 @@ bool resource::operator == (const resource & r)
 	 break;
 
 	 case hw::iomem:case hw::mem:return (This->ull1 >= r.This->ull1)
-	   && (This->ull1 <= r.This->ull2) || (r.This->ull1 >= This->ull1)
-	   && (r.This->ull1 <= This->ull2);
+	   && (This->ull2 <= r.This->ull2) || (r.This->ull1 >= This->ull1)
+	   && (r.This->ull2 <= This->ull2);
 	 break;
 
 	 case hw::ioport:return (This->ul1 >= r.This->ul1)

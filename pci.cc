@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.39 2003/10/20 11:16:16 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.40 2003/11/03 08:59:50 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -567,7 +567,24 @@ static bool scan_resources(hwNode & n,
       if ((a != 0) && (cmd & PCI_COMMAND_IO) != 0)
 	n.addResource(hw::resource::ioport(a, a + len - 1));
     }
+    else			// resource is memory
+    {
+      int t = flg & PCI_BASE_ADDRESS_MEM_TYPE_MASK;
+      u_int64_t a = pos & PCI_ADDR_MEM_MASK;
+      u_int64_t z = 0;
 
+      if (t == PCI_BASE_ADDRESS_MEM_TYPE_64)
+      {
+	if (i < 5)
+	{
+	  i++;
+	  z = get_conf_long(d, PCI_BASE_ADDRESS_0 + 4 * i);
+	  a += z << 4;
+	}
+      }
+      if (a)
+	n.addResource(hw::resource::iomem(a, a + len - 1));
+    }
   }
 
   return true;
@@ -741,7 +758,7 @@ bool scan_pci(hwNode & n)
 	  device->setBusInfo(businfo);
 	  device->setPhysId(PCI_SLOT(dfn & 0xff), PCI_FUNC(dfn & 0xff));
 
-	  if (deviceclass == hw::bridge)
+	  if (deviceclass == hw::bridge || deviceclass == hw::storage)
 	    device->addCapability(devicename);
 
 	  scan_resources(*device, d);
@@ -766,7 +783,7 @@ bool scan_pci(hwNode & n)
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
 	    if (d.irq != 0)
 	    {
-	      device->setConfig("irq", irq);
+	      //device->setConfig("irq", irq);
 	      device->addResource(hw::resource::irq(d.irq));
 	    }
 	  }
