@@ -2,12 +2,13 @@
 %define version @VERSION@
 %define release 1
 
-Summary: HardWare LiSter for Linux
+Summary: HardWare LiSter
 Name: %{name}
 Version: %{version}
 Release: %{release}
 Vendor: Lyonel Vincent <vincentl@ec-lyon.fr>
-Source: http://www.ezix.org/software/%{name}/%{name}-%{version}.tar.gz
+Source: %{name}-%{version}.tar.gz
+URL: http://www.ezix.org/software/lshw.html
 Copyright: GPL
 Group: Applications/System
 Buildroot: /var/tmp/%{name}-%{version}-%{release}-root
