@@ -43,6 +43,7 @@ bool scan_memory(hwNode & n)
 	    read(fd2, &base, sizeof(base));
 	    read(fd2, &size, sizeof(size));
 
+	    bank.setSlot(slotname);
 	    bank.setSize(size);
 	    memory.addChild(bank);
 	  }
