@@ -8,7 +8,7 @@ bool pushd(const std::string & dir = "");
 std::string popd();
 std::string pwd();
 
-bool exists(const string & path);
+bool exists(const std::string & path);
 bool loadfile(const std::string & file, std::vector < std::string > &lines);
 
 int splitlines(const std::string & s,
