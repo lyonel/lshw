@@ -1,5 +1,6 @@
 #include "print.h"
 #include "version.h"
+#include "osutils.h"
 #include <iostream>
 #include <iomanip>
 
@@ -409,7 +410,7 @@ void printxml(hwNode & node,
     cout << "<?xml version=\"1.0\"?>" << endl;
 
   tab(level, false);
-  cout << "<item id=\"" << node.getId() << "\"";
+  cout << "<node id=\"" << node.getId() << "\"";
   if (node.disabled())
     cout << " disabled=\"true\"";
   if (node.claimed())
@@ -490,6 +491,7 @@ void printxml(hwNode & node,
     case hw::memory:
     case hw::address:
     case hw::storage:
+    case hw::display:
       cout << " units=\"bytes\"";
       break;
 
@@ -551,6 +553,23 @@ void printxml(hwNode & node,
     tab(level + 1, false);
     cout << "</configuration>" << endl;
   }
+  config.clear();
+
+  splitlines(node.getCapabilities(), config, ' ');
+  if (config.size() > 0)
+  {
+    tab(level + 1, false);
+    cout << "<capabilities>" << endl;
+    for (int j = 0; j < config.size(); j++)
+    {
+      tab(level + 2, false);
+      cout << "<capability id=\"" << escape(config[j]) << "\" />";
+      cout << endl;
+    }
+    tab(level + 1, false);
+    cout << "</capabilities>" << endl;
+  }
+  config.clear();
 
   for (int i = 0; i < node.countChildren(); i++)
   {
@@ -558,7 +577,7 @@ void printxml(hwNode & node,
   }
 
   tab(level, false);
-  cout << "</item>" << endl;
+  cout << "</node>" << endl;
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.36 2003/03/11 00:59:26 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.37 2003/03/11 08:45:11 ezix Exp $";
