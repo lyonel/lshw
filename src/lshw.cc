@@ -31,6 +31,21 @@ void usage(const char *progname)
   fprintf(stderr, "\n");
 }
 
+void status(const char *message)
+{
+  static size_t lastlen = 0;
+                                                                                
+  if (isatty(2))
+  {
+    fprintf(stderr, "\r");
+    for (size_t i = 0; i < lastlen; i++)
+      fprintf(stderr, " ");
+    fprintf(stderr, "\r%s\r", message);
+    fflush(stderr);
+    lastlen = strlen(message);
+  }
+}
+
 int main(int argc,
 	 char **argv)
 {

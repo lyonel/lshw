@@ -842,17 +842,3 @@ void printhwpath(hwNode & node)
     }
 }
 
-void status(const char *message)
-{
-  static size_t lastlen = 0;
-
-  if (isatty(2))
-  {
-    fprintf(stderr, "\r");
-    for (size_t i = 0; i < lastlen; i++)
-      fprintf(stderr, " ");
-    fprintf(stderr, "\r%s\r", message);
-    fflush(stderr);
-    lastlen = strlen(message);
-  }
-}
