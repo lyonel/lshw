@@ -27,8 +27,10 @@ static char *id =
 #define TP_NPROC	0x00
 #define TP_MEMORY	0x01
 #define TP_B_DMA	0x02
+#define TP_OBSOLETE	0x03
 #define TP_A_DMA	0x04
 #define TP_A_DIRECT	0x05
+#define TP_OTHER	0x06
 #define TP_BCPORT	0x07
 #define TP_CIO		0x08
 #define TP_CONSOLE	0x09
@@ -37,6 +39,7 @@ static char *id =
 #define TP_IOA		0x0c
 #define TP_BRIDGE	0x0d
 #define TP_FABRIC	0x0e
+#define TP_MC		0x0f
 #define TP_FAULTY	0x1f
 
 static long get_long(const string & path)
@@ -75,8 +78,12 @@ static bool scan_device(hwNode & node, string name = "")
   {
     hwNode newnode("device");
     size_t colon = name.rfind(":");
+    long hw_type = get_long("hw_type");
+    long sversion = get_long("sversion");
+    long hversion = get_long("hversion");
+    long rev = get_long("rev");
 
-    switch(get_long("hw_type"))
+    switch(hw_type)
     {
       case TP_NPROC:
         newnode = hwNode("cpu", hw::processor);
@@ -94,6 +101,18 @@ static bool scan_device(hwNode & node, string name = "")
         newnode.addCapability("a-dma", "Type A DMA I/O");
         break;
       case TP_A_DIRECT:
+        switch (sversion)
+        {
+          case 0x0D:
+            newnode = hwNode("serial", hw::communication);
+            newnode.setDescription("MUX port");
+            break;
+          case 0x0E:
+            newnode = hwNode("serial", hw::communication);
+            newnode.setDescription("RS-232 port");
+            break;
+        }
+
         newnode.addCapability("a-direct", "Type A Direct I/O");
         break;
       case TP_BCPORT:
