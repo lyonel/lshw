@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.32 2003/09/29 17:07:52 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.33 2003/10/01 12:27:06 ezix Exp $";
 
 void usage(const char *progname)
 {
@@ -80,6 +80,8 @@ int main(int argc,
   {
     fprintf(stderr, "WARNING: you should run this program as super-user.\n");
   }
+
+  disable("isapnp");
 
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
