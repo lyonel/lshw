@@ -26,6 +26,10 @@
 #define OPEN_FLAG O_RDWR
 #endif
 
+#define INQ_REPLY_LEN 96
+#define INQ_CMD_CODE 0x12
+#define INQ_CMD_LEN 6
+
 typedef struct my_sg_scsi_id
 {
   int host_no;			/* as in "scsi<n>" where 'n' is one of 0, 1, 2 etc */
@@ -125,6 +129,69 @@ static const char *scsi_type(int type)
   default:
     return "";
   }
+}
+
+static bool do_inquiry(int sg_fd,
+		       hwNode & node)
+{
+  unsigned char inqCmdBlk[INQ_CMD_LEN] =
+    { INQ_CMD_CODE, 0, 0, 0, INQ_REPLY_LEN, 0 };
+  unsigned char inqBuff[INQ_REPLY_LEN];
+  unsigned char sense_buffer[32];
+  sg_io_hdr_t io_hdr;
+  int k;
+
+  if ((ioctl(sg_fd, SG_GET_VERSION_NUM, &k) < 0) || (k < 30000))
+    return false;
+
+  memset(&io_hdr, 0, sizeof(sg_io_hdr_t));
+  io_hdr.interface_id = 'S';
+  io_hdr.cmd_len = sizeof(inqCmdBlk);
+  /*
+   * io_hdr.iovec_count = 0; 
+ *//*
+ * memset takes care of this 
+ */
+  io_hdr.mx_sb_len = sizeof(sense_buffer);
+  io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
+  io_hdr.dxfer_len = INQ_REPLY_LEN;
+  io_hdr.dxferp = inqBuff;
+  io_hdr.cmdp = inqCmdBlk;
+  io_hdr.sbp = sense_buffer;
+  io_hdr.timeout = 20000;	/* 20000 millisecs == 20 seconds */
+  /*
+   * io_hdr.flags = 0; 
+ *//*
+ * take defaults: indirect IO, etc 
+ */
+  /*
+   * io_hdr.pack_id = 0; 
+   */
+  /*
+   * io_hdr.usr_ptr = NULL; 
+   */
+
+  if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
+    return false;
+
+  if ((io_hdr.info & SG_INFO_OK_MASK) != SG_INFO_OK)
+    return false;
+
+  char *p = (char *) inqBuff;
+  int f = (int) *(p + 7);
+
+  node.setVendor(string(p + 8, 8));
+  node.setProduct(string(p + 16, 16));
+  node.setVersion(string(p + 32, 4));
+
+  if (!(f & 0x40))
+    node.addCapability("wide32");
+  if (!(f & 0x20))
+    node.addCapability("wide16");
+  if (!(f & 0x10))
+    node.addCapability("sync");
+
+  return true;
 }
 
 static void scan_devices()
@@ -283,6 +350,7 @@ static bool scan_sg(int sg,
   device.setHandle(scsi_handle(m_id.host_no,
 			       m_id.channel, m_id.scsi_id, m_id.lun));
   find_logicalname(device);
+  do_inquiry(fd, device);
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
     scan_cdrom(device);
 
@@ -305,4 +373,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.7 2003/02/17 09:43:24 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.8 2003/02/17 21:11:58 ezix Exp $";
