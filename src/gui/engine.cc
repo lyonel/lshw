@@ -165,7 +165,7 @@ static void display(GtkWidget * mainwindow)
   gtk_label_set_use_markup (GTK_LABEL(description), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL(description), TRUE);
 
-  YIELD();
+  //YIELD();
 }
 
 void status(const char *message)
