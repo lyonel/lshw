@@ -2,6 +2,8 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
+static char *id = "@(#) $Id$";
+
 static struct StockIcon
 {
 	const char *name;
@@ -111,4 +113,6 @@ lshw_gtk_stock_init(void)
 	gtk_icon_size_register(LSHW_ICON_SIZE_LOGO, 210, 150);
 
 	g_object_unref(G_OBJECT(icon_factory));
+
+	(void) &id;	/* avoid "id defined but not used" warning */
 }
