@@ -1,4 +1,3 @@
-PACKAGENAME = lshw
 SNAPSHOT=0.`cat .timestamp`
 
 DESTDIR=/
@@ -69,7 +68,7 @@ clean:
                                                                                
 release:
 	mkdir -p ../releases
-	svn copy . `dirname ${PWD}`/releases/`cat .version`
+	svn copy .. `dirname ${PWD}`/releases/`cat .version`
 	svn commit `dirname ${PWD}`/releases/`cat .version` -m "released version "`cat .version`" of "$(PACKAGENAME)
 	rm -rf $(PACKAGENAME)-`cat .version`
 	svn export ../releases/`cat .version` $(PACKAGENAME)-`cat .version`
@@ -79,7 +78,7 @@ release:
 
 snapshot: .timestamp
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
-	svn export -r HEAD . $(PACKAGENAME)-$(SNAPSHOT)
+	svn export -r HEAD .. $(PACKAGENAME)-$(SNAPSHOT)
 	cat $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/$(SNAPSHOT)/g" > $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec
 	tar cfz $(PACKAGENAME)-$(SNAPSHOT).tar.gz $(PACKAGENAME)-$(SNAPSHOT)
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
