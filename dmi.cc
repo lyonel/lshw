@@ -59,7 +59,7 @@ static char *dmi_string(struct dmi_header *dm,
 {
   char *bp = (char *) dm;
   if (!s)
-    return NULL;
+    return "";
 
   bp += dm->length;
   while (s > 1)
