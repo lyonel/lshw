@@ -84,11 +84,33 @@ static string usbspeed(float speed)
   return string(buffer);
 }
 
+static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev, unsigned prnt)
+{
+  hwNode * parent = NULL;
+
+  if(prnt>0) parent = n.findChildByHandle(usbhandle(bus, lev-1, prnt));
+  if(parent)
+  {
+    device.setBusInfo(parent->getBusInfo()+":"+device.getPhysId());
+    parent->addChild(device);
+  }
+  else
+    n.addChild(device);
+
+  return true;
+}
+
 bool scan_usb(hwNode & n)
 {
   hwNode device("device");
   FILE * usbdevices = NULL;
   bool defined = false;
+  unsigned int bus,lev,prnt,port,cnt,devnum,mxch;
+  float speed;
+  char ver[10];
+  unsigned int cls, sub, prot, mxps, numcfgs;
+  unsigned int vendor, prodid;
+  char rev[10];
 
   if (!exists(PROCBUSUSBDEVICES))
     return false;
@@ -98,13 +120,7 @@ bool scan_usb(hwNode & n)
   while(!feof(usbdevices))
   {
     char * buffer = NULL;
-    unsigned int bus,lev,prnt,port,cnt,devnum,mxch;
     size_t linelen;
-    float speed;
-    char ver[10];
-    unsigned int cls, sub, prot, mxps, numcfgs;
-    unsigned int vendor, prodid;
-    char rev[10];
     char strname[80];
     char strval[80];
 
@@ -116,9 +132,7 @@ bool scan_usb(hwNode & n)
       if(line.length()<=0)
       {
         if(defined)
-        {
-          n.addChild(device);
-        }
+          addUSBChild(n, device, bus, lev, prnt);
         device = hwNode("device");
         defined = false;
       }
@@ -216,9 +230,7 @@ bool scan_usb(hwNode & n)
     }
   }
   if(defined)
-  {
-    n.addChild(device);
-  }
+    addUSBChild(n, device, bus, lev, prnt);
 
   if(usbdevices) fclose(usbdevices);
 
