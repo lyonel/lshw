@@ -54,15 +54,14 @@ create_lshw (void)
   GtkWidget *scrolledwindow1;
   GtkWidget *viewport2;
   GtkWidget *hbox1;
-  GtkWidget *vbox2;
-  GtkWidget *hbox2;
+  GtkWidget *hpaned1;
+  GtkWidget *hbox3;
   GtkWidget *scrolledwindow10;
   GtkWidget *treeview1;
   GtkWidget *scrolledwindow11;
   GtkWidget *treeview2;
   GtkWidget *scrolledwindow12;
   GtkWidget *treeview3;
-  GtkWidget *hscale1;
   GtkWidget *description;
   GtkWidget *statusbar;
   GtkAccelGroup *accel_group;
@@ -165,17 +164,17 @@ create_lshw (void)
   gtk_widget_show (hbox1);
   gtk_container_add (GTK_CONTAINER (viewport2), hbox1);
 
-  vbox2 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox2);
-  gtk_box_pack_start (GTK_BOX (hbox1), vbox2, TRUE, TRUE, 0);
+  hpaned1 = gtk_hpaned_new ();
+  gtk_widget_show (hpaned1);
+  gtk_box_pack_start (GTK_BOX (hbox1), hpaned1, TRUE, TRUE, 0);
 
-  hbox2 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox2);
-  gtk_box_pack_start (GTK_BOX (vbox2), hbox2, TRUE, TRUE, 0);
+  hbox3 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox3);
+  gtk_paned_pack1 (GTK_PANED (hpaned1), hbox3, FALSE, TRUE);
 
   scrolledwindow10 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow10);
-  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow10, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox3), scrolledwindow10, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow10), 2);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_SHADOW_ETCHED_IN);
@@ -187,7 +186,7 @@ create_lshw (void)
 
   scrolledwindow11 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow11);
-  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow11, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox3), scrolledwindow11, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow11), 2);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow11), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow11), GTK_SHADOW_ETCHED_IN);
@@ -199,7 +198,7 @@ create_lshw (void)
 
   scrolledwindow12 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow12);
-  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow12, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox3), scrolledwindow12, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow12), 2);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_SHADOW_ETCHED_IN);
@@ -209,14 +208,9 @@ create_lshw (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow12), treeview3);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview3), FALSE);
 
-  hscale1 = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, 0, 0, 0, 0)));
-  gtk_widget_show (hscale1);
-  gtk_box_pack_start (GTK_BOX (vbox2), hscale1, FALSE, TRUE, 0);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale1), FALSE);
-
   description = gtk_label_new ("<i>no information available.</i>\n\nclick on <i>Refresh</i> to query hardware");
   gtk_widget_show (description);
-  gtk_box_pack_start (GTK_BOX (hbox1), description, TRUE, FALSE, 0);
+  gtk_paned_pack2 (GTK_PANED (hpaned1), description, TRUE, TRUE);
   GTK_WIDGET_SET_FLAGS (description, GTK_CAN_FOCUS);
   gtk_label_set_use_markup (GTK_LABEL (description), TRUE);
   gtk_label_set_selectable (GTK_LABEL (description), TRUE);
@@ -252,20 +246,11 @@ create_lshw (void)
   g_signal_connect ((gpointer) quitbutton, "clicked",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
-  g_signal_connect ((gpointer) treeview1, "row_activated",
-                    G_CALLBACK (on_treeview1_row_activated),
-                    NULL);
   g_signal_connect ((gpointer) treeview1, "cursor_changed",
                     G_CALLBACK (on_treeview1_cursor_changed),
                     NULL);
-  g_signal_connect ((gpointer) treeview2, "row_activated",
-                    G_CALLBACK (on_treeview2_row_activated),
-                    NULL);
   g_signal_connect ((gpointer) treeview2, "cursor_changed",
                     G_CALLBACK (on_treeview2_cursor_changed),
-                    NULL);
-  g_signal_connect ((gpointer) treeview3, "row_activated",
-                    G_CALLBACK (on_treeview3_row_activated),
                     NULL);
   g_signal_connect ((gpointer) treeview3, "cursor_changed",
                     G_CALLBACK (on_treeview3_cursor_changed),
@@ -296,15 +281,14 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow1, "scrolledwindow1");
   GLADE_HOOKUP_OBJECT (lshw, viewport2, "viewport2");
   GLADE_HOOKUP_OBJECT (lshw, hbox1, "hbox1");
-  GLADE_HOOKUP_OBJECT (lshw, vbox2, "vbox2");
-  GLADE_HOOKUP_OBJECT (lshw, hbox2, "hbox2");
+  GLADE_HOOKUP_OBJECT (lshw, hpaned1, "hpaned1");
+  GLADE_HOOKUP_OBJECT (lshw, hbox3, "hbox3");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow10, "scrolledwindow10");
   GLADE_HOOKUP_OBJECT (lshw, treeview1, "treeview1");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow11, "scrolledwindow11");
   GLADE_HOOKUP_OBJECT (lshw, treeview2, "treeview2");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow12, "scrolledwindow12");
   GLADE_HOOKUP_OBJECT (lshw, treeview3, "treeview3");
-  GLADE_HOOKUP_OBJECT (lshw, hscale1, "hscale1");
   GLADE_HOOKUP_OBJECT (lshw, description, "description");
   GLADE_HOOKUP_OBJECT (lshw, statusbar, "statusbar");
 

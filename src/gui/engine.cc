@@ -11,6 +11,9 @@ extern "C" {
 
 static hwNode computer("computer", hw::system);
 static hwNode *selected = NULL;
+static hwNode *selected1 = NULL;
+static hwNode *selected2 = NULL;
+static hwNode *selected3 = NULL;
 static hwNode *root = NULL;
 static GtkWidget *statusbar = NULL;
 
@@ -31,12 +34,17 @@ static void populate_list(GtkWidget * list1, hwNode * root)
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn   *col = NULL;
   GtkCellRenderer     *renderer = NULL;
-
-  list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
-
   GtkTreeIter iter;
   string text;
 
+
+  col = gtk_tree_view_get_column (GTK_TREE_VIEW(list1), 0);
+  if(col)
+    gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
+
+  if(!root) return;
+
+  list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
   gtk_list_store_append(list_store, &iter);
 
   text = root->getDescription();
@@ -76,12 +84,19 @@ static void populate_list(GtkWidget * list1, hwNode * root)
   YIELD();
 }
 
-static void populate_sublist(GtkWidget * list1, hwNode * root)
+static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=NULL)
 {
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn   *col = NULL;
   GtkCellRenderer     *renderer = NULL;
   GtkTreeIter iter;
+  GtkTreeIter current_iter;
+
+  col = gtk_tree_view_get_column (GTK_TREE_VIEW(list1), 0);
+  if(col)
+    gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
+
+  if(!root) return;
 
   list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
 
@@ -90,6 +105,8 @@ static void populate_sublist(GtkWidget * list1, hwNode * root)
     string text;
 
     gtk_list_store_append(list_store, &iter);
+
+    if(root->getChild(i) == current) current_iter = iter;
 
     text = root->getChild(i)->getDescription();
     if(text == "")
@@ -117,6 +134,8 @@ static void populate_sublist(GtkWidget * list1, hwNode * root)
   g_object_unref(list_store);
 
   gtk_tree_selection_set_mode(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), GTK_SELECTION_BROWSE);
+  if(current)
+    gtk_tree_selection_select_iter(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), &current_iter);
 
   YIELD();
 }
@@ -169,8 +188,13 @@ void refresh(GtkWidget *mainwindow)
 
   if(!root) root = &computer;
 
+  selected1 = &computer;
+  selected2 = NULL;
+  selected3 = NULL;
+
   populate_list(list1, root);
   populate_sublist(list2, root);
+  populate_sublist(list3, NULL);
   display(mainwindow);
 }
 
@@ -192,23 +216,87 @@ void activate(GtkTreeView *treeview,
   display(mainwindow);
 }
 
+static hwNode * find_parent(hwNode * n, hwNode *sub)
+{
+  if(!n) return NULL;
+
+  if(n == sub) return n;
+
+  for(unsigned i=0; i<sub->countChildren(); i++)
+  {
+    if(sub->getChild(i) == n) return sub;
+
+    hwNode *r = find_parent(n, sub->getChild(i));
+    if(r) return r;
+  }
+
+  return NULL;
+}
+
 void browse(unsigned list, GtkTreeView *treeview)
 {
   GtkTreeSelection *selection;
   GtkTreeModel     *model;
   GtkTreeIter       iter;
+  hwNode *n = NULL;
+
+  GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
+  GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
+  GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
 
   selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
   if (gtk_tree_selection_get_selected(selection, &model, &iter))
-  {
-    hwNode *n;
-
     gtk_tree_model_get (model, &iter, COL_NODE, &n, -1);
 
-    printf ("selected row is: %s\n", n->getId().c_str());
-  }
-  else
+  if(!n) return;
+
+  //if(n->countChildren()==0)
   {
-    printf ("no row selected!\n");
+    selected = n;
+    display(mainwindow);
+  }
+
+  switch(list)
+  {
+    case 1:
+      if(n == selected1) return;
+      /*{
+        selected3 = selected2;
+        selected2 = selected1;
+        selected1 = find_parent(selected2, &computer);
+
+        populate_list(list1, selected1);
+        populate_sublist(list2, selected1, selected2);
+        populate_sublist(list3, selected2, selected3);
+      }
+      else*/
+      {
+        selected1 = n;
+        selected2 = NULL;
+        selected3 = NULL;
+        populate_list(list1, selected1);
+        populate_sublist(list2, selected1, selected2);
+        populate_sublist(list3, selected2);
+      }
+      break;
+    case 2:
+      if(n == selected2) return;	// nothing to change
+      populate_sublist(list3, n);
+      selected2 = n;
+      break;
+    case 3:
+      if(n == selected3) return;	// nothing to change
+      if(n->countChildren()>0)
+      {
+        selected1 = selected2;
+        selected2 = n;
+        selected3 = NULL;
+        populate_list(list1, selected1);
+        populate_sublist(list2, selected1, selected2);
+        populate_sublist(list3, selected2);
+      }
+      break;
+    default:
+      return;
   }
 }
