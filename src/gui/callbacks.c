@@ -8,9 +8,12 @@
 #include "interface.h"
 #include "support.h"
 #include "version.h"
+#include "engine.h"
 
 static GtkWidget *about = NULL;
 static GtkWidget *saveas = NULL;
+
+extern GtkWidget *mainwindow;
 
 void
 save_as                                (GtkMenuItem     *menuitem,
@@ -36,7 +39,7 @@ void
 refresh_display                        (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-
+  refresh(mainwindow);
 }
 
 

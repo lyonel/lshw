@@ -7,11 +7,12 @@
 #include "interface.h"
 #include "support.h"
 
+
+GtkWidget *mainwindow;
+
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *lshw;
-
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -26,8 +27,8 @@ main (int argc, char *argv[])
    * (except popup menus), just so that you see something after building
    * the project. Delete any components that you don't want shown initially.
    */
-  lshw = create_lshw ();
-  gtk_widget_show (lshw);
+  mainwindow = create_lshw ();
+  gtk_widget_show (mainwindow);
 
   gtk_main ();
   return 0;

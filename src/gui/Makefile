@@ -10,7 +10,7 @@ GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
 LIBS=-L../core -llshw $(GTKLIBS)
 LDFLAGS=
 
-OBJS = gtk-lshw.o interface.o support.o callbacks.o
+OBJS = gtk-lshw.o interface.o support.o callbacks.o engine.o
 SRCS = $(OBJS:.o=.c)
 
 all: gtk-$(PACKAGENAME)
