@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#ifdef __i386__
+
 #define cpuid_up(in,a,b,c,d)\
   asm("cpuid": "=a" (a), "=b" (b), "=c" (c), "=d" (d) : "a" (in));
 
@@ -488,4 +490,11 @@ bool scan_cpuid(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.6 2003/02/02 18:02:37 ezix Exp $";
+#else
+bool scan_cpuid(hwNode & n)
+{
+  return true;
+}
+#endif
+
+static char *id = "@(#) $Id: cpuid.cc,v 1.7 2003/02/02 18:38:42 ezix Exp $";
