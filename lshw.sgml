@@ -30,11 +30,11 @@ list hardware
 <ulink url="http://ezix.org/software/lshw.html"></ulink></para>
 </refsect1>
 
-<refsect1><title>DESCRIPTIONS</title>
+<refsect1><title>DESCRIPTION</title>
 <para>
 <indexterm><primary>lshw</primary></indexterm>
 <application>lshw</application>
-is small tool to provide detailed information on the hardware
+is a small tool to extract detailed information on the hardware
 configuration of the machine. It can report exact memory
 configuration, firmware version, mainboard configuration, 
 <hardware>CPU</hardware> version
@@ -42,6 +42,10 @@ and speed, cache configuration, bus speed, etc. on
 <acronym>DMI</acronym>-capable x86
 systems and on some <productname>PowerPC</productname>
 machines (<productname>PowerMac G4</productname> is known to work).
+</para>
+<para>
+It currently supports DMI (x86 only), OpenFirmware device tree (PowerPC only),
+PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86) and SCSI.
 </para>
 
 <para>
@@ -56,7 +60,7 @@ Displays the available command line options and quits.
 </para></listitem></varlistentry>
 <varlistentry><term>-html</term>
 <listitem><para>
-Creates a HTML fragment for inclusion into a web page.
+Output the device tree as an HTML page.
 </para></listitem></varlistentry>
 </variablelist>
 </para>
@@ -78,14 +82,14 @@ Not all architectures supported by GNU/Linux are fully supported (e.g.
 
 <refsect1><title>NOTES</title>
 <para>
-<application>lshw</application> must be run as super user or it will only report partial information.
+<application>lshw</application> must be run as super user or it will only report
+partial information.
 </para>
 
 </refsect1>
 
 <refsect1><title>SEE ALSO</title>
-<para><filename>/proc/*</filename>, <application>linuxinfo</application>(1),
-<application>lspci</application>(8)
+<para><filename>/proc/*</filename>, <application>linuxinfo</application>(1), <application>lspci</application>(8), <application>lsusb</application>(8)
 </para>
 </refsect1>
 </refentry>
