@@ -62,6 +62,8 @@ create_lshw (void)
   GtkWidget *treeview2;
   GtkWidget *scrolledwindow12;
   GtkWidget *treeview3;
+  GtkWidget *scrolledwindow13;
+  GtkWidget *viewport3;
   GtkWidget *description;
   GtkWidget *statusbar;
   GtkAccelGroup *accel_group;
@@ -208,14 +210,25 @@ create_lshw (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow12), treeview3);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview3), FALSE);
 
-  description = gtk_label_new ("<i>no information available.</i>\n\nclick on <i>Refresh</i> to query hardware");
+  scrolledwindow13 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow13);
+  gtk_paned_pack2 (GTK_PANED (hpaned1), scrolledwindow13, TRUE, TRUE);
+  gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow13), 4);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow13), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+  viewport3 = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewport3);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow13), viewport3);
+
+  description = gtk_label_new ("<i>no information available.</i>\n                                                                                                                     \nclick on <i>Refresh</i> to query hardware");
   gtk_widget_show (description);
-  gtk_paned_pack2 (GTK_PANED (hpaned1), description, TRUE, TRUE);
+  gtk_container_add (GTK_CONTAINER (viewport3), description);
   GTK_WIDGET_SET_FLAGS (description, GTK_CAN_FOCUS);
   gtk_label_set_use_markup (GTK_LABEL (description), TRUE);
+  gtk_label_set_line_wrap (GTK_LABEL (description), TRUE);
   gtk_label_set_selectable (GTK_LABEL (description), TRUE);
   gtk_misc_set_alignment (GTK_MISC (description), 0, 0);
-  gtk_misc_set_padding (GTK_MISC (description), 5, 5);
+  gtk_misc_set_padding (GTK_MISC (description), 4, 4);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
@@ -300,6 +313,8 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, treeview2, "treeview2");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow12, "scrolledwindow12");
   GLADE_HOOKUP_OBJECT (lshw, treeview3, "treeview3");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow13, "scrolledwindow13");
+  GLADE_HOOKUP_OBJECT (lshw, viewport3, "viewport3");
   GLADE_HOOKUP_OBJECT (lshw, description, "description");
   GLADE_HOOKUP_OBJECT (lshw, statusbar, "statusbar");
 
