@@ -57,6 +57,12 @@ void print(const hwNode & node,
     cout << " DISABLED";
   cout << endl;
 
+  if (node.getDescription() != "")
+  {
+    tab(level + 1, false);
+    cout << "description: " << node.getDescription() << endl;
+  }
+
   if (node.getProduct() != "")
   {
     tab(level + 1, false);

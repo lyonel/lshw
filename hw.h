@@ -49,6 +49,9 @@ class hwNode
 	hw::hwClass getClass() const;
 	void setClass(hw::hwClass c);
 
+	string getDescription() const;
+	void setDescription(const string & description);
+
 	string getVendor() const;
 	void setVendor(const string & vendor);
 

@@ -789,12 +789,14 @@ static void dmi_table(int fd,
       {
 	string release(dmi_string(dm,
 				  data[8]));
-	hwNode newnode("rom",
+	hwNode newnode("bios",
 		       hw::memory,
 		       dmi_string(dm,
 				  data[4]));
 	newnode.setVersion(dmi_string(dm, data[5]));
-	newnode.setSize(64 * data[9] * 1024);
+	newnode.setCapacity(64 * data[9] * 1024);
+	newnode.setSize(16 * (0x10000 - (data[7] << 8 | data[6])));
+	newnode.setDescription("BIOS");
 
 	if (release != "")
 	  newnode.setVersion(newnode.getVersion() + " (" + release + ")");
