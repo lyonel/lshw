@@ -39,6 +39,8 @@ class hwNode
 
 	string getId() const;
 
+	void setHandle(const string & handle);
+
 	bool enabled() const;
 	bool disabled() const;
 	void enable();
@@ -74,6 +76,7 @@ class hwNode
 	unsigned int countChildren() const;
 	const hwNode * getChild(unsigned int) const;
 	hwNode * getChild(const string & id);
+	hwNode * findChildByHandle(const string & handle);
 	bool addChild(const hwNode & node);
 	bool isBus() const
 	{

@@ -735,6 +735,7 @@ static void dmi_table(int fd,
   u8 *data;
   int i = 0;
   int r = 0, r2 = 0;
+  char handle[10];
 
   if (len == 0)
     // no data
@@ -766,6 +767,8 @@ static void dmi_table(int fd,
     if (data + dm->length > (u8 *) buf + len)
       // incomplete structure, abort decoding
       break;
+
+    snprintf(handle, sizeof(handle), "DMI:%04X", dm->handle);
 
     switch (dm->type)
     {
@@ -1059,6 +1062,8 @@ static void dmi_table(int fd,
 	hwNode newnode(id,
 		       hw::memory);
 
+	newnode.setHandle(handle);
+
 	newnode.setSlot(dmi_memory_array_location(data[4]));
 	printf("\t\tError Correction Type: %s\n",
 	       dmi_memory_array_error_correction_type(data[6]));
@@ -1086,8 +1091,10 @@ static void dmi_table(int fd,
 	unsigned long long size = 0;
 	u16 width = 0;
 	char bits[10];
+	char arrayhandle[10];
 
-	// printf("\t\tArray Handle: 0x%04X\n", data[5] << 8 | data[4]);
+	snprintf(arrayhandle, sizeof(arrayhandle),
+		 "DMI:%04X", data[5] << 8 | data[4]);
 
 	strcpy(bits, "");
 	// total width
@@ -1138,7 +1145,7 @@ static void dmi_table(int fd,
 	  description += " " + string(buffer);
 	}
 
-	hwNode newnode("ram",
+	hwNode newnode("slot",
 		       hw::memory);
 
 	newnode.setSlot(slot);
@@ -1156,9 +1163,14 @@ static void dmi_table(int fd,
 	newnode.setProduct(description);
 	newnode.setSize(size);
 
-	if (size > 0)
+	if (size == 0)
+	  newnode.setProduct("empty");
+
 	{
-	  hwNode *memorynode = node.getChild("memory");
+	  hwNode *memorynode = node.findChildByHandle(arrayhandle);
+
+	  if (!memorynode)
+	    memorynode = node.getChild("memory");
 	  if (!memorynode)
 	  {
 	    node.addChild(hwNode("memory", hw::memory));

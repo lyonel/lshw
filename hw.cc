@@ -8,7 +8,7 @@ using namespace hw;
 struct hwNode_i
 {
   hwClass deviceclass;
-  string id, vendor, product, version, serial, slot;
+  string id, vendor, product, version, serial, slot, handle;
   bool enabled;
   unsigned long long size;
   unsigned long long capacity;
@@ -67,6 +67,7 @@ hwNode::hwNode(const string & id,
   This->capacity = 0;
   This->clock = 0;
   This->enabled = true;
+  This->handle = "";
 }
 
 hwNode::hwNode(const hwNode & o)
@@ -155,6 +156,14 @@ void hwNode::setId(const string & id)
     return;
 
   This->id = cleanupId(id);
+}
+
+void hwNode::setHandle(const string & handle)
+{
+  if (!This)
+    return;
+
+  This->handle = handle;
 }
 
 string hwNode::getVendor() const
@@ -296,6 +305,25 @@ hwNode *hwNode::getChild(const string & id)
   for (int i = 0; i < This->children.size(); i++)
     if (This->children[i].getId() == id)
       return &(This->children[i]);
+  return NULL;
+}
+
+hwNode *hwNode::findChildByHandle(const string & handle)
+{
+  if (!This)
+    return NULL;
+
+  if (This->handle == handle)
+    return this;
+
+  for (int i = 0; i < This->children.size(); i++)
+  {
+    hwNode *result = This->children[i].findChildByHandle(handle);
+
+    if (result)
+      return result;
+  }
+
   return NULL;
 }
 
