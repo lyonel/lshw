@@ -93,9 +93,50 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
   {
     device.setBusInfo(parent->getBusInfo()+":"+device.getPhysId());
     parent->addChild(device);
+    return true;
   }
   else
+  {
     n.addChild(device);
+    return false;
+  }
+}
+
+static bool setUSBClass(hwNode & device, unsigned cls)
+{
+  if(device.getClass()!=hw::generic) return false;
+  switch(cls)
+  {
+    case USB_CLASS_AUDIO:
+      device.setClass(hw::multimedia);
+      device.setDescription("Audio device");
+      break;
+    case USB_CLASS_COMM:
+      device.setClass(hw::communication);
+      device.setDescription("Communication device");
+      break;
+    case USB_CLASS_HID:
+      device.setClass(hw::input);
+      device.setDescription("Human interface device");
+      break;
+    case USB_CLASS_PRINTER:
+      device.setClass(hw::printer);
+      device.setDescription("Printer");
+      break;
+    case USB_CLASS_MASS_STORAGE:
+      device.setClass(hw::disk);	// hw::storage is for storage controllers
+      device.setDescription("Mass storage device");
+      break;
+    case USB_CLASS_HUB:
+      device.setClass(hw::bus);
+      device.setDescription("USB hub");
+      break;
+    case USB_CLASS_DATA:
+      device.setClass(hw::generic);
+      break;
+    default:
+      return false;
+  }
 
   return true;
 }
@@ -111,6 +152,10 @@ bool scan_usb(hwNode & n)
   unsigned int cls, sub, prot, mxps, numcfgs;
   unsigned int vendor, prodid;
   char rev[10];
+  unsigned numifs, cfgnum, atr;
+  char mxpwr[10];
+  unsigned ifnum, alt, numeps;
+  char driver[80];
 
   if (!exists(PROCBUSUSBDEVICES))
     return false;
@@ -171,36 +216,7 @@ bool scan_usb(hwNode & n)
             cls = sub = prot = mxps = numcfgs = 0;
             if(sscanf(line.c_str(), "D: Ver=%s Cls=%x(%*5c) Sub=%x Prot=%x MxPS=%u #Cfgs=%u", ver, &cls, &sub, &prot, &mxps, &numcfgs)>0)
             {
-              switch(cls)
-              {
-                case USB_CLASS_AUDIO:
-                  device.setClass(hw::multimedia);
-                  device.setDescription("Audio device");
-                  break;
-                case USB_CLASS_COMM:
-                  device.setClass(hw::communication);
-                  device.setDescription("Communication device");
-                  break;
-                case USB_CLASS_HID:
-                  device.setClass(hw::input);
-                  device.setDescription("Human interface device");
-                  break;
-                case USB_CLASS_PRINTER:
-                  device.setClass(hw::printer);
-                  device.setDescription("Printer");
-                  break;
-                case USB_CLASS_MASS_STORAGE:
-                  device.setClass(hw::disk);	// hw::storage is for storage controllers
-                  device.setDescription("Mass storage device");
-                  break;
-                case USB_CLASS_HUB:
-                  device.setClass(hw::bus);
-                  device.setDescription("USB hub");
-                  break;
-                case USB_CLASS_DATA:
-                  device.setClass(hw::generic);
-                  break;
-              }
+              setUSBClass(device, cls);
               device.addCapability(string("usb-")+string(ver));
             }
             break;
@@ -223,6 +239,27 @@ bool scan_usb(hwNode & n)
                 device.setProduct(hw::strip(strval));
               if((lev>0) && (strcasecmp(strname, "SerialNumber")==0))
                 device.setSerial(hw::strip(strval));
+            }
+            break;
+          case 'C':
+            numifs = cfgnum = atr = 0;
+            strcpy(mxpwr, "");
+            if(sscanf(line.c_str(), "C:* #Ifs=%u Cfg#=%u Atr=%x MxPwr=%s", &numifs, &cfgnum, &atr, mxpwr)>0)
+            {
+              device.setConfig("maxpower", mxpwr);
+            }
+            break;
+          case 'I':
+            ifnum = alt = numeps = cls = sub = prot = 0;
+            memset(driver, 0, sizeof(driver));
+            if((sscanf(line.c_str(), "I: If#=%u Alt=%u #EPs=%u Cls=%x(%*5c) Sub=%x Prot=%x Driver=%[ -z]", &ifnum, &alt, &numeps, &cls, &sub, &prot, driver)>0) && (cfgnum>0))
+            {
+               setUSBClass(device, cls);
+               if((strlen(driver)!=0) && (strcasecmp("(none)", driver)!=0))
+               {
+                 device.setConfig("driver", hw::strip(driver));
+                 device.claim();
+               }
             }
             break;
         }
