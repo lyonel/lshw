@@ -191,7 +191,7 @@ static bool probe_ide(const string & name,
   if (id.capability & 2)
     device.addCapability("lba", "Large Block Addressing");
   if (id.capability & 8)
-    device.addCapability("iordy");
+    device.addCapability("iordy", "I/O ready reporting");
   if (id.command_set_1 & 1)
     device.addCapability("smart",
 			 "S.M.A.R.T. (Self-Monitoring And Reporting Technology)");
