@@ -155,7 +155,7 @@ struct pci_entry
   unsigned int matches(long u1 = -1,
 		       long u2 = -1,
 		       long u3 = -1,
-		       long u4 = -1);
+		       long u4 = -1) const;
 };
 
 static vector < pci_entry > pci_devices;
@@ -177,7 +177,7 @@ pci_entry::pci_entry(const string & d,
 unsigned int pci_entry::matches(long u1,
 				long u2,
 				long u3,
-				long u4)
+				long u4) const
 {
   unsigned int result = 0;
 
@@ -197,6 +197,36 @@ unsigned int pci_entry::matches(long u1,
   }
 
   return result;
+}
+
+static bool find_best_match(const vector < pci_entry > &list,
+			    pci_entry & result,
+			    long u1 = -1,
+			    long u2 = -1,
+			    long u3 = -1,
+			    long u4 = -1)
+{
+  int lastmatch = -1;
+  unsigned int lastscore = 0;
+
+  for (int i = 0; i < list.size(); i++)
+  {
+    unsigned int currentscore = list[i].matches(u1, u2, u3, u4);
+
+    if (currentscore > lastscore)
+    {
+      lastscore = currentscore;
+      lastmatch = i;
+    }
+  }
+
+  if (lastmatch >= 0)
+  {
+    result = list[lastmatch];
+    return true;
+  }
+
+  return false;
 }
 
 static const char *get_class_name(unsigned int c)
@@ -406,14 +436,12 @@ static bool load_pcidb()
 static string get_class_description(long c,
 				    long pi = -1)
 {
-  for (int i = 0; i < pci_classes.size(); i++)
-  {
-    if (pci_classes[i].matches(c >> 8, c & 0xff, pi))
-    {
-      return pci_classes[i].description;
-    }
-  }
-  return "";
+  pci_entry result("");
+
+  if (find_best_match(pci_classes, result, c >> 8, c & 0xff, pi))
+    return result.description;
+  else
+    return "";
 }
 
 static u_int16_t get_conf_word(struct pci_dev d,
@@ -610,4 +638,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.9 2003/01/28 09:43:47 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.10 2003/01/28 12:11:50 ezix Exp $";
