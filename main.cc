@@ -2,6 +2,7 @@
 #include "print.h"
 
 #include "version.h"
+#include "options.h"
 #include "mem.h"
 #include "dmi.h"
 #include "cpuinfo.h"
@@ -18,16 +19,18 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.30 2003/08/12 16:19:12 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.31 2003/09/27 22:34:09 ezix Exp $";
 
 void usage(const char *progname)
 {
   fprintf(stderr, "Harware Lister (lshw) - %s\n", getpackageversion());
   fprintf(stderr, "usage: %s [-options ...]\n", progname);
-  fprintf(stderr, "\t-version      print program version\n");
-  fprintf(stderr, "\t-html         output hardware tree as HTML\n");
-  fprintf(stderr, "\t-xml          output hardware tree as XML\n");
-  fprintf(stderr, "\t-short        output hardware paths\n");
+  fprintf(stderr, "\t-version        print program version\n");
+  fprintf(stderr, "\t-html           output hardware tree as HTML\n");
+  fprintf(stderr, "\t-xml            output hardware tree as XML\n");
+  fprintf(stderr, "\t-short          output hardware paths\n");
+  fprintf(stderr,
+	  "\t-disable test   disable test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr, "\n");
 }
 
@@ -39,7 +42,7 @@ int main(int argc,
   bool xmloutput = false;
   bool hwpath = false;
 
-  if (argc > 2)
+  if (!parse_options(argc, argv))
   {
     usage(argv[0]);
     exit(1);
@@ -84,29 +87,41 @@ int main(int argc,
 		    hw::system);
 
     status("DMI");
-    scan_dmi(computer);
+    if (enabled("dmi"))
+      scan_dmi(computer);
     status("device-tree");
-    scan_device_tree(computer);
+    if (enabled("device-tree"))
+      scan_device_tree(computer);
     status("SPD");
-    scan_spd(computer);
+    if (enabled("spd"))
+      scan_spd(computer);
     status("memory");
-    scan_memory(computer);
+    if (enabled("memory"))
+      scan_memory(computer);
     status("/proc/cpuinfo");
-    scan_cpuinfo(computer);
+    if (enabled("cpuinfo"))
+      scan_cpuinfo(computer);
     status("CPUID");
-    scan_cpuid(computer);
+    if (enabled("cpuid"))
+      scan_cpuid(computer);
     status("PCI");
-    scan_pci(computer);
+    if (enabled("pci"))
+      scan_pci(computer);
     status("ISA PnP");
-    scan_isapnp(computer);
+    if (enabled("isapnp"))
+      scan_isapnp(computer);
     status("PCMCIA");
-    scan_pcmcia(computer);
+    if (enabled("pcmcia"))
+      scan_pcmcia(computer);
     status("IDE");
-    scan_ide(computer);
+    if (enabled("ide"))
+      scan_ide(computer);
     status("SCSI");
-    scan_scsi(computer);
+    if (enabled("scsi"))
+      scan_scsi(computer);
     status("Network interfaces");
-    scan_network(computer);
+    if (enabled("network"))
+      scan_network(computer);
     status("");
 
     if (computer.getDescription() == "")
