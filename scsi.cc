@@ -150,7 +150,7 @@ static bool do_inquiry(int sg_fd,
   /*
    * io_hdr.iovec_count = 0; 
  *//*
- * memset takes care of this 
+ * * memset takes care of this 
  */
   io_hdr.mx_sb_len = sizeof(sense_buffer);
   io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
@@ -162,7 +162,7 @@ static bool do_inquiry(int sg_fd,
   /*
    * io_hdr.flags = 0; 
  *//*
- * take defaults: indirect IO, etc 
+ * * take defaults: indirect IO, etc 
  */
   /*
    * io_hdr.pack_id = 0; 
@@ -179,17 +179,20 @@ static bool do_inquiry(int sg_fd,
 
   char *p = (char *) inqBuff;
   int f = (int) *(p + 7);
+  unsigned g = (unsigned char) *(p + 1);
 
   node.setVendor(string(p + 8, 8));
   node.setProduct(string(p + 16, 16));
   node.setVersion(string(p + 32, 4));
 
   if (!(f & 0x40))
-    node.addCapability("wide32");
+    node.setConfig("wide", "32");
   if (!(f & 0x20))
-    node.addCapability("wide16");
+    node.setConfig("wide", "16");
   if (!(f & 0x10))
     node.addCapability("sync");
+  if (g & 0x80)
+    node.addCapability("removable");
 
   return true;
 }
@@ -373,4 +376,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.8 2003/02/17 21:11:58 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.9 2003/02/17 21:21:08 ezix Exp $";
