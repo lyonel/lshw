@@ -324,3 +324,14 @@ bool matches(const string & s, const string & pattern, int cflags)
 
   return result;
 }
+
+string readlink(const string & path)
+{
+  char buffer[PATH_MAX+1];
+
+  memset(buffer, 0, sizeof(buffer));
+  if(readlink(path.c_str(), buffer, sizeof(buffer)-1)>0)
+    return string(buffer);
+  else
+    return path;
+}
