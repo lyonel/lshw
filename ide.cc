@@ -15,7 +15,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.29 2004/04/14 20:04:44 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 #define PROC_IDE "/proc/ide"
 
@@ -137,14 +137,17 @@ static bool probe_ide(const string & name,
   }
 
   u_int8_t args[4 + 512] = { WIN_IDENTIFY, 0, 0, 1, };
+
+  if(id.config & 0x8000)	// we have a packet device
+  {
+    args[0] = WIN_PIDENTIFY;	// so use the right command to avoid kernel messages (Aborted Command)
+    device.addCapability("packet", "ATAPI packet device");
+  }
+
   if (ioctl(fd, HDIO_DRIVE_CMD, &args) != 0)
   {
-    args[0] = WIN_PIDENTIFY;
-    if (ioctl(fd, HDIO_DRIVE_CMD, &args) != 0)
-    {
-      close(fd);
-      return false;
-    }
+    close(fd);
+    return false;
   }
 
   close(fd);
