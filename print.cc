@@ -1,4 +1,5 @@
 #include "print.h"
+#include "version.h"
 #include <iostream>
 #include <iomanip>
 
@@ -59,12 +60,28 @@ void print(hwNode & node,
   else
     config = node.getConfigValues("=");
 
+  if (html && (level == 0))
+  {
+    cout <<
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">" <<
+      endl;
+    cout << "<html>" << endl;
+    cout << "<head>" << endl;
+    cout << "<meta name=\"generator\" " <<
+      " content=\"lshw " << getpackageversion() << "\">" << endl;
+    cout << "<title>";
+    cout << node.getId();
+    cout << "</title>" << endl;
+    cout << "</head>" << endl;
+    cout << "<body>" << endl;
+  }
+
   tab(level, !html);
 
   if (html)
     cout << "<b>";
   if (html && (!node.claimed() || node.disabled()))
-    cout << "<font color=\"grey\">";
+    cout << "<font color=\"gray\">";
   cout << node.getId();
   if (node.disabled())
     cout << " DISABLED";
@@ -73,15 +90,16 @@ void print(hwNode & node,
   if (html && (!node.claimed() || node.disabled()))
     cout << "</font>";
   if (html)
-    cout << "<br>";
+    cout << "</b><br>";
   cout << endl;
 
   if (html)
   {
     tab(level, false);
-    cout << "<ul>" << endl;
+    cout << "<div style=\"margin-left: 2em\">" << endl;
     tab(level, false);
-    cout << "<table bgcolor=\"#e8e0e0\">" << endl;
+    cout << "<table bgcolor=\"#e8e0e0\"";
+    cout << " summary=\"attributes of " << node.getId() << "\">" << endl;
   }
 #if 0
   if (node.getHandle() != "")
@@ -321,7 +339,8 @@ void print(hwNode & node,
       cout << "<tr><td>";
     cout << "configuration:";
     if (html)
-      cout << "</td><td><table>";
+      cout << "</td><td><table summary=\"configuration of " << node.
+	getId() << "\">";
     for (int i = 0; i < config.size(); i++)
     {
       if (html)
@@ -347,8 +366,13 @@ void print(hwNode & node,
   if (html)
   {
     tab(level, false);
-    cout << "</ul>" << endl;
+    cout << "</div>" << endl;
+    if (level == 0)
+    {
+      cout << "</body>" << endl;
+      cout << "</html>" << endl;
+    }
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.34 2003/02/18 08:49:21 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.35 2003/02/28 22:06:04 ezix Exp $";
