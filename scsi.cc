@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.35 2003/06/27 12:44:50 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.36 2003/08/12 11:45:41 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -611,6 +611,11 @@ static string host_logicalname(int i)
   return string(host);
 }
 
+static bool atapi(const hwNode & n)
+{
+  return n.isCapable("atapi") && (n.countChildren() == 0);
+}
+
 static bool scan_sg(int sg,
 		    hwNode & n)
 {
@@ -637,6 +642,9 @@ static bool scan_sg(int sg,
     return true;		// we failed to get info but still hope we can continue
   }
 
+  emulated = 0;
+  ioctl(fd, SG_EMULATED_HOST, &emulated);
+
   host = host_logicalname(m_id.host_no);
   businfo = scsi_businfo(m_id.host_no);
 
@@ -650,6 +658,14 @@ static bool scan_sg(int sg,
 
   if (!parent)
     parent = n.findChildByLogicalName(host);
+
+  if (emulated)			// IDE-SCSI psuedo host controller
+  {
+    hwNode *ideatapi = n.findChild(atapi);
+
+    if (ideatapi)
+      parent = ideatapi->addChild(hwNode("scsi", hw::storage));
+  }
 
   if (!parent)
   {
@@ -671,9 +687,6 @@ static bool scan_sg(int sg,
   parent->setLogicalName(host);
   parent->setBusInfo(businfo);
   parent->claim();
-
-  emulated = 0;
-  ioctl(fd, SG_EMULATED_HOST, &emulated);
 
   if (emulated)
   {
