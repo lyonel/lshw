@@ -741,7 +741,6 @@ static bool scan_sg(int sg,
   }
 
   parent->setLogicalName(host);
-  parent->setBusInfo(businfo);
   parent->claim();
 
   if (emulated)
