@@ -1,5 +1,7 @@
 #include "dmi.h"
 
+#include <map>
+
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -34,30 +36,30 @@ static string dmi_string(struct dmi_header *dm,
   return string(bp);
 }
 
-static void dmi_decode_ram(u8 data)
+static string dmi_decode_ram(u16 data)
 {
-  if (data & (1 << 0))
-    printf("OTHER ");
-  if (data & (1 << 1))
-    printf("UNKNOWN ");
+  string result = "";
+
   if (data & (1 << 2))
-    printf("STANDARD ");
+    result += "Standard ";
   if (data & (1 << 3))
-    printf("FPM ");
+    result += "FPM ";
   if (data & (1 << 4))
-    printf("EDO ");
+    result += "EDO ";
   if (data & (1 << 5))
-    printf("PARITY ");
+    result += "PARITY ";
   if (data & (1 << 6))
-    printf("ECC ");
+    result += "ECC ";
   if (data & (1 << 7))
-    printf("SIMM ");
+    result += "SIMM ";
   if (data & (1 << 8))
-    printf("DIMM ");
+    result += "DIMM ";
   if (data & (1 << 9))
-    printf("Burst EDO ");
+    result += "Burst EDO ";
   if (data & (1 << 10))
-    printf("SDRAM ");
+    result += "SDRAM ";
+
+  return hw::strip(result);
 }
 
 static void dmi_cache_size(u16 n)
@@ -738,6 +740,7 @@ static void dmi_table(int fd,
   int i = 0;
   int r = 0, r2 = 0;
   char handle[10];
+  map < string, string > links;
 
   if (len == 0)
     // no data
@@ -881,9 +884,22 @@ static void dmi_table(int fd,
 	hwNode newnode("ram",
 		       hw::memory);
 
-	size = data[0x0E] * (1 << data[8]);
-	newnode.setCapacity(data[0x0E]);
-	newnode.setSize(data[8]);
+	newnode.setHandle(handle);
+
+	size = data[0x0E] * (1 << data[8]) * 1024 * 1024;
+	newnode.setCapacity(size);
+
+	// loop through the controller's slots and link them to us
+	for (i = 0; i < data[0x0E]; i++)
+	{
+	  char slotref[10];
+	  u16 slothandle = data[0x0F + 2 * i] << 8 | data[0x0F + 2 * i + 1];
+	  snprintf(slotref, sizeof(slotref), "DMI:%04X", slothandle);
+	  links[slotref] = string(handle);
+	}
+
+	newnode.setProduct(dmi_decode_ram(data[0x0C] << 8 | data[0x0B]) +
+			   " Memory Controller");
 
 	hwNode *memorynode = node.getChild("memory");
 	if (!memorynode)
@@ -898,64 +914,60 @@ static void dmi_table(int fd,
       break;
 
     case 6:
-      printf("\tMemory Bank\n");
-      printf("\t\tSocket: %s\n", dmi_string(dm, data[4]).c_str());
-      if (data[5] != 0xFF)
+      // Memory Bank
       {
-	printf("\t\tBanks: ");
-	if ((data[5] & 0xF0) != 0xF0)
-	  printf("%d ", data[5] >> 4);
-	if ((data[5] & 0x0F) != 0x0F)
-	  printf("%d", data[5] & 0x0F);
+	hwNode newnode("bank",
+		       hw::memory);
+
+	newnode.setSlot(dmi_string(dm, data[4]).c_str());
+	if (data[6])
+	  printf("\t\tSpeed: %dnS\n", data[6]);
+	newnode.setProduct(dmi_decode_ram(data[8] << 8 | data[7]));
+	printf("\t\tInstalled Size: ");
+	switch (data[9] & 0x7F)
+	{
+	case 0x7D:
+	  printf("Unknown");
+	  break;
+	case 0x7E:
+	  printf("Disabled");
+	  break;
+	case 0x7F:
+	  printf("Not Installed");
+	  break;
+	default:
+	  printf("%dMbyte", (1 << (data[9] & 0x7F)));
+	}
+	if (data[9] & 0x80)
+	  printf(" (Double sided)");
 	printf("\n");
-      }
-      if (data[6])
-	printf("\t\tSpeed: %dnS\n", data[6]);
-      printf("\t\tType: ");
-      dmi_decode_ram(data[8] << 8 | data[7]);
-      printf("\n");
-      printf("\t\tInstalled Size: ");
-      switch (data[9] & 0x7F)
-      {
-      case 0x7D:
-	printf("Unknown");
-	break;
-      case 0x7E:
-	printf("Disabled");
-	break;
-      case 0x7F:
-	printf("Not Installed");
-	break;
-      default:
-	printf("%dMbyte", (1 << (data[9] & 0x7F)));
-      }
-      if (data[9] & 0x80)
-	printf(" (Double sided)");
-      printf("\n");
-      printf("\t\tEnabled Size: ");
-      switch (data[10] & 0x7F)
-      {
-      case 0x7D:
-	printf("Unknown");
-	break;
-      case 0x7E:
-	printf("Disabled");
-	break;
-      case 0x7F:
-	printf("Not Installed");
-	break;
-      default:
-	printf("%dMbyte", (1 << (data[10] & 0x7F)));
-      }
-      if (data[10] & 0x80)
-	printf(" (Double sided)");
-      printf("\n");
-      if ((data[11] & 4) == 0)
-      {
-	if (data[11] & (1 << 0))
-	  printf("\t\t*** BANK HAS UNCORRECTABLE ERRORS (BIOS DISABLED)\n");
-	if (data[11] & (1 << 1))
-	  printf("\t\t*** BANK LOGGED CORRECTABLE ERRORS AT BOOT\n");
+	printf("\t\tEnabled Size: ");
+	switch (data[10] & 0x7F)
+	{
+	case 0x7D:
+	  printf("Unknown");
+	  break;
+	case 0x7E:
+	  printf("Disabled");
+	  break;
+	case 0x7F:
+	  printf("Not Installed");
+	  break;
+	default:
+	  printf("%dMbyte", (1 << (data[10] & 0x7F)));
+	}
+	if (data[10] & 0x80)
+	  printf(" (Double sided)");
+	printf("\n");
+	if ((data[11] & 4) == 0)
+	{
+	  if (data[11] & (1 << 0))
+	    printf("\t\t*** BANK HAS UNCORRECTABLE ERRORS (BIOS DISABLED)\n");
+	  if (data[11] & (1 << 1))
+	    printf("\t\t*** BANK LOGGED CORRECTABLE ERRORS AT BOOT\n");
+	}
+
+	node.addChild(newnode);
       }
       break;
     case 7:
@@ -1113,6 +1125,7 @@ static void dmi_table(int fd,
 	string slot = "";
 	string description = "";
 	unsigned long long size = 0;
+	unsigned long long clock = 0;
 	u16 width = 0;
 	char bits[10];
 	char arrayhandle[10];
@@ -1161,6 +1174,7 @@ static void dmi_table(int fd,
 
 	  u = data[22] << 8 | data[21];
 	  // speed
+	  clock = u * 1000000;	// u is a frequency in MHz
 	  if (u == 0)
 	    strcpy(buffer, "");
 	  else
@@ -1169,7 +1183,7 @@ static void dmi_table(int fd,
 	  description += " " + string(buffer);
 	}
 
-	hwNode newnode("slot",
+	hwNode newnode("bank",
 		       hw::memory);
 
 	newnode.setSlot(slot);
@@ -1186,6 +1200,7 @@ static void dmi_table(int fd,
 
 	newnode.setProduct(description);
 	newnode.setSize(size);
+	newnode.setClock(clock);
 
 	if (size == 0)
 	  newnode.setProduct("");
