@@ -813,17 +813,26 @@ static void dmi_table(int fd,
       break;
 
     case 4:
-      printf("\tProcessor\n");
-      printf("\t\tSocket Designation: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
-      printf("\t\tProcessor Family: %s\n", dmi_processor_family(data[6]));
-      printf("\t\tProcessor Manufacturer: %s\n", dmi_string(dm, data[7]));
-      printf("\t\tProcessor Version: %s\n", dmi_string(dm, data[0x10]));
-      if (dm->length <= 0x20)
-	break;
-      printf("\t\tSerial Number: %s\n", dmi_string(dm, data[0x20]));
-      printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[0x21]));
-      printf("\t\tVendor Part Number: %s\n", dmi_string(dm, data[0x22]));
+      // Processor
+      {
+	hwNode newnode("cpu",
+		       hw::cpu);
+
+	newnode.setSlot(dmi_string(dm, data[4]));
+	printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
+	newnode.setProduct(dmi_processor_family(data[6]));
+	newnode.setVendor(dmi_string(dm, data[7]));
+	newnode.setVersion(dmi_string(dm, data[0x10]));
+	if (dm->length > 0x20)
+	{
+	  newnode.setSerial(dmi_string(dm, data[0x20]));
+	  //printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[0x21]));
+	  newnode.setProduct(newnode.getProduct() + "(" +
+			     string(dmi_string(dm, data[0x22])) + ")");
+	}
+
+	node.addChild(newnode);
+      }
       break;
 
     case 5:

@@ -19,8 +19,6 @@ int main(int argc,
     scan_memory(computer);
     scan_dmi(computer);
 
-    computer.addChild(hwNode("cpu"));
-
     print(computer);
   }
 
