@@ -69,8 +69,42 @@ static void printattr(const string & name, const string & value, GtkTextBuffer *
 
   gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, name.c_str(), -1, "bold", NULL);
   gtk_text_buffer_insert (buffer, &iter, ": ", -1);
-  gtk_text_buffer_insert (buffer, &iter, escape(value).c_str(), -1);
+  gtk_text_buffer_insert (buffer, &iter, value.c_str(), -1);
   gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+}
+
+static void printsize(long long value, const hwNode & node, const string & name, GtkTextBuffer *buffer, GtkTextIter &iter)
+{
+  if (value > 0)
+    {
+      switch (node.getClass())
+      {
+      case hw::display:
+      case hw::memory:
+      case hw::address:
+      case hw::storage:
+      case hw::disk:
+	printattr(name,kilobytes(value), buffer, iter);
+	break;
+
+      case hw::processor:
+      case hw::bus:
+      case hw::system:
+	printattr(name,decimalkilos(value)+"Hz", buffer, iter);
+	break;
+
+      case hw::network:
+	printattr(name,decimalkilos(value)+"B/s", buffer, iter);
+	break;
+
+      case hw::power:
+	printattr(name,itos(value)+"mWh", buffer, iter);
+	break;
+
+      default:
+	printattr(name,itos(value), buffer, iter);
+      }
+    }
 }
 
 void printmarkup(const hwNode & node, GtkTextBuffer *buffer)
@@ -119,145 +153,54 @@ void printmarkup(const hwNode & node, GtkTextBuffer *buffer)
   printattr("serial", node.getSerial(), buffer, iter);
   printattr("slot", node.getSlot(), buffer, iter);
 
-  if (node.getSize() > 0)
-    {
-      switch (node.getClass())
-      {
-      case hw::display:
-      case hw::memory:
-      case hw::address:
-      case hw::storage:
-      case hw::disk:
-	printattr("size",kilobytes(node.getSize()), buffer, iter);
-	break;
+  if(node.getSize() > 0)
+    printsize(node.getSize(), node, "size", buffer, iter);
+  if(node.getCapacity() > 0)
+    printsize(node.getCapacity(), node, "capacity", buffer, iter);
 
-      case hw::processor:
-      case hw::bus:
-      case hw::system:
-	printattr("size",decimalkilos(node.getSize())+"Hz", buffer, iter);
-	break;
+  if(node.getWidth() > 0)
+    printattr("width",itos(node.getWidth())+" bits", buffer, iter);
 
-      case hw::network:
-	printattr("size",decimalkilos(node.getSize())+"/s", buffer, iter);
-	break;
-
-      case hw::power:
-	printattr("size",itos(node.getSize())+"mWh", buffer, iter);
-	break;
-
-      default:
-	printattr("size",itos(node.getSize()), buffer, iter);
-      }
-    }
-
-  if (node.getCapacity() > 0)
-    {
-      switch (node.getClass())
-      {
-      case hw::display:
-      case hw::memory:
-      case hw::address:
-      case hw::storage:
-      case hw::disk:
-	printattr("capacity",kilobytes(node.getCapacity()), buffer, iter);
-	break;
-
-      case hw::processor:
-      case hw::bus:
-      case hw::system:
-	printattr("capacity",decimalkilos(node.getCapacity())+"Hz", buffer, iter);
-	break;
-
-      case hw::network:
-	printattr("capacity",decimalkilos(node.getCapacity())+"/s", buffer, iter);
-	break;
-
-      case hw::power:
-	printattr("capacity",itos(node.getCapacity())+"mWh", buffer, iter);
-	break;
-
-      default:
-	printattr("capacity",itos(node.getCapacity()), buffer, iter);
-      }
-    }
-
-    if (node.getClass() == hw::address)
-    {
-      if (node.getSize() == 0)
-	out << "<b>address:</b> " << hex << setfill('0') << setw(8) << node.
-	  getStart() << dec;
-      else
-	out << "<b>range:</b> " << hex << setfill('0') << setw(8) << node.
-	  getStart() << " - " << hex << setfill('0') << setw(8) << node.
-	  getStart() + node.getSize() - 1 << dec;
-      out << endl;
-    }
-
-    if (node.getWidth() > 0)
-      printattr("width",itos(node.getWidth())+" bits", buffer, iter);
-
-    if (node.getClock() > 0)
-    {
-      printattr("clock", decimalkilos(node.getClock())+string("Hz") + ((node.getClass() == hw::memory)?(string(" (")+itos((long long)(1.0e9 / node.getClock())) + string("ns)")):string("")), buffer, iter);
-    }
+  if(node.getClock() > 0)
+    printattr("clock", decimalkilos(node.getClock())+string("Hz") + ((node.getClass() == hw::memory)?(string(" (")+itos((long long)(1.0e9 / node.getClock())) + string("ns)")):string("")), buffer, iter);
 
   config.clear();
-
   splitlines(node.getCapabilities(), config, ' ');
+
   if (config.size() > 0)
   {
-     out << "<b>capabilities:</b>";
+     gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "capabilities", -1, "bold", NULL);
+     gtk_text_buffer_insert (buffer, &iter, ":", -1);
      for(unsigned j=0; j<config.size(); j++)
      {
-       out << "\n\t";
+       gtk_text_buffer_insert (buffer, &iter, "\n\t", -1);
        if(node.getCapabilityDescription(config[j]) != "")
        {
-         out << escape(node.getCapabilityDescription(config[j]));
+         gtk_text_buffer_insert (buffer, &iter, node.getCapabilityDescription(config[j]).c_str(), -1);
        }
        else
-         out << "<i>" << config[j] << "</i>";
-       if(j<config.size()-1) out << ",";
+         gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, config[j].c_str(), -1, "italic", NULL);
+       if(j<config.size()-1)
+         gtk_text_buffer_insert (buffer, &iter, ",", -1);
      }
-     out << endl;
   }
 
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
   config.clear();
-  config = node.getConfigValues(": <i>");
+  config = node.getConfigValues(": ");
 
-    if (config.size() > 0)
-    {
-      out << endl << "<b>configuration:</b>" << endl;
-      for (unsigned int i = 0; i < config.size(); i++)
-	out << "\t" << config[i] << "</i>" << endl;
-      out << endl;
-    }
+  if (config.size() > 0)
+  {
+     gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "configuration", -1, "bold", NULL);
+     gtk_text_buffer_insert (buffer, &iter, ":", -1);
+     for(unsigned j=0; j<config.size(); j++)
+     {
+       gtk_text_buffer_insert (buffer, &iter, "\n\t", -1);
+       gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, config[j].c_str(), -1, "italic", NULL);
+     }
+  }
 
-#if 0
-    if (resources.size() > 0)
-    {
-      tab(level + 1, false);
-      if (html)
-	cout << "<tr><td>";
-      cout << "resources:";
-      if (html)
-	cout << "</td><td><table summary=\"resources of " << node.
-	  getId() << "\">";
-      for (unsigned int i = 0; i < resources.size(); i++)
-      {
-	if (html)
-	  cout << "<tr><td>";
-	cout << " " << resources[i];
-	if (html)
-	  cout << "</td></tr>";
-      }
-      if (html)
-	cout << "</table></td></tr>";
-      cout << endl;
-    }
-
-  }				// if visible
-
-#endif
   (void) &id;			// avoid "id defined but not used" warning
 }
 
