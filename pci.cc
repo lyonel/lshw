@@ -156,7 +156,8 @@ struct pci_dev
   pciaddr_t rom_base_addr;	/* Expansion ROM base address */
   pciaddr_t rom_size;		/* Expansion ROM size */
 
-  u_int8_t config[256];
+  u_int8_t config[64];		/* we only use 64 bytes */
+  u_int8_t unusedconfig[256 - 64];	/* of the 256 bytes available */
 };
 
 struct pci_entry
@@ -754,4 +755,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.23 2003/02/09 22:17:06 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.24 2003/02/22 16:02:34 ezix Exp $";
