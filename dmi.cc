@@ -217,7 +217,39 @@ static void dmi_bios_features(u32 data1,
     bios.addCapability("int10video");
   if (data1 & (1 << 31))	// NEC PC-98
     bios.addCapability("pc98");
+}
 
+static void dmi_bios_features_ext(u8 * data,
+				  int len,
+				  hwNode & bios)
+{
+  if (len < 1)
+    return;
+
+  if (data[0] & (1 << 0))	// ACPI
+    bios.addCapability("ACPI");
+  if (data[0] & (1 << 1))	// USB
+    bios.addCapability("USB");
+  if (data[0] & (1 << 2))	// AGP
+    bios.addCapability("AGP");
+  if (data[0] & (1 << 3))	// I2O boot
+    bios.addCapability("I2Oboot");
+  if (data[0] & (1 << 4))	// LS-120 boot
+    bios.addCapability("LS120boot");
+  if (data[0] & (1 << 5))	// ATAPI ZIP boot
+    bios.addCapability("ZIPboot");
+  if (data[0] & (1 << 6))	// 1394 boot
+    bios.addCapability("IEEE1394boot");
+  if (data[0] & (1 << 7))	// smart battery
+    bios.addCapability("smartbattery");
+
+  if (len < 1)
+    return;
+
+  if (data[1] & (1 << 0))	// BIOS boot specification
+    bios.addCapability("biosbootspecification");
+  if (data[1] & (1 << 1))	// function-key initiated network service boot
+    bios.addCapability("netboot");
 }
 
 static unsigned long dmi_cache_size(u16 n)
@@ -1023,6 +1055,9 @@ static void dmi_table(int fd,
 			  data[17] << 24 | data[16] << 16 | data[15] << 8 |
 			  data[14], newnode);
 
+	if (dm->length > 0x12)
+	  dmi_bios_features_ext(&data[0x12], dm->length - 0x12, newnode);
+
 	if (release != "")
 	  newnode.setVersion(newnode.getVersion() + " (" + release + ")");
 	hardwarenode->addChild(newnode);
@@ -1652,4 +1687,4 @@ bool scan_dmi(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: dmi.cc,v 1.63 2003/03/18 16:56:07 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.64 2003/04/10 09:55:21 ezix Exp $";
