@@ -264,6 +264,10 @@ static bool dointel(unsigned long maxi,
     snprintf(buffer, sizeof(buffer), "%d.%d.%d", family, model, stepping);
     cpu->setVersion(buffer);
 
+    
+    if(ecx & (1 << 5))
+      cpu->addCapability("vmx", "CPU virtualization (Vanderpool)");
+
     /* Hyper-Threading Technology */
     if (flags & (1 << 28))
     {
