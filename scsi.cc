@@ -1,4 +1,5 @@
 #include "mem.h"
+#include "cdrom.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -7,6 +8,9 @@
 #include <stdio.h>
 #include <scsi/sg.h>
 #include <scsi/scsi.h>
+
+#include <string>
+#include <map>
 
 #define SG_X "/dev/sg%d"
 
@@ -35,6 +39,34 @@ typedef struct my_sg_scsi_id
   int unused2;			/* ditto */
 }
 My_sg_scsi_id;
+
+typedef struct my_scsi_idlun
+{
+  int mux4;
+  int host_unique_id;
+}
+My_scsi_idlun;
+
+static const char *devices[] = {
+  "/dev/sda", "/dev/sdb", "/dev/sdc", "/dev/sdd", "/dev/sde", "/dev/sdf",
+  "/dev/sdg", "/dev/sdh", "/dev/sdi", "/dev/sdj", "/dev/sdk", "/dev/sdl",
+  "/dev/sdm", "/dev/sdn", "/dev/sdo", "/dev/sdp", "/dev/sdq", "/dev/sdr",
+  "/dev/sds", "/dev/sdt", "/dev/sdu", "/dev/sdv", "/dev/sdw", "/dev/sdx",
+  "/dev/sdy", "/dev/sdz", "/dev/sdaa", "/dev/sdab", "/dev/sdac", "/dev/sdad",
+  "/dev/scd0", "/dev/scd1", "/dev/scd2", "/dev/scd3", "/dev/scd4",
+    "/dev/scd5",
+  "/dev/scd6", "/dev/scd7", "/dev/scd8", "/dev/scd9", "/dev/scd10",
+    "/dev/scd11", "/dev/sr0", "/dev/sr1", "/dev/sr2", "/dev/sr3", "/dev/sr4",
+    "/dev/sr5",
+  "/dev/sr6", "/dev/sr7", "/dev/sr8", "/dev/sr9", "/dev/sr10", "/dev/sr11",
+  "/dev/st0", "/dev/st1", "/dev/st2", "/dev/st3", "/dev/st4", "/dev/st5",
+  "/dev/nst0", "/dev/nst1", "/dev/nst2", "/dev/nst3", "/dev/nst4",
+    "/dev/nst5",
+  "/dev/nosst0", "/dev/nosst1", "/dev/nosst2", "/dev/nosst3", "/dev/nosst4",
+  NULL
+};
+
+static map < string, string > sg_map;
 
 static string scsi_handle(unsigned int host,
 			  int channel = -1,
@@ -93,6 +125,46 @@ static const char *scsi_type(int type)
   default:
     return "";
   }
+}
+
+static void scan_devices()
+{
+  int fd = -1;
+  int i = 0;
+  My_scsi_idlun m_idlun;
+
+  for (i = 0; devices[i] != NULL; i++)
+  {
+    fd = open(devices[i], O_RDONLY | O_NONBLOCK);
+    if (fd >= 0)
+    {
+      int bus = -1;
+      if (ioctl(fd, SCSI_IOCTL_GET_BUS_NUMBER, &bus) >= 0)
+      {
+	memset(&m_idlun, 0, sizeof(m_idlun));
+	if (ioctl(fd, SCSI_IOCTL_GET_IDLUN, &m_idlun) >= 0)
+	{
+	  sg_map[scsi_handle(bus, (m_idlun.mux4 >> 16) & 0xff,
+			     m_idlun.mux4 & 0xff,
+			     (m_idlun.mux4 >> 8) & 0xff)] =
+	    string(devices[i]);
+	}
+      }
+      close(fd);
+    }
+  }
+}
+
+static void find_logicalname(hwNode & n)
+{
+  map < string, string >::iterator i = sg_map.begin();
+
+  for (i = sg_map.begin(); i != sg_map.end(); i++)
+    if (i->first == n.getHandle())
+    {
+      n.setLogicalName(i->second);
+      return;
+    }
 }
 
 static bool scan_sg(int sg,
@@ -209,6 +281,9 @@ static bool scan_sg(int sg,
   device.setDescription(scsi_type(m_id.scsi_type));
   device.setHandle(scsi_handle(m_id.host_no,
 			       m_id.channel, m_id.scsi_id, m_id.lun));
+  find_logicalname(device);
+  if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
+    scan_cdrom(device);
 
   channel->addChild(device);
 
@@ -221,10 +296,12 @@ bool scan_scsi(hwNode & n)
 {
   int i = 0;
 
+  scan_devices();
+
   while (scan_sg(i, n))
     i++;
 
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.5 2003/02/17 01:19:17 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.6 2003/02/17 09:23:07 ezix Exp $";
