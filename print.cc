@@ -3,8 +3,9 @@
 #include "osutils.h"
 #include <iostream>
 #include <iomanip>
+#include <unistd.h>
 
-static char *id = "@(#) $Id: print.cc,v 1.48 2003/06/27 12:44:50 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.49 2003/08/12 16:19:12 ezix Exp $";
 
 static void spaces(unsigned int count,
 		   string space = " ")
@@ -729,5 +730,20 @@ void printhwpath(hwNode & node)
     cout << l[i].classname;
     spaces(2 + l3 - l[i].classname.length());
     cout << l[i].description << endl;
+  }
+}
+
+void status(const char *message)
+{
+  static size_t lastlen = 0;
+
+  if (isatty(2))
+  {
+    fprintf(stderr, "\r");
+    for (size_t i = 0; i < lastlen; i++)
+      fprintf(stderr, " ");
+    fprintf(stderr, "\r%s\r", message);
+    fflush(stderr);
+    lastlen = strlen(message);
   }
 }

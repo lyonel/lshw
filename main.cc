@@ -18,10 +18,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.29 2003/08/11 21:20:18 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.30 2003/08/12 16:19:12 ezix Exp $";
 
-void usage(
-  const char *progname)
+void usage(const char *progname)
 {
   fprintf(stderr, "Harware Lister (lshw) - %s\n", getpackageversion());
   fprintf(stderr, "usage: %s [-options ...]\n", progname);
@@ -32,9 +31,8 @@ void usage(
   fprintf(stderr, "\n");
 }
 
-int main(
-  int argc,
-  char **argv)
+int main(int argc,
+	 char **argv)
 {
   char hostname[80];
   bool htmloutput = false;
@@ -82,22 +80,34 @@ int main(
 
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
-    hwNode computer(
-  hostname,
-  hw::system);
+    hwNode computer(hostname,
+		    hw::system);
 
+    status("DMI");
     scan_dmi(computer);
+    status("device-tree");
     scan_device_tree(computer);
+    status("SPD");
     scan_spd(computer);
+    status("memory");
     scan_memory(computer);
+    status("/proc/cpuinfo");
     scan_cpuinfo(computer);
+    status("CPUID");
     scan_cpuid(computer);
+    status("PCI");
     scan_pci(computer);
+    status("ISA PnP");
     scan_isapnp(computer);
+    status("PCMCIA");
     scan_pcmcia(computer);
+    status("IDE");
     scan_ide(computer);
+    status("SCSI");
     scan_scsi(computer);
+    status("Network interfaces");
     scan_network(computer);
+    status("");
 
     if (computer.getDescription() == "")
       computer.setDescription("Computer");
