@@ -1367,14 +1367,12 @@ static void dmi_table(int fd,
 	unsigned long start, end;
 	string arrayhandle = dmi_handle(data[0x0D] << 8 | data[0x0C]);
 
-	start =
-	  ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16) * 1024;
-	end =
-	  ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16) *
-	  1024;
+	start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16);
+	end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16);
 
-	newnode.setStart(start);
-	newnode.setSize(end - start + 1024);
+	newnode.setStart(start * 1024);	// values are in KB
+	if (end != start)
+	  newnode.setSize((end - start + 1) * 1024);	// values are in KB
 	newnode.setHandle(handle);
 
 	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
@@ -1391,19 +1389,17 @@ static void dmi_table(int fd,
 	unsigned long start, end;
 	string devicehandle = dmi_handle(data[0x0D] << 8 | data[0x0C]);
 
-	start =
-	  ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16) * 1024;
-	end =
-	  ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16) *
-	  1024;
+	start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16);
+	end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16);
 
-	newnode.setStart(start);
-	newnode.setSize(end - start + 1024);
+	newnode.setStart(start * 1024);	// values are in KB
+	if (end != start)
+	  newnode.setSize((end - start + 1) * 1024);	// values are in KB
 	newnode.setHandle(handle);
 
 	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
 
-	if (memorydevice)
+	if (memorydevice && (newnode.getSize() != 0))
 	  memorydevice->addChild(newnode);
       }
       break;
