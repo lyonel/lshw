@@ -30,7 +30,7 @@ gtk-$(PACKAGENAME): $(OBJS)
 install: all
 	
 clean:
-	rm -f $(OBJS) lib$(PACKAGENAME).a
+	rm -f $(OBJS) gtk-$(PACKAGENAME)
 
 depend:
 	@makedepend -Y $(SRCS) 2> /dev/null > /dev/null

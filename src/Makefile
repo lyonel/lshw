@@ -27,14 +27,15 @@ all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 .cc.o:
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-core/lib$(PACKAGENAME).a:
+.PHONY: core
+core:
 	make -C core all
 
-$(PACKAGENAME): core/lib$(PACKAGENAME).a $(PACKAGENAME).o
+$(PACKAGENAME): core $(PACKAGENAME).o
 	$(CXX) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS) 
 
 .PHONY: gui
-gui: core/lib$(PACKAGENAME).a
+gui: core
 	make -C gui all
 
 .PHONY: static

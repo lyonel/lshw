@@ -1,3 +1,5 @@
+PACKAGENAME?=lshw
+
 CXX=c++
 INCLUDES=
 CXXFLAGS=-g -Wall -Os $(INCLUDES)

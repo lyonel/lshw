@@ -55,7 +55,7 @@ int main(int argc,
 
   disable("isapnp");
 #ifndef DEBUG
-  disable("usb");
+  //disable("usb");
 #endif
 
   if (!parse_options(argc, argv))
