@@ -32,10 +32,10 @@ make
 make DESTDIR=$RPM_BUILD_ROOT PREFIX=%_prefix SBINDIR=%_sbindir MANDIR=%_mandir install
 
 %files
-%doc COPYING
 %defattr(-,root,root)
+%doc COPYING
 %attr(555,bin,bin) %_sbindir/lshw
-%_mandir/man?/*
+%doc %_mandir/man?/*
 %_datadir/lshw/*
 
 %clean
