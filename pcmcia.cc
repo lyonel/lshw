@@ -1,4 +1,5 @@
 #include "pcmcia.h"
+#include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -18,16 +19,6 @@ typedef u_short ioaddr_t;
 #endif
 
 typedef u_char cisdata_t;
-
-typedef struct servinfo_t
-{
-  char Signature[2];
-  u_int Count;
-  u_int Revision;
-  u_int CSLevel;
-  char *VendorString;
-}
-servinfo_t;
 
 typedef struct config_info_t
 {
@@ -50,6 +41,23 @@ typedef struct config_info_t
   u_int IOAddrLines;
 }
 config_info_t;
+
+#define DEV_NAME_LEN 32
+typedef char dev_info_t[DEV_NAME_LEN];
+
+typedef struct bind_info_t
+{
+  dev_info_t dev_info;
+  u_char function;
+  /*
+   * struct dev_link_t   *instance;
+   */
+  void *instance;
+  char name[DEV_NAME_LEN];
+  u_short major, minor;
+  void *next;
+}
+bind_info_t;
 
 #define CISTPL_NULL		0x00
 #define CISTPL_DEVICE		0x01
@@ -700,7 +708,7 @@ tuple_parse_t;
 
 typedef union ds_ioctl_arg_t
 {
-  servinfo_t servinfo;
+  //servinfo_t servinfo;
   //adjust_t            adjust;
   config_info_t config;
   tuple_t tuple;
@@ -710,7 +718,7 @@ typedef union ds_ioctl_arg_t
   //conf_reg_t          conf_reg;
   //cisinfo_t           cisinfo;
   //region_info_t       region;
-  //bind_info_t         bind_info;
+  bind_info_t bind_info;
   //mtd_info_t          mtd_info;
   //win_info_t          win_info;
   //cisdump_t           cisdump;
@@ -724,6 +732,7 @@ ds_ioctl_arg_t;
 #define DS_GET_NEXT_TUPLE               _IOWR('d', 5, tuple_t)
 #define DS_GET_TUPLE_DATA               _IOWR('d', 6, tuple_parse_t)
 #define DS_PARSE_TUPLE                  _IOWR('d', 7, tuple_parse_t)
+#define DS_GET_DEVICE_INFO              _IOWR('d', 61, bind_info_t)
 
 #define MAX_SOCK 8
 
@@ -786,7 +795,8 @@ static int get_tuple(int fd,
     return -1;
 }
 
-static bool pcmcia_ident(int fd,
+static bool pcmcia_ident(int socket,
+			 int fd,
 			 hwNode & parent)
 {
   ds_ioctl_arg_t arg;
@@ -794,6 +804,7 @@ static bool pcmcia_ident(int fd,
   cistpl_manfid_t *manfid = &arg.tuple_parse.parse.manfid;
   cistpl_funcid_t *funcid = &arg.tuple_parse.parse.funcid;
   config_info_t config;
+  bind_info_t bind;
   vector < string > product_info;
   hwNode device("pccard",
 		hw::generic);
@@ -883,6 +894,23 @@ static bool pcmcia_ident(int fd,
     }
   }
 
+  memset(&bind, 0, sizeof(bind));
+  strcpy(bind.dev_info, "eth1");
+  for (int j = 0; j < 10; j++)
+  {
+    int ret = ioctl(fd, DS_GET_DEVICE_INFO, &bind);
+
+    if (ret == 0)
+    {
+      printf("%s\n", bind.name);
+    }
+
+    if ((ret == 0) || (errno != EAGAIN))
+      break;
+
+    usleep(100000);
+  }
+
   device.claim();
 
   parent.addChild(device);
@@ -927,9 +955,9 @@ bool scan_pcmcia(hwNode & n)
     memset(&cfg, 0, sizeof(cfg));
     ioctl(fd, DS_GET_CONFIGURATION_INFO, &cfg);
     if (parent)
-      pcmcia_ident(fd, *parent);
+      pcmcia_ident(i, fd, *parent);
     else
-      pcmcia_ident(fd, n);
+      pcmcia_ident(i, fd, n);
 
     close(fd);
   }
@@ -937,4 +965,4 @@ bool scan_pcmcia(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.2 2003/02/09 22:17:06 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.3 2003/02/10 09:35:27 ezix Exp $";

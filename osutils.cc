@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <dirent.h>
 
 using namespace std;
 
@@ -127,4 +128,100 @@ string get_string(const string & path,
   return result;
 }
 
-static char *id = "@(#) $Id: osutils.cc,v 1.6 2003/02/05 09:32:40 ezix Exp $";
+static int selectdir(const struct dirent *d)
+{
+  struct stat buf;
+
+  if (d->d_name[0] == '.')
+    return 0;
+
+  if (lstat(d->d_name, &buf) != 0)
+    return 0;
+
+  return S_ISDIR(buf.st_mode);
+}
+
+static int selectdevice(const struct dirent *d)
+{
+  struct stat buf;
+
+  if (d->d_name[0] == '.')
+    return 0;
+
+  if (lstat(d->d_name, &buf) != 0)
+    return 0;
+
+  return S_ISCHR(buf.st_mode) || S_ISBLK(buf.st_mode);
+}
+
+static bool matches(string name,
+		    mode_t mode,
+		    dev_t device)
+{
+  struct stat buf;
+
+  if (lstat(name.c_str(), &buf) != 0)
+    return false;
+
+  return ((S_ISCHR(buf.st_mode) && S_ISCHR(mode)) ||
+	  (S_ISBLK(buf.st_mode) && S_ISBLK(mode))) && (buf.st_dev == device);
+}
+
+static string find_deventry(string basepath,
+			    mode_t mode,
+			    dev_t device)
+{
+  struct dirent **namelist;
+  int n, i;
+  string result = "";
+
+  pushd(basepath);
+
+  n = scandir(".", &namelist, selectdevice, alphasort);
+
+  if (n < 0)
+  {
+    popd();
+    return "";
+  }
+
+  for (i = 0; i < n; i++)
+  {
+    if (result == "" && matches(namelist[i]->d_name, mode, device))
+      result = string(namelist[i]->d_name);
+    free(namelist[i]);
+  }
+  free(namelist);
+
+  popd();
+
+  if (result != "")
+    return basepath + "/" + result;
+
+  pushd(basepath);
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return "";
+
+  for (i = 0; i < n; i++)
+  {
+    if (result == "")
+      result =
+	find_deventry(basepath + "/" + string(namelist[i]->d_name), mode,
+		      device);
+    free(namelist[i]);
+  }
+  free(namelist);
+
+  return result;
+}
+
+string find_deventry(mode_t mode,
+		     dev_t device)
+{
+  return find_deventry("/dev", mode, device);
+}
+
+static char *id = "@(#) $Id: osutils.cc,v 1.7 2003/02/10 09:35:27 ezix Exp $";
