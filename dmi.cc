@@ -1075,7 +1075,7 @@ static void dmi_table(int fd,
 	  description += " " + string(buffer);
 	}
 
-	hwNode newnode(slot,
+	hwNode newnode("ram",
 		       hw::memory);
 
 	newnode.setSlot(slot);

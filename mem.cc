@@ -37,7 +37,7 @@ bool scan_memory(hwNode & n)
 	  unsigned long size = 0;
 	  if (bitmap & slot)	// slot is active
 	  {
-	    hwNode bank(slotname,
+	    hwNode bank("ram",
 			hw::memory);
 
 	    read(fd2, &base, sizeof(base));
