@@ -23,13 +23,6 @@ list hardware
    </cmdsynopsis>
 </refsynopsisdiv>
 
-<refsect1><title>COPYRIGHT</title>
-<para>
-<application>lshw</application> is (c) Lyonel Vincent 
-<email>vincentl@ec-lyon.fr</email>
-<ulink url="http://ezix.org/software/lshw.html"></ulink></para>
-</refsect1>
-
 <refsect1><title>DESCRIPTION</title>
 <para>
 <indexterm><primary>lshw</primary></indexterm>
@@ -44,8 +37,8 @@ systems and on some <productname>PowerPC</productname>
 machines (<productname>PowerMac G4</productname> is known to work).
 </para>
 <para>
-It currently supports DMI (x86 only), OpenFirmware device tree (PowerPC only),
-PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86) and SCSI.
+It currently supports <hardware>DMI</hardware> (x86 only), <productname>OpenFirmware</productname> device tree (<productname>PowerPC</productname> only),
+<hardware>PCI/AGP</hardware>, <hardware>CPUID</hardware> (x86), <hardware>IDE/ATA/ATAPI</hardware>, <hardware>PCMCIA</hardware> (only tested on x86) and <hardware>SCSI</hardware>.
 </para>
 
 <para>
@@ -78,6 +71,10 @@ Not all architectures supported by GNU/Linux are fully supported (e.g.
 <hardware>CPU</hardware> detection).
 </para>
 
+<para>
+"Virtual" <hardware>SCSI</hardware> interfaces used for <hardware>USB</hardware> mass storage and <hardware>SCSI</hardware> emulation over <hardware>IDE</hardware> are not reported correctly yet.
+</para>
+
 </refsect1>
 
 <refsect1><title>NOTES</title>
@@ -88,9 +85,58 @@ partial information.
 
 </refsect1>
 
+<refsect1><title>FILES</title>
+<para>
+<variablelist>
+
+<varlistentry><term>/usr/local/share/pci.ids</term>
+<term>/usr/share/pci.ids</term>
+<term>/etc/pci.ids</term>
+<term>/usr/share/hwdata/pci.ids</term>
+<listitem><para>
+A list of all known PCI ID's (vendors,  devices, classes and subclasses).
+</para></listitem></varlistentry>
+
+<varlistentry><term>/proc/bus/pci/*</term>
+<listitem><para>
+Used to access the configuration of installed PCI busses and devices.
+</para></listitem></varlistentry>
+
+<varlistentry><term>/proc/ide/*</term>
+<listitem><para>
+Used to access the configuration of installed IDE busses and devices.
+</para></listitem></varlistentry>
+
+<varlistentry><term>/proc/scsi/*, /dev/sg*</term>
+<listitem><para>
+Used to access the configuration of installed SCSI devices.
+</para></listitem></varlistentry>
+
+<varlistentry><term>/dev/cpu/*/cpuid</term>
+<listitem><para>
+Used on x86 platforms to access CPU-specific configuration.
+</para></listitem></varlistentry>
+
+<varlistentry><term>/proc/device-tree/*</term>
+<listitem><para>
+Used on PowerPC platforms to access OpenFirmware configuration.
+</para></listitem></varlistentry>
+
+</variablelist>
+</para>
+</refsect1>
+
 <refsect1><title>SEE ALSO</title>
 <para><filename>/proc/*</filename>, <application>linuxinfo</application>(1), <application>lspci</application>(8), <application>lsusb</application>(8)
 </para>
 </refsect1>
+
+<refsect1><title>AUTHOR</title>
+<para>
+<application>lshw</application> is maintained by Lyonel Vincent
+<email>vincentl@ec-lyon.fr</email>.
+<ulink url="http://ezix.org/software/lshw.html"></ulink></para>
+</refsect1>
+
 </refentry>
 

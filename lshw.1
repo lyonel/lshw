@@ -10,11 +10,6 @@ lshw \- list hardware
 
 \fBlshw\fR [ \fB-version\fR ] [ \fB-help\fR ] [ \fB-html\fR ]
 
-.SH "COPYRIGHT"
-.PP
-\fBlshw\fR is (c) Lyonel Vincent 
-<vincentl@ec-lyon.fr>
- <URL:http://ezix.org/software/lshw.html>
 .SH "DESCRIPTION"
 .PP
 
@@ -47,10 +42,43 @@ USB or Firewire(IEEE1394) devices.
 .PP
 Not all architectures supported by GNU/Linux are fully supported (e.g.
 CPU detection).
+.PP
+"Virtual" SCSI interfaces used for USB mass storage and SCSI emulation over IDE are not reported correctly yet.
 .SH "NOTES"
 .PP
 \fBlshw\fR must be run as super user or it will only report
 partial information.
+.SH "FILES"
+.PP
+.TP
+\fB/usr/local/share/pci.ids\fR
+.TP
+\fB/usr/share/pci.ids\fR
+.TP
+\fB/etc/pci.ids\fR
+.TP
+\fB/usr/share/hwdata/pci.ids\fR
+A list of all known PCI ID's (vendors,  devices, classes and subclasses).
+.TP
+\fB/proc/bus/pci/*\fR
+Used to access the configuration of installed PCI busses and devices.
+.TP
+\fB/proc/ide/*\fR
+Used to access the configuration of installed IDE busses and devices.
+.TP
+\fB/proc/scsi/*, /dev/sg*\fR
+Used to access the configuration of installed SCSI devices.
+.TP
+\fB/dev/cpu/*/cpuid\fR
+Used on x86 platforms to access CPU-specific configuration.
+.TP
+\fB/proc/device-tree/*\fR
+Used on PowerPC platforms to access OpenFirmware configuration.
 .SH "SEE ALSO"
 .PP
 \fI/proc/*\fR, \fBlinuxinfo\fR(1), \fBlspci\fR(8), \fBlsusb\fR(8)
+.SH "AUTHOR"
+.PP
+\fBlshw\fR is maintained by Lyonel Vincent
+<vincentl@ec-lyon.fr>.
+ <URL:http://ezix.org/software/lshw.html>
