@@ -54,14 +54,14 @@ static const char *devices[] = {
   "/dev/sds", "/dev/sdt", "/dev/sdu", "/dev/sdv", "/dev/sdw", "/dev/sdx",
   "/dev/sdy", "/dev/sdz", "/dev/sdaa", "/dev/sdab", "/dev/sdac", "/dev/sdad",
   "/dev/scd0", "/dev/scd1", "/dev/scd2", "/dev/scd3", "/dev/scd4",
-    "/dev/scd5",
+  "/dev/scd5",
   "/dev/scd6", "/dev/scd7", "/dev/scd8", "/dev/scd9", "/dev/scd10",
-    "/dev/scd11", "/dev/sr0", "/dev/sr1", "/dev/sr2", "/dev/sr3", "/dev/sr4",
-    "/dev/sr5",
+  "/dev/scd11", "/dev/sr0", "/dev/sr1", "/dev/sr2", "/dev/sr3", "/dev/sr4",
+  "/dev/sr5",
   "/dev/sr6", "/dev/sr7", "/dev/sr8", "/dev/sr9", "/dev/sr10", "/dev/sr11",
   "/dev/st0", "/dev/st1", "/dev/st2", "/dev/st3", "/dev/st4", "/dev/st5",
   "/dev/nst0", "/dev/nst1", "/dev/nst2", "/dev/nst3", "/dev/nst4",
-    "/dev/nst5",
+  "/dev/nst5",
   "/dev/nosst0", "/dev/nosst1", "/dev/nosst2", "/dev/nosst3", "/dev/nosst4",
   NULL
 };
@@ -163,6 +163,7 @@ static void find_logicalname(hwNode & n)
     if (i->first == n.getHandle())
     {
       n.setLogicalName(i->second);
+      n.claim();
       return;
     }
 }
@@ -304,4 +305,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.6 2003/02/17 09:23:07 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.7 2003/02/17 09:43:24 ezix Exp $";
