@@ -6,7 +6,8 @@
 
 static char rcstag[] = "@(#) $Name:  $ >";
 
-const char *getpackageversion()
+const char *
+getpackageversion()
 {
   static char releasename[RELEASE_SIZE];
   char *i;
