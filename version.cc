@@ -1,31 +1,33 @@
 #include "version.h"
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-#define RELEASE_SIZE 80
-
-static char rcstag[] = "@(#) $Name:  $ >";
+static char versiontag[] = "@(#) $URL$ >";
 
 const char *getpackageversion()
 {
-  static char releasename[RELEASE_SIZE];
-  char *i;
+  char * releasename = NULL;
+  char * lastslash = NULL;
 
-  strncat(releasename, "", RELEASE_SIZE);
-  i = strchr(rcstag, ':');
-  if (!i)
-    i = rcstag;
+  releasename = strdup(versiontag);
 
-  for (; i && (*i) && (i < rcstag + strlen(rcstag)); i++)
+  lastslash = strrchr(releasename, '/');
+  if(lastslash)
   {
-    if (*i == '_')
-      strcat(releasename, ".");
-    else if (isalnum(*i))
-      strncat(releasename, i, 1);
+    *lastslash = '\0';	// cut the basename off
+
+    lastslash = strrchr(releasename, '/');
   }
 
-  if (strlen(releasename) == 0)
-    strncat(releasename, "$unreleased$", RELEASE_SIZE);
-
-  return releasename;
+  if(lastslash)
+  {
+    free(releasename);
+    return lastslash+1;
+  }
+  else
+  {
+    free(releasename);
+    return "unknown";
+  }
 }
