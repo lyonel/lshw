@@ -36,6 +36,7 @@ make DESTDIR=$RPM_BUILD_ROOT PREFIX=%_prefix SBINDIR=%_sbindir MANDIR=%_mandir i
 %defattr(-,root,root)
 %attr(555,bin,bin) %_sbindir/lshw
 %_mandir/man?/*
+%_datadir/lshw/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -5,6 +5,7 @@ DESTDIR=/
 PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
+DATADIR=$(PREFIX)/share/$(PACKAGENAME)
 
 CXX=c++
 CXXFLAGS=-g -Wall
@@ -14,7 +15,9 @@ LIBS=
 OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o
 SRCS = $(OBJS:.o=.cc)
 
-all: $(PACKAGENAME) $(PACKAGENAME).1
+DATAFILES = pci.ids
+
+all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -24,6 +27,9 @@ $(PACKAGENAME): $(OBJS)
 
 $(PACKAGENAME).1: $(PACKAGENAME).sgml
 	docbook2man $<
+
+pci.ids:
+	wget http://pciids.sourceforge.net/pci.ids
 
 oui.txt:
 	wget http://standards.ieee.org/regauth/oui/oui.txt
@@ -37,6 +43,8 @@ install: all
 	cp $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
 	-mkdir -p $(DESTDIR)/$(MANDIR)/man1
 	cp $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
+	-mkdir -p $(DESTDIR)/$(DATADIR)
+	cp $(DATAFILES) $(DESTDIR)/$(DATADIR)
 	
 clean:
 	rm -f $(OBJS) $(PACKAGENAME) core
