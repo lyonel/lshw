@@ -351,7 +351,7 @@ static bool do_modesense(int sg_fd,
 
   res =
     sg_err_category(io_hdr.status, io_hdr.host_status, io_hdr.driver_status,
-		    io_hdr.sbp, io_hdr.sb_len_wr);
+		    (unsigned char*)io_hdr.sbp, io_hdr.sb_len_wr);
   switch (res)
   {
   case SG_ERR_CAT_CLEAN:
@@ -400,7 +400,7 @@ static bool do_inq(int sg_fd,
 
   res =
     sg_err_category(io_hdr.status, io_hdr.host_status, io_hdr.driver_status,
-		    io_hdr.sbp, io_hdr.sb_len_wr);
+		    (unsigned char*)io_hdr.sbp, io_hdr.sb_len_wr);
   switch (res)
   {
   case SG_ERR_CAT_CLEAN:
