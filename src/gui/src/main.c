@@ -16,7 +16,6 @@ int
 main (int argc, char *argv[])
 {
   GtkWidget *lshw;
-  GtkWidget *aboutlshw;
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -36,8 +35,6 @@ main (int argc, char *argv[])
    */
   lshw = create_lshw ();
   gtk_widget_show (lshw);
-  aboutlshw = create_aboutlshw ();
-  gtk_widget_show (aboutlshw);
 
   gtk_main ();
   return 0;

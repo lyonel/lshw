@@ -37,6 +37,10 @@ void
 on_about1_activate                     (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
+  GtkWidget *about;
+                                                                                
+  about = create_aboutlshw();
+  gtk_widget_show(about);
 
 }
 

@@ -225,6 +225,8 @@ create_aboutlshw (void)
 
   aboutlshw = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (aboutlshw), _("About"));
+  gtk_window_set_position (GTK_WINDOW (aboutlshw), GTK_WIN_POS_CENTER_ON_PARENT);
+  gtk_window_set_resizable (GTK_WINDOW (aboutlshw), FALSE);
   gtk_window_set_destroy_with_parent (GTK_WINDOW (aboutlshw), TRUE);
   gtk_window_set_skip_taskbar_hint (GTK_WINDOW (aboutlshw), TRUE);
   gtk_window_set_skip_pager_hint (GTK_WINDOW (aboutlshw), TRUE);
