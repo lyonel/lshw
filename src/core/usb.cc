@@ -245,6 +245,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
       }
       break;
     default:
+      device.setDescription("Generic USB device");
       return false;
   }
 
