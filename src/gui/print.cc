@@ -169,21 +169,9 @@ string printmarkup(const hwNode & node)
       out << endl;
     }
 
-#if 0
-    if (node.getCapabilities() != "")
-    {
-      tab(level + 1, false);
-      if (html)
-	cout << "<tr><td>";
-      cout << "capabilities: ";
-      if (html)
-	cout << "</td><td>";
-      cout << node.getCapabilities();
-      if (html)
-	cout << "</td></tr>";
-      cout << endl;
-    }
+  out << printattr("capabilities", node.getCapabilities());
 
+#if 0
     if (config.size() > 0)
     {
       tab(level + 1, false);

@@ -21,7 +21,7 @@ static void display(GtkWidget * mainwindow)
 
   if(!GTK_IS_WIDGET(description)) return;
 
-  //selected = computer.getChild("core/pci/ide/ide/cdrom");
+  selected = computer.getChild("core/cpu");
 
   if(!selected)
     gtk_label_set_text(GTK_LABEL(description), printmarkup(computer).c_str());
