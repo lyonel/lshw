@@ -66,7 +66,7 @@ oui.txt:
 manuf.txt:
 	wget http://www.ethereal.com/distribution/manuf.txt
 
-install: all install-gui
+install: all
 	-mkdir -p $(DESTDIR)
 	-mkdir -p $(DESTDIR)/$(SBINDIR)
 	cp $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
