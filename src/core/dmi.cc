@@ -89,6 +89,8 @@
 
 static char *id = "@(#) $Id$";
 
+static int currentcpu = 0;
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -144,6 +146,15 @@ static const char *dmi_battery_chemistry(u8 code)
   return "";
 }
 
+
+static string cpubusinfo(int cpu)
+{
+  char buffer[20];
+
+  snprintf(buffer, sizeof(buffer), "cpu@%d", cpu);
+
+  return string(buffer);
+}
 
 static string dmi_uuid(u8 * p)
 {
@@ -1024,6 +1035,8 @@ static void dmi_table(int fd,
 	hwNode newnode("cpu",
 		       hw::processor);
 
+        newnode.claim();
+        newnode.setBusInfo(cpubusinfo(currentcpu++));
 	newnode.setSlot(dmi_string(dm, data[4]));
 	newnode.setDescription("CPU");
 	newnode.setProduct(dmi_processor_family(data[6]));
@@ -1599,6 +1612,7 @@ bool scan_dmi(hwNode & n)
   bool efi = true;
   u8 smmajver = 0, smminver = 0;
   u16 dmimaj = 0, dmimin = 0;
+  currentcpu = 0;
   if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4)
     // compiler incompatibility
     return false;

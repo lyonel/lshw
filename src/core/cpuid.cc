@@ -36,14 +36,14 @@ static hwNode *getcache(hwNode & node,
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
 {
-  char cpuname[10];
+  char cpubusinfo[10];
   hwNode *cpu = NULL;
 
   if (n < 0)
     n = 0;
 
-  snprintf(cpuname, sizeof(cpuname), "cpu:%d", n);
-  cpu = node.getChild(string("core/") + string(cpuname));
+  snprintf(cpubusinfo, sizeof(cpubusinfo), "cpu@%d", n);
+  cpu = node.findChildByBusInfo(cpubusinfo);
 
   if (cpu)
     return cpu;
@@ -51,16 +51,17 @@ static hwNode *getcpu(hwNode & node,
   if (n > 0)
     return NULL;
 
-  // "cpu:0" is equivalent to "cpu" on 1-CPU machines
-  if ((n == 0) && (node.countChildren(hw::processor) <= 1))
-    cpu = node.getChild(string("core/cpu"));
-  if (cpu)
-    return cpu;
-
   hwNode *core = node.getChild("core");
 
   if (core)
-    return core->addChild(hwNode("cpu", hw::processor));
+  {
+    hwNode cpu("cpu", hw::processor);
+
+    cpu.setBusInfo(cpubusinfo);
+    cpu.claim();
+
+    return core->addChild(cpu);
+  }
   else
     return NULL;
 }

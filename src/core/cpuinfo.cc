@@ -12,42 +12,22 @@ static char *id =
 
 static int currentcpu = 0;
 
-static void fixBusInfo(hwNode & cpu, int n = 0)
-{
-  char cpuname[10];
-
-  snprintf(cpuname, sizeof(cpuname), "cpu@%d", n);
-
-  if(cpu.getBusInfo()=="")
-    cpu.setBusInfo(cpuname);
-}
-
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
 {
-  char cpuname[10];
+  char cpubusinfo[10];
   hwNode *cpu = NULL;
 
   if (n < 0)
     n = 0;
 
-  snprintf(cpuname, sizeof(cpuname), "cpu:%d", n);
-  cpu = node.getChild(string("core/") + string(cpuname));
+
+  snprintf(cpubusinfo, sizeof(cpubusinfo), "cpu@%d", n);
+  cpu = node.findChildByBusInfo(cpubusinfo);
 
   if (cpu)
   {
     cpu->claim(true);		// claim the cpu and all its children
-    fixBusInfo(*cpu, n);
-    return cpu;
-  }
-
-  // "cpu:0" is equivalent to "cpu" on 1-CPU machines
-  if ((n == 0) && (node.countChildren(hw::processor) <= 1))
-    cpu = node.getChild(string("core/cpu"));
-  if (cpu)
-  {
-    cpu->claim(true);
-    fixBusInfo(*cpu, n);
     return cpu;
   }
 
@@ -55,9 +35,11 @@ static hwNode *getcpu(hwNode & node,
 
   if (core)
   {
-    cpu = core->addChild(hwNode("cpu", hw::processor));
-    fixBusInfo(*cpu, n);
-    return cpu;
+    hwNode newcpu("cpu", hw::processor);
+
+    newcpu.setBusInfo(cpubusinfo);
+    newcpu.claim();
+    return core->addChild(newcpu);
   }
   else
     return NULL;
