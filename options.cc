@@ -14,7 +14,7 @@
 
 using namespace std;
 
-static char *id = "@(#) $Id: options.cc,v 1.4 2004/02/26 16:05:00 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 static set < string > disabled_tests;
 static set < string > visible_classes;

@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.56 2003/11/19 17:28:10 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 struct hwNode_i
 {

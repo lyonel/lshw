@@ -19,7 +19,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.26 2003/10/30 23:53:09 ezix Exp $";
+  "@(#) $Id$";
 
 #define DIMMINFOSIZE 0x80
 typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
