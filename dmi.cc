@@ -886,32 +886,21 @@ static void dmi_table(int fd,
 
     case 2:
       // Board Information Block
-      //
-      // special case: if the system characteristics are still unknown,
-      // use values from the motherboard
       {
-	if (data[0x0D] == 0x0A)	// system board: collect devices
-	{
-	  for (int i = 0; i < data[0x0E]; i++)
-	    node.
-	      attractHandle(dmi_handle
-			    (data[0x0F + 2 * i + 1] << 8 |
-			     data[0x0F + 2 * i]));
-	}
-	else
-	{
-	  hwNode newnode("board",
-			 hw::bus);
+	hwNode newnode("board",
+		       hw::bus);
 
-	  newnode.setVendor(dmi_string(dm, data[4]));
-	  newnode.setProduct(dmi_string(dm, data[5]));
-	  newnode.setVersion(dmi_string(dm, data[6]));
-	  newnode.setSerial(dmi_string(dm, data[7]));
+	for (int i = 0; i < data[0x0E]; i++)
+	  newnode.
+	    addCapability(dmi_handle
+			  (data[0x0F + 2 * i + 1] << 8 | data[0x0F + 2 * i]));
 
-	  newnode.setHandle(handle);
-	  node.addChild(newnode);
-	}
-
+	newnode.setVendor(dmi_string(dm, data[4]));
+	newnode.setProduct(dmi_string(dm, data[5]));
+	newnode.setVersion(dmi_string(dm, data[6]));
+	newnode.setSerial(dmi_string(dm, data[7]));
+	newnode.setHandle(handle);
+	node.addChild(newnode);
       }
       break;
 
