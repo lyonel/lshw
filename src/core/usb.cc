@@ -285,7 +285,11 @@ bool scan_usb(hwNode & n)
               device.setBusInfo(usbbusinfo(bus, lev, port));
               device.setPhysId(port);
               device.setConfig("speed", usbspeed(speed));
-              //device.setSpeed(speed*1.0E6, "B/s");
+              if(mxch>0)
+              {
+                snprintf(strval, sizeof(strval), "%u", mxch);
+                device.setConfig("slots", strval);
+              }
             }
             break;
           case 'D':
