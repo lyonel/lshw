@@ -10,10 +10,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <dirent.h>
+#include <ctype.h>
 #include <vector>
 #include <linux/hdreg.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.18 2003/04/29 16:45:06 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.19 2003/06/12 14:23:34 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -328,6 +329,12 @@ bool scan_ide(hwNode & n)
 	(string(PROC_IDE) + "/" + namelist[i]->d_name + "/config", config))
     {
       vector < string > identify;
+      char *id = namelist[i]->d_name;
+
+      while ((*id != 0) && (!isdigit(*id)))
+	id++;
+      if (*id != 0)
+	ide.setBusInfo("ide@" + string(id));
 
       if (config.size() > 0)
 	splitlines(config[0], identify, ' ');

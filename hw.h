@@ -93,6 +93,7 @@ class hwNode
 	hwNode * getChild(const string & id);
 	hwNode * findChildByHandle(const string & handle);
 	hwNode * findChildByLogicalName(const string & handle);
+	hwNode * findChildByBusInfo(const string & businfo);
 	hwNode * addChild(const hwNode & node);
 	bool isBus() const
 	{
@@ -111,6 +112,9 @@ class hwNode
 
 	string getLogicalName() const;
 	void setLogicalName(const string & name);
+
+	string getBusInfo() const;
+	void setBusInfo(const string & businfo);
 
 	void merge(const hwNode & node);
   private:

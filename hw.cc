@@ -7,13 +7,13 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.42 2003/05/29 10:55:45 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.43 2003/06/12 14:23:34 ezix Exp $";
 
 struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, serial, slot, handle, description,
-    logicalname;
+    logicalname, businfo;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -84,6 +84,7 @@ hwNode::hwNode(const string & id,
   This->handle = string("");
   This->description = string("");
   This->logicalname = string("");
+  This->businfo = string("");
 
   (void) &::id;			// avoid warning "id defined but not used"
 }
@@ -537,6 +538,28 @@ hwNode *hwNode::findChildByLogicalName(const string & name)
   return NULL;
 }
 
+hwNode *hwNode::findChildByBusInfo(const string & businfo)
+{
+  if (!This)
+    return NULL;
+
+  if (strip(businfo) == "")
+    return NULL;
+
+  if (strip(This->businfo) == strip(businfo))
+    return this;
+
+  for (unsigned int i = 0; i < This->children.size(); i++)
+  {
+    hwNode *result = This->children[i].findChildByBusInfo(businfo);
+
+    if (result)
+      return result;
+  }
+
+  return NULL;
+}
+
 static string generateId(const string & radical,
 			 int count)
 {
@@ -675,6 +698,9 @@ void hwNode::setConfig(const string & key,
     return;
 
   This->config[key] = strip(value);
+
+  if (strip(value) == "")
+    This->config.erase(This->config.find(key));
 }
 
 string hwNode::getConfig(const string & key) const
@@ -721,6 +747,35 @@ void hwNode::setLogicalName(const string & name)
   }
 }
 
+string hwNode::getBusInfo() const
+{
+  if (This)
+    return This->businfo;
+  else
+    return "";
+}
+
+void hwNode::setBusInfo(const string & businfo)
+{
+  if (This)
+  {
+    if (businfo.find('@') != string::npos)
+      This->businfo = strip(businfo);
+    else
+    {
+      string info = strip(businfo);
+
+      if ((info.length() == 7) &&
+	  isxdigit(info[0]) &&
+	  isxdigit(info[1]) &&
+	  (info[2] == ':') &&
+	  isxdigit(info[3]) &&
+	  isxdigit(info[4]) && (info[5] == '.') && isxdigit(info[6]))
+	This->businfo = string("pci@") + info;
+    }
+  }
+}
+
 void hwNode::merge(const hwNode & node)
 {
   if (!This)
@@ -736,6 +791,8 @@ void hwNode::merge(const hwNode & node)
     This->product = node.getProduct();
   if (This->version == "")
     This->version = node.getVersion();
+  if (This->serial == "")
+    This->serial = node.getSerial();
   if (This->start == 0)
     This->start = node.getStart();
   if (This->size == 0)
@@ -754,6 +811,8 @@ void hwNode::merge(const hwNode & node)
     This->description = node.getDescription();
   if (This->logicalname == "")
     This->logicalname = node.getLogicalName();
+  if (This->businfo == "")
+    This->businfo = node.getBusInfo();
 
   for (unsigned int i = 0; i < node.This->features.size(); i++)
     addCapability(node.This->features[i]);

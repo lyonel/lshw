@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
-static char *id = "@(#) $Id: print.cc,v 1.44 2003/05/27 21:21:19 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.45 2003/06/12 14:23:34 ezix Exp $";
 
 static void tab(int level,
 		bool connect = true)
@@ -157,6 +157,20 @@ void print(hwNode & node,
     if (html)
       cout << "</td><td>";
     cout << node.getVendor();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
+  }
+
+  if (node.getBusInfo() != "")
+  {
+    tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
+    cout << "bus info: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getBusInfo();
     if (html)
       cout << "</td></tr>";
     cout << endl;
@@ -452,6 +466,15 @@ void printxml(hwNode & node,
     cout << "<vendor>";
     cout << escape(node.getVendor());
     cout << "</vendor>";
+    cout << endl;
+  }
+
+  if (node.getBusInfo() != "")
+  {
+    tab(level + 1, false);
+    cout << "<businfo>";
+    cout << escape(node.getBusInfo());
+    cout << "</businfo>";
     cout << endl;
   }
 

@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.28 2003/05/27 21:21:19 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.29 2003/06/12 14:23:34 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -539,6 +539,7 @@ bool scan_pci(hwNode & n)
       int fd = -1;
       string devicepath = "";
       char devicename[20];
+      char businfo[20];
       char driver[50];
       hwNode *device = NULL;
 
@@ -573,6 +574,8 @@ bool scan_pci(hwNode & n)
       snprintf(devicename, sizeof(devicename), "%02x/%02x.%x", d.bus, d.dev,
 	       d.func);
       devicepath = string(PROC_BUS_PCI) + "/" + string(devicename);
+      snprintf(businfo, sizeof(businfo), "pci@%02x:%02x.%x", d.bus, d.dev,
+	       d.func);
 
       fd = open(devicepath.c_str(), O_RDONLY);
       if (fd >= 0)
@@ -600,6 +603,7 @@ bool scan_pci(hwNode & n)
 	host.setHandle(pci_bushandle(d.bus));
 	host.setVersion(revision);
 	host.claim();
+	host.setBusInfo(businfo);
 
 	if (moredescription != "" && moredescription != host.getDescription())
 	{
@@ -660,7 +664,7 @@ bool scan_pci(hwNode & n)
 
 	if (device)
 	{
-	  device->setLogicalName(devicepath);
+	  device->setBusInfo(businfo);
 
 	  if (devicename == "pcmcia")
 	    device->addCapability("pcmcia");
