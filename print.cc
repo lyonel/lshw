@@ -135,6 +135,14 @@ void print(const hwNode & node,
     cout << endl;
   }
 
+  if (node.getClock() > 0)
+  {
+    tab(level + 1, false);
+    cout << "clock: ";
+    decimalkilos(node.getClock());
+    cout << "Hz" << endl;
+  }
+
   for (int i = 0; i < node.countChildren(); i++)
   {
     print(*node.getChild(i), level + 1);

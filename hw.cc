@@ -12,6 +12,7 @@ struct hwNode_i
   bool enabled;
   unsigned long long size;
   unsigned long long capacity;
+  unsigned long long clock;
     vector < hwNode > children;
 };
 
@@ -64,6 +65,7 @@ hwNode::hwNode(const string & id,
   This->version = strip(version);
   This->size = 0;
   This->capacity = 0;
+  This->clock = 0;
   This->enabled = true;
 }
 
@@ -251,6 +253,20 @@ void hwNode::setCapacity(unsigned long long capacity)
 {
   if (This)
     This->capacity = capacity;
+}
+
+unsigned long long hwNode::getClock() const
+{
+  if (This)
+    return This->clock;
+  else
+    return 0;
+}
+
+void hwNode::setClock(unsigned long long clock)
+{
+  if (This)
+    This->clock = clock;
 }
 
 unsigned int hwNode::countChildren() const

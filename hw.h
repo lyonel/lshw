@@ -63,6 +63,9 @@ class hwNode
 	unsigned long long getCapacity() const;
 	void setCapacity(unsigned long long capacity);
 
+	unsigned long long getClock() const;
+	void setClock(unsigned long long clock);
+
 	string getSlot() const;
 	void setSlot(const string & slot);
 
