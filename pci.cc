@@ -14,6 +14,10 @@
 #define PCI_REVISION_ID         0x08	/* Revision ID */
 #define PCI_CLASS_PROG          0x09	/* Reg. Level Programming Interface */
 #define PCI_CLASS_DEVICE        0x0a	/* Device class */
+#define PCI_HEADER_TYPE         0x0e	/* 8 bits */
+#define  PCI_HEADER_TYPE_NORMAL 0
+#define  PCI_HEADER_TYPE_BRIDGE 1
+#define  PCI_HEADER_TYPE_CARDBUS 2
 #define PCI_PRIMARY_BUS         0x18	/* Primary bus number */
 #define PCI_SECONDARY_BUS       0x19	/* Secondary bus number */
 #define PCI_STATUS              0x06	/* 16 bits */
@@ -584,6 +588,7 @@ bool scan_pci(hwNode & n)
       u_int16_t status = get_conf_word(d, PCI_STATUS);
       u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
       u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
+      u_int8_t htype = get_conf_byte(d, PCI_HEADER_TYPE) & 0x7f;
 
       char revision[10];
       snprintf(revision, sizeof(revision), "%02x", rev);
@@ -655,6 +660,12 @@ bool scan_pci(hwNode & n)
 
 	if (device)
 	{
+	  if (deviceclass == hw::display)
+	    for (int j = 0; j < 6; j++)
+	      if ((d.size[j] != 0xffffffff)
+		  && (d.size[j] > device->getSize()))
+		device->setSize(d.size[j]);
+
 	  if (dclass == PCI_CLASS_BRIDGE_PCI)
 	    device->
 	      setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
@@ -725,4 +736,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.19 2003/01/30 00:01:08 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.20 2003/01/31 23:03:26 ezix Exp $";

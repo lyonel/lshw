@@ -186,6 +186,7 @@ void print(const hwNode & node,
       cout << "</td><td>";
     switch (node.getClass())
     {
+    case hw::display:
     case hw::memory:
     case hw::address:
     case hw::storage:
@@ -329,4 +330,4 @@ void print(const hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.26 2003/01/31 22:32:43 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.27 2003/01/31 23:03:26 ezix Exp $";
