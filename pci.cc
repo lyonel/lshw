@@ -16,6 +16,7 @@
 #define PCI_CLASS_DEVICE        0x0a	/* Device class */
 #define PCI_PRIMARY_BUS         0x18	/* Primary bus number */
 #define PCI_SECONDARY_BUS       0x19	/* Secondary bus number */
+#define PCI_STATUS              0x06	/* 16 bits */
 #define PCI_STATUS_66MHZ       0x20	/* Support 66 Mhz PCI 2.1 bus */
 #define PCI_STATUS_CAP_LIST    0x10	/* Support Capability List */
 #define PCI_COMMAND_IO         0x1	/* Enable response in I/O space */
@@ -580,6 +581,7 @@ bool scan_pci(hwNode & n)
 
       u_int16_t dclass = get_conf_word(d, PCI_CLASS_DEVICE);
       u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
+      u_int16_t status = get_conf_word(d, PCI_STATUS);
       u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
       u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
 
@@ -677,7 +679,9 @@ bool scan_pci(hwNode & n)
 	    device->addCapability("bus master");
 	  if (cmd & PCI_COMMAND_VGA_PALETTE)
 	    device->addCapability("VGA palette");
-	  if (cmd & PCI_STATUS_66MHZ)
+	  if (status & PCI_STATUS_CAP_LIST)
+	    device->addCapability("cap list");
+	  if (status & PCI_STATUS_66MHZ)
 	    device->addCapability("66MHz");
 
 	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
@@ -707,4 +711,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.16 2003/01/29 21:47:08 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.17 2003/01/29 21:50:40 ezix Exp $";
