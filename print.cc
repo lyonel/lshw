@@ -62,6 +62,12 @@ void print(const hwNode & node,
     cout << "serial: " << node.getSerial() << endl;
   }
 
+  if (node.getSlot() != "")
+  {
+    tab(level + 1, false);
+    cout << "slot: " << node.getSlot() << endl;
+  }
+
   if (node.getSize() > 0)
   {
     tab(level + 1, false);

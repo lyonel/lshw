@@ -8,7 +8,7 @@ using namespace hw;
 struct hwNode_i
 {
   hwClass deviceclass;
-  string id, vendor, product, version, serial;
+  string id, vendor, product, version, serial, slot;
   unsigned long long size;
     vector < hwNode > children;
 };
@@ -173,6 +173,20 @@ void hwNode::setSerial(const string & serial)
 {
   if (This)
     This->serial = strip(serial);
+}
+
+string hwNode::getSlot() const
+{
+  if (This)
+    return This->slot;
+  else
+    return "";
+}
+
+void hwNode::setSlot(const string & slot)
+{
+  if (This)
+    This->slot = strip(slot);
 }
 
 unsigned long long hwNode::getSize() const

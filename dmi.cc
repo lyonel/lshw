@@ -1018,7 +1018,7 @@ static void dmi_table(int fd,
     case 17:
       // Memory Device
       {
-	string id = "";
+	string slot = "";
 	string description = "";
 	unsigned long long size = 0;
 	u16 width = 0;
@@ -1053,7 +1053,7 @@ static void dmi_table(int fd,
 	  size = (1024 * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024));
 
 	description += string(dmi_memory_device_form_factor(data[14]));
-	id = string(dmi_string(dm, data[16]));
+	slot = string(dmi_string(dm, data[16]));
 	//printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
 	description += string(dmi_memory_device_type(data[18]));
 
@@ -1075,8 +1075,10 @@ static void dmi_table(int fd,
 	  description += " " + string(buffer);
 	}
 
-	hwNode newnode(id,
+	hwNode newnode(slot,
 		       hw::memory);
+
+	newnode.setSlot(slot);
 
 	if (dm->length > 23)
 	  newnode.setVendor(dmi_string(dm, data[23]));

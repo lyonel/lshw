@@ -53,6 +53,9 @@ class hwNode
 	unsigned long long getSize() const;
 	void setSize(unsigned long long size);
 
+	string getSlot() const;
+	void setSlot(const string & slot);
+
 	unsigned int countChildren() const;
 	const hwNode * getChild(unsigned int) const;
 	hwNode * getChild(const string & id);
