@@ -6,6 +6,7 @@
 
 #include "interface.h"
 #include "support.h"
+#include "stock.h"
 
 static char *id = "@(#) $Id$";
 
@@ -22,6 +23,8 @@ main (int argc, char *argv[])
 
   gtk_set_locale ();
   gtk_init (&argc, &argv);
+
+  lshw_gtk_stock_init(); 
 
   /*
    * The following code was added by Glade to create one of each component
