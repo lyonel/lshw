@@ -160,22 +160,50 @@ static unsigned long dmi_cache_size(u16 n)
     return (n & 0x7FFF) * 1024;	// value is in 1K blocks
 }
 
-static void dmi_decode_cache(u16 c)
+static string dmi_cache_sramtype(u16 c)
 {
+  string result = "";
+
   if (c & (1 << 0))
-    printf(" Other");
+    result += "";
   if (c & (1 << 1))
-    printf(" Unknown");
+    result += "";
   if (c & (1 << 2))
-    printf(" Non-burst");
+    result += " Non-burst";
   if (c & (1 << 3))
-    printf(" Burst");
+    result += " Burst";
   if (c & (1 << 4))
-    printf(" Pipeline burst");
+    result += " Pipeline burst";
   if (c & (1 << 5))
-    printf(" Synchronous");
+    result += " Synchronous";
   if (c & (1 << 6))
-    printf(" Asynchronous");
+    result += " Asynchronous";
+
+  return hw::strip(result);
+}
+
+static string dmi_cache_describe(u16 config,
+				 u16 sramtype = 0,
+				 u8 cachetype = 0)
+{
+  string result = "";
+  char buffer[10];
+
+  snprintf(buffer, sizeof(buffer), "L%d ", (config & 7) + 1);
+  result += string(buffer) + "Cache";
+  result += " " + dmi_cache_sramtype(sramtype);
+
+  switch (cachetype)
+  {
+  case 3:
+    result += " (instruction cache)";
+    break;
+  case 4:
+    result += " (data cache)";
+    break;
+  }
+
+  return hw::strip(result);
 }
 
 static const char *dmi_bus_name(u8 num)
@@ -1115,34 +1143,26 @@ static void dmi_table(int fd,
 		       hw::memory);
 	int level;
 
-	static const char *types[4] = {
-	  "Internal ", "External ",
-	  "", ""
-	};
-	static const char *modes[4] = {
-	  "write-through",
-	  "write-back",
-	  "", ""
-	};
-
 	newnode.setSlot(dmi_string(dm, data[4]));
 	u = data[6] << 8 | data[5];
 	level = 1 + (u & 7);
-	printf("\t\tL%d %s%sCache: ",
-	       1 + (u & 7), (u & (1 << 3)) ? "socketed " : "",
-	       types[(u >> 5) & 3]);
-	if (u & (1 << 7))
-	  printf("%s\n", modes[(u >> 8) & 3]);
+
+	if (dm->length > 0x11)
+	  newnode.
+	    setDescription(dmi_cache_describe
+			   (u, data[0x0E] << 8 | data[0x0D], data[0x11]));
 	else
-	  printf("disabled\n");
-	printf("\t\tL%d Cache Size: ", 1 + (u & 7));
+	  newnode.
+	    setDescription(dmi_cache_describe
+			   (u, data[0x0E] << 8 | data[0x0D]));
+
+	if (!(u & (1 << 7)))
+	  newnode.disable();
+
 	newnode.setSize(dmi_cache_size(data[7] | data[8] << 8));
 	newnode.setCapacity(dmi_cache_size(data[9] | data[10] << 8));
 	if (newnode.getCapacity() < newnode.getSize())
 	  newnode.setCapacity(newnode.getCapacity() * 64);
-	printf("\t\tL%d Cache Type: ", 1 + (u & 7));
-	dmi_decode_cache(data[13]);
-	printf("\n");
 
 	if ((dm->length > 0x0F) && (data[0x0F] != 0))
 	{
