@@ -175,10 +175,15 @@ static const char *devices[] = {
   "/dev/scd11", "/dev/sr0", "/dev/sr1", "/dev/sr2", "/dev/sr3", "/dev/sr4",
   "/dev/sr5",
   "/dev/sr6", "/dev/sr7", "/dev/sr8", "/dev/sr9", "/dev/sr10", "/dev/sr11",
+  "/dev/cdrom", "/dev/cdrom0", "/dev/cdrom1", "/dev/cdrom2",
+  "/dev/cdwriter", "/dev/cdwriter0", "/dev/cdwriter1", "/dev/cdwriter2",
+  "/dev/dvd", "/dev/dvd0", "/dev/dvd1", "/dev/dvd2",
   "/dev/st0", "/dev/st1", "/dev/st2", "/dev/st3", "/dev/st4", "/dev/st5",
   "/dev/nst0", "/dev/nst1", "/dev/nst2", "/dev/nst3", "/dev/nst4",
-  "/dev/nst5",
+    "/dev/nst5",
   "/dev/nosst0", "/dev/nosst1", "/dev/nosst2", "/dev/nosst3", "/dev/nosst4",
+  "/dev/tape", "/dev/tape0", "/dev/tape1", "/dev/tape2", "/dev/tape3",
+    "/dev/tape4",
   NULL
 };
 
@@ -409,7 +414,7 @@ static void scan_devices()
 
   for (i = 0; devices[i] != NULL; i++)
   {
-    fd = open(devices[i], OPEN_FLAG | O_NONBLOCK);
+    fd = open(devices[i], O_RDONLY | O_NONBLOCK);
     if (fd >= 0)
     {
       int bus = -1;
@@ -434,12 +439,15 @@ static void find_logicalname(hwNode & n)
   map < string, string >::iterator i = sg_map.begin();
 
   for (i = sg_map.begin(); i != sg_map.end(); i++)
+  {
+    printf("%s -> %s\n", i->first.c_str(), i->second.c_str());
     if (i->first == n.getHandle())
     {
       n.setLogicalName(i->second);
       n.claim();
       return;
     }
+  }
 }
 
 static string host_logicalname(int i)
@@ -665,4 +673,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.21 2003/02/24 22:47:03 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.22 2003/02/25 00:20:22 ezix Exp $";
