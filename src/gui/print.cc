@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: print.cc 764 2004-11-26 01:28:23Z ezix $";
+static char *id = "@(#) $Id$";
 
 static string escape(const string & s)
 {
