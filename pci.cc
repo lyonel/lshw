@@ -7,6 +7,11 @@
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 
+#define PCI_CLASS_REVISION      0x08	/* High 24 bits are class, low 8 revision */
+#define PCI_REVISION_ID         0x08	/* Revision ID */
+#define PCI_CLASS_PROG          0x09	/* Reg. Level Programming Interface */
+#define PCI_CLASS_DEVICE        0x0a	/* Device class */
+
 /*
  * The PCI interface treats multi-function devices as independent
  * devices.  The slot/function address of each device is encoded
@@ -117,11 +122,33 @@ struct pci_dev
   pciaddr_t size[6];		/* Region sizes */
   pciaddr_t rom_base_addr;	/* Expansion ROM base address */
   pciaddr_t rom_size;		/* Expansion ROM size */
+
+  u_int8_t config[256];
 };
+
+static u_int16_t get_conf_word(struct pci_dev d,
+			       unsigned int pos)
+{
+  if (pos > sizeof(d.config))
+    return 0;
+
+  return d.config[pos] | (d.config[pos + 1] << 8);
+}
+
+static u_int8_t get_conf_byte(struct pci_dev d,
+			      unsigned int pos)
+{
+  if (pos > sizeof(d.config))
+    return 0;
+
+  return d.config[pos];
+}
 
 bool scan_pci(hwNode & n)
 {
   FILE *f;
+  hwNode host("pci",
+	      hw::bridge);
 
   f = fopen(PROC_BUS_PCI "/devices", "r");
   if (f)
@@ -132,10 +159,15 @@ bool scan_pci(hwNode & n)
     {
       unsigned int dfn, vend, cnt, known;
       struct pci_dev d;
+      int fd = -1;
+      string devicepath = "";
+      char devicename[20];
+      char driver[50];
 
       memset(&d, 0, sizeof(d));
+      memset(driver, 0, sizeof(driver));
       cnt = sscanf(buf,
-		   "%x %x %x %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx",
+		   "%x %x %x %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %s",
 		   &dfn,
 		   &vend,
 		   &d.irq,
@@ -151,7 +183,7 @@ bool scan_pci(hwNode & n)
 		   &d.size[2],
 		   &d.size[3], &d.size[4], &d.size[5], &d.rom_size);
 
-      if (cnt != 9 && cnt != 10 && cnt != 17)
+      if (cnt != 9 && cnt != 10 && cnt != 17 && cnt != 18)
 	break;
 
       d.bus = dfn >> 8;
@@ -159,11 +191,35 @@ bool scan_pci(hwNode & n)
       d.func = PCI_FUNC(dfn & 0xff);
       d.vendor_id = vend >> 16;
       d.device_id = vend & 0xffff;
+
+      printf("%02x:%02x.%x %04x:%04x %s\n", d.bus, d.dev, d.func, d.vendor_id,
+	     d.device_id, driver);
+      snprintf(devicename, sizeof(devicename), "%02x/%02x.%x", d.bus, d.dev,
+	       d.func);
+      devicepath = string(PROC_BUS_PCI) + "/" + string(devicename);
+
+      fd = open(devicepath.c_str(), O_RDONLY);
+      if (fd >= 0)
+      {
+	read(fd, d.config, sizeof(d.config));
+	close(fd);
+      }
+
     }
     fclose(f);
+
+    hwNode *core = n.getChild("core");
+    if (!core)
+    {
+      n.addChild(hwNode("core", hw::system));
+      core = n.getChild("core");
+    }
+
+    if (core)
+      core->addChild(host);
   }
 
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.1 2003/01/26 21:22:31 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.2 2003/01/26 22:51:56 ezix Exp $";
