@@ -55,7 +55,7 @@ clean:
 release:
 	mkdir -p ../releases
 	svn copy . `dirname ${PWD}`/releases/`cat .version`
-	svn commit `dirname ${PWD}`/releases/`cat .version` -m "release:"`cat .version`
+	svn commit `dirname ${PWD}`/releases/`cat .version` -m "released version "`cat .version`" of "$(PACKAGENAME)
 	rm -rf $(PACKAGENAME)-`cat .version`
 	svn export ../releases/`cat .version` $(PACKAGENAME)-`cat .version`
 	cat $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat .version`/g" > $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec
