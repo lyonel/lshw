@@ -116,10 +116,12 @@
 typedef unsigned long long pciaddr_t;
 typedef enum
 { pcidevice,
+  pcisubdevice,
   pcisubsystem,
   pciclass,
   pcisubclass,
   pcivendor,
+  pcisubvendor,
   pciprogif
 }
 catalog;
@@ -222,18 +224,18 @@ static bool parse_pcidb(vector < string > &list)
       continue;
 
     level = 0;
-    while (level < list[i].length() && list[i][level] == '\t')
+    while ((level < list[i].length()) && (list[i][level] == '\t'))
       level++;
 
     switch (level)
     {
     case 0:
-      if (line[0] == 'C' && line.length() > 1 && line[1] == ' ')
+      if ((line[0] == 'C') && (line.length() > 1) && (line[1] == ' '))
       {
 	current_catalog = pciclass;
 	line = line.substr(2);	// get rid of 'C '
 
-	if (line.length() < 3 || line[2] != ' ')
+	if ((line.length() < 3) || (line[2] != ' '))
 	  return false;
 	if (sscanf(line.c_str(), "%x", &u[0]) != 1)
 	  return false;
@@ -244,7 +246,7 @@ static bool parse_pcidb(vector < string > &list)
       {
 	current_catalog = pcivendor;
 
-	if (line.length() < 5 || line[4] != ' ')
+	if ((line.length() < 5) || (line[4] != ' '))
 	  return false;
 	if (sscanf(line.c_str(), "%x", &u[0]) != 1)
 	  return false;
@@ -254,11 +256,12 @@ static bool parse_pcidb(vector < string > &list)
       u[1] = u[2] = u[3] = 0;
       break;
     case 1:
-      if (current_catalog == pciclass)
+      if ((current_catalog == pciclass) || (current_catalog == pcisubclass)
+	  || (current_catalog == pciprogif))
       {
 	current_catalog = pcisubclass;
 
-	if (line.length() < 3 || line[2] != ' ')
+	if ((line.length() < 3) || (line[2] != ' '))
 	  return false;
 	if (sscanf(line.c_str(), "%x", &u[1]) != 1)
 	  return false;
@@ -269,7 +272,7 @@ static bool parse_pcidb(vector < string > &list)
       {
 	current_catalog = pcidevice;
 
-	if (line.length() < 5 || line[4] != ' ')
+	if ((line.length() < 5) || (line[4] != ' '))
 	  return false;
 	if (sscanf(line.c_str(), "%x", &u[1]) != 1)
 	  return false;
@@ -279,20 +282,37 @@ static bool parse_pcidb(vector < string > &list)
       u[2] = u[3] = 0;
       break;
     case 2:
-      if (current_catalog != pcidevice)
+      if ((current_catalog != pcidevice) && (current_catalog != pcisubvendor)
+	  && (current_catalog != pcisubclass)
+	  && (current_catalog != pciprogif))
 	return false;
-      if (line.length() < 10 || line[4] != ' ' || line[9] != ' ')
-	return false;
-      if (sscanf(line.c_str(), "%x%x", &u[2], &u[3]) != 2)
-	return false;
-      line = line.substr(9);
-      line = hw::strip(line);
+      if ((current_catalog == pcisubclass) || (current_catalog == pciprogif))
+      {
+	current_catalog = pciprogif;
+	if ((line.length() < 3) || (line[2] != ' '))
+	  return false;
+	if (sscanf(line.c_str(), "%x", &u[2]) != 1)
+	  return false;
+	u[3] = 0;
+	line = line.substr(2);
+	line = hw::strip(line);
+      }
+      else
+      {
+	current_catalog = pcisubvendor;
+	if ((line.length() < 10) || (line[4] != ' ') || (line[9] != ' '))
+	  return false;
+	if (sscanf(line.c_str(), "%x%x", &u[2], &u[3]) != 2)
+	  return false;
+	line = line.substr(9);
+	line = hw::strip(line);
+      }
       break;
     default:
       return false;
     }
 
-    printf("%s\n", line.c_str());
+    printf("%x %x %x %x %s\n", u[0], u[1], u[2], u[3], line.c_str());
   }
   return true;
 }
@@ -306,7 +326,6 @@ static bool load_pcidb()
   for (int i = filenames.size() - 1; i >= 0; i--)
   {
     lines.clear();
-    printf("%s\n", filenames[i].c_str());
     if (loadfile(filenames[i], lines))
       parse_pcidb(lines);
   }
@@ -459,8 +478,6 @@ bool scan_pci(hwNode & n)
       d.vendor_id = vend >> 16;
       d.device_id = vend & 0xffff;
 
-      printf("%02x:%02x.%x %04x:%04x %s\n", d.bus, d.dev, d.func, d.vendor_id,
-	     d.device_id, driver);
       snprintf(devicename, sizeof(devicename), "%02x/%02x.%x", d.bus, d.dev,
 	       d.func);
       devicepath = string(PROC_BUS_PCI) + "/" + string(devicename);
@@ -558,4 +575,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.6 2003/01/27 20:49:40 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.7 2003/01/27 23:44:40 ezix Exp $";
