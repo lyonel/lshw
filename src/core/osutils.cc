@@ -158,6 +158,16 @@ int selectdir(const struct dirent *d)
   return S_ISDIR(buf.st_mode);
 }
 
+int selectlink(const struct dirent *d)
+{
+  struct stat buf;
+
+  if (d->d_name[0] == '.')
+    return 0;
+
+  return S_ISLNK(buf.st_mode);
+}
+
 static int selectdevice(const struct dirent *d)
 {
   struct stat buf;

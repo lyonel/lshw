@@ -30,5 +30,6 @@ std::string join(const std::string &, const std::string &, const std::string &);
 bool matches(const std::string & s, const std::string & pattern, int cflags=0);
 
 int selectdir(const struct dirent *d);
+int selectlink(const struct dirent *d);
 
 #endif
