@@ -1,13 +1,18 @@
 #include "mem.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/sysinfo.h>
 #include <fcntl.h>
 #include <unistd.h>
 
 bool scan_memory(hwNode & n)
 {
   struct stat buf;
+  struct sysinfo info;
   hwNode *memory = n.getChild("core/memory");
+
+  if (sysinfo(&info) != 0)
+    memset(&info, 0, sizeof(info));
 
   if (memory)
   {
@@ -19,7 +24,7 @@ bool scan_memory(hwNode & n)
       if (memory->getChild(i)->getClass() == hw::memory)
 	size += memory->getChild(i)->getSize();
 
-    if ((size > 0) && (memory->getSize() == 0))
+    if ((size > 0) && (memory->getSize() < size))
     {
       memory->setSize(size);
       return true;
@@ -56,4 +61,4 @@ bool scan_memory(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: mem.cc,v 1.13 2003/02/08 14:05:18 ezix Exp $";
+static char *id = "@(#) $Id: mem.cc,v 1.14 2003/04/02 16:24:44 ezix Exp $";
