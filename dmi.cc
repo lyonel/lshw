@@ -62,12 +62,12 @@ static string dmi_decode_ram(u16 data)
   return hw::strip(result);
 }
 
-static void dmi_cache_size(u16 n)
+static unsigned long dmi_cache_size(u16 n)
 {
   if (n & (1 << 15))
-    printf("%dK\n", (n & 0x7FFF) * 64);
+    return (n & 0x7FFF) * 64 * 1024;
   else
-    printf("%dK\n", n & 0x7FFF);
+    return (n & 0x7FFF) * 1024;
 }
 
 static void dmi_decode_cache(u16 c)
@@ -726,6 +726,14 @@ static const char *dmi_speed(u8 * data,
   return buffer;
 }
 
+static string dmi_handle(u16 handle)
+{
+  char buffer[10];
+  snprintf(buffer, sizeof(buffer), "DMI:%04X", handle);
+
+  return string(buffer);
+}
+
 static void dmi_table(int fd,
 		      u32 base,
 		      int len,
@@ -739,8 +747,7 @@ static void dmi_table(int fd,
   u8 *data;
   int i = 0;
   int r = 0, r2 = 0;
-  char handle[10];
-  map < string, string > links;
+  string handle;
 
   if (len == 0)
     // no data
@@ -773,7 +780,7 @@ static void dmi_table(int fd,
       // incomplete structure, abort decoding
       break;
 
-    snprintf(handle, sizeof(handle), "DMI:%04X", dm->handle);
+    handle = dmi_handle(dm->handle);
 
     switch (dm->type)
     {
@@ -843,6 +850,13 @@ static void dmi_table(int fd,
 	newnode.setProduct(dmi_processor_family(data[6]));
 	newnode.setVersion(dmi_string(dm, data[0x10]));
 	newnode.setVendor(dmi_string(dm, data[7]));
+	if (dm->length > 0x1A)
+	{
+	  // L1 cache
+	  newnode.attractHandle(dmi_handle(data[0x1B] << 8 | data[0x1A]));
+	  // L2 cache
+	  newnode.attractHandle(dmi_handle(data[0x1D] << 8 | data[0x1C]));
+	}
 	if (dm->length > 0x20)
 	{
 	  newnode.setSerial(dmi_string(dm, data[0x20]));
@@ -862,13 +876,12 @@ static void dmi_table(int fd,
 	u = data[0x17] << 8 | data[0x16];
 	newnode.setSize(u * 1000000);
 
-	if (newnode.getSize() > newnode.getCapacity())
-	  newnode.setCapacity(0);
-
 	// CPU enabled/disabled by BIOS?
 	u = data[0x18] & 0x07;
 	if ((u == 2) || (u == 3) || (u == 4))
 	  newnode.disable();
+
+	newnode.setHandle(handle);
 
 	node.addChild(newnode);
       }
@@ -893,9 +906,8 @@ static void dmi_table(int fd,
 	for (i = 0; i < data[0x0E]; i++)
 	{
 	  char slotref[10];
-	  u16 slothandle = data[0x0F + 2 * i] << 8 | data[0x0F + 2 * i + 1];
-	  snprintf(slotref, sizeof(slotref), "DMI:%04X", slothandle);
-	  links[hw::strip(slotref)] = hw::strip(handle);
+	  u16 slothandle = data[0x0F + 2 * i + 1] << 8 | data[0x0F + 2 * i];
+	  newnode.attractHandle(dmi_handle(slothandle));
 	}
 
 	newnode.setProduct(dmi_decode_ram(data[0x0C] << 8 | data[0x0B]) +
@@ -967,35 +979,44 @@ static void dmi_table(int fd,
 
 	newnode.setHandle(handle);
 
-	if (links.find(hw::strip(handle)) != links.end())
-	  controllernode = node.findChildByHandle(links[hw::strip(handle)]);
+	/*
+	 * 
+	 * if(links.find(hw::strip(handle)) != links.end())
+	 * controllernode = node.findChildByHandle(links[hw::strip(handle)]);
+	 * 
+	 * if(!controllernode)
+	 * controllernode = node.findChildByHandle("DMI:FAKE:RAM");
+	 * 
+	 * if(!controllernode)
+	 * {
+	 * hwNode *memorynode = node.getChild("memory");
+	 * 
+	 * if (!memorynode)
+	 * memorynode = node.addChild(hwNode("memory", hw::memory));
+	 * 
+	 * if(memorynode)
+	 * {
+	 * hwNode fakecontrollernode("ram", hw::memory, "Memory Controller");
+	 * 
+	 * fakecontrollernode.setHandle("DMI:FAKE:RAM");
+	 * controllernode = memorynode->addChild(fakecontrollernode);
+	 * }
+	 * }
+	 * else
+	 * if(controllernode)
+	 * controllernode->addChild(newnode);
+	 */
 
-	if (!controllernode)
-	  controllernode = node.findChildByHandle("DMI:FAKE:RAM");
-
-	if (!controllernode)
-	{
-	  hwNode *memorynode = node.getChild("memory");
-
-	  if (!memorynode)
-	    memorynode = node.addChild(hwNode("memory", hw::memory));
-
-	  if (memorynode)
-	  {
-	    hwNode fakecontrollernode("ram",
-				      hw::memory,
-				      "Memory Controller");
-
-	    fakecontrollernode.setHandle("DMI:FAKE:RAM");
-	    controllernode = memorynode->addChild(fakecontrollernode);
-	  }
-	}
-	else if (controllernode)
-	  controllernode->addChild(newnode);
+	node.addChild(newnode);
       }
       break;
     case 7:
+      // Cache
       {
+	hwNode newnode("cache",
+		       hw::memory);
+	int level;
+
 	static const char *types[4] = {
 	  "Internal ", "External ",
 	  "", ""
@@ -1006,9 +1027,9 @@ static void dmi_table(int fd,
 	  "", ""
 	};
 
-	printf("\tCache\n");
-	printf("\t\tSocket: %s\n", dmi_string(dm, data[4]).c_str());
+	newnode.setSlot(dmi_string(dm, data[4]));
 	u = data[6] << 8 | data[5];
+	level = 1 + (u & 7);
 	printf("\t\tL%d %s%sCache: ",
 	       1 + (u & 7), (u & (1 << 3)) ? "socketed " : "",
 	       types[(u >> 5) & 3]);
@@ -1017,12 +1038,15 @@ static void dmi_table(int fd,
 	else
 	  printf("disabled\n");
 	printf("\t\tL%d Cache Size: ", 1 + (u & 7));
-	dmi_cache_size(data[7] | data[8] << 8);
-	printf("\t\tL%d Cache Maximum: ", 1 + (u & 7));
-	dmi_cache_size(data[9] | data[10] << 8);
+	newnode.setSize(dmi_cache_size(data[7] | data[8] << 8));
+	newnode.setCapacity(dmi_cache_size(data[9] | data[10] << 8));
 	printf("\t\tL%d Cache Type: ", 1 + (u & 7));
 	dmi_decode_cache(data[13]);
 	printf("\n");
+
+	newnode.setHandle(handle);
+
+	node.addChild(newnode);
       }
       break;
 
@@ -1152,10 +1176,9 @@ static void dmi_table(int fd,
 	unsigned long long clock = 0;
 	u16 width = 0;
 	char bits[10];
-	char arrayhandle[10];
+	string arrayhandle;
 
-	snprintf(arrayhandle, sizeof(arrayhandle),
-		 "DMI:%04X", data[5] << 8 | data[4]);
+	arrayhandle = dmi_handle(data[5] << 8 | data[4]);
 
 	strcpy(bits, "");
 	// total width
@@ -1184,7 +1207,7 @@ static void dmi_table(int fd,
 	  size = (1024 * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024));
 
 	description += string(dmi_memory_device_form_factor(data[14]));
-	slot = string(dmi_string(dm, data[16]));
+	slot = dmi_string(dm, data[16]);
 	//printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
 	description += string(dmi_memory_device_type(data[18]));
 

@@ -83,9 +83,14 @@ class hwNode
 	  return countChildren()>0;
 	}
 
+	void attractHandle(const string & handle);
+
   private:
 
 	void setId(const string & id);
+
+	bool attractsHandle(const string & handle) const;
+	bool attractsNode(const hwNode & node) const;
 
 	struct hwNode_i * This;
 };

@@ -14,6 +14,7 @@ struct hwNode_i
   unsigned long long capacity;
   unsigned long long clock;
     vector < hwNode > children;
+    vector < string > attracted;
 };
 
 string hw::strip(const string & s)
@@ -346,6 +347,11 @@ hwNode *hwNode::addChild(const hwNode & node)
   if (!This)
     return NULL;
 
+  // first see if the new node is attracted by one of our children
+  for (int i = 0; i < This->children.size(); i++)
+    if (This->children[i].attractsNode(node))
+      return This->children[i].addChild(node);
+
   existing = getChild(id);
   if (existing)			// first rename existing instance
   {
@@ -363,4 +369,37 @@ hwNode *hwNode::addChild(const hwNode & node)
     This->children.back().setId(generateId(id, count));
 
   return getChild(This->children.back().getId());
+}
+
+void hwNode::attractHandle(const string & handle)
+{
+  if (!This)
+    return;
+
+  This->attracted.push_back(handle);
+}
+
+bool hwNode::attractsHandle(const string & handle) const
+{
+  int i = 0;
+  if (handle == "" || !This)
+    return false;
+
+  for (i = 0; i < This->attracted.size(); i++)
+    if (This->attracted[i] == handle)
+      return true;
+
+  for (i = 0; i < This->children.size(); i++)
+    if (This->children[i].attractsHandle(handle))
+      return true;
+
+  return false;
+}
+
+bool hwNode::attractsNode(const hwNode & node) const
+{
+  if (!This || !node.This)
+    return false;
+
+  return attractsHandle(node.This->handle);
 }
