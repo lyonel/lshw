@@ -1,4 +1,5 @@
 PACKAGENAME:=lshw
+export PACKAGENAME
 SNAPSHOT=0.`cat .timestamp`
 
 DESTDIR=/
@@ -6,12 +7,18 @@ PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share/$(PACKAGENAME)
+export DESTDIR
+export PREFIX
+export SBINDIR
+export MANDIR
+export DATADIR
 
 CXX=c++
-CXXFLAGS=-g -Wall -Os
-LDFLAGS=
+INCLUDES=-I./core/
+CXXFLAGS=-g -Wall -Os $(INCLUDES)
+LDFLAGS=-L./core/
 LDSTATIC=-static
-LIBS=
+LIBS=-llshw
 
 OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o sysfs.o display.o heuristics.o
 SRCS = $(OBJS:.o=.cc)
@@ -23,8 +30,11 @@ all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 .cc.o:
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(PACKAGENAME): $(OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $(LIBS) $^
+core/lib$(PACKAGENAME).a:
+	make -C core all
+
+$(PACKAGENAME): core/lib$(PACKAGENAME).a $(PACKAGENAME).o
+	$(CXX) $(LDFLAGS) -o $@ $(LIBS) $(PACKAGENAME).o
 
 .PHONY: static
 static: $(PACKAGENAME)-static
@@ -62,7 +72,8 @@ install: all
 	cp $(DATAFILES) $(DESTDIR)/$(DATADIR)
 	
 clean:
-	rm -f $(OBJS) $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed core
+	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
+	make -C core clean
 
 .timestamp:
 	date --utc +%Y%m%d%H%M%S > $@
@@ -88,33 +99,4 @@ snapshot: .timestamp
 depend:
 	@makedepend -Y $(SRCS) 2> /dev/null > /dev/null
 
-# DO NOT DELETE
 
-hw.o: hw.h osutils.h
-main.o: hw.h print.h version.h options.h mem.h dmi.h cpuinfo.h cpuid.h
-main.o: device-tree.h pci.h pcmcia.h ide.h scsi.h spd.h network.h isapnp.h
-main.o: fb.h usb.h sysfs.h display.h
-print.o: print.h hw.h options.h version.h osutils.h
-mem.o: mem.h hw.h
-dmi.o: dmi.h hw.h osutils.h
-device-tree.o: device-tree.h hw.h osutils.h
-cpuinfo.o: cpuinfo.h hw.h osutils.h
-osutils.o: osutils.h
-pci.o: pci.h hw.h osutils.h
-version.o: version.h
-cpuid.o: cpuid.h hw.h
-ide.o: cpuinfo.h hw.h osutils.h cdrom.h disk.h
-cdrom.o: cdrom.h hw.h
-pcmcia.o: pcmcia.h hw.h osutils.h
-scsi.o: mem.h hw.h cdrom.h disk.h osutils.h
-disk.o: disk.h hw.h
-spd.o: spd.h hw.h osutils.h
-network.o: network.h hw.h osutils.h sysfs.h
-isapnp.o: isapnp.h hw.h pnp.h
-pnp.o: pnp.h hw.h
-fb.o: fb.h hw.h
-options.o: options.h osutils.h
-lshw.o: hw.h print.h main.h version.h options.h
-usb.o: usb.h hw.h osutils.h
-sysfs.o: sysfs.h hw.h osutils.h
-display.o: fb.h hw.h
