@@ -9,7 +9,7 @@ extern "C" {
 
 #define YIELD()  while(gtk_events_pending()) gtk_main_iteration()
 
-static hwNode computer("computer", hw::system);
+static hwNode container("container", hw::generic);
 static hwNode *displayed = NULL;
 static hwNode *selected1 = NULL;
 static hwNode *selected2 = NULL;
@@ -161,7 +161,7 @@ static void display(GtkWidget * mainwindow)
   GtkWidget * description = lookup_widget(mainwindow, "description");
 
   if(!displayed)
-    gtk_label_set_text(GTK_LABEL(description), printmarkup(computer).c_str());
+    gtk_label_set_text(GTK_LABEL(description), "<i>Please select a node to display.</i>");
   else
     gtk_label_set_text(GTK_LABEL(description), printmarkup(*displayed).c_str());
   gtk_label_set_use_markup (GTK_LABEL(description), TRUE);
@@ -189,15 +189,18 @@ void status(const char *message)
 
 void refresh(GtkWidget *mainwindow)
 {
+  hwNode computer("computer", hw::system);
+
   GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
   GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
   GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
   statusbar = lookup_widget(mainwindow, "statusbar");
 
-  computer = hwNode("computer", hw::system);
+  container = hwNode("container", hw::generic);
   status("Scanning...");
   scan_system(computer);
   status(NULL);
+  container.addChild(computer);
 
 
   //displayed = computer.getChild("core");
@@ -206,7 +209,7 @@ void refresh(GtkWidget *mainwindow)
   selected2 = NULL;
   selected3 = NULL;
 
-  populate_list(list1, &computer);
+  populate_sublist(list1, &container);
   populate_sublist(list2, NULL);
   populate_sublist(list3, NULL);
   display(mainwindow);
@@ -287,24 +290,26 @@ void browse(unsigned list, GtkTreeView *treeview)
         selected1 = n;
         selected2 = NULL;
         selected3 = NULL;
-        populate_list(list1, selected1);
-        populate_sublist(list2, selected1, selected2);
-        populate_sublist(list3, selected2);
+        populate_sublist(list2, n);
+        populate_sublist(list3, NULL);
       }
       break;
     case 2:
       if(n == selected2) return;	// nothing to change
       populate_sublist(list3, n);
       selected2 = n;
+      selected3 = NULL;
       break;
     case 3:
       if(n == selected3) return;	// nothing to change
+      selected3 = n;
       if(n->countChildren()>0)
       {
+        hwNode *oldselected1 = selected1;
         selected1 = selected2;
         selected2 = n;
         selected3 = NULL;
-        populate_sublist(list1, selected1);
+        populate_sublist(list1, oldselected1, selected1);
         populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2);
       }
