@@ -100,6 +100,19 @@ struct dmi_header
   u16 handle;
 };
 
+static const char *dmi_hardware_security_status(u8 code)
+{
+  static const char *status[]={
+    "disabled", /* 0x00 */
+    "enabled",
+    "", // not implemented
+    "unknown" /* 0x03 */
+  };
+
+  return status[code & 0x03];
+}
+
+
 static string dmi_uuid(u8 * p)
 {
   unsigned int i = 0;
@@ -1413,6 +1426,16 @@ static void dmi_table(int fd,
       break;
     case 24:
       // Hardware Security
+      if (dm->length < 0x05)
+	break;
+      node.setConfig("power-on_password",
+           dmi_hardware_security_status(data[0x04]>>6));
+      node.setConfig("keyboard_password",
+           dmi_hardware_security_status((data[0x04]>>4)&0x3));
+      node.setConfig("administrator_password",
+           dmi_hardware_security_status((data[0x04]>>2)&0x3));
+      node.setConfig("frontpanel_password",
+           dmi_hardware_security_status(data[0x04]&0x3));
       break;
     case 25:
       // System Power Controls
