@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <regex.h>
 #include <ctype.h>
-#include <string.h>
+#include <stdio.h>
 #ifndef MINOR
 #include <linux/kdev_t.h>
 #endif

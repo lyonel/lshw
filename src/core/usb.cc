@@ -3,9 +3,12 @@
  *
  */
 
+#define _GNU_SOURCE
+
 #include "usb.h"
 #include "osutils.h"
 #include "heuristics.h"
+#include <stdio.h>
 #include <map>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -14,7 +17,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <dirent.h>
-#include <stdio.h>
 
 #define PROCBUSUSBDEVICES "/proc/bus/usb/devices"
 #define USBID_PATH "/usr/share/lshw/usb.ids:/usr/local/share/usb.ids:/usr/share/usb.ids:/etc/usb.ids:/usr/share/hwdata/usb.ids:/usr/share/misc/usb.ids"
