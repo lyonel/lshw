@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.14 2003/04/29 16:45:06 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.15 2003/05/29 10:55:45 ezix Exp $";
 
 #if defined(__i386__) || defined(__alpha__)
 
@@ -29,8 +29,8 @@ static hwNode *getcache(hwNode & node,
     cache = node.getChild(string("cache"));
   if (cache)
     return cache;
-
-  return node.addChild(hwNode("cache", hw::memory));
+  else
+    return NULL;
 }
 
 static hwNode *getcpu(hwNode & node,
@@ -245,6 +245,9 @@ static bool dointel(unsigned long maxi,
   unsigned long signature, eax, ebx, ecx, edx, unused;
   int stepping, model, family;
 
+  if (!cpu)
+    return false;
+
   if (maxi >= 1)
   {
     cpuid(cpunumber, 1, eax, ebx, ecx, edx);
@@ -310,11 +313,33 @@ static bool dointel(unsigned long maxi,
 	if (l1->getDescription() == "")
 	  l1->setDescription("L1 cache");
       }
-      if (l2 && l2cache)
+      else
       {
-	l2->setSize(l2cache);
-	if (l2->getDescription() == "")
-	  l2->setDescription("L2 cache");
+	hwNode cache("cache",
+		     hw::memory);
+	cache.setSize(l1cache);
+	cache.setDescription("L1 cache");
+
+	cpu->addChild(cache);
+      }
+
+      if (l2cache != 0)
+      {
+	if (l2 && (l2cache != 0))
+	{
+	  l2->setSize(l2cache);
+	  if (l2->getDescription() == "")
+	    l2->setDescription("L2 cache");
+	}
+	else
+	{
+	  hwNode cache("cache",
+		       hw::memory);
+	  cache.setSize(l2cache);
+	  cache.setDescription("L2 cache");
+
+	  cpu->addChild(cache);
+	}
       }
     }
   }

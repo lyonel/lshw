@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.41 2003/04/29 07:56:10 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.42 2003/05/29 10:55:45 ezix Exp $";
 
 struct hwNode_i
 {
@@ -64,6 +64,7 @@ hwNode::hwNode(const string & id,
 	       const string & vendor,
 	       const string & product, const string & version)
 {
+  This = NULL;
   This = new hwNode_i;
 
   if (!This)
@@ -80,16 +81,20 @@ hwNode::hwNode(const string & id,
   This->clock = 0;
   This->enabled = true;
   This->claimed = false;
-  This->handle = "";
-  This->description = "";
-  This->logicalname = "";
+  This->handle = string("");
+  This->description = string("");
+  This->logicalname = string("");
 
   (void) &::id;			// avoid warning "id defined but not used"
 }
 
 hwNode::hwNode(const hwNode & o)
 {
+  This = NULL;
   This = new hwNode_i;
+
+  if (!This)
+    return;
 
   if (o.This)
     (*This) = (*o.This);
@@ -108,9 +113,13 @@ hwNode & hwNode::operator = (const hwNode & o)
 
   if (This)
     delete This;
+  This = NULL;
   This = new hwNode_i;
 
-  if (o.This && This)
+  if (!This)
+    return *this;
+
+  if (o.This)
     (*This) = (*o.This);
 
   return *this;
@@ -568,7 +577,8 @@ hwNode *hwNode::addChild(const hwNode & node)
   if (existing || getChild(generateId(id, 0)))
     This->children.back().setId(generateId(id, count));
 
-  return getChild(This->children.back().getId());
+  return &(This->children.back());
+  //return getChild(This->children.back().getId());
 }
 
 void hwNode::attractHandle(const string & handle)
