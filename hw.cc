@@ -138,6 +138,12 @@ const char *hwNode::getClassName() const
     case storage:
       return "storage";
 
+    case disk:
+      return "disk";
+
+    case tape:
+      return "tape";
+
     case hw::system:
       return "system";
 
@@ -743,4 +749,4 @@ void hwNode::merge(const hwNode & node)
     setConfig(i->first, i->second);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.38 2003/03/11 00:59:26 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.39 2003/03/11 09:06:08 ezix Exp $";

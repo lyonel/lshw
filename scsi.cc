@@ -616,7 +616,7 @@ static bool scan_sg(int sg,
     parent = n.findChildByLogicalName(host);
 
   if (!parent)
-    parent = n.addChild(hwNode("scsi", hw::bus));
+    parent = n.addChild(hwNode("scsi", hw::storage));
 
   if (!parent)
   {
@@ -656,23 +656,23 @@ static bool scan_sg(int sg,
   switch (m_id.scsi_type)
   {
   case 0:
-    device = hwNode("disk", hw::storage);
+    device = hwNode("disk", hw::disk);
     break;
   case 1:
-    device = hwNode("tape", hw::storage);
+    device = hwNode("tape", hw::tape);
     break;
   case 3:
     device = hwNode("processor", hw::processor);
     break;
   case 4:
   case 5:
-    device = hwNode("cdrom", hw::storage);
+    device = hwNode("cdrom", hw::disk);
     break;
   case 6:
     device = hwNode("scanner", hw::generic);
     break;
   case 7:
-    device = hwNode("magnetooptical", hw::storage);
+    device = hwNode("magnetooptical", hw::disk);
     break;
   case 8:
     device = hwNode("changer", hw::generic);
@@ -793,4 +793,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.28 2003/03/08 18:27:18 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.29 2003/03/11 09:06:08 ezix Exp $";

@@ -349,7 +349,7 @@ bool scan_ide(hwNode & n)
 			   hw::storage);
 
 	  idedevice =
-	    hwNode(get_string(basepath + "/media", "disk"), hw::storage);
+	    hwNode(get_string(basepath + "/media", "disk"), hw::disk);
 
 	  idedevice.setCapacity(512 * get_longlong(basepath + "/capacity"));
 	  idedevice.setLogicalName(string("/dev/") + devicelist[j]->d_name);
@@ -402,4 +402,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.16 2003/02/25 12:35:25 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.17 2003/03/11 09:06:08 ezix Exp $";

@@ -230,6 +230,7 @@ void print(hwNode & node,
     case hw::memory:
     case hw::address:
     case hw::storage:
+    case hw::disk:
       kilobytes(node.getSize());
       if (html)
 	cout << "</td></tr>";
@@ -265,6 +266,7 @@ void print(hwNode & node,
     case hw::memory:
     case hw::address:
     case hw::storage:
+    case hw::disk:
       kilobytes(node.getCapacity());
       if (html)
 	cout << "</td></tr>";
@@ -491,6 +493,7 @@ void printxml(hwNode & node,
     case hw::memory:
     case hw::address:
     case hw::storage:
+    case hw::disk:
     case hw::display:
       cout << " units=\"bytes\"";
       break;
@@ -516,6 +519,7 @@ void printxml(hwNode & node,
     case hw::memory:
     case hw::address:
     case hw::storage:
+    case hw::disk:
       cout << " units=\"bytes\"";
       break;
 
@@ -580,4 +584,4 @@ void printxml(hwNode & node,
   cout << "</node>" << endl;
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.37 2003/03/11 08:45:11 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.38 2003/03/11 09:06:08 ezix Exp $";
