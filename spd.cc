@@ -8,6 +8,8 @@
 #include <dirent.h>
 #include <stdio.h>
 
+static char *id = "@(#) $Id: spd.cc,v 1.4 2003/08/11 22:54:32 ezix Exp $";
+
 /* SPD is 2048-bit long */
 #define SPD_MAXSIZE (2048/8)
 #define SPD_BLKSIZE 0x10
@@ -43,7 +45,8 @@ static unsigned char get_spd_byte(unsigned int offset)
     if (in)
     {
       for (int i = 0; i < SPD_BLKSIZE; i++)
-	fscanf(in, "%d", &spd[i + (offset / SPD_BLKSIZE) * SPD_BLKSIZE]);
+	fscanf(in, "%d",
+	       (int *) &spd[i + (offset / SPD_BLKSIZE) * SPD_BLKSIZE]);
       fclose(in);
       spd_page_loaded[offset / SPD_BLKSIZE] = true;
     }
@@ -219,6 +222,6 @@ bool scan_spd(hwNode & n)
   }
 
   return false;
-}
 
-static char *id = "@(#) $Id: spd.cc,v 1.3 2003/06/26 21:30:27 ezix Exp $";
+  (void) &id;			// avoid warning "id defined but not used"
+}

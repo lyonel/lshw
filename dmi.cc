@@ -76,7 +76,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.68 2003/07/07 15:56:13 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.69 2003/08/11 22:54:32 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -1038,8 +1038,8 @@ static void dmi_table(int fd,
 	if (end != start)
 	  newnode.setSize((end - start + 1) * 1024);	// values are in KB
 	newnode.setHandle(handle);
-	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
 #if 0
+	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
 	if (memoryarray)
 	  memoryarray->setPhysId(newnode.getStart());
 #endif
@@ -1065,8 +1065,8 @@ static void dmi_table(int fd,
 	if (end != start)
 	  newnode.setSize((end - start + 1) * 1024);	// values are in KB
 	newnode.setHandle(handle);
-	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
 #if 0
+	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
 	if (memorydevice && (newnode.getSize() != 0)
 	    && (newnode.getSize() <= memorydevice->getSize()))
 	  memorydevice->setPhysId(newnode.getStart());

@@ -70,7 +70,7 @@ depend:
 
 hw.o: hw.h osutils.h
 main.o: hw.h print.h version.h mem.h dmi.h cpuinfo.h cpuid.h device-tree.h
-main.o: pci.h pcmcia.h ide.h scsi.h spd.h network.h
+main.o: pci.h pcmcia.h ide.h scsi.h spd.h network.h isapnp.h
 print.o: print.h hw.h version.h osutils.h
 mem.o: mem.h hw.h
 dmi.o: dmi.h hw.h
@@ -87,3 +87,5 @@ scsi.o: mem.h hw.h cdrom.h disk.h osutils.h
 disk.o: disk.h hw.h
 spd.o: spd.h hw.h osutils.h
 network.o: network.h hw.h osutils.h
+isapnp.o: isapnp.h hw.h pnp.h
+pnp.o: pnp.h hw.h

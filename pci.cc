@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.34 2003/08/11 14:19:45 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.35 2003/08/11 22:54:32 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -169,12 +169,16 @@ struct pci_entry
   long ids[4];
   string description;
 
-    pci_entry(
-  const string & description,
-  long u1 = -1, long u2 = -1, long u3 = -1, long u4 = -1);
+    pci_entry(const string & description,
+	      long u1 = -1,
+	      long u2 = -1,
+	      long u3 = -1,
+	      long u4 = -1);
 
-  unsigned int matches(
-  long u1 = -1, long u2 = -1, long u3 = -1, long u4 = -1);
+  unsigned int matches(long u1 = -1,
+		       long u2 = -1,
+		       long u3 = -1,
+		       long u4 = -1);
 };
 
 static vector < pci_entry > pci_devices;
@@ -193,11 +197,10 @@ pci_entry::pci_entry(const string & d,
   ids[3] = u4;
 }
 
-unsigned int pci_entry::matches(
-  long u1,
-  long u2,
-  long u3,
-  long u4)
+unsigned int pci_entry::matches(long u1,
+				long u2,
+				long u3,
+				long u4)
 {
   unsigned int result = 0;
 
@@ -219,10 +222,12 @@ unsigned int pci_entry::matches(
   return result;
 }
 
-static bool find_best_match(
-  vector < pci_entry > &list,
-  pci_entry & result,
-  long u1 = -1, long u2 = -1, long u3 = -1, long u4 = -1)
+static bool find_best_match(vector < pci_entry > &list,
+			    pci_entry & result,
+			    long u1 = -1,
+			    long u2 = -1,
+			    long u3 = -1,
+			    long u4 = -1)
 {
   int lastmatch = -1;
   unsigned int lastscore = 0;
@@ -247,8 +252,7 @@ static bool find_best_match(
   return false;
 }
 
-static const char *get_class_name(
-  unsigned int c)
+static const char *get_class_name(unsigned int c)
 {
   switch (c)
   {
@@ -313,8 +317,7 @@ static const char *get_class_name(
   return "generic";
 }
 
-static bool parse_pcidb(
-  vector < string > &list)
+static bool parse_pcidb(vector < string > &list)
 {
   long u[4];
   string line = "";
@@ -356,7 +359,7 @@ static bool parse_pcidb(
 
 	if ((line.length() < 5) || (line[4] != ' '))
 	  return false;
-	if (sscanf(line.c_str(), "%x", &u[0]) != 1)
+	if (sscanf(line.c_str(), "%lx", &u[0]) != 1)
 	  return false;
 	line = line.substr(5);
 	line = hw::strip(line);
@@ -371,7 +374,7 @@ static bool parse_pcidb(
 
 	if ((line.length() < 3) || (line[2] != ' '))
 	  return false;
-	if (sscanf(line.c_str(), "%x", &u[1]) != 1)
+	if (sscanf(line.c_str(), "%lx", &u[1]) != 1)
 	  return false;
 	line = line.substr(3);
 	line = hw::strip(line);
@@ -382,7 +385,7 @@ static bool parse_pcidb(
 
 	if ((line.length() < 5) || (line[4] != ' '))
 	  return false;
-	if (sscanf(line.c_str(), "%x", &u[1]) != 1)
+	if (sscanf(line.c_str(), "%lx", &u[1]) != 1)
 	  return false;
 	line = line.substr(5);
 	line = hw::strip(line);
@@ -399,7 +402,7 @@ static bool parse_pcidb(
 	current_catalog = pciprogif;
 	if ((line.length() < 3) || (line[2] != ' '))
 	  return false;
-	if (sscanf(line.c_str(), "%x", &u[2]) != 1)
+	if (sscanf(line.c_str(), "%lx", &u[2]) != 1)
 	  return false;
 	u[3] = -1;
 	line = line.substr(2);
@@ -410,7 +413,7 @@ static bool parse_pcidb(
 	current_catalog = pcisubvendor;
 	if ((line.length() < 10) || (line[4] != ' ') || (line[9] != ' '))
 	  return false;
-	if (sscanf(line.c_str(), "%x%x", &u[2], &u[3]) != 2)
+	if (sscanf(line.c_str(), "%lx%lx", &u[2], &u[3]) != 2)
 	  return false;
 	line = line.substr(9);
 	line = hw::strip(line);
@@ -434,8 +437,7 @@ static bool parse_pcidb(
   return true;
 }
 
-static bool load_pcidb(
-  )
+static bool load_pcidb()
 {
   vector < string > lines;
   vector < string > filenames;
@@ -454,12 +456,10 @@ static bool load_pcidb(
   return true;
 }
 
-static string get_class_description(
-  long c,
-  long pi = -1)
+static string get_class_description(long c,
+				    long pi = -1)
 {
-  pci_entry result(
-  "");
+  pci_entry result("");
 
   if (find_best_match(pci_classes, result, c >> 8, c & 0xff, pi))
     return result.description;
@@ -467,12 +467,12 @@ static string get_class_description(
     return "";
 }
 
-static string get_device_description(
-  long u1,
-  long u2 = -1, long u3 = -1, long u4 = -1)
+static string get_device_description(long u1,
+				     long u2 = -1,
+				     long u3 = -1,
+				     long u4 = -1)
 {
-  pci_entry result(
-  "");
+  pci_entry result("");
 
   if (find_best_match(pci_devices, result, u1, u2, u3, u4))
     return result.description;
@@ -480,9 +480,8 @@ static string get_device_description(
     return "";
 }
 
-static u_int16_t get_conf_word(
-  struct pci_dev d,
-  unsigned int pos)
+static u_int16_t get_conf_word(struct pci_dev d,
+			       unsigned int pos)
 {
   if (pos > sizeof(d.config))
     return 0;
@@ -490,9 +489,8 @@ static u_int16_t get_conf_word(
   return d.config[pos] | (d.config[pos + 1] << 8);
 }
 
-static u_int8_t get_conf_byte(
-  struct pci_dev d,
-  unsigned int pos)
+static u_int8_t get_conf_byte(struct pci_dev d,
+			      unsigned int pos)
 {
   if (pos > sizeof(d.config))
     return 0;
@@ -500,8 +498,7 @@ static u_int8_t get_conf_byte(
   return d.config[pos];
 }
 
-static string pci_bushandle(
-  u_int8_t bus)
+static string pci_bushandle(u_int8_t bus)
 {
   char buffer[10];
 
@@ -510,10 +507,9 @@ static string pci_bushandle(
   return "PCIBUS:" + string(buffer);
 }
 
-static string pci_handle(
-  u_int16_t bus,
-  u_int8_t dev,
-  u_int8_t fct)
+static string pci_handle(u_int16_t bus,
+			 u_int8_t dev,
+			 u_int8_t fct)
 {
   char buffer[20];
 
@@ -522,13 +518,11 @@ static string pci_handle(
   return string(buffer);
 }
 
-bool scan_pci(
-  hwNode & n)
+bool scan_pci(hwNode & n)
 {
   FILE *f;
-  hwNode host(
-  "pci",
-  hw::bridge);
+  hwNode host("pci",
+	      hw::bridge);
 
   // always consider the host bridge as PCI bus 00:
   host.setHandle(pci_bushandle(0));

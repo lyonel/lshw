@@ -15,6 +15,8 @@
 #include <sys/types.h>
 using namespace std;
 
+static char *id = "@(#) $Id: network.cc,v 1.10 2003/08/11 22:54:32 ezix Exp $";
+
 #ifndef SIOCETHTOOL
 #define SIOCETHTOOL     0x8946
 #endif
@@ -442,6 +444,6 @@ bool scan_network(hwNode & n)
   }
   else
     return false;
-}
 
-static char *id = "@(#) $Id: network.cc,v 1.9 2003/06/28 13:47:40 ezix Exp $";
+  (void) &id;			// avoid warning "id defined but not used"
+}
