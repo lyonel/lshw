@@ -33,7 +33,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.19 2004/04/14 21:19:54 ezix Exp $";
+  "@(#) $Id$";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
@@ -494,6 +494,7 @@ bool scan_network(hwNode & n)
       {
 	interface.addCapability("wlan", "Wireless-LAN");
 	interface.setConfig("wireless", hw::strip(buffer + IFNAMSIZ));
+	interface.setDescription("Wireless interface");
       }
 
       drvinfo.cmd = ETHTOOL_GDRVINFO;
