@@ -3,12 +3,12 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "09 March 2003" "$Name:  $" ""
+.TH "LSHW" "1" "10 April 2003" "$Name:  $" ""
 .SH NAME
 lshw \- list hardware
 .SH SYNOPSIS
 
-\fBlshw\fR [ \fB-version\fR ] [ \fB-help\fR ] [ \fB-html\fR ]
+\fBlshw\fR [ \fB-version\fR ] [ \fB-help\fR ] [ \fB-html\fR ] [ \fB-xml\fR ]
 
 .SH "DESCRIPTION"
 .PP
@@ -35,6 +35,9 @@ Displays the available command line options and quits.
 .TP
 \fB-html\fR
 Output the device tree as an HTML page.
+.TP
+\fB-xml\fR
+Output the device tree as an XML tree.
 .SH "BUGS"
 .PP
 \fBlshw\fR currently does not detect 

@@ -20,6 +20,7 @@ list hardware
         <arg choice="opt">-version</arg>
         <arg choice="opt">-help</arg>
 	<arg choice="opt">-html</arg>
+	<arg choice="opt">-xml</arg>
    </cmdsynopsis>
 </refsynopsisdiv>
 
@@ -53,7 +54,11 @@ Displays the available command line options and quits.
 </para></listitem></varlistentry>
 <varlistentry><term>-html</term>
 <listitem><para>
-Output the device tree as an HTML page.
+Outputs the device tree as an HTML page.
+</para></listitem></varlistentry>
+<varlistentry><term>-xml</term>
+<listitem><para>
+Outputs the device tree as an XML tree.
 </para></listitem></varlistentry>
 </variablelist>
 </para>

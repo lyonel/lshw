@@ -21,6 +21,7 @@ void usage(const char *progname)
   fprintf(stderr, "usage: %s [-options ...]\n", progname);
   fprintf(stderr, "\t-version      print program version\n");
   fprintf(stderr, "\t-html         output hardware tree as HTML\n");
+  fprintf(stderr, "\t-xml          output hardware tree as XML\n");
   fprintf(stderr, "\n");
 }
 
@@ -86,4 +87,4 @@ int main(int argc,
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.21 2003/03/11 00:59:26 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.22 2003/04/10 17:41:16 ezix Exp $";
