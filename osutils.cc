@@ -6,8 +6,10 @@
 #include <dirent.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <ctype.h>
 
-static char *id = "@(#) $Id: osutils.cc,v 1.10 2004/01/19 16:15:15 ezix Exp $";
+static char *id =
+  "@(#) $Id: osutils.cc,v 1.11 2004/04/14 20:04:44 ezix Exp $";
 
 using namespace std;
 
@@ -247,4 +249,24 @@ bool samefile(const string & path1,
     return false;
 
   return (stat1.st_dev == stat2.st_dev) && (stat1.st_ino == stat2.st_ino);
+}
+
+string uppercase(const string & s)
+{
+  string result;
+
+  for (unsigned int i = 0; i < s.length(); i++)
+    result += toupper(s[i]);
+
+  return result;
+}
+
+string lowercase(const string & s)
+{
+  string result;
+
+  for (unsigned int i = 0; i < s.length(); i++)
+    result += tolower(s[i]);
+
+  return result;
 }

@@ -15,7 +15,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.28 2004/04/01 18:00:33 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.29 2004/04/14 20:04:44 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -322,17 +322,6 @@ static bool is_master(const string & device)
   }
 }
 
-static string master_or_slave(const string & device)
-{
-  if (device == "")
-    return "";
-
-  if (is_master(device))
-    return "master";
-  else
-    return "slave";
-}
-
 static const char *manufacturers[] = {
   "^ST.+", "Seagate",
   "^D...-.+", "IBM",
@@ -441,12 +430,12 @@ bool scan_ide(hwNode & n)
 	  idedevice.claim();
 	  idedevice.setHandle(ide.getHandle() + ":" +
 			      string(devicelist[j]->d_name));
-	  idedevice.setBusInfo(ide.getBusInfo() + ":" +
-			       master_or_slave(devicelist[j]->d_name));
 	  if (is_master(devicelist[j]->d_name))
 	    idedevice.setPhysId(0);
 	  else
 	    idedevice.setPhysId(1);
+	  idedevice.setBusInfo(ide.getBusInfo() + "." +
+			       idedevice.getPhysId());
 
 	  probe_ide(devicelist[j]->d_name, idedevice);
 

@@ -33,7 +33,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.17 2004/02/17 12:39:58 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.18 2004/04/14 20:04:44 ezix Exp $";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
@@ -65,6 +65,13 @@ struct ethtool_cmd
   u32 maxrxpkt;			/* Rx pkts before generating rx int */
   u32 reserved[4];
 };
+
+#ifndef IFNAMSIZ
+#define IFNAMSIZ 32
+#endif
+#define SIOCGIWNAME     0x8B01	/* get name == wireless protocol */
+/* SIOCGIWNAME is used to verify the presence of Wireless Extensions.
+ * Common values : "IEEE 802.11-DS", "IEEE 802.11-FH", "IEEE 802.11b"... */
 
 #define ETHTOOL_BUSINFO_LEN     32
 /* these strings are set to whatever the driver author decides... */
@@ -373,9 +380,24 @@ static bool scan_mii(int fd,
   return true;
 }
 
+static bool isVMware(const string & MAC)
+{
+  if (MAC.length() < 8)
+    return false;
+
+  string manufacturer = uppercase(MAC.substr(0, 8));
+
+  if ((manufacturer == "00:05:69") ||
+      (manufacturer == "00:0C:29") || (manufacturer == "00:50:56"))
+    return true;
+
+  return false;
+}
+
 bool scan_network(hwNode & n)
 {
   vector < string > interfaces;
+  char buffer[2 * IFNAMSIZ + 1];
 
   if (!load_interfaces(interfaces))
     return false;
@@ -449,6 +471,18 @@ bool scan_network(hwNode & n)
 	interface.setDescription(string(hwname(ifr.ifr_hwaddr.sa_family)) +
 				 " interface");
 	interface.setSerial(hwaddr);
+
+	if (isVMware(interface.getSerial()))
+	  interface.addCapability("logical", "Logical interface");
+      }
+
+      // check for wireless extensions
+      memset(buffer, 0, sizeof(buffer));
+      strncpy(buffer, interfaces[i].c_str(), sizeof(buffer));
+      if (ioctl(fd, SIOCGIWNAME, &buffer) == 0)
+      {
+	interface.addCapability("wlan", "Wireless-LAN");
+	interface.setConfig("wireless", hw::strip(buffer + IFNAMSIZ));
       }
 
       drvinfo.cmd = ETHTOOL_GDRVINFO;
@@ -477,8 +511,9 @@ bool scan_network(hwNode & n)
 	}
 	else
 	{
-	  // we don't care about loopback interfaces
-	  if (!interface.isCapable("loopback"))
+	  // we don't care about loopback and "logical" interfaces
+	  if (!interface.isCapable("loopback") &&
+	      !interface.isCapable("logical"))
 	    n.addChild(interface);
 	}
       }

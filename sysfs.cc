@@ -9,14 +9,66 @@
 #include <limits.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <libgen.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/mount.h>
 
-static char *id = "@(#) $Id: sysfs.cc,v 1.3 2004/03/02 09:11:21 ezix Exp $";
+static char *id = "@(#) $Id: sysfs.cc,v 1.4 2004/04/14 20:04:44 ezix Exp $";
 
-#define SYS		"/sys"
+struct sysfs_t
+{
+  sysfs_t():path("/sys"),
+  temporary(false),
+  has_sysfs(false)
+  {
+    has_sysfs = exists(path + "/classes/.");
+
+    if (!has_sysfs)		// sysfs doesn't seem to be mounted
+      // try to mount it in a temporary directory
+    {
+      char buffer[50];
+      char *tmpdir = NULL;
+
+        strncpy(buffer,
+		"/var/tmp/sys-XXXXXX",
+		sizeof(buffer));
+        tmpdir = mkdtemp(buffer);
+
+      if (tmpdir)
+      {
+	temporary = true;
+	path = string(tmpdir);
+	chmod(tmpdir,
+	      0000);		// to make clear it is a mount point
+	mount("none",
+	      path.c_str(),
+	      "sysfs",
+	      0,
+	      NULL);
+      }
+
+      has_sysfs = exists(path + "/classes/.");
+    }
+  }
+
+  ~sysfs_t()
+  {
+    if (temporary)
+    {
+      umount(path.c_str());
+      rmdir(path.c_str());
+    }
+  }
+
+  string path;
+  bool temporary;
+  bool has_sysfs;
+};
+
+static sysfs_t sysfs;
 
 static int selectdir(const struct dirent *d)
 {
@@ -44,15 +96,15 @@ static string sysfs_getbustype(const string & path)
   - check if this link and 'path' point to the same inode
   - if they do, the bus type is the name of the current directory
  */
-  pushd(SYS "/bus");
+  pushd(sysfs.path + "/bus");
   n = scandir(".", &namelist, selectdir, alphasort);
   popd();
 
   for (i = 0; i < n; i++)
   {
     devname =
-      string(SYS "/bus/") + string(namelist[i]->d_name) + "/devices/" +
-      basename((char *) path.c_str());
+      string(sysfs.path + "/bus/") + string(namelist[i]->d_name) +
+      "/devices/" + basename((char *) path.c_str());
 
     if (samefile(devname, path))
       return string(namelist[i]->d_name);
@@ -64,7 +116,15 @@ static string sysfs_getbustype(const string & path)
 static string sysfstopci(const string & path)
 {
   if (path.length() > 7)
-    return path.substr(path.length() - 7);
+    return "pci@" + path.substr(path.length() - 7);
+  else
+    return "";
+}
+
+static string sysfstoide(const string & path)
+{
+  if (path.length() > 3)
+    return "ide@" + path.substr(path.length() - 3);
   else
     return "";
 }
@@ -76,6 +136,9 @@ static string sysfstobusinfo(const string & path)
   if (bustype == "pci")
     return sysfstopci(path);
 
+  if (bustype == "ide")
+    return sysfstoide(path);
+
   return "";
 }
 
@@ -83,7 +146,7 @@ string sysfs_getbusinfo(const string & devclass,
 			const string & devname)
 {
   string basename =
-    string(SYS) + string("/class/") + devclass + string("/") + devname + "/";
+    sysfs.path + string("/class/") + devclass + string("/") + devname + "/";
   string device = basename + "/device";
   char buffer[PATH_MAX + 1];
   int namelen = 0;
@@ -103,7 +166,7 @@ string sysfs_getdriver(const string & devclass,
 		       const string & devname)
 {
   string driverpath =
-    string(SYS) + string("/class/") + devclass + string("/") + devname + "/";
+    sysfs.path + string("/class/") + devclass + string("/") + devname + "/";
   string driver = driverpath + "/driver";
   char buffer[PATH_MAX + 1];
   int namelen = 0;
