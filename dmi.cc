@@ -76,7 +76,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.66 2003/06/26 21:30:27 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.67 2003/07/04 10:06:37 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -262,43 +262,43 @@ static unsigned long dmi_cache_size(u16 n)
     return (n & 0x7FFF) * 1024;	// value is in 1K blocks
 }
 
-static string dmi_cache_sramtype(u16 c)
+static void dmi_cache_sramtype(u16 c,
+			       hwNode & n)
 {
   string result = "";
 
-  if (c & (1 << 0))
-    result += "";
-  if (c & (1 << 1))
-    result += "";
+  //if (c & (1 << 0))
+  //result += "";
+  //if (c & (1 << 1))
+  //result += "";
   if (c & (1 << 2))
-    result += " Non-burst";
+    n.addCapability("non-burst");
   if (c & (1 << 3))
-    result += " Burst";
+    n.addCapability("burst");
   if (c & (1 << 4))
-    result += " Pipeline burst";
+    n.addCapability("pipeline-burst");
   if (c & (1 << 5))
-    result += " Synchronous";
+    n.addCapability("synchronous");
   if (c & (1 << 6))
-    result += " Asynchronous";
-
-  return hw::strip(result);
+    n.addCapability("asynchronous");
 }
 
-static string dmi_cache_describe(u16 config,
-				 u16 sramtype = 0,
-				 u8 cachetype = 0)
+static void dmi_cache_describe(hwNode & n,
+			       u16 config,
+			       u16 sramtype = 0,
+			       u8 cachetype = 0)
 {
   string result = "";
   char buffer[10];
 
-  result = dmi_cache_sramtype(sramtype);
+  dmi_cache_sramtype(sramtype, n);
   switch ((config >> 5) & 3)
   {
   case 0:
-    result += " Internal";
+    n.addCapability("internal");
     break;
   case 1:
-    result += " External";
+    n.addCapability("external");
     break;
   }
   snprintf(buffer, sizeof(buffer), "L%d ", (config & 7) + 1);
@@ -307,26 +307,26 @@ static string dmi_cache_describe(u16 config,
   switch ((config >> 8) & 3)
   {
   case 0:
-    result += "write-through ";
+    n.addCapability("write-through");
     break;
   case 1:
-    result += "write-back ";
+    n.addCapability("write-back");
     break;
   }
 
-  result += "Cache";
+  result += "cache";
 
   switch (cachetype)
   {
   case 3:
-    result += " (instruction cache)";
+    n.addCapability("instruction");
     break;
   case 4:
-    result += " (data cache)";
+    n.addCapability("data");
     break;
   }
 
-  return hw::strip(result);
+  n.setDescription(hw::strip(result));
 }
 
 static char *dmi_memory_array_location(u8 num)
@@ -802,13 +802,10 @@ static void dmi_table(int fd,
 	level = 1 + (u & 7);
 
 	if (dm->length > 0x11)
-	  newnode.
-	    setDescription(dmi_cache_describe
-			   (u, data[0x0E] << 8 | data[0x0D], data[0x11]));
+	  dmi_cache_describe(newnode, u, data[0x0E] << 8 | data[0x0D],
+			     data[0x11]);
 	else
-	  newnode.
-	    setDescription(dmi_cache_describe
-			   (u, data[0x0E] << 8 | data[0x0D]));
+	  dmi_cache_describe(newnode, u, data[0x0E] << 8 | data[0x0D]);
 
 	if (!(u & (1 << 7)))
 	  newnode.disable();
