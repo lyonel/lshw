@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.ezix.org"
+	xmlns="http://www.ezix.org"
+	elementFormDefault="qualified">
+
+  <xs:element name="node" type="nodeinfo" />
+
+  <xs:group name="nodegroup">
+    <xs:all>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="vendor" type="xs:string"/>
+      <xs:element name="product" type="xs:string"/>
+      <xs:element name="version" type="xs:string"/>
+      <xs:element name="physid" type="xs:string"/>
+      <xs:element name="businfo" type="xs:string"/>
+      <xs:element name="size" type="measured"/>
+      <xs:element name="capacity" type="measured"/>
+      <xs:element name="clock" type="measured"/>
+      <xs:element name="configuration" type="configinfo"/>
+      <xs:element name="capabilities" type="capinfo"/>
+      <xs:element name="resources" type="resinfo"/>
+    </xs:all>
+  </xs:group>
+
+  <xs:complexType name="nodeinfo">
+    <xs:sequence>
+      <xs:group ref="nodegroup"/>
+      <xs:element name="node" type="nodeinfo" maxOccurs="unbounded" />
+      <xs:any minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="handle" type="xs:string" />
+    <xs:attribute name="class" type="xs:string" />
+    <xs:attribute name="claimed" type="xs:boolean" />
+    <xs:attribute name="disabled" type="xs:boolean" />
+  </xs:complexType>
+
+  <xs:complexType name="measured">
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="units" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="configinfo">
+    <xs:sequence>
+      <xs:element name="setting" type="configentry" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="configentry">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="id" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="capinfo">
+    <xs:sequence>
+      <xs:element name="capability" type="capentry" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="capentry">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="id" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="resinfo">
+    <xs:sequence>
+      <xs:element name="resource" type="resentry" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="resentry">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>
