@@ -40,7 +40,7 @@ depend:
 hw.o: hw.h osutils.h
 main.o: hw.h print.h version.h mem.h dmi.h cpuinfo.h cpuid.h device-tree.h
 main.o: pci.h pcmcia.h ide.h scsi.h
-print.o: print.h hw.h
+print.o: print.h hw.h version.h osutils.h
 mem.o: mem.h hw.h
 dmi.o: dmi.h hw.h
 device-tree.o: device-tree.h hw.h osutils.h
@@ -49,7 +49,8 @@ osutils.o: osutils.h
 pci.o: pci.h hw.h osutils.h
 version.o: version.h
 cpuid.o: cpuid.h hw.h
-ide.o: cpuinfo.h hw.h osutils.h cdrom.h
+ide.o: cpuinfo.h hw.h osutils.h cdrom.h disk.h
 cdrom.o: cdrom.h hw.h
 pcmcia.o: pcmcia.h hw.h osutils.h
-scsi.o: mem.h hw.h cdrom.h
+scsi.o: mem.h hw.h cdrom.h disk.h osutils.h
+disk.o: disk.h hw.h
