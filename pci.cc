@@ -10,11 +10,24 @@
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids"
 
 #define PCI_CLASS_REVISION      0x08	/* High 24 bits are class, low 8 revision */
+#define PCI_COMMAND             0x04	/* 16 bits */
 #define PCI_REVISION_ID         0x08	/* Revision ID */
 #define PCI_CLASS_PROG          0x09	/* Reg. Level Programming Interface */
 #define PCI_CLASS_DEVICE        0x0a	/* Device class */
 #define PCI_PRIMARY_BUS         0x18	/* Primary bus number */
 #define PCI_SECONDARY_BUS       0x19	/* Secondary bus number */
+#define PCI_STATUS_66MHZ       0x20	/* Support 66 Mhz PCI 2.1 bus */
+#define PCI_STATUS_CAP_LIST    0x10	/* Support Capability List */
+#define PCI_COMMAND_IO         0x1	/* Enable response in I/O space */
+#define PCI_COMMAND_MEMORY     0x2	/* Enable response in Memory space */
+#define PCI_COMMAND_MASTER     0x4	/* Enable bus mastering */
+#define PCI_COMMAND_SPECIAL    0x8	/* Enable response to special cycles */
+#define PCI_COMMAND_INVALIDATE 0x10	/* Use memory write and invalidate */
+#define PCI_COMMAND_VGA_PALETTE 0x20	/* Enable palette snooping */
+#define PCI_COMMAND_PARITY     0x40	/* Enable parity checking */
+#define PCI_COMMAND_WAIT       0x80	/* Enable address/data stepping */
+#define PCI_COMMAND_SERR       0x100	/* Enable SERR */
+#define PCI_COMMAND_FAST_BACK  0x200	/* Enable back-to-back writes */
 
 /*
  * The PCI interface treats multi-function devices as independent
@@ -566,6 +579,7 @@ bool scan_pci(hwNode & n)
       }
 
       u_int16_t dclass = get_conf_word(d, PCI_CLASS_DEVICE);
+      u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
       u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
       u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
 
@@ -659,6 +673,13 @@ bool scan_pci(hwNode & n)
 	  device->
 	    setProduct(get_device_description(d.vendor_id, d.device_id));
 
+	  if (cmd & PCI_COMMAND_MASTER)
+	    device->addCapability("bus master");
+	  if (cmd & PCI_COMMAND_VGA_PALETTE)
+	    device->addCapability("VGA palette");
+	  if (cmd & PCI_STATUS_66MHZ)
+	    device->addCapability("66MHz");
+
 	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
 
 	  if (bus)
@@ -686,4 +707,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.15 2003/01/29 21:36:02 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.16 2003/01/29 21:47:08 ezix Exp $";
