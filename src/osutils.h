@@ -20,6 +20,7 @@ size_t splitlines(const std::string & s,
 std::string get_string(const std::string & path, const std::string & def = "");
 
 std::string find_deventry(mode_t mode, dev_t device);
+std::string get_devid(const std::string &);
 
 std::string uppercase(const std::string &);
 std::string lowercase(const std::string &);

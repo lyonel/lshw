@@ -578,6 +578,15 @@ void printxml(hwNode & node,
       cout << endl;
     }
 
+    if (node.getDev() != "")
+    {
+      tab(level + 1, false);
+      cout << "<dev>";
+      cout << escape(node.getDev());
+      cout << "</dev>";
+      cout << endl;
+    }
+
     if (node.getVersion() != "")
     {
       tab(level + 1, false);

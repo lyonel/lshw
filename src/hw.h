@@ -146,6 +146,9 @@ class hwNode
 	string getLogicalName() const;
 	void setLogicalName(const string &);
 
+	string getDev() const;
+	void setDev(const string &);
+
 	string getBusInfo() const;
 	void setBusInfo(const string &);
 

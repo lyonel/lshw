@@ -13,7 +13,7 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, serial, slot, handle, description,
-    logicalname, businfo, physid;
+    logicalname, businfo, physid, dev;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -89,6 +89,7 @@ hwNode::hwNode(const string & id,
   This->logicalname = string("");
   This->businfo = string("");
   This->physid = string("");
+  This->dev = string("");
 
   (void) &::id;			// avoid warning "id defined but not used"
 }
@@ -859,9 +860,39 @@ void hwNode::setLogicalName(const string & name)
   if (This)
   {
     if (exists("/dev/" + strip(name)))
+    {
       This->logicalname = "/dev/" + strip(name);
+    }
     else
       This->logicalname = strip(name);
+
+    This->dev = get_devid(This->logicalname);
+  }
+}
+
+string hwNode::getDev() const
+{
+  if (This)
+    return This->dev;
+  else
+    return "";
+}
+
+void hwNode::setDev(const string & s)
+{
+  if (This)
+  {
+    string devid = strip(s);
+    unsigned int i = 0;
+
+    while((i<devid.length()) && isdigit(devid[i])) i++;
+    if(i>=devid.length()) return;
+    if(devid[i] != ':') return;
+    i++;
+    while((i<devid.length()) && isdigit(devid[i])) i++;
+    if(i!=devid.length()) return;
+
+    This->dev = devid;
   }
 }
 

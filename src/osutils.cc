@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <linux/fs.h>
 
 static char *id =
   "@(#) $Id$";
@@ -235,6 +236,22 @@ string find_deventry(mode_t mode,
 {
   (void) &id;			// avoid warning "id defined but not used"
   return find_deventry("/dev", mode, device);
+}
+
+
+string get_devid(const string & name)
+{
+  struct stat buf;
+
+  if((stat(name.c_str(), &buf)==0) && (S_ISBLK(buf.st_mode) || S_ISCHR(buf.st_mode)))
+  {
+    char devid[80];
+                                                                                
+    snprintf(devid, sizeof(devid), "%d:%d", MAJOR(buf.st_rdev), MINOR(buf.st_rdev));
+    return string(devid);
+  }
+  else
+    return "";
 }
 
 bool samefile(const string & path1,
