@@ -66,6 +66,7 @@ int main(int argc,
   alias("disc", "disk");
   alias("cpu", "processor");
   alias("lan", "network");
+  alias("net", "network");
   alias("video", "display");
   alias("sound", "multimedia");
   alias("modem", "communication");
