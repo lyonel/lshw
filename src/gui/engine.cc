@@ -139,6 +139,7 @@ void refresh(GtkWidget *mainwindow)
   hwNode computer("computer", hw::system);
   static bool lock = false;
   GtkWidget * description = lookup_widget(mainwindow, "description");
+  GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
 
   if(lock) return;
 
@@ -162,6 +163,7 @@ void refresh(GtkWidget *mainwindow)
   status(NULL);
   container.addChild(computer);
 
+  gtk_widget_set_sensitive(go_up_button, 0);
 
   selected1 = NULL;
   selected2 = NULL;
@@ -223,6 +225,7 @@ void browse(unsigned list, GtkTreeView *treeview)
   GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
   GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
   GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
+  GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
 
   selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
   if (gtk_tree_selection_get_selected(selection, &model, &iter))
@@ -271,6 +274,11 @@ void browse(unsigned list, GtkTreeView *treeview)
       break;
   }
 
+  if(selected1 && (find_parent(selected1, &container)!= &container))
+    gtk_widget_set_sensitive(go_up_button, 1);
+  else
+    gtk_widget_set_sensitive(go_up_button, 0);
+
   (void) &::id;                 // avoid warning "id defined but not used"
 }
 
@@ -279,8 +287,7 @@ void go_back(GtkWidget *mainwindow)
   GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
   GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
   GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
-
-  if(!displayed);
+  GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
 
   if(selected1 && (find_parent(selected1, &container)!= &container))
   {
@@ -295,6 +302,11 @@ void go_back(GtkWidget *mainwindow)
     if(find_parent(displayed, &container)!= &container)
       displayed = find_parent(displayed, &container);
   }
+
+  if(selected1 && (find_parent(selected1, &container)!= &container))
+    gtk_widget_set_sensitive(go_up_button, 1);
+  else
+    gtk_widget_set_sensitive(go_up_button, 0);
 
   display(mainwindow);
 }
