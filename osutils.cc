@@ -15,6 +15,9 @@ bool pushd(const string & dir)
 
   if (dir == "")
   {
+    if (dirs.size() == 0)
+      return true;
+
     if (chdir(dirs.top().c_str()) == 0)
     {
       dirs.pop();
@@ -37,6 +40,9 @@ bool pushd(const string & dir)
 string popd()
 {
   string curdir = pwd();
+
+  if (dirs.size() == 0)
+    return curdir;
 
   if (chdir(dirs.top().c_str()) == 0)
     dirs.pop();
@@ -224,4 +230,4 @@ string find_deventry(mode_t mode,
   return find_deventry("/dev", mode, device);
 }
 
-static char *id = "@(#) $Id: osutils.cc,v 1.7 2003/02/10 09:35:27 ezix Exp $";
+static char *id = "@(#) $Id: osutils.cc,v 1.8 2003/02/16 00:36:32 ezix Exp $";

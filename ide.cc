@@ -324,7 +324,8 @@ bool scan_ide(hwNode & n)
     {
       vector < string > identify;
 
-      splitlines(config[0], identify, ' ');
+      if (config.size() > 0)
+	splitlines(config[0], identify, ' ');
       config.clear();
 
       if (identify.size() >= 1)
@@ -398,4 +399,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.13 2003/02/15 14:24:53 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.14 2003/02/16 00:36:32 ezix Exp $";
