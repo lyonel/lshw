@@ -26,9 +26,15 @@ all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 $(PACKAGENAME): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(LIBS) $^
 
+.PHONY: static
+static: $(PACKAGENAME)-static
+
 $(PACKAGENAME)-static: $(OBJS)
 	$(CXX) $(LDSTATIC) $(LDFLAGS) -o $@ $(LIBS) $^
 	strip $@
+
+.PHONY: compressed
+compressed: $(PACKAGENAME)-compressed
 
 $(PACKAGENAME)-compressed: $(PACKAGENAME)-static
 	upx -9 -o $@ $<
