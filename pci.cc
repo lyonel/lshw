@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.36 2003/08/20 10:12:48 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.37 2003/09/02 14:54:00 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -576,11 +576,12 @@ static bool scan_resources(hwNode & n,
 bool scan_pci(hwNode & n)
 {
   FILE *f;
-  hwNode host("pci",
-	      hw::bridge);
-
-  // always consider the host bridge as PCI bus 00:
-  host.setHandle(pci_bushandle(0));
+  hwNode *core = n.getChild("core");
+  if (!core)
+  {
+    n.addChild(hwNode("core", hw::bus));
+    core = n.getChild("core");
+  }
 
   load_pcidb();
 
@@ -654,6 +655,9 @@ bool scan_pci(hwNode & n)
 
       if (dclass == PCI_CLASS_BRIDGE_HOST)
       {
+	hwNode host("pci",
+		    hw::bridge);
+
 	host.setDescription(get_class_description(dclass, progif));
 	host.setVendor(get_device_description(d.vendor_id));
 	host.setProduct(get_device_description(d.vendor_id, d.device_id));
@@ -675,6 +679,8 @@ bool scan_pci(hwNode & n)
 	  host.setClock(66000000UL);	// 66MHz
 	else
 	  host.setClock(33000000UL);	// 33MHz
+
+	n.addChild(host);
       }
       else
       {
@@ -786,28 +792,20 @@ bool scan_pci(hwNode & n)
 	    device->claim();
 	  }
 
-	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
+	  hwNode *bus = NULL;
+
+	  bus = n.findChildByHandle(pci_bushandle(d.bus));
 
 	  if (bus)
 	    bus->addChild(*device);
 	  else
-	    host.addChild(*device);
+	    n.addChild(*device);
 	  free(device);
 	}
       }
 
     }
     fclose(f);
-
-    hwNode *core = n.getChild("core");
-    if (!core)
-    {
-      n.addChild(hwNode("core", hw::bus));
-      core = n.getChild("core");
-    }
-
-    if (core)
-      core->addChild(host);
   }
 
   (void) &id;			// avoid warning "id defined but not used"
