@@ -335,3 +335,35 @@ string readlink(const string & path)
   else
     return path;
 }
+
+string spaces(unsigned int count, const string & space)
+{
+  string result = "";
+  while (count-- > 0)
+    result += space;
+
+  return result;
+}
+
+string escape(const string & s)
+{
+  string result = "";
+
+  for (unsigned int i = 0; i < s.length(); i++)
+    switch (s[i])
+    {
+    case '<':
+      result += "&lt;";
+      break;
+    case '>':
+      result += "&gt;";
+      break;
+    case '&':
+      result += "&ampersand;";
+      break;
+    default:
+      result += s[i];
+    }
+
+  return result;
+}

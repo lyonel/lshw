@@ -8,6 +8,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <iostream>
 
 static char *id = "@(#) $Id$";
 
@@ -138,7 +139,7 @@ int main(int argc,
     else
     {
       if (xmloutput)
-	printxml(computer);
+	cout << computer.asXML();
       else
 	print(computer, htmloutput);
     }

@@ -193,6 +193,8 @@ class hwNode
 	void merge(const hwNode & node);
 
         void fixInconsistencies();
+
+	string asXML(unsigned level = 0);
   private:
 
 	void setId(const string & id);
