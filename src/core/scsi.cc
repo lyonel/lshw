@@ -2,6 +2,7 @@
 #include "cdrom.h"
 #include "disk.h"
 #include "osutils.h"
+#include "heuristics.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -648,11 +649,7 @@ static bool scan_sg(int sg,
 
   memset(slot_name, 0, sizeof(slot_name));
   if (ioctl(fd, SCSI_IOCTL_GET_PCI, slot_name) >= 0)
-  {
-    string parent_handle = string("PCI:") + string(slot_name);
-
-    parent = n.findChildByHandle(parent_handle);
-  }
+    parent = n.findChildByBusInfo(guessBusInfo(slot_name));
 
   if (!parent)
     parent = n.findChildByLogicalName(host);
