@@ -34,7 +34,7 @@ depend:
 
 # DO NOT DELETE
 
-hw.o: hw.h
+hw.o: hw.h osutils.h
 main.o: hw.h print.h version.h mem.h dmi.h cpuinfo.h cpuid.h device-tree.h
 main.o: pci.h pcmcia.h ide.h
 print.o: print.h hw.h
