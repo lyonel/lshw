@@ -69,6 +69,19 @@ static unsigned long long count_memorybanks_size(hwNode & n)
     return 0;
 }
 
+static void claim_memory(hwNode & n)
+{
+  hwNode *core = n.getChild("core");
+
+  if (core)
+  {
+    for (unsigned int i = 0; i < core->countChildren(); i++)
+      if (core->getChild(i)->getClass() == hw::memory)
+	if(core->getChild(i)->claimed())
+          core->getChild(i)->claim(true);	// claim memory and all its children
+  }
+}
+
 bool scan_memory(hwNode & n)
 {
   hwNode *memory = n.getChild("core/memory");
@@ -78,6 +91,7 @@ bool scan_memory(hwNode & n)
   logicalmem = get_sysconf_size();
   kcore = get_kcore_size();
   count_memorybanks_size(n);
+  claim_memory(n);
 
   if (!memory)
   {

@@ -1216,12 +1216,15 @@ static void dmi_table(int fd,
     case 16:
       // Physical Memory Array
       {
+	hwNode newnode("memory",
+		       hw::memory);
 	string id = "";
 	string description = "";
 	switch (data[5])
 	{
 	case 0x03:
 	  description = "System Memory";
+          newnode.claim();
 	  break;
 	case 0x04:
 	  description = "Video Memory";
@@ -1239,8 +1242,6 @@ static void dmi_table(int fd,
 	  description = "Generic Memory";
 	}
 
-	hwNode newnode("memory",
-		       hw::memory);
 	newnode.setHandle(handle);
 	newnode.setPhysId(dm->handle);
 	newnode.setDescription(description);
