@@ -32,7 +32,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.14 2004/01/13 13:03:56 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.15 2004/01/14 17:34:21 ezix Exp $";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
@@ -437,7 +437,7 @@ bool scan_network(hwNode & n)
 	else
 	  interface.addCapability("physical");
 	interface.setDescription(string(hwname(ifr.ifr_hwaddr.sa_family)) +
-				 " controller");
+				 " interface");
 	interface.setSerial(hwaddr);
       }
 
