@@ -4,6 +4,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <scsi/sg.h>
 #include <scsi/scsi.h>
 
@@ -109,4 +110,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.1 2003/02/16 19:55:29 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.2 2003/02/16 19:57:34 ezix Exp $";
