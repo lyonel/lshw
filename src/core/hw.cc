@@ -1055,6 +1055,9 @@ void hwNode::merge(const hwNode & node)
 
   for (unsigned int i = 0; i < node.This->features.size(); i++)
     addCapability(node.This->features[i]);
+  for (map < string, string >::iterator i = node.This->features_descriptions.begin();
+       i != node.This->features_descriptions.end(); i++)
+    describeCapability(i->first, i->second);
 
   for (map < string, string >::iterator i = node.This->config.begin();
        i != node.This->config.end(); i++)
