@@ -593,12 +593,12 @@ static string scsi_businfo(int host,
 
   if (channel >= 0)
   {
-    snprintf(businfo, sizeof(businfo), ".%d", channel);
+    snprintf(businfo, sizeof(businfo), ":%d", channel);
     result += string(businfo);
 
     if (target >= 0)
     {
-      snprintf(businfo, sizeof(businfo), ":%d", target);
+      snprintf(businfo, sizeof(businfo), ".%d", target);
       result += string(businfo);
 
       if (lun >= 0)
