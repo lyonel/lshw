@@ -208,7 +208,7 @@ static const char *get_class_name(unsigned int c)
 
 static bool parse_pcidb(vector < string > &list)
 {
-  u_int16_t u[4];
+  long u[4];
   string line = "";
   catalog current_catalog = pcivendor;
   int level = 0;
@@ -253,7 +253,7 @@ static bool parse_pcidb(vector < string > &list)
 	line = line.substr(5);
 	line = hw::strip(line);
       }
-      u[1] = u[2] = u[3] = 0;
+      u[1] = u[2] = u[3] = -1;
       break;
     case 1:
       if ((current_catalog == pciclass) || (current_catalog == pcisubclass)
@@ -279,7 +279,7 @@ static bool parse_pcidb(vector < string > &list)
 	line = line.substr(5);
 	line = hw::strip(line);
       }
-      u[2] = u[3] = 0;
+      u[2] = u[3] = -1;
       break;
     case 2:
       if ((current_catalog != pcidevice) && (current_catalog != pcisubvendor)
@@ -293,7 +293,7 @@ static bool parse_pcidb(vector < string > &list)
 	  return false;
 	if (sscanf(line.c_str(), "%x", &u[2]) != 1)
 	  return false;
-	u[3] = 0;
+	u[3] = -1;
 	line = line.substr(2);
 	line = hw::strip(line);
       }
@@ -312,7 +312,7 @@ static bool parse_pcidb(vector < string > &list)
       return false;
     }
 
-    printf("%x %x %x %x %s\n", u[0], u[1], u[2], u[3], line.c_str());
+    printf("%04x %04x %04x %04x %s\n", u[0], u[1], u[2], u[3], line.c_str());
   }
   return true;
 }
@@ -575,4 +575,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.7 2003/01/27 23:44:40 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.8 2003/01/28 07:59:23 ezix Exp $";
