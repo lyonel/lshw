@@ -25,6 +25,10 @@ list hardware
    </cmdsynopsis>
  <cmdsynopsis>
    <command>lshw</command> 
+        <arg choice="opt"><option>-X</option></arg>
+   </cmdsynopsis>
+ <cmdsynopsis>
+   <command>lshw</command> 
       <group choice="opt">
 	<arg choice="opt"><option>-html</option></arg>
 	<arg choice="opt"><option>-short</option></arg>
@@ -64,6 +68,10 @@ Displays the version of <application>lshw</application> and exits.
 <varlistentry><term>-help</term>
 <listitem><para>
 Displays the available command line options and quits.
+</para></listitem></varlistentry>
+<varlistentry><term>-X</term>
+<listitem><para>
+Launch the X11 GUI (if available).
 </para></listitem></varlistentry>
 <varlistentry><term>-html</term>
 <listitem><para>
