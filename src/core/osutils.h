@@ -27,4 +27,6 @@ std::string lowercase(const std::string &);
 
 std::string join(const std::string &, const std::string &, const std::string &);
 
+bool matches(const std::string & s, const std::string & pattern);
+
 #endif

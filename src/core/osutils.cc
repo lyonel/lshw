@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <regex.h>
 #include <ctype.h>
 #include <linux/fs.h>
 #ifndef MINOR
@@ -297,4 +298,19 @@ string join(const string & j, const string & s1, const string & s2)
   if(s2 == "") return s1;
 
   return s1 + j + s2;
+}
+
+bool matches(const string & s, const string & pattern)
+{
+  regex_t r;
+  bool result = false;
+
+  if(regcomp(&r, pattern.c_str(), REG_EXTENDED | REG_NOSUB) != 0)
+    return false;
+
+  result = (regexec(&r, s.c_str(), 0, NULL, 0) == 0);
+
+  regfree(&r);
+
+  return result;
 }
