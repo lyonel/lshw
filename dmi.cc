@@ -390,7 +390,7 @@ static void dmi_cache_describe(hwNode & n,
 static char *dmi_memory_array_location(u8 num)
 {
   static char *memory_array_location[] = {
-    "",
+    "",		/* 0x00 */
     "",
     "",
     "System board or motherboard",
@@ -400,17 +400,18 @@ static char *dmi_memory_array_location(u8 num)
     "MCA add-on card",
     "PCMCIA add-on card",
     "Proprietary add-on card",
-    "NuBus",
+    "NuBus",	/* 0x0A , master.mif says 16 */
   };
   static char *jp_memory_array_location[] = {
-    "PC-98/C20 add-on card",
+    "PC-98/C20 add-on card",	/* 0xA0 */
     "PC-98/C24 add-on card",
     "PC-98/E add-on card",
     "PC-98/Local bus add-on card",
+    "PC-98/Card slot add-on card", /* 0xA4, from master.mif */
   };
   if (num <= 0x0A)
     return memory_array_location[num];
-  if (num >= 0xA0 && num < 0xA3)
+  if (num >= 0xA0 && num < 0xA4)
     return jp_memory_array_location[num];
   return "";
 }
@@ -442,7 +443,7 @@ static char *dmi_memory_device_form_factor(u8 num)
 static char *dmi_memory_device_type(u8 num)
 {
   static char *memory_device_type[] = {
-    "",
+    "",		/* 0x00 */
     "",
     "",
     " DRAM",
@@ -460,7 +461,7 @@ static char *dmi_memory_device_type(u8 num)
     " SDRAM",
     " SGRAM",
     " RDRAM",
-    " DDR",
+    " DDR",	/* 0x12 */
   };
   if (num > 0x12)
     return "";
@@ -495,12 +496,48 @@ static string dmi_memory_device_detail(u16 v)
   return result;
 }
 
+static const char *dmi_chassis_type(u8 code)
+{
+  static const char *chassis_type[] = {
+    "",		/* 0x00 */
+    "",
+    "",
+    "Desktop Computer",
+    "Low Profile Desktop Computer",
+    "Pizza Box Computer",
+    "Mini Tower Computer",
+    "Tower Computer",
+    "Portable Computer",
+    "Laptop",
+    "Notebook",
+    "Hand Held Computer",
+    "Docking Station",
+    "All In One",
+    "Sub Notebook",
+    "Space-saving Computer",
+    "Lunch Box Computer",
+    "System",
+    "Expansion Chassis",
+    "Sub Chassis",
+    "Bus Expansion Chassis",
+    "Peripheral Chassis",
+    "RAID Chassis",
+    "Rack Mount Chassis",
+    "Sealed-case PC",
+    "Multi-system" /* 0x19 */
+  };
+
+  if(code<=0x19)
+    return chassis_type[code];
+  else
+    return "";
+};
 static const char *dmi_processor_family(u8 code)
 {
   static const char *processor_family[] = {
     "",		/* 0x00 */
-    "Other",
-    "Unknown",
+    "",
+    "",
     "8086",
     "80286",
     "i386",
@@ -930,6 +967,8 @@ static void dmi_table(int fd,
 	node.setVersion(dmi_string(dm, data[6]));
       if (node.getSerial() == "")
 	node.setSerial(dmi_string(dm, data[7]));
+      if (node.getDescription() == "")
+        node.setDescription(dmi_chassis_type(data[5] & 0x7F));
       break;
 
     case 4:
