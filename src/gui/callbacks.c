@@ -104,7 +104,7 @@ on_treeview3_cursor_changed            (GtkTreeView     *treeview,
 {
   change_selection(3, treeview);
 
-  (void) &::id;                 // avoid warning "id defined but not used"
+  (void) &id;                 // avoid warning "id defined but not used"
 }
 
 

@@ -33,7 +33,7 @@ main (int argc, char *argv[])
 
   gtk_main ();
 
-  (void) &::id;                 // avoid warning "id defined but not used"
+  (void) &id;                 // avoid warning "id defined but not used"
 
   return 0;
 }

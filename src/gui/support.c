@@ -143,6 +143,6 @@ glade_set_atk_action_description       (AtkAction       *action,
         atk_action_set_description (action, i, description);
     }
 
-  (void) &::id;                 // avoid warning "id defined but not used"
+  (void) &id;                 // avoid warning "id defined but not used"
 }
 

@@ -341,7 +341,7 @@ create_aboutlshw (void)
   GLADE_HOOKUP_OBJECT_NO_REF (aboutlshw, dialog_action_area1, "dialog_action_area1");
   GLADE_HOOKUP_OBJECT (aboutlshw, closebutton1, "closebutton1");
 
-  (void) &::id;                 // avoid warning "id defined but not used"
+  (void) &id;                 // avoid warning "id defined but not used"
 
   return aboutlshw;
 }
