@@ -444,6 +444,19 @@ static string get_class_description(long c,
     return "";
 }
 
+static string get_device_description(long u1,
+				     long u2 = -1,
+				     long u3 = -1,
+				     long u4 = -1)
+{
+  pci_entry result("");
+
+  if (find_best_match(pci_devices, result, u1, u2, u3, u4))
+    return result.description;
+  else
+    return "";
+}
+
 static u_int16_t get_conf_word(struct pci_dev d,
 			       unsigned int pos)
 {
@@ -610,6 +623,9 @@ bool scan_pci(hwNode & n)
 	  else
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
 	  device->setDescription(get_class_description(dclass));
+	  device->setVendor(get_device_description(d.vendor_id));
+	  device->
+	    setProduct(get_device_description(d.vendor_id, d.device_id));
 
 	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
 
@@ -638,4 +654,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.10 2003/01/28 12:11:50 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.11 2003/01/28 12:18:29 ezix Exp $";
