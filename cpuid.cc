@@ -283,7 +283,7 @@ static bool dointel(unsigned long maxi,
         {
 	  snprintf(buff, sizeof(buff), "CPU:%d.%d", phys_id, i);
 	  logicalcpu.setHandle(buff);
-          logicalcpu.setPhysId(phys_id, i);
+          logicalcpu.setPhysId(phys_id, i+1);
           cpu->addChild(logicalcpu);
         }
     }
