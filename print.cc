@@ -213,6 +213,8 @@ void print(const hwNode & node,
     if (html)
       cout << "<tr><td>";
     cout << "capacity: ";
+    if (html)
+      cout << "</td><td>";
     switch (node.getClass())
     {
     case hw::memory:
@@ -317,4 +319,4 @@ void print(const hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.24 2003/01/29 19:38:03 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.25 2003/01/29 23:53:51 ezix Exp $";
