@@ -19,7 +19,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.24 2003/10/30 23:14:03 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.25 2003/10/30 23:37:00 ezix Exp $";
 
 #define DIMMINFOSIZE 0x80
 typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
@@ -281,6 +281,7 @@ static void scan_devtree_memory(hwNode & core)
     vector < string > dimmtypes;
     vector < string > dimmspeeds;
     string reg;
+    string dimminfo;
 
     snprintf(buffer, sizeof(buffer), "%d", currentmc);
     if (currentmc >= 0)
@@ -292,6 +293,7 @@ static void scan_devtree_memory(hwNode & core)
     dimmtypes = get_strings(mcbase + string("/dimm-types"));
     dimmspeeds = get_strings(mcbase + string("/dimm-speeds"));
     reg = mcbase + string("/reg");
+    dimminfo = mcbase + string("/dimm-info");
 
     if (slotnames.size() == 0)
     {
@@ -311,6 +313,7 @@ static void scan_devtree_memory(hwNode & core)
 
     if (memory)
     {
+      int fd = open(dimminfo.c_str(), O_RDONLY);
       int fd2 = open(reg.c_str(), O_RDONLY);
 
       if (fd2 >= 0)
@@ -324,6 +327,16 @@ static void scan_devtree_memory(hwNode & core)
 
 	  read(fd2, &base, sizeof(base));
 	  read(fd2, &size, sizeof(size));
+
+	  if (fd >= 0)
+	  {
+	    dimminfo_buf dimminfo;
+
+	    if (read(fd, &dimminfo, sizeof(dimminfo)) > 0)
+	    {
+	      bank.setSerial(string((char *) &dimminfo + 0x49, 18));
+	    }
+	  }
 
 	  bank.setDescription("Memory bank");
 	  bank.setSlot(slotnames[i]);
@@ -339,6 +352,8 @@ static void scan_devtree_memory(hwNode & core)
 	close(fd2);
       }
 
+      if (fd >= 0)
+	close(fd);
       currentmc++;
     }
     else
