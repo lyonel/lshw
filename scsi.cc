@@ -1,5 +1,6 @@
 #include "mem.h"
 #include "cdrom.h"
+#include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -18,13 +19,7 @@
 #define SCSI_IOCTL_GET_PCI 0x5387
 #endif
 
-#define OPEN_FLAG O_RDONLY
-
-#ifdef SG_GET_RESERVED_SIZE
 #define OPEN_FLAG O_RDWR
-#else
-#define OPEN_FLAG O_RDWR
-#endif
 
 #define INQ_REPLY_LEN 96
 #define INQ_CMD_CODE 0x12
@@ -257,6 +252,15 @@ static void find_logicalname(hwNode & n)
     }
 }
 
+static string host_logicalname(int i)
+{
+  char host[20];
+
+  snprintf(host, sizeof(host), "scsi%d", i);
+
+  return string(host);
+}
+
 static bool scan_sg(int sg,
 		    hwNode & n)
 {
@@ -264,7 +268,7 @@ static bool scan_sg(int sg,
   int fd = -1;
   My_sg_scsi_id m_id;
   char slot_name[16];
-  char host[20];
+  string host = "";
   hwNode *parent = NULL;
   hwNode *channel = NULL;
   int emulated = 0;
@@ -287,7 +291,7 @@ static bool scan_sg(int sg,
     return true;		// we failed to get info but still hope we can continue
   }
 
-  snprintf(host, sizeof(host), "scsi%d", m_id.host_no);
+  host = host_logicalname(m_id.host_no);
 
   memset(slot_name, 0, sizeof(slot_name));
   if (ioctl(fd, SCSI_IOCTL_GET_PCI, slot_name) >= 0)
@@ -309,7 +313,7 @@ static bool scan_sg(int sg,
     return true;
   }
 
-  parent->setLogicalName(string(host));
+  parent->setLogicalName(host);
   parent->claim();
 
   ioctl(fd, SG_EMULATED_HOST, &emulated);
@@ -383,6 +387,24 @@ static bool scan_sg(int sg,
   return true;
 }
 
+static bool scan_hosts(hwNode & n)
+{
+  vector < string > host_strs;
+
+  if (!loadfile("/proc/scsi/sg/host_strs", host_strs))
+    return false;
+
+  for (int i = 0; i < host_strs.size(); i++)
+  {
+    hwNode *host = n.findChildByLogicalName(host_logicalname(i));
+
+    if (host)
+      host->setDescription(host_strs[i]);
+  }
+
+  return true;
+}
+
 bool scan_scsi(hwNode & n)
 {
   int i = 0;
@@ -392,7 +414,9 @@ bool scan_scsi(hwNode & n)
   while (scan_sg(i, n))
     i++;
 
+  scan_hosts(n);
+
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.12 2003/02/18 08:49:21 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.13 2003/02/18 09:06:39 ezix Exp $";
