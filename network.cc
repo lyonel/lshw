@@ -32,7 +32,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.12 2003/10/17 22:23:40 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.13 2004/01/13 13:01:09 ezix Exp $";
 
 #ifndef SIOCETHTOOL
 #define SIOCETHTOOL     0x8946
@@ -145,6 +145,8 @@ static const char *hwname(int t)
     return "loopback";
   case ARPHRD_FDDI:
     return "FDDI";
+  case ARPHRD_IEEE1394:
+    return "IEEE1394";
   case ARPHRD_IRDA:
     return "IRDA";
   case ARPHRD_PPP:
@@ -157,6 +159,10 @@ static const char *hwname(int t)
     return "Framerelay.DLCI";
   case ARPHRD_FRAD:
     return "Framerelay.AD";
+  case ARPHRD_TUNNEL6:
+    return "IP6tunnel";
+  case ARPHRD_SIT:
+    return "IP6inIP4";
   default:
     return "";
   }
@@ -419,6 +425,10 @@ bool scan_network(hwNode & n)
       {
 	string hwaddr = getmac((unsigned char *) ifr.ifr_hwaddr.sa_data);
 	interface.addCapability(hwname(ifr.ifr_hwaddr.sa_family));
+	if (ifr.ifr_hwaddr.sa_family >= 256)
+	  interface.addCapability("logical");
+	else
+	  interface.addCapability("physical");
 	interface.setDescription(string(hwname(ifr.ifr_hwaddr.sa_family)) +
 				 " controller");
 	interface.setSerial(hwaddr);
