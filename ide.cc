@@ -15,7 +15,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.26 2003/11/25 00:15:23 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.27 2003/11/25 00:31:52 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -354,20 +354,26 @@ static const char *manufacturers[] = {
   NULL, NULL
 };
 
-static void guess_manufacturer(hwNode & device)
+static bool guess_manufacturer(hwNode & device)
 {
   regex_t r;
   int i = 0;
+  bool result = false;
 
   while (manufacturers[i])
     if (regcomp(&r, manufacturers[i], REG_ICASE | REG_EXTENDED | REG_NOSUB) ==
 	0)
     {
       if (regexec(&r, device.getProduct().c_str(), 0, NULL, 0) == 0)
+      {
 	device.setVendor(manufacturers[i + 1]);
+	result = true;
+      }
       regfree(&r);
       i += 2;
     }
+
+  return result;
 }
 
 bool scan_ide(hwNode & n)
