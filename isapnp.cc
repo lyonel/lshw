@@ -80,6 +80,7 @@ struct isapnp_device_id
 
 static int isapnp_rdp;		/* Read Data Port */
 static int isapnp_reset = 0;	/* reset all PnP cards (deactivate) */
+static bool isapnp_error = false;
 
 #define _PIDXR		0x279
 #define _PNPWRP		0xa79
@@ -119,7 +120,7 @@ static void udelay(unsigned long l)
   nanosleep(&delay, NULL);
 }
 
-static inline void write_data(unsigned char x)
+static bool write_data(unsigned char x)
 {
   int fd = open("/dev/port", O_WRONLY);
 
@@ -128,10 +129,17 @@ static inline void write_data(unsigned char x)
     lseek(fd, _PNPWRP, SEEK_SET);
     write(fd, &x, 1);
     close(fd);
+
+    return true;
+  }
+  else
+  {
+    isapnp_error = true;
+    return false;
   }
 }
 
-static inline void write_address(unsigned char x)
+static bool write_address(unsigned char x)
 {
   int fd = open("/dev/port", O_WRONLY);
 
@@ -140,11 +148,17 @@ static inline void write_address(unsigned char x)
     lseek(fd, _PIDXR, SEEK_SET);
     write(fd, &x, 1);
     close(fd);
+    udelay(20);
+    return true;
   }
-  udelay(20);
+  else
+  {
+    isapnp_error = true;
+    return false;
+  }
 }
 
-static inline unsigned char read_data(void)
+static unsigned char read_data(void)
 {
   int fd = open("/dev/port", O_RDONLY);
   unsigned char val = 0;
@@ -155,66 +169,81 @@ static inline unsigned char read_data(void)
     read(fd, &val, 1);
     close(fd);
   }
+  else
+  {
+    isapnp_error = true;
+  }
   return val;
 }
 
 static unsigned char isapnp_read_byte(unsigned char idx)
 {
-  write_address(idx);
-  return read_data();
+  if (write_address(idx))
+    return read_data();
+  else
+    return 0;
 }
 
-static void isapnp_write_byte(unsigned char idx,
+static bool isapnp_write_byte(unsigned char idx,
 			      unsigned char val)
 {
-  write_address(idx);
-  write_data(val);
+  return write_address(idx) && write_data(val);
 }
 
-static void isapnp_key(void)
+static bool isapnp_key(void)
 {
   unsigned char code = 0x6a, msb;
   int i;
 
-  udelay(1000);
-  write_address(0x00);
-  write_address(0x00);
+  udelay(100);
+  if (!write_address(0x00))
+    return false;
+  if (!write_address(0x00))
+    return false;
 
-  write_address(code);
+  if (!write_address(code))
+    return false;
 
   for (i = 1; i < 32; i++)
   {
     msb = ((code & 0x01) ^ ((code & 0x02) >> 1)) << 7;
     code = (code >> 1) | msb;
-    write_address(code);
+    if (!write_address(code))
+      return false;
   }
+
+  return true;
 }
 
 /* place all pnp cards in wait-for-key state */
-static void isapnp_wait(void)
+static bool isapnp_wait(void)
 {
-  isapnp_write_byte(0x02, 0x02);
+  return isapnp_write_byte(0x02, 0x02);
 }
 
-static void isapnp_wake(unsigned char csn)
+static bool isapnp_wake(unsigned char csn)
 {
-  isapnp_write_byte(0x03, csn);
+  return isapnp_write_byte(0x03, csn);
 }
 
-static void isapnp_peek(unsigned char *data,
+static bool isapnp_peek(unsigned char *data,
 			int bytes)
 {
   int i, j;
   unsigned char d = 0;
+
+  isapnp_error = false;
 
   for (i = 1; i <= bytes; i++)
   {
     for (j = 0; j < 20; j++)
     {
       d = isapnp_read_byte(0x05);
+      if (isapnp_error)
+	return false;
       if (d & 1)
 	break;
-      udelay(100);
+      udelay(10);
     }
     if (!(d & 1))
     {
@@ -227,6 +256,7 @@ static void isapnp_peek(unsigned char *data,
     if (data != NULL)
       *data++ = d;
   }
+  return true;
 }
 
 #define RDP_STEP	32	/* minimum is 4 */
@@ -251,10 +281,15 @@ static int isapnp_next_rdp(void)
 }
 
 /* Set read port address */
-static inline void isapnp_set_rdp(void)
+static inline bool isapnp_set_rdp(void)
 {
-  isapnp_write_byte(0x00, isapnp_rdp >> 2);
-  udelay(100);
+  if (isapnp_write_byte(0x00, isapnp_rdp >> 2))
+  {
+    udelay(100);
+    return true;
+  }
+  else
+    return false;
 }
 
 /*
@@ -264,18 +299,24 @@ static inline void isapnp_set_rdp(void)
 
 static int isapnp_isolate_rdp_select(void)
 {
-  isapnp_wait();
-  isapnp_key();
+  if (!isapnp_wait())
+    return -1;
+  if (!isapnp_key())
+    return -1;
 
   /*
    * Control: reset CSN and conditionally everything else too 
    */
-  isapnp_write_byte(0x02, isapnp_reset ? 0x05 : 0x04);
+  if (!isapnp_write_byte(0x02, isapnp_reset ? 0x05 : 0x04))
+    return -1;
   udelay(2);
 
-  isapnp_wait();
-  isapnp_key();
-  isapnp_wake(0x00);
+  if (!isapnp_wait())
+    return -1;
+  if (!isapnp_key())
+    return -1;
+  if (!isapnp_wake(0x00))
+    return -1;
 
   if (isapnp_next_rdp() < 0)
   {
@@ -285,7 +326,8 @@ static int isapnp_isolate_rdp_select(void)
 
   isapnp_set_rdp();
   udelay(1);
-  write_address(0x01);
+  if (!write_address(0x01))
+    return -1;
   udelay(1);
   return 0;
 }
@@ -308,10 +350,15 @@ static int isapnp_isolate(void)
   if (isapnp_isolate_rdp_select() < 0)
     return -1;
 
+  isapnp_error = false;
+
   while (1)
   {
     for (i = 1; i <= 64; i++)
     {
+      if (isapnp_error)
+	return -1;
+
       data = read_data() << 8;
       udelay(250);
       data = data | read_data();
@@ -325,6 +372,9 @@ static int isapnp_isolate(void)
     }
     for (i = 65; i <= 72; i++)
     {
+      if (isapnp_error)
+	return -1;
+
       data = read_data() << 8;
       udelay(250);
       data = data | read_data();
@@ -336,13 +386,19 @@ static int isapnp_isolate(void)
     {
       csn++;
 
-      isapnp_write_byte(0x06, csn);
+      if (isapnp_error)
+	return -1;
+
+      if (!isapnp_write_byte(0x06, csn))
+	return -1;
       udelay(250);
       iteration++;
-      isapnp_wake(0x00);
+      if (!isapnp_wake(0x00))
+	return -1;
       isapnp_set_rdp();
       udelay(1000);
-      write_address(0x01);
+      if (!write_address(0x01))
+	return -1;
       udelay(1000);
       goto __next;
     }
@@ -361,7 +417,8 @@ static int isapnp_isolate(void)
     chksum = 0x00;
     bit = 0x00;
   }
-  isapnp_wait();
+  if (!isapnp_wait())
+    return -1;
   return csn;
 }
 
@@ -960,21 +1017,13 @@ bool scan_isapnp(hwNode & n)
    *      so let the user know where.
    */
 
-  //printf("isapnp: Scanning for PnP cards...\n");
-  if (isapnp_rdp >= 0x203 && isapnp_rdp <= 0x3ff)
-  {
-    isapnp_rdp |= 3;
-    isapnp_set_rdp();
-  }
+  isapnp_rdp = 0;
   isapnp_detected = 1;
-  if (isapnp_rdp < 0x203 || isapnp_rdp > 0x3ff)
+  cards = isapnp_isolate();
+  if (cards < 0 || (isapnp_rdp < 0x203 || isapnp_rdp > 0x3ff))
   {
-    cards = isapnp_isolate();
-    if (cards < 0 || (isapnp_rdp < 0x203 || isapnp_rdp > 0x3ff))
-    {
-      isapnp_detected = 0;
-      return false;
-    }
+    isapnp_detected = 0;
+    return false;
   }
 
   hwNode *isaroot = n.findChild(isabus);

@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <unistd.h>
 
-static char *id = "@(#) $Id: print.cc,v 1.49 2003/08/12 16:19:12 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.50 2003/08/20 10:12:48 ezix Exp $";
 
 static void spaces(unsigned int count,
 		   string space = " ")
@@ -66,10 +66,15 @@ void print(hwNode & node,
 	   int level)
 {
   vector < string > config;
+  vector < string > resources;
   if (html)
     config = node.getConfigValues("</td><td>=</td><td>");
   else
     config = node.getConfigValues("=");
+  if (html)
+    resources = node.getResources("</td><td>:</td><td>");
+  else
+    resources = node.getResources(":");
 
   if (html && (level == 0))
   {
@@ -395,6 +400,28 @@ void print(hwNode & node,
     cout << endl;
   }
 
+  if (resources.size() > 0)
+  {
+    tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
+    cout << "resources:";
+    if (html)
+      cout << "</td><td><table summary=\"resources of " << node.
+	getId() << "\">";
+    for (unsigned int i = 0; i < resources.size(); i++)
+    {
+      if (html)
+	cout << "<tr><td>";
+      cout << " " << resources[i];
+      if (html)
+	cout << "</td></tr>";
+    }
+    if (html)
+      cout << "</table></td></tr>";
+    cout << endl;
+  }
+
   if (html)
   {
     tab(level, false);
@@ -443,8 +470,10 @@ void printxml(hwNode & node,
 	      int level)
 {
   vector < string > config;
+  vector < string > resources;
 
   config = node.getConfigValues("\" value=\"");
+  resources = node.getResources("\" value=\"");
 
   if (level == 0)
   {
@@ -641,6 +670,21 @@ void printxml(hwNode & node,
     cout << "</capabilities>" << endl;
   }
   config.clear();
+
+  if (resources.size() > 0)
+  {
+    tab(level + 1, false);
+    cout << "<resources>" << endl;
+    for (unsigned int j = 0; j < resources.size(); j++)
+    {
+      tab(level + 2, false);
+      cout << "<resource type=\"" << escape(resources[j]) << "\" />";
+      cout << endl;
+    }
+    tab(level + 1, false);
+    cout << "</resources>" << endl;
+  }
+  resources.clear();
 
   for (unsigned int i = 0; i < node.countChildren(); i++)
   {

@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.51 2003/08/11 22:00:23 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.52 2003/08/20 10:12:48 ezix Exp $";
 
 struct hwNode_i
 {
@@ -23,6 +23,7 @@ struct hwNode_i
     vector < hwNode > children;
     vector < string > attracted;
     vector < string > features;
+    vector < resource > resources;
     map < string,
     string > config;
 };
@@ -954,3 +955,253 @@ void hwNode::merge(const hwNode & node)
        i != node.This->config.end(); i++)
     setConfig(i->first, i->second);
 }
+
+void hwNode::addResource(const resource & r)
+{
+  if (!This)
+    return;
+
+  This->resources.push_back(r);
+}
+
+bool hwNode::usesResource(const resource & r) const
+{
+  if (!This)
+    return false;
+
+  for (size_t i = 0; i < This->resources.size(); i++)
+    if (r == This->resources[i])
+      return true;
+
+  return false;
+}
+
+vector < string > hwNode::getResources(const string & separator) const
+{
+  vector < string > result;
+
+  if (!This)
+    return result;
+
+  for (vector < resource >::iterator i = This->resources.begin();
+       i != This->resources.end(); i++)
+    result.push_back(i->asString(separator));
+
+  return result;
+}
+
+struct hw::resource_i
+{
+  hw::hwResourceType type;
+
+  unsigned int ui1;
+  unsigned long ul1, ul2;
+  unsigned long long ull1, ull2;
+
+  int refcount;
+};
+
+resource::resource()
+{
+  This = new struct resource_i;
+
+  if (This)
+  {
+    memset(This, 0, sizeof(*This));
+    This->type = none;
+    This->refcount = 1;
+  }
+}
+
+resource::~resource()
+{
+  if (This)
+  {
+    This->refcount--;
+
+    if (This->refcount <= 0)
+    {
+      delete This;
+      This = NULL;
+    }
+  }
+}
+
+resource::resource(const resource & r)
+{
+  This = r.This;
+
+  if (This)
+    This->refcount++;
+}
+
+resource & resource::operator = (const resource & r)
+{
+  if (this == &r)
+    return *this;		// ignore self-affectation
+
+  if (This == r.This)
+    return *this;		// both objects reference the same data
+
+  if (This)
+  {
+    This->refcount--;
+
+    if (This->refcount <= 0)
+    {
+      delete This;
+      This = NULL;
+    }
+  }
+
+  This = r.This;
+  if (This)
+    This->refcount++;
+
+  return *this;
+}
+
+resource resource::iomem(unsigned long long start,
+			 unsigned long long end)
+{
+  resource r;
+
+  if (!r.This)
+    return r;
+
+  r.This->type = hw::iomem;
+  r.This->ull1 = start;
+  r.This->ull2 = end;
+
+  return r;
+}
+
+resource resource::ioport(unsigned long start,
+			  unsigned long end)
+{
+  resource r;
+
+  if (!r.This)
+    return r;
+
+  r.This->type = hw::ioport;
+  r.This->ul1 = start;
+  r.This->ul2 = end;
+
+  return r;
+}
+
+resource resource::mem(unsigned long long start,
+		       unsigned long long end)
+{
+  resource r;
+
+  if (!r.This)
+    return r;
+
+  r.This->type = hw::mem;
+  r.This->ull1 = start;
+  r.This->ull2 = end;
+
+  return r;
+}
+
+resource resource::irq(unsigned int value)
+{
+  resource r;
+
+  if (!r.This)
+    return r;
+
+  r.This->type = hw::irq;
+  r.This->ui1 = value;
+
+  return r;
+}
+
+resource resource::dma(unsigned int value)
+{
+  resource r;
+
+  if (!r.This)
+    return r;
+
+  r.This->type = hw::dma;
+  r.This->ui1 = value;
+
+  return r;
+}
+
+string resource::asString(const string & separator) const
+{
+  char buffer[80];
+  string result = "";
+
+  if (!This)
+    return result;
+
+  strncpy(buffer, "", sizeof(buffer));
+
+  switch (This->type)
+  {
+  case hw::none:
+    result = "(none)";
+    break;
+  case hw::dma:
+    result = "dma" + separator;
+    snprintf(buffer, sizeof(buffer), "%d", This->ui1);
+    break;
+  case hw::irq:
+    result = "irq" + separator;
+    snprintf(buffer, sizeof(buffer), "%d", This->ui1);
+    break;
+  case hw::iomem:
+    result = "iomemory" + separator;
+    snprintf(buffer, sizeof(buffer), "%llx-%llx", This->ull1, This->ull2);
+    break;
+  case hw::mem:
+    result = "memory" + separator;
+    snprintf(buffer, sizeof(buffer), "%llx-%llx", This->ull1, This->ull2);
+    break;
+  case hw::ioport:
+    result = "ioport" + separator;
+    snprintf(buffer, sizeof(buffer), "%lx-%lx", This->ul1, This->ul2);
+    break;
+  default:
+    result = "(unknown)";
+  }
+
+  return result + string(buffer);
+}
+
+bool resource::operator == (const resource & r)
+     const {
+       if (This == r.This)
+	 return true;
+
+       if (!This || !r.This)
+	 return false;
+
+       if (This->type != r.This->type)
+	 return false;
+
+       switch (This->type)
+       {
+       case hw::dma:
+       case hw::irq:
+	 return This->ui1 == r.This->ui1;
+	 break;
+
+	 case hw::iomem:case hw::mem:return (This->ull1 >= r.This->ull1)
+	   && (This->ull1 <= r.This->ull2) || (r.This->ull1 >= This->ull1)
+	   && (r.This->ull1 <= This->ull2);
+	 break;
+
+	 case hw::ioport:return (This->ul1 >= r.This->ul1)
+	   && (This->ul1 <= r.This->ul2) || (r.This->ul1 >= This->ul1)
+	   && (r.This->ul1 <= This->ul2);
+	 break;
+
+	 default:return false;
+       }
+     }

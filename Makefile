@@ -7,7 +7,7 @@ SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 
 CXX=c++
-CXXFLAGS=-g -Wall
+CXXFLAGS=-g -pg -Wall
 LDFLAGS=
 LIBS=
 

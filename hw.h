@@ -26,7 +26,33 @@ typedef enum {
 	communication,
 	generic} hwClass;
 
+typedef enum { none, iomem, ioport, mem, irq, dma } hwResourceType;
+
 string hw::strip(const string &);
+
+class resource
+{
+  public:
+
+        resource();
+        ~resource();
+        resource(const resource &);
+	resource & operator =(const resource &);
+
+        static resource iomem(unsigned long long, unsigned long long);
+        static resource ioport(unsigned long, unsigned long);
+        static resource mem(unsigned long long, unsigned long long);
+        static resource irq(unsigned int);
+        static resource dma(unsigned int);
+
+	bool operator ==(const resource &) const;
+
+	string asString(const string & separator = ":") const;
+
+  private:
+	struct resource_i * This;
+
+};
 
 } // namespace hw
 
@@ -125,6 +151,10 @@ class hwNode
 	void setPhysId(unsigned, unsigned);
 	void setPhysId(const string &);
         void assignPhysIds();
+
+	void addResource(const hw::resource &);
+	bool usesResource(const hw::resource &) const;
+	vector<string> getResources(const string & separator = "") const;
 
 	void merge(const hwNode & node);
   private:

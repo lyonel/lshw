@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.35 2003/08/11 22:54:32 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.36 2003/08/20 10:12:48 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -134,6 +134,17 @@ static char *id = "@(#) $Id: pci.cc,v 1.35 2003/08/11 22:54:32 ezix Exp $";
 #define PCI_CLASS_OTHERS		0xff
 
 #define PCI_ADDR_MEM_MASK (~(pciaddr_t) 0xf)
+#define PCI_BASE_ADDRESS_0 0x10	/* 32 bits */
+#define  PCI_BASE_ADDRESS_SPACE 0x01	/* 0 = memory, 1 = I/O */
+#define  PCI_BASE_ADDRESS_SPACE_IO 0x01
+#define  PCI_BASE_ADDRESS_SPACE_MEMORY 0x00
+#define  PCI_BASE_ADDRESS_MEM_TYPE_MASK 0x06
+#define  PCI_BASE_ADDRESS_MEM_TYPE_32   0x00	/* 32 bit address */
+#define  PCI_BASE_ADDRESS_MEM_TYPE_1M   0x02	/* Below 1M [obsolete] */
+#define  PCI_BASE_ADDRESS_MEM_TYPE_64   0x04	/* 64 bit address */
+#define  PCI_BASE_ADDRESS_MEM_PREFETCH  0x08	/* prefetchable? */
+#define  PCI_BASE_ADDRESS_MEM_MASK      (~0x0fUL)
+#define  PCI_BASE_ADDRESS_IO_MASK       (~0x03UL)
 
 typedef unsigned long long pciaddr_t;
 typedef enum
@@ -480,6 +491,16 @@ static string get_device_description(long u1,
     return "";
 }
 
+static u_int32_t get_conf_long(struct pci_dev d,
+			       unsigned int pos)
+{
+  if (pos > sizeof(d.config))
+    return 0;
+
+  return d.config[pos] | (d.config[pos + 1] << 8) |
+    (d.config[pos + 2] << 16) | (d.config[pos + 3] << 24);
+}
+
 static u_int16_t get_conf_word(struct pci_dev d,
 			       unsigned int pos)
 {
@@ -516,6 +537,40 @@ static string pci_handle(u_int16_t bus,
   snprintf(buffer, sizeof(buffer), "PCI:%02x:%02x.%x", bus, dev, fct);
 
   return string(buffer);
+}
+
+static bool scan_resources(hwNode & n,
+			   struct pci_dev &d)
+{
+  u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
+
+  for (int i = 0; i < 6; i++)
+  {
+    u_int32_t flg = get_conf_long(d, PCI_BASE_ADDRESS_0 + 4 * i);
+    u_int32_t pos = d.base_addr[i];
+    u_int32_t len = d.size[i];
+
+    if (flg == 0xffffffff)
+      flg = 0;
+
+    if (!pos && !flg && !len)
+      continue;
+
+    if (pos && !flg)		/* Reported by the OS, but not by the device */
+    {
+      //printf("[virtual] ");
+      flg = pos;
+    }
+    if (flg & PCI_BASE_ADDRESS_SPACE_IO)
+    {
+      u_int32_t a = pos & PCI_BASE_ADDRESS_IO_MASK;
+      if ((a != 0) && (cmd & PCI_COMMAND_IO) != 0)
+	n.addResource(hw::resource::ioport(a, a + len - 1));
+    }
+
+  }
+
+  return true;
 }
 
 bool scan_pci(hwNode & n)
@@ -674,6 +729,8 @@ bool scan_pci(hwNode & n)
 	  if (deviceclass == hw::bridge)
 	    device->addCapability(devicename);
 
+	  scan_resources(*device, d);
+
 	  if (deviceclass == hw::display)
 	    for (int j = 0; j < 6; j++)
 	      if ((d.size[j] != 0xffffffff)
@@ -693,7 +750,10 @@ bool scan_pci(hwNode & n)
 	    snprintf(irq, sizeof(irq), "%d", d.irq);
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
 	    if (d.irq != 0)
+	    {
 	      device->setConfig("irq", irq);
+	      device->addResource(hw::resource::irq(d.irq));
+	    }
 	  }
 	  device->setDescription(get_class_description(dclass));
 
