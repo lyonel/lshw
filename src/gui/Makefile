@@ -26,7 +26,7 @@ all: gtk-$(PACKAGENAME)
 interface.c: gtk-lshw.glade gtk-lshw.gladep
 	glade-2 -w gtk-lshw.glade
 
-gtk-$(PACKAGENAME): $(OBJS)
+gtk-$(PACKAGENAME): $(OBJS) ../core/liblshw.a
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 install: all
