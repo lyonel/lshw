@@ -513,6 +513,8 @@ bool scan_network(hwNode & n)
       if (hwNode * existing = n.findChildByBusInfo(interface.getBusInfo()))
       {
 	existing->merge(interface);
+	if(interface.getDescription()!="")
+          existing->setDescription(interface.getDescription());
       }
       else
       {
