@@ -20,6 +20,7 @@ struct hwNode_i
   unsigned long long size;
   unsigned long long capacity;
   unsigned long long clock;
+  unsigned int width;
     vector < hwNode > children;
     vector < string > attracted;
     vector < string > features;
@@ -81,6 +82,7 @@ hwNode::hwNode(const string & id,
   This->size = 0;
   This->capacity = 0;
   This->clock = 0;
+  This->width = 0;
   This->enabled = true;
   This->claimed = false;
   This->handle = string("");
@@ -1039,6 +1041,8 @@ void hwNode::merge(const hwNode & node)
     This->capacity = node.getCapacity();
   if (This->clock == 0)
     This->clock = node.getClock();
+  if (This->width == 0)
+    This->width = node.getWidth();
   if (node.enabled())
     enable();
   else
@@ -1099,6 +1103,20 @@ vector < string > hwNode::getResources(const string & separator) const
     result.push_back(i->asString(separator));
 
   return result;
+}
+
+void hwNode::setWidth(unsigned int width)
+{
+  if(This)
+    This->width = width;
+}
+
+unsigned int hwNode::getWidth() const
+{
+  if(This)
+    return This->width;
+  else
+    return 0;
 }
 
 struct hw::resource_i

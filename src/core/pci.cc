@@ -544,6 +544,8 @@ static bool scan_resources(hwNode & n,
 {
   u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
 
+  n.setWidth(32);
+
   for (int i = 0; i < 6; i++)
   {
     u_int32_t flg = get_conf_long(d, PCI_BASE_ADDRESS_0 + 4 * i);
@@ -573,8 +575,10 @@ static bool scan_resources(hwNode & n,
       u_int64_t a = pos & PCI_ADDR_MEM_MASK;
       u_int64_t z = 0;
 
+
       if (t == PCI_BASE_ADDRESS_MEM_TYPE_64)
       {
+        n.setWidth(64);
 	if (i < 5)
 	{
 	  i++;

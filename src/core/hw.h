@@ -113,6 +113,9 @@ class hwNode
 	unsigned long long getClock() const;
 	void setClock(unsigned long long clock);
 
+	unsigned int getWidth() const;
+	void setWidth(unsigned int width);
+
 	string getSlot() const;
 	void setSlot(const string & slot);
 

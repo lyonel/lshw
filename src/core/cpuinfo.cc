@@ -262,6 +262,10 @@ static void cpuinfo_x86(hwNode & node,
 
   if (cpu)
   {
+
+    // x86 CPUs are assumed to be 32 bits per default
+    if(cpu->getWidth()==0) cpu->setWidth(32);
+
     cpu->claim(true);
     if (id == "vendor_id")
     {
@@ -366,8 +370,12 @@ static void cpuinfo_x86(hwNode & node,
     cpu->describeCapability("x86-64", "64bits extensions (x86-64)");
     cpu->describeCapability("mmx", "multimedia extensions (MMX)");
     cpu->describeCapability("pae", "4GB+ memory addressing (Physical Address Extension)");
-  }
 
+    if(cpu->isCapable("ia64") || cpu->isCapable("lm") || cpu->isCapable("x86-64"))
+      cpu->setWidth(64);
+
+    if(node.getWidth()==0) node.setWidth(cpu->getWidth());
+  }
 }
 #endif
 
@@ -443,6 +451,10 @@ bool scan_cpuinfo(hwNode & n)
     close(cpuinfo);
     return false;
   }
+
+  hwNode *cpu = getcpu(n, 0);
+  if(cpu && (n.getWidth()==0))
+    n.setWidth(cpu->getWidth());
 
   (void) &id;			// avoid warning "id defined but not used"
 

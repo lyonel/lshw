@@ -200,6 +200,13 @@ string printmarkup(const hwNode & node)
       out << endl;
     }
 
+    if (node.getWidth() > 0)
+    {
+      out << "<b>width:</b> ";
+      out << node.getWidth() << " bits";
+      out << endl;
+    }
+
     if (node.getClock() > 0)
     {
       out << "<b>clock:</b> ";

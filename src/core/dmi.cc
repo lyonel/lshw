@@ -1326,14 +1326,23 @@ static void dmi_table(int fd,
 	if ((u != 0xffff) && (u != 0))
 	{
 	  if ((u == width) || (width == 0))
+          {
 	    snprintf(bits, sizeof(bits), "%d", u);
+            newnode.setWidth(width);
+          }
 	  else
+          {
 	    snprintf(bits, sizeof(bits), "%d/%d", width, u);
+            newnode.setWidth(u<width?u:width);
+          }
 	}
 	else
 	{
 	  if (width != 0)
+          {
 	    snprintf(bits, sizeof(bits), "%d", width);
+            newnode.setWidth(width);
+          }
 	}
 
 	// size
@@ -1370,8 +1379,6 @@ static void dmi_table(int fd,
 	  newnode.setSerial(dmi_string(dm, data[24]));
 	if (dm->length > 26)
 	  newnode.setProduct(dmi_string(dm, data[26]));
-	if (strlen(bits))
-	  newnode.setConfig("width", hw::strip(bits));
 	newnode.setDescription(description);
 	newnode.setSize(size);
         if(newnode.getSize()==0)

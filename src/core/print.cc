@@ -386,6 +386,20 @@ void print(hwNode & node,
       cout << endl;
     }
 
+    if (node.getWidth() > 0)
+    {
+      tab(level + 1, false);
+      if (html)
+	cout << "<tr><td>";
+      cout << "width: ";
+      if (html)
+	cout << "</td><td>";
+      cout << node.getWidth() << " bits";
+      if (html)
+	cout << "</td></tr>";
+      cout << endl;
+    }
+
     if (node.getClock() > 0)
     {
       tab(level + 1, false);
@@ -703,6 +717,15 @@ void printxml(hwNode & node,
       cout << ">";
       cout << node.getCapacity();
       cout << "</capacity>";
+      cout << endl;
+    }
+
+    if (node.getWidth() > 0)
+    {
+      tab(level + 1, false);
+      cout << "<width units=\"bits\">";
+      cout << node.getWidth();
+      cout << "</width>";
       cout << endl;
     }
 

@@ -276,6 +276,7 @@ static bool dointel(unsigned long maxi,
       hwNode logicalcpu("logicalcpu", hw::processor);
       logicalcpu.setDescription("Logical CPU");
       logicalcpu.addCapability("logical", "Logical CPU");
+      logicalcpu.setWidth(cpu->getWidth());
       cpu->addCapability("ht", "HyperThreading");
 
       if(nr_ht>1)
@@ -647,6 +648,7 @@ bool scan_cpuid(hwNode & n)
 
     cpu->setVendor("Digital Equipment Corporation");
     cpu->setProduct("Alpha");
+    cpu->setWidth(64);
 
     if ((~mask) & BWX)
       cpu->addCapability("BWX");
