@@ -30,7 +30,7 @@ typedef enum {
 typedef enum { none, iomem, ioport, mem, irq, dma } hwResourceType;
 typedef enum { nil, boolean, integer, text } hwValueType;
 
-string hw::strip(const string &);
+string strip(const string &);
 
 class resource
 {
