@@ -8,7 +8,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.13 2003/04/29 16:45:06 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.14 2003/04/30 13:27:49 ezix Exp $";
 
 #define DEVICETREE "/proc/device-tree"
 
@@ -276,6 +276,72 @@ static void scan_devtree_memory(hwNode & core)
   }
 }
 
+struct pmac_mb_def
+{
+  const char *model;
+  const char *modelname;
+};
+
+static struct pmac_mb_def pmac_mb_defs[] = {
+  /*
+   * Warning: ordering is important as some models may claim
+   * * beeing compatible with several types 
+   */
+  {"AAPL,8500", "PowerMac 8500/8600"},
+  {"AAPL,9500", "PowerMac 9500/9600"},
+  {"AAPL,7500", "PowerMac 7500"},
+  {"AAPL,ShinerESB", "Apple Network Server"},
+  {"AAPL,e407", "Alchemy"},
+  {"AAPL,e411", "Gazelle"},
+  {"AAPL,3400/2400", "PowerBook 3400"},
+  {"AAPL,3500", "PowerBook 3500"},
+  {"AAPL,Gossamer", "PowerMac G3 (Gossamer)"},
+  {"AAPL,PowerMac G3", "PowerMac G3 (Silk)"},
+  {"AAPL,PowerBook1998", "PowerBook Wallstreet"},
+  {"PowerBook1,1", "PowerBook 101 (Lombard)"},
+  {"iMac,1", "iMac (first generation)"},
+  {"PowerMac4,1", "iMac \"Flower Power\""},
+  {"PowerBook4,3", "iBook 2 rev. 2"},
+  {"PowerBook4,2", "iBook 2"},
+  {"PowerBook4,1", "iBook 2"},
+  {"PowerMac4,4", "eMac"},
+  {"PowerMac4,2", "Flat panel iMac"},
+  {"PowerMac1,1", "Blue&White G3"},
+  {"PowerMac1,2", "PowerMac G4 PCI Graphics"},
+  {"PowerBook2,1", "iBook (first generation)"},
+  {"PowerMac3,1", "PowerMac G4 AGP Graphics"},
+  {"PowerMac3,2", "PowerMac G4 AGP Graphics"},
+  {"PowerMac3,3", "PowerMac G4 AGP Graphics"},
+  {"PowerMac2,1", "iMac FireWire"},
+  {"PowerMac2,2", "iMac FireWire"},
+  {"PowerBook2,2", "iBook FireWire"},
+  {"PowerMac5,1", "PowerMac G4 Cube"},
+  {"PowerMac3,4", "PowerMac G4 Silver"},
+  {"PowerMac3,5", "PowerMac G4 Silver"},
+  {"PowerBook3,1", "PowerBook Pismo"},
+  {"PowerBook3,2", "PowerBook Titanium"},
+  {"PowerBook3,3", "PowerBook Titanium II"},
+  {"PowerBook3,4", "PowerBook Titanium III"},
+  {"PowerBook3,5", "PowerBook Titanium IV"},
+  {"RackMac1,1", "XServe"},
+  {"PowerMac3,6", "PowerMac G4 Windtunnel"},
+  {"PowerMac6,1", "PowerBook G4 12\""},
+};
+
+static bool get_apple_model(hwNode & n)
+{
+  string model = n.getProduct();
+  if (model == "")
+    return false;
+
+  for (unsigned int i = 0; i < sizeof(pmac_mb_defs) / sizeof(pmac_mb_def);
+       i++)
+    if (model == pmac_mb_defs[i].model)
+      n.setProduct(pmac_mb_defs[i].modelname);
+
+  return false;
+}
+
 bool scan_device_tree(hwNode & n)
 {
   hwNode *core = n.getChild("core");
@@ -292,6 +358,8 @@ bool scan_device_tree(hwNode & n)
   n.setProduct(get_string(DEVICETREE "/model"));
   n.setSerial(get_string(DEVICETREE "/system-id"));
   n.setVendor(get_string(DEVICETREE "/copyright"));
+
+  get_apple_model(n);
 
   if (core)
   {
