@@ -10,6 +10,7 @@
 #include "pci.h"
 #include "pcmcia.h"
 #include "ide.h"
+#include "scsi.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -69,6 +70,7 @@ int main(int argc,
     scan_pci(computer);
     scan_pcmcia(computer);
     scan_ide(computer);
+    scan_scsi(computer);
 
     print(computer, htmloutput);
   }
@@ -76,4 +78,4 @@ int main(int argc,
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.19 2003/02/09 14:43:44 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.20 2003/02/16 19:55:29 ezix Exp $";
