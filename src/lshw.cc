@@ -3,6 +3,8 @@
 #include "main.h"
 #include "version.h"
 #include "options.h"
+#include "osutils.h"
+#include "config.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -21,6 +23,8 @@ void usage(const char *progname)
   fprintf(stderr, "\t-xml            output hardware tree as XML\n");
   fprintf(stderr, "\t-short          output hardware paths\n");
   fprintf(stderr, "\t-businfo        output bus information\n");
+  if(exists(SBINDIR"/gtk-lshw"))
+    fprintf(stderr, "\t-X              use graphical interface\n");
   fprintf(stderr, "\noptions can be\n");
   fprintf(stderr,
 	  "\t-class CLASS    only show a certain class of hardware\n");
@@ -54,6 +58,7 @@ int main(int argc,
   bool xmloutput = false;
   bool hwpath = false;
   bool businfo = false;
+  bool X = false;
 
   disable("isapnp");
 
@@ -95,7 +100,10 @@ int main(int argc,
     if (strcmp(argv[1], "-businfo") == 0)
       businfo = true;
 
-    if (!xmloutput && !htmloutput && !hwpath && !businfo)
+    if (strcmp(argv[1], "-X") == 0)
+      X = true;
+
+    if (!xmloutput && !htmloutput && !hwpath && !businfo && !X)
     {
       usage(argv[0]);
       exit(1);
@@ -107,6 +115,8 @@ int main(int argc,
     usage(argv[0]);
     exit(1);
   }
+
+  if(X) execv(SBINDIR"/gtk-lshw", argv);
 
   if (geteuid() != 0)
   {
