@@ -1,3 +1,71 @@
+/*
+ * this file is based on Alan Cox's excellent DMI decoder rev 1.7
+ * it has endured severe modification so don't blame Alan for the
+ * bugs, they're probably mine.
+ *
+ * Original credits for dmidecode.c:
+ *
+ * DMI decode rev 1.7
+ *
+ *	(C) 2000-2002 Alan Cox <alan@redhat.com>
+ *
+ *      2-July-2001 Matt Domsch <Matt_Domsch@dell.com>
+ *      Additional structures displayed per SMBIOS 2.3.1 spec
+ *
+ *      13-December-2001 Arjan van de Ven <arjanv@redhat.com>
+ *      Fix memory bank type (DMI case 6)
+ *
+ *      3-August-2002 Mark D. Studebaker <mds@paradyne.com>
+ *      Better indent in dump_raw_data
+ *      Fix return value in dmi_bus_name
+ *      Additional sensor fields decoded
+ *      Fix compilation warnings
+ *
+ *      6-August-2002 Jean Delvare <khali@linux-fr.org>
+ *      Reposition file pointer after DMI table display
+ *      Disable first RSD PTR checksum (was not correct anyway)
+ *      Show actual DMI struct count and occupied size
+ *      Check for NULL after malloc
+ *      Use SEEK_* constants instead of numeric values
+ *      Code optimization (and warning fix) in DMI cases 10 and 14
+ *      Add else's to avoid unneeded cascaded if's in main loop
+ *      Code optimization in DMI information display
+ *      Fix all compilation warnings
+ *
+ *      9-August-2002 Jean Delvare <khali@linux-fr.org>
+ *      Better DMI struct count/size error display
+ *      More careful memory access in dmi_table
+ *      DMI case 13 (Language) decoded
+ *      C++ style comments removed
+ *      Commented out code removed
+ *      DMI 0.0 case handled
+ *      Fix return value of dmi_port_type and dmi_port_connector_type
+ *
+ *      23-August-2002 Alan Cox <alan@redhat.com>
+ *      Make the code pass -Wall -pedantic by fixing a few harmless sign of
+ *        pointer mismatches
+ *      Correct main prototype
+ *      Check for compiles with wrong type sizes
+ *
+ *      17-Sep-2002 Larry Lile <llile@dreamworks.com>
+ *      Type 16 & 17 structures displayed per SMBIOS 2.3.1 spec
+ *
+ *      20-September-2002 Dave Johnson <ddj@cascv.brown.edu>
+ *      Fix comparisons in dmi_bus_name
+ *      Fix comparison in dmi_processor_type
+ *      Fix bitmasking in dmi_onboard_type
+ *      Fix return value of dmi_temp_loc
+ *
+ *      28-September-2002 Jean Delvare <khali@linux-fr.org>
+ *      Fix missing coma in dmi_bus_name
+ *      Remove unwanted bitmaskings in dmi_mgmt_dev_type, dmi_mgmt_addr_type,
+ *        dmi_fan_type, dmi_volt_loc, dmi_temp_loc and dmi_status
+ *      Fix DMI table read bug ("dmi: read: Success")
+ *      Make the code pass -W again
+ *      Fix return value of dmi_card_size
+ *
+ */
+
 #include "dmi.h"
 
 #include <map>
@@ -1629,5 +1697,4 @@ bool scan_dmi(hwNode & n)
   return true;
 }
 
-static char *id =
-  "@(#) $Id: dmi.cc,v 1.56 2003/01/19 18:56:52 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.57 2003/01/25 11:14:04 ezix Exp $";
