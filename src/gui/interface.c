@@ -52,27 +52,18 @@ create_lshw (void)
   GtkWidget *savebutton;
   GtkWidget *quitbutton;
   GtkWidget *scrolledwindow1;
-  GtkWidget *viewport1;
-  GtkWidget *hbox1;
-  GtkWidget *scrolledwindow4;
   GtkWidget *viewport2;
-  GtkWidget *hpaned1;
+  GtkWidget *hbox1;
   GtkWidget *vbox2;
   GtkWidget *hbox2;
-  GtkWidget *scrolledwindow6;
-  GtkWidget *treeview4;
-  GtkWidget *vseparator5;
-  GtkWidget *scrolledwindow7;
-  GtkWidget *treeview5;
-  GtkWidget *vseparator6;
-  GtkWidget *scrolledwindow8;
-  GtkWidget *treeview6;
+  GtkWidget *scrolledwindow10;
+  GtkWidget *treeview1;
+  GtkWidget *scrolledwindow11;
+  GtkWidget *treeview2;
+  GtkWidget *scrolledwindow12;
+  GtkWidget *treeview3;
   GtkWidget *hscale1;
-  GtkWidget *frame1;
-  GtkWidget *alignment1;
-  GtkWidget *label2;
-  GtkWidget *label1;
-  GtkWidget *vseparator1;
+  GtkWidget *description;
   GtkWidget *statusbar;
   GtkAccelGroup *accel_group;
 
@@ -166,104 +157,63 @@ create_lshw (void)
   gtk_box_pack_start (GTK_BOX (vbox1), scrolledwindow1, TRUE, TRUE, 0);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-  viewport1 = gtk_viewport_new (NULL, NULL);
-  gtk_widget_show (viewport1);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow1), viewport1);
+  viewport2 = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewport2);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow1), viewport2);
 
   hbox1 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox1);
-  gtk_container_add (GTK_CONTAINER (viewport1), hbox1);
-
-  scrolledwindow4 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow4);
-  gtk_box_pack_start (GTK_BOX (hbox1), scrolledwindow4, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-
-  viewport2 = gtk_viewport_new (NULL, NULL);
-  gtk_widget_show (viewport2);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow4), viewport2);
-
-  hpaned1 = gtk_hpaned_new ();
-  gtk_widget_show (hpaned1);
-  gtk_container_add (GTK_CONTAINER (viewport2), hpaned1);
-  gtk_paned_set_position (GTK_PANED (hpaned1), 0);
+  gtk_container_add (GTK_CONTAINER (viewport2), hbox1);
 
   vbox2 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox2);
-  gtk_paned_pack1 (GTK_PANED (hpaned1), vbox2, FALSE, TRUE);
+  gtk_box_pack_start (GTK_BOX (hbox1), vbox2, TRUE, TRUE, 0);
 
   hbox2 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox2);
   gtk_box_pack_start (GTK_BOX (vbox2), hbox2, TRUE, TRUE, 0);
 
-  scrolledwindow6 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow6);
-  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow6, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow6), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  scrolledwindow10 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow10);
+  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow10, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 
-  treeview4 = gtk_tree_view_new ();
-  gtk_widget_show (treeview4);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow6), treeview4);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview4), FALSE);
+  treeview1 = gtk_tree_view_new ();
+  gtk_widget_show (treeview1);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow10), treeview1);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview1), FALSE);
 
-  vseparator5 = gtk_vseparator_new ();
-  gtk_widget_show (vseparator5);
-  gtk_box_pack_start (GTK_BOX (hbox2), vseparator5, FALSE, TRUE, 0);
+  scrolledwindow11 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow11);
+  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow11, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow11), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 
-  scrolledwindow7 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow7);
-  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow7, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow7), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  treeview2 = gtk_tree_view_new ();
+  gtk_widget_show (treeview2);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow11), treeview2);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview2), FALSE);
 
-  treeview5 = gtk_tree_view_new ();
-  gtk_widget_show (treeview5);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow7), treeview5);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview5), FALSE);
+  scrolledwindow12 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow12);
+  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow12, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 
-  vseparator6 = gtk_vseparator_new ();
-  gtk_widget_show (vseparator6);
-  gtk_box_pack_start (GTK_BOX (hbox2), vseparator6, FALSE, TRUE, 0);
-
-  scrolledwindow8 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow8);
-  gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow8, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow8), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-
-  treeview6 = gtk_tree_view_new ();
-  gtk_widget_show (treeview6);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow8), treeview6);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview6), FALSE);
+  treeview3 = gtk_tree_view_new ();
+  gtk_widget_show (treeview3);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow12), treeview3);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview3), FALSE);
 
   hscale1 = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, 0, 0, 0, 0)));
   gtk_widget_show (hscale1);
   gtk_box_pack_start (GTK_BOX (vbox2), hscale1, FALSE, TRUE, 0);
   gtk_scale_set_draw_value (GTK_SCALE (hscale1), FALSE);
 
-  frame1 = gtk_frame_new (NULL);
-  gtk_widget_show (frame1);
-  gtk_paned_pack2 (GTK_PANED (hpaned1), frame1, TRUE, TRUE);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame1), GTK_SHADOW_NONE);
-
-  alignment1 = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_widget_show (alignment1);
-  gtk_container_add (GTK_CONTAINER (frame1), alignment1);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment1), 0, 0, 12, 0);
-
-  label2 = gtk_label_new ("<b>DVD reader</b>\n \n<b>product</b>: DVD-ROM SD-R2512\n<b>vendor</b>: TOSHIBA\n<b>bus info</b>:scsi@0.0:0.0\n<b>logical name</b>: /dev/cdrom\n<b>logical name</b>: /dev/cdwriter\n<b>logical name</b>: /dev/scd0\n<b>version</b>: 1A04\n<b>capabilities</b>: removable audio cd-r cd-rw dvd\n<b>configuration</b>: ansiversion=2\n");
-  gtk_widget_show (label2);
-  gtk_container_add (GTK_CONTAINER (alignment1), label2);
-  GTK_WIDGET_SET_FLAGS (label2, GTK_CAN_FOCUS);
-  gtk_label_set_use_markup (GTK_LABEL (label2), TRUE);
-  gtk_label_set_selectable (GTK_LABEL (label2), TRUE);
-
-  label1 = gtk_label_new ("<b>cdrom:0</b>");
-  gtk_widget_show (label1);
-  gtk_frame_set_label_widget (GTK_FRAME (frame1), label1);
-  gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
-
-  vseparator1 = gtk_vseparator_new ();
-  gtk_widget_show (vseparator1);
-  gtk_box_pack_start (GTK_BOX (hbox1), vseparator1, FALSE, TRUE, 0);
+  description = gtk_label_new ("<i>no information available.</i>\n\nclick on <i>Refresh</i> to query hardware");
+  gtk_widget_show (description);
+  gtk_box_pack_start (GTK_BOX (hbox1), description, TRUE, FALSE, 0);
+  GTK_WIDGET_SET_FLAGS (description, GTK_CAN_FOCUS);
+  gtk_label_set_use_markup (GTK_LABEL (description), TRUE);
+  gtk_label_set_selectable (GTK_LABEL (description), TRUE);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
@@ -320,27 +270,18 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, savebutton, "savebutton");
   GLADE_HOOKUP_OBJECT (lshw, quitbutton, "quitbutton");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow1, "scrolledwindow1");
-  GLADE_HOOKUP_OBJECT (lshw, viewport1, "viewport1");
-  GLADE_HOOKUP_OBJECT (lshw, hbox1, "hbox1");
-  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow4, "scrolledwindow4");
   GLADE_HOOKUP_OBJECT (lshw, viewport2, "viewport2");
-  GLADE_HOOKUP_OBJECT (lshw, hpaned1, "hpaned1");
+  GLADE_HOOKUP_OBJECT (lshw, hbox1, "hbox1");
   GLADE_HOOKUP_OBJECT (lshw, vbox2, "vbox2");
   GLADE_HOOKUP_OBJECT (lshw, hbox2, "hbox2");
-  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow6, "scrolledwindow6");
-  GLADE_HOOKUP_OBJECT (lshw, treeview4, "treeview4");
-  GLADE_HOOKUP_OBJECT (lshw, vseparator5, "vseparator5");
-  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow7, "scrolledwindow7");
-  GLADE_HOOKUP_OBJECT (lshw, treeview5, "treeview5");
-  GLADE_HOOKUP_OBJECT (lshw, vseparator6, "vseparator6");
-  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow8, "scrolledwindow8");
-  GLADE_HOOKUP_OBJECT (lshw, treeview6, "treeview6");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow10, "scrolledwindow10");
+  GLADE_HOOKUP_OBJECT (lshw, treeview1, "treeview1");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow11, "scrolledwindow11");
+  GLADE_HOOKUP_OBJECT (lshw, treeview2, "treeview2");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow12, "scrolledwindow12");
+  GLADE_HOOKUP_OBJECT (lshw, treeview3, "treeview3");
   GLADE_HOOKUP_OBJECT (lshw, hscale1, "hscale1");
-  GLADE_HOOKUP_OBJECT (lshw, frame1, "frame1");
-  GLADE_HOOKUP_OBJECT (lshw, alignment1, "alignment1");
-  GLADE_HOOKUP_OBJECT (lshw, label2, "label2");
-  GLADE_HOOKUP_OBJECT (lshw, label1, "label1");
-  GLADE_HOOKUP_OBJECT (lshw, vseparator1, "vseparator1");
+  GLADE_HOOKUP_OBJECT (lshw, description, "description");
   GLADE_HOOKUP_OBJECT (lshw, statusbar, "statusbar");
 
   gtk_window_add_accel_group (GTK_WINDOW (lshw), accel_group);
