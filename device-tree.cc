@@ -9,33 +9,6 @@
 
 #define DEVICETREE "/proc/device-tree"
 
-static string get_string(const string & path)
-{
-  int fd = open(path.c_str(), O_RDONLY);
-  string result = "";
-
-  if (fd >= 0)
-  {
-    struct stat buf;
-    void *buffer = NULL;
-
-    memset(&buf, 0, sizeof(buf));
-    fstat(fd, &buf);
-
-    buffer = malloc(buf.st_size);
-    if (buffer)
-    {
-      read(fd, buffer, buf.st_size);
-      result = string((char *) buffer, buf.st_size);
-      free(buffer);
-    }
-
-    close(fd);
-  }
-
-  return result;
-}
-
 static unsigned long get_long(const string & path)
 {
   unsigned long result = 0;
@@ -331,4 +304,4 @@ bool scan_device_tree(hwNode & n)
 }
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.10 2003/02/03 22:51:00 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.11 2003/02/05 09:32:40 ezix Exp $";

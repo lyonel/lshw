@@ -134,6 +134,20 @@ void print(const hwNode & node,
     cout << endl;
   }
 
+  if (node.getLogicalName() != "")
+  {
+    tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
+    cout << "logical name: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getLogicalName();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
+  }
+
   if (node.getVersion() != "")
   {
     tab(level + 1, false);
@@ -330,4 +344,4 @@ void print(const hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.27 2003/01/31 23:03:26 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.28 2003/02/05 09:32:40 ezix Exp $";

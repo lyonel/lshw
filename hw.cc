@@ -98,6 +98,11 @@ hwNode::~hwNode()
 
 hwNode & hwNode::operator = (const hwNode & o)
 {
+  if (this == &o)
+    return *this;		// self-affectation
+
+  if (This)
+    delete This;
   This = new hwNode_i;
 
   if (o.This && This)
@@ -602,4 +607,4 @@ void hwNode::setLogicalName(const string & name)
     This->logicalname = strip(name);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.30 2003/02/03 22:51:00 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.31 2003/02/05 09:32:40 ezix Exp $";

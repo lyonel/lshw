@@ -1,6 +1,7 @@
 #include "osutils.h"
 #include <stack>
 #include <fcntl.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 using namespace std;
@@ -103,4 +104,27 @@ bool loadfile(const string & file,
   return true;
 }
 
-static char *id = "@(#) $Id: osutils.cc,v 1.5 2003/02/03 22:51:00 ezix Exp $";
+string get_string(const string & path,
+		  const string & def)
+{
+  int fd = open(path.c_str(), O_RDONLY);
+  string result = def;
+
+  if (fd >= 0)
+  {
+    char buffer[1024];
+    size_t count = 0;
+
+    memset(buffer, 0, sizeof(buffer));
+    result = "";
+
+    while ((count = read(fd, buffer, sizeof(buffer))) > 0)
+      result += string(buffer, count);
+
+    close(fd);
+  }
+
+  return result;
+}
+
+static char *id = "@(#) $Id: osutils.cc,v 1.6 2003/02/05 09:32:40 ezix Exp $";
