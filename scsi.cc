@@ -466,12 +466,7 @@ static bool scan_sg(int sg,
     return false;
 
   memset(&m_id, 0, sizeof(m_id));
-  if (ioctl(fd, SG_GET_SCSI_ID, &m_id) >= 0)
-  {
-    printf("%d:%d:%d:%d\n", m_id.host_no, m_id.channel, m_id.scsi_id,
-	   m_id.lun);
-  }
-  else
+  if (ioctl(fd, SG_GET_SCSI_ID, &m_id) < 0)
   {
     close(fd);
     return true;		// we failed to get info but still hope we can continue
@@ -606,4 +601,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.15 2003/02/21 00:55:44 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.16 2003/02/22 16:12:39 ezix Exp $";
