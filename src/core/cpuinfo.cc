@@ -217,7 +217,7 @@ static void cpuinfo_alpha(hwNode & node,
 }
 #endif
 
-#ifdef __i386__
+#if defined(__i386__) || defined(__x86_64__)
 static void cpuinfo_x86(hwNode & node,
 			string id,
 			string value)
@@ -387,7 +387,7 @@ bool scan_cpuinfo(hwNode & n)
 #if defined(__powerpc__)
     currentcpu = 0;
 #endif
-#if defined(__ia64__) || defined(__hppa__) || defined(__i386__)
+#if defined(__ia64__) || defined(__hppa__) || defined(__i386__) || defined(__x86_64__)
     currentcpu = -1;
 #endif
 
@@ -404,7 +404,7 @@ bool scan_cpuinfo(hwNode & n)
 	id = hw::strip(cpuinfo_lines[i].substr(0, pos));
 	value = hw::strip(cpuinfo_lines[i].substr(pos + 1));
 
-#ifdef __i386__
+#if defined(__i386__) || defined(__x86_64__)
 	cpuinfo_x86(n, id, value);
 #endif
 #ifdef __powerpc__
