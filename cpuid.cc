@@ -277,7 +277,7 @@ static bool dointel(unsigned long maxi,
 	cpu->addChild(newl1);
       }
       if (l2 && l2cache)
-	l2->setSize(l1cache);
+	l2->setSize(l2cache);
       else
       {
 	hwNode newl2("cache",
@@ -363,7 +363,7 @@ static bool doamd(unsigned long maxi,
       cpu->addChild(newl1);
     }
     if (l2 && l2cache)
-      l2->setSize(l1cache);
+      l2->setSize(l2cache);
     else
     {
       hwNode newl2("cache",
@@ -385,7 +385,6 @@ static bool docyrix(unsigned long maxi,
 		    int cpunumber = 0)
 {
   unsigned long maxei = 0, eax, ebx, ecx, edx;
-  long long l1cache = 0, l2cache = 0;
   unsigned int family = 0, model = 0, stepping = 0;
   char buffer[1024];
 
@@ -398,8 +397,6 @@ static bool docyrix(unsigned long maxi,
   family = (eax >> 8) & 0xf;
   snprintf(buffer, sizeof(buffer), "%d.%d.%d", family, model, stepping);
   cpu->setVersion(buffer);
-
-  cpuid(cpunumber, 0x80000000, maxei, ebx, ecx, edx);
 
   return true;
 }
@@ -491,4 +488,4 @@ bool scan_cpuid(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.5 2003/02/02 17:53:16 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.6 2003/02/02 18:02:37 ezix Exp $";
