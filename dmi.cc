@@ -1374,7 +1374,7 @@ static void dmi_table(int fd,
 	  1024;
 
 	newnode.setStart(start);
-	newnode.setSize(end - start + 1024 - 1);
+	newnode.setSize(end - start + 1024);
 	newnode.setHandle(handle);
 
 	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
@@ -1398,7 +1398,7 @@ static void dmi_table(int fd,
 	  1024;
 
 	newnode.setStart(start);
-	newnode.setSize(end - start + 1024 - 1);
+	newnode.setSize(end - start + 1024);
 	newnode.setHandle(handle);
 
 	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);

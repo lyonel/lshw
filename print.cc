@@ -153,7 +153,7 @@ void print(const hwNode & node,
     else
       cout << "range: " << hex << setfill('0') << setw(8) << node.
 	getStart() << " - " << hex << setfill('0') << setw(8) << node.
-	getStart() + node.getSize() << dec;
+	getStart() + node.getSize() - 1 << dec;
     cout << endl;
   }
 
