@@ -62,6 +62,9 @@ create_lshw (void)
   GtkWidget *description;
   GtkWidget *statusbar;
   GtkAccelGroup *accel_group;
+  GtkTooltips *tooltips;
+
+  tooltips = gtk_tooltips_new ();
 
   accel_group = gtk_accel_group_new ();
 
@@ -124,6 +127,7 @@ create_lshw (void)
   refreshbutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-refresh");
   gtk_widget_show (refreshbutton);
   gtk_container_add (GTK_CONTAINER (toolbar1), refreshbutton);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (refreshbutton), tooltips, "Rescan the hardware", NULL);
 
   quitbutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-quit");
   gtk_widget_show (quitbutton);
@@ -285,6 +289,7 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, viewport3, "viewport3");
   GLADE_HOOKUP_OBJECT (lshw, description, "description");
   GLADE_HOOKUP_OBJECT (lshw, statusbar, "statusbar");
+  GLADE_HOOKUP_OBJECT_NO_REF (lshw, tooltips, "tooltips");
 
   gtk_window_add_accel_group (GTK_WINDOW (lshw), accel_group);
 
