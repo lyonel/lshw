@@ -97,7 +97,7 @@ static void scan_devtree_cpu(hwNode & core)
   int n;
 
   pushd(DEVICETREE "/cpus");
-  n = scandir(".", &namelist, selectdir, NULL);
+  n = scandir(".", &namelist, selectdir, alphasort);
   popd();
   if (n < 0)
     return;
@@ -153,7 +153,7 @@ static void scan_devtree_cpu(hwNode & core)
       }
 
       pushd(basepath);
-      ncache = scandir(".", &cachelist, selectdir, NULL);
+      ncache = scandir(".", &cachelist, selectdir, alphasort);
       popd();
       if (ncache > 0)
       {
@@ -304,4 +304,4 @@ bool scan_device_tree(hwNode & n)
 }
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.11 2003/02/05 09:32:40 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.12 2003/02/06 21:46:33 ezix Exp $";

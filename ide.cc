@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+#include <endian.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -22,6 +23,12 @@
 #define DMA_IL_SUP              0x8000	/* 1=interleaved DMA support (ATAPI) */
 #define CMD_Q_SUP               0x4000	/* 1=command queuing support (ATAPI) */
 #define OVLP_SUP                0x2000	/* 1=overlap operation support (ATAPI) */
+
+#define GEN_CONFIG              0	/* general configuration */
+#define CD_ROM                  5
+#define NOT_ATA                 0x8000
+#define NOT_ATAPI               0x4000	/* (check only if bit 15 == 1) */
+#define EQPT_TYPE               0x1f00
 
 static const char *description[] = {
   "Direct-access device",	/* word 0, bits 12-8 = 00 */
@@ -116,6 +123,23 @@ static bool probe_ide(const string & name,
     return false;
   }
 
+  u_int8_t args[4 + 512] = { WIN_IDENTIFY, 0, 0, 1, };
+  if (ioctl(fd, HDIO_DRIVE_CMD, &args) != 0)
+  {
+    args[0] = WIN_PIDENTIFY;
+    if (ioctl(fd, HDIO_DRIVE_CMD, &args) != 0)
+    {
+      close(fd);
+      return false;
+    }
+  }
+
+  close(fd);
+
+  u_int16_t pidentity[256];
+  for (int i = 0; i < 256; i++)
+    pidentity[i] = args[4 + 2 * i] + (args[4 + 2 * i + 1] << 8);
+
   if (id.model[0])
     device.setProduct(hw::strip(string((char *) id.model, sizeof(id.model))));
   if (id.fw_rev[0])
@@ -126,6 +150,19 @@ static bool probe_ide(const string & name,
       setSerial(hw::
 		strip(string((char *) id.serial_no, sizeof(id.serial_no))));
 
+  if (!(pidentity[GEN_CONFIG] & NOT_ATA))
+    device.addCapability("ata");
+  else if (!(pidentity[GEN_CONFIG] & NOT_ATAPI))
+  {
+    u_int8_t eqpt = (pidentity[GEN_CONFIG] & EQPT_TYPE) >> 8;
+    device.addCapability("atapi");
+
+    if (eqpt == CD_ROM)
+      device.addCapability("cdrom");
+
+    if (eqpt < 0x20)
+      device.setDescription(description[eqpt]);
+  }
   if (id.config & (1 << 7))
     device.addCapability("removable");
   if (id.config & (1 << 15))
@@ -337,4 +374,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.8 2003/02/06 19:02:49 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.9 2003/02/06 21:46:33 ezix Exp $";
