@@ -889,7 +889,7 @@ static void dmi_table(int fd,
       {
 	string release(dmi_string(dm,
 				  data[8]));
-	hwNode newnode("bios",
+	hwNode newnode("firmware",
 		       hw::memory,
 		       dmi_string(dm,
 				  data[4]));
