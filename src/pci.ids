@@ -7,7 +7,7 @@
 #	so if you have anything to contribute, please visit the home page or
 #	send a diff -u against the most recent pci.ids to pci-ids@ucw.cz.
 #
-#	Daily snapshot on Mon 2004-11-29 21:06:40
+#	Daily snapshot on Tue 2005-02-08 11:00:09
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -46,6 +46,7 @@
 	1012  1012 PCMCIA 10/100 Ethernet Card [RTL81xx]
 0357  TTTech AG
 	000a  TTP-Monitoring Card V2.0
+0432  SCM Microsystems, Inc.
 05e3  CyberDoor
 	0701  CBD516
 0675  Dynalink
@@ -4104,7 +4105,8 @@
 	007b  FSC Remote Service Controller, mailbox device
 	007c  FSC Remote Service Controller, shared memory device
 	007d  FSC Remote Service Controller, SMIC device
-	2102  DSCC4 WAN adapter
+# Superfastcom-PCI (Commtech, Inc.) or DSCC4 WAN Adapter
+	2102  DSCC4 PEB/PEF 20534 DMA Supported Serial Communication Controller with 4 Channels
 	2104  Eicon Diva 2.02 compatible passive ISDN card
 	3142  SIMATIC NET CP 5613A1 (Profibus Adapter)
 	4021  SIMATIC NET CP 5512 (Profibus and MPI Cardbus Adapter)
@@ -5497,7 +5499,7 @@
 	0003  EasyIO
 	0004  EasyConnection/RA
 124e  Cylink
-124f  Infotrend Technology, Inc.
+124f  Infortrend Technology, Inc.
 	0041  IFT-2000 Series RAID Controller
 1250  Hitachi Microcomputer System Ltd
 1251  VLSI Solutions Oy
@@ -7671,6 +7673,7 @@
 1677  Bernecker + Rainer
 	104e  5LS172.6 B&R Dual CAN Interface Card
 	12d7  5LS172.61 B&R Dual CAN Interface Card
+167b  ZyDAS Technology Corp.
 1681  Hercules
 # More specs, more accurate desc.
 	0010  Hercules 3d Prophet II Ultra 64MB [ 350 MHz NV15BR core, 128-bit DDR @ 460 MHz, 1.5v AGP4x  ]
@@ -7703,6 +7706,7 @@
 16ca  CENATEK Inc
 	0001  Rocket Drive DL
 16cd  Densitron Technologies
+16ce  Roland Corp.
 # www.pikatechnologies.com
 16df  PIKA Technologies Inc.
 16e3  European Space Agency
@@ -7776,8 +7780,10 @@
 17c2  Newisys, Inc.
 17cc  NetChip Technology, Inc
 	2280  USB 2.0
+17d3  Areca Technology Corp.
 # S2io ships 10Gb PCI-X Ethernet adapters www.s2io.com
 17d5  S2io Inc.
+17de  KWorld Computer Co. Ltd.
 # http://www.connect3d.com
 17ee  Connect Components Ltd
 17fe  Linksys, A Division of Cisco Systems
@@ -7806,12 +7812,14 @@
 1849  ASRock Incorporation
 1851  Microtune, Inc.
 1852  Anritsu Corp.
+185f  Wistron NeWeb Corp.
 1867  Topspin Communications
 	5a44  MT23108 PCI-X HCA
 	5a45  MT23108 PCI-X HCA flash recovery
 	5a46  MT23108 PCI-X HCA bridge
 	6278  MT25208 InfiniHost III Ex (Tavor compatibility mode)
 	6282  MT25208 InfiniHost III Ex
+187e  ZyXEL Communication Corporation
 1888  Varisys Ltd
 	0301  VMFX1 FPGA PMC module
 	0601  VSM2 dual PMC carrier
@@ -7823,6 +7831,7 @@
 18a1  Astute Networks Inc.
 18ac  DViCO Corporation
 	d810  FusionHDTV 3 Gold
+18b8  Ammasso
 18bc  Info-Tek Corp.
 # assigned to Octigabay System, which has been acquired by Cray
 18c8  Cray Inc
@@ -7838,6 +7847,10 @@
 	0005  Fastcom IGESCC-PCI-ISO/1
 	000a  Fastcom 232/4-PCI-335
 18fb  Resilience Corporation
+1924  Level 5 Networks Inc.
+1966  Orad Hi-Tec Systems
+1975  Pudlis Co. Ltd.
+1993  Innominate Security Technologies AG
 1a08  Sierra semiconductor
 	0000  SC15064
 1b13  Jaton Corp
@@ -8175,7 +8188,7 @@
 	0011  PWDOG2 [PCI-Watchdog 2]
 # Wrong ID used in subsystem ID of AsusTek PCI-USB2 PCI card.
 807d  Asustek Computer, Inc.
-8086  Intel Corp.
+8086  Intel Corporation
 	0007  82379AB
 	0008  Extended Express System Support Controller
 		0008 1000  WorldMark 4300 INCA ASIC
@@ -9023,7 +9036,7 @@
 		1043 80f2  P4P800 Mainboard
 		1458 2570  GA-8IPE1000 Pro2 motherboard (865PE)
 	2571  82865G/PE/P PCI to AGP Controller
-	2572  82865G Integrated Graphics Device
+	2572  82865G Integrated Graphics Controller
 	2573  82865G/PE/P PCI to CSA Bridge
 	2576  82865G/PE/P Processor to I/O Memory Interface
 	2578  82875P/E7210 Memory Controller Hub
@@ -9036,16 +9049,16 @@
 	257e  82875P/E7210 Processor to I/O Memory Interface
 	2580  915G/P/GV Processor to I/O Controller
 	2581  915G/P/GV PCI Express Root Port
-	2582  82915G Express Chipset Family Graphics Controller
+	2582  82915G/GV/910GL Express Chipset Family Graphics Controller
 		1028 1079  Optiplex GX280
 	2584  925X/XE Memory Controller Hub
 	2585  925X/XE PCI Express Root Port
 	2588  E7220/E7221 Memory Controller Hub
 	2589  E7220/E7221 PCI Express Root Port
 	258a  E7221 Integrated Graphics Controller
-	2590  Mobile Memory Controller Hub
-	2591  Mobile Memory Controller Hub PCI Express Port
-	2592  Mobile Graphics Controller
+	2590  Mobile 915GM/PM/GMS/910GML Express Processor to DRAM Controller
+	2591  Mobile 915GM/PM Express PCI Express Root Port
+	2592  Mobile 915GM/GMS/910GML Express Graphics Controller
 	25a1  6300ESB LPC Interface Controller
 	25a2  6300ESB PATA Storage Controller
 		4c53 10b0  CL9 mainboard
@@ -9130,8 +9143,41 @@
 	266e  82801FB/FBM/FR/FW/FRW (ICH6 Family) AC'97 Audio Controller
 		1028 0179  Optiplex GX280
 	266f  82801FB/FBM/FR/FW/FRW (ICH6 Family) IDE Controller
+	2770  Memory Controller Hub
+	2771  PCI Express Graphics Port
+	2772  Integrated Graphics Controller
+	2774  Workstation Memory Controller Hub
+	2775  PCI Express Graphics Port
+	2776  Integrated Graphics Controller
+	2778  Server Memory Controller Hub
+	2779  PCI Express Root Port
 	2782  82915G Express Chipset Family Graphics Controller
-	2792  Mobile Graphics Controller
+	2792  Mobile 915GM/GMS/910GML Express Graphics Controller
+	27b1  Mobile I/O Controller Hub LPC
+	27b8  I/O Controller Hub LPC
+	27c0  I/O Controller Hub SATA cc=IDE
+	27c1  I/O Controller Hub SATA cc=AHCI
+	27c2  I/O Controller Hub SATA cc=RAID
+	27c3  I/O Controller Hub SATA cc=RAID
+	27c4  Mobile I/O Controller Hub SATA cc=IDE
+	27c5  Mobile I/O Controller Hub SATA cc=AHCI
+	27c8  I/O Controller Hub UHCI USB #1
+	27c9  I/O Controller Hub UHCI USB #2
+	27ca  I/O Controller Hub UHCI USB #3
+	27cb  I/O Controller Hub UHCI USB #4
+	27cc  I/O Controller Hub EHCI USB
+	27d0  I/O Controller Hub PCI Express Port 1
+	27d2  I/O Controller Hub PCI Express Port 2
+	27d4  I/O Controller Hub PCI Express Port 3
+	27d6  I/O Controller Hub PCI Express Port 4
+	27d8  I/O Controller Hub High Definition Audio
+	27da  I/O Controller Hub SMBus
+	27dc  I/O Controller Hub LAN
+	27dd  I/O Controller Hub AC'97 Modem
+	27de  I/O Controller Hub AC'97 Audio
+	27df  I/O Controller Hub PATA
+	27e0  I/O Controller Hub PCI Express Port 5
+	27e2  I/O Controller Hub PCI Express Port 6
 	3092  Integrated RAID
 	3200  GD31244 PCI-X SATA HBA
 	3340  82855PM Processor to I/O Controller
