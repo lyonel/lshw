@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
+#if defined(__i386__) || defined(__alpha__)
+
 static hwNode *getcache(hwNode & node,
 			int n = 0)
 {
@@ -60,6 +62,7 @@ static hwNode *getcpu(hwNode & node,
   else
     return NULL;
 }
+#endif // __i386__ || __alpha__
 
 #ifdef __i386__
 
@@ -668,4 +671,4 @@ bool scan_cpuid(hwNode & n)
 #endif /* __alpha__ */
 #endif /* __i386__ */
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.12 2003/03/11 16:42:09 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.13 2003/04/29 07:21:47 ezix Exp $";
