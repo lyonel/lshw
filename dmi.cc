@@ -496,41 +496,44 @@ static string dmi_memory_device_detail(u16 v)
   return result;
 }
 
-static const char *dmi_chassis_type(u8 code)
+void dmi_chassis(u8 code, hwNode & n)
 {
   static const char *chassis_type[] = {
-    "",		/* 0x00 */
-    "",
-    "",
-    "Desktop Computer",
-    "Low Profile Desktop Computer",
-    "Pizza Box Computer",
-    "Mini Tower Computer",
-    "Tower Computer",
-    "Portable Computer",
-    "Laptop",
-    "Notebook",
-    "Hand Held Computer",
-    "Docking Station",
-    "All In One",
-    "Sub Notebook",
-    "Space-saving Computer",
-    "Lunch Box Computer",
-    "System",
-    "Expansion Chassis",
-    "Sub Chassis",
-    "Bus Expansion Chassis",
-    "Peripheral Chassis",
-    "RAID Chassis",
-    "Rack Mount Chassis",
-    "Sealed-case PC",
-    "Multi-system" /* 0x19 */
+    "", "",		/* 0x00 */
+    "", "",
+    "", "",
+    "desktop", "Desktop Computer",
+    "low-profile", "Low Profile Desktop Computer",
+    "pizzabox", "Pizza Box Computer",
+    "mini-tower", "Mini Tower Computer",
+    "tower", "Tower Computer",
+    "portable", "Portable Computer",
+    "laptop", "Laptop",
+    "notebook", "Notebook",
+    "handheld", "Hand Held Computer",
+    "docking", "Docking Station",
+    "all-in-one", "All In One",
+    "sub-notebook", "Sub Notebook",
+    "space-saving", "Space-saving Computer",
+    "lunchbox", "Lunch Box Computer",
+    "server", "System",
+    "expansion", "Expansion Chassis",
+    "sub", "Sub Chassis",
+    "bus-expansion", "Bus Expansion Chassis",
+    "peripheral", "Peripheral Chassis",
+    "raid", "RAID Chassis",
+    "rackmount", "Rack Mount Chassis",
+    "sealed", "Sealed-case PC",
+    "multi-system", "Multi-system" /* 0x19 */
   };
 
-  if(code<=0x19)
-    return chassis_type[code];
-  else
-    return "";
+  if(code <= 0x19)
+  {
+    if(n.getDescription()=="") n.setDescription(chassis_type[1+2*code]);
+
+    if(code >= 2)
+       n.setConfig("chassis", chassis_type[2*code] );
+  }
 };
 static const char *dmi_processor_family(u8 code)
 {
@@ -967,8 +970,7 @@ static void dmi_table(int fd,
 	node.setVersion(dmi_string(dm, data[6]));
       if (node.getSerial() == "")
 	node.setSerial(dmi_string(dm, data[7]));
-      if (node.getDescription() == "")
-        node.setDescription(dmi_chassis_type(data[5] & 0x7F));
+      dmi_chassis(data[5] & 0x7F, node);
       break;
 
     case 4:
