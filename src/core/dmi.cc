@@ -555,40 +555,44 @@ static string dmi_memory_device_detail(u16 v)
 void dmi_chassis(u8 code, hwNode & n)
 {
   static const char *chassis_type[] = {
-    "", "",		/* 0x00 */
-    "", "",
-    "", "",
-    "desktop", "Desktop Computer",
-    "low-profile", "Low Profile Desktop Computer",
-    "pizzabox", "Pizza Box Computer",
-    "mini-tower", "Mini Tower Computer",
-    "tower", "Tower Computer",
-    "portable", "Portable Computer",
-    "laptop", "Laptop",
-    "notebook", "Notebook",
-    "handheld", "Hand Held Computer",
-    "docking", "Docking Station",
-    "all-in-one", "All In One",
-    "sub-notebook", "Sub Notebook",
-    "space-saving", "Space-saving Computer",
-    "lunchbox", "Lunch Box Computer",
-    "server", "System",
-    "expansion", "Expansion Chassis",
-    "sub", "Sub Chassis",
-    "bus-expansion", "Bus Expansion Chassis",
-    "peripheral", "Peripheral Chassis",
-    "raid", "RAID Chassis",
-    "rackmount", "Rack Mount Chassis",
-    "sealed", "Sealed-case PC",
-    "multi-system", "Multi-system" /* 0x19 */
+    "", "", NULL,		/* 0x00 */
+    "", "", NULL,
+    "", "", NULL,
+    "desktop", "Desktop Computer", "desktop-computer",
+    "low-profile", "Low Profile Desktop Computer", "desktop-computer",
+    "pizzabox", "Pizza Box Computer", "pizzabox",
+    "mini-tower", "Mini Tower Computer", "tower-computer",
+    "tower", "Tower Computer", "tower-computer",
+    "portable", "Portable Computer", "laptop",
+    "laptop", "Laptop", "laptop",
+    "notebook", "Notebook", "laptop",
+    "handheld", "Hand Held Computer", "pda",
+    "docking", "Docking Station", NULL,
+    "all-in-one", "All In One", NULL,
+    "sub-notebook", "Sub Notebook", "laptop",
+    "space-saving", "Space-saving Computer", NULL,
+    "lunchbox", "Lunch Box Computer", NULL,
+    "server", "System", "server",
+    "expansion", "Expansion Chassis", NULL,
+    "sub", "Sub Chassis", NULL,
+    "bus-expansion", "Bus Expansion Chassis", NULL,
+    "peripheral", "Peripheral Chassis", NULL,
+    "raid", "RAID Chassis", NULL,
+    "rackmount", "Rack Mount Chassis", "rack-mount",
+    "sealed", "Sealed-case PC", NULL,
+    "multi-system", "Multi-system", "cluster" /* 0x19 */
   };
 
   if(code <= 0x19)
   {
-    if(n.getDescription()=="") n.setDescription(chassis_type[1+2*code]);
+    if(n.getDescription()=="") n.setDescription(chassis_type[1+3*code]);
 
-    if(code >= 2)
-       n.setConfig("chassis", chassis_type[2*code] );
+    if(code >= 3)
+    {
+       n.setConfig("chassis", chassis_type[3*code] );
+       if(chassis_type[2+3*code])
+         n.addHint("icon", chassis_type[2+3*code]);
+    }
   }
 };
 static const char *dmi_processor_family(u8 code)
