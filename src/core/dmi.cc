@@ -1101,6 +1101,8 @@ static void dmi_table(int fd,
 
 	newnode.setCapacity(capacity);
 	newnode.setSize(size);
+        if(newnode.getSize()==0)
+          newnode.setDescription(newnode.getDescription() + " [empty]");
 	if ((data[11] & 4) == 0)
 	{
 	  if (data[11] & (1 << 0))
@@ -1327,6 +1329,8 @@ static void dmi_table(int fd,
 	  newnode.setConfig("width", hw::strip(bits));
 	newnode.setDescription(description);
 	newnode.setSize(size);
+        if(newnode.getSize()==0)
+          newnode.setDescription(newnode.getDescription() + " [empty]");
 	newnode.setClock(clock);
 	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
 	if (memoryarray)

@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: print.cc 764 2004-11-26 01:28:23Z ezix $";
+static char *id = "@(#) $Id$";
 
 static string escape(const string & s)
 {
@@ -208,7 +208,7 @@ string printmarkup(const hwNode & node)
      out << "<b>capabilities:</b>";
      for(unsigned j=0; j<config.size(); j++)
      {
-       out << " ";
+       out << "\n\t";
        if(node.getCapabilityDescription(config[j]) != "")
        {
          out << escape(node.getCapabilityDescription(config[j]));
