@@ -572,7 +572,7 @@ string hwNode::getConfig(const string & key) const
   return This->config[key];
 }
 
-vector < string > hwNode::getConfig() const
+vector < string > hwNode::getConfigValues(const string & separator) const
 {
   vector < string > result;
 
@@ -581,9 +581,9 @@ vector < string > hwNode::getConfig() const
 
   for (map < string, string >::iterator i = This->config.begin();
        i != This->config.end(); i++)
-    result.push_back(i->first + string("=") + i->second);
+    result.push_back(i->first + separator + i->second);
 
   return result;
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.28 2003/01/30 00:01:08 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.29 2003/01/31 22:32:43 ezix Exp $";

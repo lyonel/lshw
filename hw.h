@@ -103,7 +103,7 @@ class hwNode
 
 	void setConfig(const string & key, const string & value);
 	string getConfig(const string & key) const;
-	vector<string> getConfig() const;
+	vector<string> getConfigValues(const string & separator = "") const;
 
   private:
 
