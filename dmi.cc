@@ -1565,6 +1565,7 @@ bool scan_dmi(hwNode & n)
   int fd = open("/dev/mem", O_RDONLY);
   long fp = 0xE0000L;
   u8 smmajver = 0, smminver = 0;
+  u16 dmimaj, dmimin;
 
   if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4)
     // compiler incompatibility
@@ -1599,7 +1600,6 @@ bool scan_dmi(hwNode & n)
       u16 num = buf[13] << 8 | buf[12];
       u16 len = buf[7] << 8 | buf[6];
       u32 base = buf[11] << 24 | buf[10] << 16 | buf[9] << 8 | buf[8];
-      u16 dmimaj, dmimin;
 
       dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
       dmimin = buf[14] ? buf[14] & 0x0F : smminver;
@@ -1612,6 +1612,19 @@ bool scan_dmi(hwNode & n)
     }
   }
   close(fd);
+
+  if (smmajver != 0)
+  {
+    char buffer[20];
+    snprintf(buffer, sizeof(buffer), "smbios-%d.%d", smmajver, smminver);
+    n.addCapability(string(buffer));
+  }
+  if (dmimaj != 0)
+  {
+    char buffer[20];
+    snprintf(buffer, sizeof(buffer), "dmi-%d.%d", dmimaj, dmimin);
+    n.addCapability(string(buffer));
+  }
 
   return true;
 }
