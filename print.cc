@@ -4,6 +4,8 @@
 #include <iostream>
 #include <iomanip>
 
+static char *id = "@(#) $Id: print.cc,v 1.43 2003/04/29 07:56:10 ezix Exp $";
+
 static void tab(int level,
 		bool connect = true)
 {
@@ -21,7 +23,7 @@ static void tab(int level,
 static void decimalkilos(unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
-  int i = 0;
+  unsigned int i = 0;
 
   while ((i <= strlen(prefixes)) && ((value > 10000) || (value % 1000 == 0)))
   {
@@ -37,7 +39,7 @@ static void decimalkilos(unsigned long long value)
 static void kilobytes(unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
-  int i = 0;
+  unsigned int i = 0;
 
   while ((i <= strlen(prefixes)) && ((value > 10240) || (value % 1024 == 0)))
   {
@@ -344,7 +346,7 @@ void print(hwNode & node,
     if (html)
       cout << "</td><td><table summary=\"configuration of " << node.
 	getId() << "\">";
-    for (int i = 0; i < config.size(); i++)
+    for (unsigned int i = 0; i < config.size(); i++)
     {
       if (html)
 	cout << "<tr><td>";
@@ -362,7 +364,7 @@ void print(hwNode & node,
     tab(level, false);
     cout << "</table>" << endl;
   }
-  for (int i = 0; i < node.countChildren(); i++)
+  for (unsigned int i = 0; i < node.countChildren(); i++)
   {
     print(*node.getChild(i), html, level + 1);
   }
@@ -382,7 +384,7 @@ static string escape(const string & s)
 {
   string result = "";
 
-  for (int i = 0; i < s.length(); i++)
+  for (unsigned int i = 0; i < s.length(); i++)
     switch (s[i])
     {
     case '<':
@@ -507,6 +509,9 @@ void printxml(hwNode & node,
     case hw::system:
       cout << " units=\"Hz\"";
       break;
+
+    default:
+      cout << "";
     }
     cout << ">";
     cout << node.getSize();
@@ -532,6 +537,9 @@ void printxml(hwNode & node,
     case hw::system:
       cout << " units=\"Hz\"";
       break;
+
+    default:
+      cout << "";
     }
     cout << ">";
     cout << node.getCapacity();
@@ -552,7 +560,7 @@ void printxml(hwNode & node,
   {
     tab(level + 1, false);
     cout << "<configuration>" << endl;
-    for (int j = 0; j < config.size(); j++)
+    for (unsigned int j = 0; j < config.size(); j++)
     {
       tab(level + 2, false);
       cout << "<setting id=\"" << escape(config[j]) << "\" />";
@@ -568,7 +576,7 @@ void printxml(hwNode & node,
   {
     tab(level + 1, false);
     cout << "<capabilities>" << endl;
-    for (int j = 0; j < config.size(); j++)
+    for (unsigned int j = 0; j < config.size(); j++)
     {
       tab(level + 2, false);
       cout << "<capability id=\"" << escape(config[j]) << "\" />";
@@ -579,13 +587,13 @@ void printxml(hwNode & node,
   }
   config.clear();
 
-  for (int i = 0; i < node.countChildren(); i++)
+  for (unsigned int i = 0; i < node.countChildren(); i++)
   {
     printxml(*node.getChild(i), level + 1);
   }
 
   tab(level, false);
   cout << "</node>" << endl;
-}
 
-static char *id = "@(#) $Id: print.cc,v 1.42 2003/04/15 06:36:44 ezix Exp $";
+  (void) &id;			// avoid "id defined but not used" warning
+}

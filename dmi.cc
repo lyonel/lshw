@@ -76,6 +76,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+static char *id = "@(#) $Id: dmi.cc,v 1.65 2003/04/29 07:56:10 ezix Exp $";
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -327,184 +329,6 @@ static string dmi_cache_describe(u16 config,
   return hw::strip(result);
 }
 
-static const char *dmi_bus_name(u8 num)
-{
-  static const char *bus[] = {
-    "",
-    "",
-    "",
-    "ISA ",
-    "MCA ",
-    "EISA ",
-    "PCI ",
-    "PCMCIA ",
-    "VLB ",
-    "Proprietary ",
-    "CPU Slot ",
-    "Proprietary RAM ",
-    "I/O Riser ",
-    "NUBUS ",
-    "PCI-66 ",
-    "AGP ",
-    "AGP 2x ",
-    "AGP 4x "
-  };
-  static const char *jpbus[] = {
-    "PC98/C20",
-    "PC98/C24",
-    "PC98/E",
-    "PC98/LocalBus",
-    "PC98/Card"
-  };
-
-  if (num <= 0x11)
-    return bus[num];
-  if (num >= 0xA0 && num <= 0xA4)
-    return jpbus[num - 0xA0];
-  return "";
-}
-
-static const char *dmi_bus_width(u8 code)
-{
-  static const char *width[] = {
-    "",
-    "",
-    "",
-    "8bit ",
-    "16bit ",
-    "32bit ",
-    "64bit ",
-    "128bit "
-  };
-  if (code > 7)
-    return "";
-  return width[code];
-}
-
-static const char *dmi_card_size(u8 v)
-{
-  if (v == 3)
-    return ("Short ");
-  if (v == 4)
-    return ("Long ");
-  return "";
-}
-
-static string dmi_card_props(u8 v)
-{
-  string result = "";
-
-  if (v & (1 << 1))
-    result += "5v ";
-  if (v & (1 << 2))
-    result += "3.3v ";
-  if (v & (1 << 3))
-    result += "Shared ";
-  if (v & (1 << 4))
-    result += "PCCard16 ";
-  if (v & (1 << 5))
-    result += "CardBus ";
-  if (v & (1 << 6))
-    result += "Zoom-Video ";
-  if (v & (1 << 7))
-    result += "ModemRingResume ";
-
-  return hw::strip(result);
-}
-
-static const char *dmi_chassis_type(u8 code)
-{
-  static const char *chassis_type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "Desktop",
-    "Low Profile Desktop",
-    "Pizza Box",
-    "Mini Tower",
-    "Tower",
-    "Portable",
-    "Laptop",
-    "Notebook",
-    "Hand Held",
-    "Docking Station",
-    "All in One",
-    "Sub Notebook",
-    "Space-saving",
-    "Lunch Box",
-    "Main Server Chassis",
-    "Expansion Chassis",
-    "SubChassis",
-    "Bus Expansion Chassis",
-    "Peripheral Chassis",
-    "RAID Chassis",
-    "Rack Mount Chassis",
-    "Sealed-case PC",
-  };
-  code &= ~0x80;
-
-  if (code > 0x18)
-    return "";
-  return chassis_type[code];
-
-}
-
-static const char *dmi_port_connector_type(u8 code)
-{
-  static const char *connector_type[] = {
-    "None",
-    "Centronics",
-    "Mini Centronics",
-    "Proprietary",
-    "DB-25 pin male",
-    "DB-25 pin female",
-    "DB-15 pin male",
-    "DB-15 pin female",
-    "DB-9 pin male",
-    "DB-9 pin female",
-    "RJ-11",
-    "RJ-45",
-    "50 Pin MiniSCSI",
-    "Mini-DIN",
-    "Micro-DIN",
-    "PS/2",
-    "Infrared",
-    "HP-HIL",
-    "Access Bus (USB)",
-    "SSA SCSI",
-    "Circular DIN-8 male",
-    "Circular DIN-8 female",
-    "On Board IDE",
-    "On Board Floppy",
-    "9 Pin Dual Inline (pin 10 cut)",
-    "25 Pin Dual Inline (pin 26 cut)",
-    "50 Pin Dual Inline",
-    "68 Pin Dual Inline",
-    "On Board Sound Input from CD-ROM",
-    "Mini-Centronics Type-14",
-    "Mini-Centronics Type-26",
-    "Mini-jack (headphones)",
-    "BNC",
-    "1394",
-    "PC-98",
-    "PC-98Hireso",
-    "PC-H98",
-    "PC-98Note",
-    "PC98Full",
-  };
-
-  if (code == 0xFF)
-    return "Other";
-
-  if (code <= 0x21)
-    return connector_type[code];
-
-  if ((code >= 0xA0) && (code <= 0xA4))
-    return connector_type[code - 0xA0 + 0x22];
-
-  return "";
-}
-
 static char *dmi_memory_array_location(u8 num)
 {
   static char *memory_array_location[] = {
@@ -531,40 +355,6 @@ static char *dmi_memory_array_location(u8 num)
   if (num >= 0xA0 && num < 0xA3)
     return jp_memory_array_location[num];
   return "";
-}
-
-static char *dmi_memory_array_use(u8 num)
-{
-  static char *memory_array_use[] = {
-    "",
-    "Other",
-    "Unknown",
-    "System memory",
-    "Video memory",
-    "Flash memory",
-    "Non-volatile RAM",
-    "Cache memory",
-  };
-  if (num > 0x07)
-    return "";
-  return memory_array_use[num];
-};
-
-static char *dmi_memory_array_error_correction_type(u8 num)
-{
-  static char *memory_array_error_correction_type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "None",
-    "Parity",
-    "Single-bit ECC",
-    "Multi-bit ECC",
-    "CRC",
-  };
-  if (num > 0x07)
-    return "";
-  return memory_array_error_correction_type[num];
 }
 
 static char *dmi_memory_device_form_factor(u8 num)
@@ -646,77 +436,6 @@ static string dmi_memory_device_detail(u16 v)
   return result;
 }
 
-static const char *dmi_port_type(u8 code)
-{
-  static const char *port_type[] = {
-    "None",
-    "Parallel Port XT/AT Compatible",
-    "Parallel Port PS/2",
-    "Parallel Port ECP",
-    "Parallel Port EPP",
-    "Parallel Port ECP/EPP",
-    "Serial Port XT/AT Compatible",
-    "Serial Port 16450 Compatible",
-    "Serial Port 16650 Compatible",
-    "Serial Port 16650A Compatible",
-    "SCSI Port",
-    "MIDI Port",
-    "Joy Stick Port",
-    "Keyboard Port",
-    "Mouse Port",
-    "SSA SCSI",
-    "USB",
-    "FireWire (IEEE P1394)",
-    "PCMCIA Type I",
-    "PCMCIA Type II",
-    "PCMCIA Type III",
-    "Cardbus",
-    "Access Bus Port",
-    "SCSI II",
-    "SCSI Wide",
-    "PC-98",
-    "PC-98-Hireso",
-    "PC-H98",
-    "Video Port",
-    "Audio Port",
-    "Modem Port",
-    "Network Port",
-    "8251 Compatible",
-    "8251 FIFO Compatible",
-  };
-
-  if (code == 0xFF)
-    return "Other";
-
-  if (code <= 0x1F)
-    return port_type[code];
-
-  if ((code >= 0xA0) && (code <= 0xA1))
-    return port_type[code - 0xA0 + 0x20];
-
-  return "";
-}
-
-static const char *dmi_processor_type(u8 code)
-{
-  static const char *processor_type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "Central Processor",
-    "Math Processor",
-    "DSP Processor",
-    "Video Processor"
-  };
-
-  if (code == 0xFF)
-    return "Other";
-
-  if (code > 6)
-    return "";
-  return processor_type[code];
-}
-
 static const char *dmi_processor_family(u8 code)
 {
   static const char *processor_family[] = {
@@ -768,203 +487,6 @@ static const char *dmi_processor_family(u8 code)
   if (code > 0x24)
     return "";
   return processor_family[code];
-}
-
-static const char *dmi_onboard_type(u8 code)
-{
-  static const char *onboard_type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "Video",
-    "SCSI Controller",
-    "Ethernet",
-    "Token Ring",
-    "Sound",
-  };
-  code &= ~0x80;
-  if (code > 7)
-    return "";
-  return onboard_type[code];
-}
-
-static const char *dmi_mgmt_dev_type(u8 code)
-{
-  static const char *type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "LM75",
-    "LM78",
-    "LM79",
-    "LM80",
-    "LM81",
-    "ADM9240",
-    "DS1780",
-    "MAX1617",
-    "GL518SM",
-    "W83781D",
-    "HT82H791",
-  };
-
-  if (code > 0x0d)
-    return "";
-  return type[code];
-}
-
-static const char *dmi_mgmt_addr_type(u8 code)
-{
-  static const char *type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "I/O",
-    "Memory",
-    "SMBus",
-  };
-
-  if (code > 5)
-    return "";
-  return type[code];
-}
-
-static const char *dmi_fan_type(u8 code)
-{
-  static const char *type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "Fan",
-    "Centrifugal Blower",
-    "Chip Fan",
-    "Cabinet Fan",
-    "Power Supply Fan",
-    "Heat Pipe",
-    "Integrated Refrigeration",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "Active Cooling",
-    "Passive Cooling",
-  };
-
-  if (code > 0x11)
-    return "";
-  return type[code];
-}
-
-static const char *dmi_volt_loc(u8 code)
-{
-  static const char *type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "Processor",
-    "Disk",
-    "Peripheral Bay",
-    "System Management Module",
-    "Motherboard",
-    "Memory Module",
-    "Processor Module",
-    "Power Unit",
-    "Add-in Card",
-  };
-
-  if (code > 0x0b)
-    return "";
-  return type[code];
-}
-
-static const char *dmi_temp_loc(u8 code)
-{
-  static const char *type[] = {
-    "Front Panel Board",
-    "Back Panel Board",
-    "Power System Board",
-    "Drive Back Plane",
-  };
-
-  if (code <= 0x0b)
-    return dmi_volt_loc(code);
-  if (code <= 0x0f)
-    return type[code - 0x0c];
-  return "";
-}
-
-static const char *dmi_status(u8 code)
-{
-  static const char *type[] = {
-    "",
-    "Other",
-    "Unknown",
-    "OK",
-    "Non-critical",
-    "Critical",
-    "Non-recoverable",
-  };
-
-  if (code > 6)
-    return "";
-  return type[code];
-}
-
-/* 3 dec. places */
-static const char *dmi_millivolt(u8 * data,
-				 int indx)
-{
-  static char buffer[20];
-  short int d;
-
-  if (data[indx + 1] == 0x80 && data[indx] == 0)
-    return "Unknown";
-  d = data[indx + 1] << 8 | data[indx];
-  sprintf(buffer, "%0.3f", d / 1000.0);
-  return buffer;
-}
-
-/* 2 dec. places */
-static const char *dmi_accuracy(u8 * data,
-				int indx)
-{
-  static char buffer[20];
-  short int d;
-
-  if (data[indx + 1] == 0x80 && data[indx] == 0)
-    return "Unknown";
-  d = data[indx + 1] << 8 | data[indx];
-  sprintf(buffer, "%0.2f", d / 100.0);
-  return buffer;
-}
-
-/* 1 dec. place */
-static const char *dmi_temp(u8 * data,
-			    int indx)
-{
-  static char buffer[20];
-  short int d;
-
-  if (data[indx + 1] == 0x80 && data[indx] == 0)
-    return "Unknown";
-  d = data[indx + 1] << 8 | data[indx];
-  sprintf(buffer, "%0.1f", d / 10.0);
-  return buffer;
-}
-
-/* 0 dec. place */
-static const char *dmi_speed(u8 * data,
-			     int indx)
-{
-  static char buffer[20];
-  short int d;
-
-  if (data[indx + 1] == 0x80 && data[indx] == 0)
-    return "Unknown";
-  d = data[indx + 1] << 8 | data[indx];
-  sprintf(buffer, "%d", d);
-  return buffer;
 }
 
 static string dmi_handle(u16 handle)
@@ -1195,7 +717,6 @@ static void dmi_table(int fd,
 	// loop through the controller's slots and link them to us
 	for (i = 0; i < data[0x0E]; i++)
 	{
-	  char slotref[10];
 	  u16 slothandle = data[0x0F + 2 * i + 1] << 8 | data[0x0F + 2 * i];
 	  newnode.attractHandle(dmi_handle(slothandle));
 	}
@@ -1215,7 +736,6 @@ static void dmi_table(int fd,
       {
 	hwNode newnode("bank",
 		       hw::memory);
-	hwNode *controllernode = NULL;
 	unsigned long long clock = 0;
 	unsigned long long capacity = 0;
 	unsigned long long size = 0;
@@ -1684,7 +1204,7 @@ bool scan_dmi(hwNode & n)
     n.addCapability(string(buffer));
   }
 
+  (void) &id;			// avoid "id defined but not used" warning
+
   return true;
 }
-
-static char *id = "@(#) $Id: dmi.cc,v 1.64 2003/04/10 09:55:21 ezix Exp $";

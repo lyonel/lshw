@@ -7,6 +7,8 @@
 
 using namespace hw;
 
+static char *id = "@(#) $Id: hw.cc,v 1.41 2003/04/29 07:56:10 ezix Exp $";
+
 struct hwNode_i
 {
   hwClass deviceclass;
@@ -81,6 +83,8 @@ hwNode::hwNode(const string & id,
   This->handle = "";
   This->description = "";
   This->logicalname = "";
+
+  (void) &::id;			// avoid warning "id defined but not used"
 }
 
 hwNode::hwNode(const hwNode & o)
@@ -748,5 +752,3 @@ void hwNode::merge(const hwNode & node)
        i != node.This->config.end(); i++)
     setConfig(i->first, i->second);
 }
-
-static char *rcs_id = "@(#) $Id: hw.cc,v 1.40 2003/04/29 07:14:19 ezix Exp $";

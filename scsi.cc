@@ -15,6 +15,8 @@
 #include <string>
 #include <map>
 
+static char *id = "@(#) $Id: scsi.cc,v 1.31 2003/04/29 07:56:10 ezix Exp $";
+
 #define SG_X "/dev/sg%d"
 
 #ifndef SCSI_IOCTL_GET_PCI
@@ -423,7 +425,6 @@ static u_int16_t decode_word(void *ptr)
 static bool do_inquiry(int sg_fd,
 		       hwNode & node)
 {
-  char ebuff[EBUFF_SZ];
   char rsp_buff[MX_ALLOC_LEN + 1];
   char version[5];
   int k;
@@ -773,7 +774,7 @@ static bool scan_hosts(hwNode & node)
   if (!loadfile("/proc/scsi/sg/host_strs", host_strs))
     return false;
 
-  for (int i = 0; i < host_strs.size(); i++)
+  for (unsigned int i = 0; i < host_strs.size(); i++)
   {
     hwNode *host = node.findChildByLogicalName(host_logicalname(i));
 
@@ -798,7 +799,7 @@ bool scan_scsi(hwNode & n)
 
   scan_hosts(n);
 
+  (void) &id;
+
   return false;
 }
-
-static char *id = "@(#) $Id: scsi.cc,v 1.30 2003/03/12 13:06:01 ezix Exp $";

@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
+static char *id = "@(#) $Id: main.cc,v 1.24 2003/04/29 07:56:10 ezix Exp $";
+
 void usage(const char *progname)
 {
   fprintf(stderr, "Harware Lister (lshw) - %s\n", getpackageversion());
@@ -86,7 +88,7 @@ int main(int argc,
       print(computer, htmloutput);
   }
 
+  (void) &id;			// avoid warning "id defined but not used"
+
   return 0;
 }
-
-static char *id = "@(#) $Id: main.cc,v 1.23 2003/04/16 16:24:09 ezix Exp $";

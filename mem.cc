@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+static char *id = "@(#) $Id: mem.cc,v 1.19 2003/04/29 07:56:10 ezix Exp $";
+
 static unsigned long long get_kcore_size()
 {
   struct stat buf;
@@ -39,7 +41,7 @@ static unsigned long long count_memorybanks_size(hwNode & n)
 
     memory->claim(true);	// claim memory and all its children
 
-    for (int i = 0; i < memory->countChildren(); i++)
+    for (unsigned int i = 0; i < memory->countChildren(); i++)
       if (memory->getChild(i)->getClass() == hw::memory)
 	size += memory->getChild(i)->getSize();
 
@@ -93,7 +95,7 @@ bool scan_memory(hwNode & n)
     return true;
   }
 
+  (void) &id;			// avoid warning "id defined but not used"
+
   return false;
 }
-
-static char *id = "@(#) $Id: mem.cc,v 1.18 2003/04/16 07:25:06 ezix Exp $";
