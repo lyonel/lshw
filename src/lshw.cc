@@ -116,7 +116,7 @@ int main(int argc,
     exit(1);
   }
 
-  if(X) execv(SBINDIR"/gtk-lshw", argv);
+  if(X) execl(SBINDIR"/gtk-lshw", "lshw [GUI]", NULL);
 
   if (geteuid() != 0)
   {
