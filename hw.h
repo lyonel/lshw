@@ -49,7 +49,7 @@ class hwNode
 	void enable();
 	void disable();
 	bool claimed() const;
-	void claim();
+	void claim(bool claimchildren=false);
 	void unclaim();
 
 	hw::hwClass getClass() const;

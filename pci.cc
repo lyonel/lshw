@@ -706,7 +706,7 @@ bool scan_pci(hwNode & n)
 	  if (drivername != "")
 	  {
 	    device->setConfig("driver", drivername);
-	    device->claimed();
+	    device->claim();
 	  }
 
 	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
@@ -736,4 +736,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.20 2003/01/31 23:03:26 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.21 2003/02/08 14:05:18 ezix Exp $";

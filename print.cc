@@ -61,15 +61,17 @@ void print(const hwNode & node,
 
   tab(level, !html);
 
-  if (html)
+  if (html && node.claimed())
     cout << "<b>";
   cout << node.getId();
   if (node.disabled())
     cout << " DISABLED";
   if (!node.claimed())
     cout << " UNCLAIMED";
+  if (html && node.claimed())
+    cout << "</b>";
   if (html)
-    cout << "</b><br>";
+    cout << "<br>";
   cout << endl;
 
   if (html)
@@ -346,4 +348,4 @@ void print(const hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.29 2003/02/08 11:18:41 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.30 2003/02/08 14:05:18 ezix Exp $";
