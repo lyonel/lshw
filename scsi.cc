@@ -21,10 +21,125 @@
 
 #define OPEN_FLAG O_RDWR
 
+#define SENSE_BUFF_LEN 32
 #define INQ_REPLY_LEN 96
 #define INQ_CMD_CODE 0x12
 #define INQ_CMD_LEN 6
 #define INQ_PAGE_SERIAL 0x80
+
+#define MX_ALLOC_LEN 255
+#define EBUFF_SZ 256
+
+/* Some of the following error/status codes are exchanged between the
+   various layers of the SCSI sub-system in Linux and should never
+   reach the user. They are placed here for completeness. What appears
+   here is copied from drivers/scsi/scsi.h which is not visible in
+   the user space. */
+
+#ifndef SCSI_CHECK_CONDITION
+/* Following are the "true" SCSI status codes. Linux has traditionally
+   used a 1 bit right and masked version of these. So now CHECK_CONDITION
+   and friends (in <scsi/scsi.h>) are deprecated. */
+#define SCSI_CHECK_CONDITION 0x2
+#define SCSI_CONDITION_MET 0x4
+#define SCSI_BUSY 0x8
+#define SCSI_IMMEDIATE 0x10
+#define SCSI_IMMEDIATE_CONDITION_MET 0x14
+#define SCSI_RESERVATION_CONFLICT 0x18
+#define SCSI_COMMAND_TERMINATED 0x22
+#define SCSI_TASK_SET_FULL 0x28
+#define SCSI_ACA_ACTIVE 0x30
+#define SCSI_TASK_ABORTED 0x40
+#endif
+
+/* The following are 'host_status' codes */
+#ifndef DID_OK
+#define DID_OK 0x00
+#endif
+#ifndef DID_NO_CONNECT
+#define DID_NO_CONNECT 0x01	/* Unable to connect before timeout */
+#define DID_BUS_BUSY 0x02	/* Bus remain busy until timeout */
+#define DID_TIME_OUT 0x03	/* Timed out for some other reason */
+#define DID_BAD_TARGET 0x04	/* Bad target (id?) */
+#define DID_ABORT 0x05		/* Told to abort for some other reason */
+#define DID_PARITY 0x06		/* Parity error (on SCSI bus) */
+#define DID_ERROR 0x07		/* Internal error */
+#define DID_RESET 0x08		/* Reset by somebody */
+#define DID_BAD_INTR 0x09	/* Received an unexpected interrupt */
+#define DID_PASSTHROUGH 0x0a	/* Force command past mid-level */
+#define DID_SOFT_ERROR 0x0b	/* The low-level driver wants a retry */
+#endif
+
+/* These defines are to isolate applictaions from kernel define changes */
+#define SG_ERR_DID_OK           DID_OK
+#define SG_ERR_DID_NO_CONNECT   DID_NO_CONNECT
+#define SG_ERR_DID_BUS_BUSY     DID_BUS_BUSY
+#define SG_ERR_DID_TIME_OUT     DID_TIME_OUT
+#define SG_ERR_DID_BAD_TARGET   DID_BAD_TARGET
+#define SG_ERR_DID_ABORT        DID_ABORT
+#define SG_ERR_DID_PARITY       DID_PARITY
+#define SG_ERR_DID_ERROR        DID_ERROR
+#define SG_ERR_DID_RESET        DID_RESET
+#define SG_ERR_DID_BAD_INTR     DID_BAD_INTR
+#define SG_ERR_DID_PASSTHROUGH  DID_PASSTHROUGH
+#define SG_ERR_DID_SOFT_ERROR   DID_SOFT_ERROR
+
+/* The following are 'driver_status' codes */
+#ifndef DRIVER_OK
+#define DRIVER_OK 0x00
+#endif
+#ifndef DRIVER_BUSY
+#define DRIVER_BUSY 0x01
+#define DRIVER_SOFT 0x02
+#define DRIVER_MEDIA 0x03
+#define DRIVER_ERROR 0x04
+#define DRIVER_INVALID 0x05
+#define DRIVER_TIMEOUT 0x06
+#define DRIVER_HARD 0x07
+#define DRIVER_SENSE 0x08	/* Sense_buffer has been set */
+
+/* Following "suggests" are "or-ed" with one of previous 8 entries */
+#define SUGGEST_RETRY 0x10
+#define SUGGEST_ABORT 0x20
+#define SUGGEST_REMAP 0x30
+#define SUGGEST_DIE 0x40
+#define SUGGEST_SENSE 0x80
+#define SUGGEST_IS_OK 0xff
+#endif
+#ifndef DRIVER_MASK
+#define DRIVER_MASK 0x0f
+#endif
+#ifndef SUGGEST_MASK
+#define SUGGEST_MASK 0xf0
+#endif
+
+/* These defines are to isolate applictaions from kernel define changes */
+#define SG_ERR_DRIVER_OK        DRIVER_OK
+#define SG_ERR_DRIVER_BUSY      DRIVER_BUSY
+#define SG_ERR_DRIVER_SOFT      DRIVER_SOFT
+#define SG_ERR_DRIVER_MEDIA     DRIVER_MEDIA
+#define SG_ERR_DRIVER_ERROR     DRIVER_ERROR
+#define SG_ERR_DRIVER_INVALID   DRIVER_INVALID
+#define SG_ERR_DRIVER_TIMEOUT   DRIVER_TIMEOUT
+#define SG_ERR_DRIVER_HARD      DRIVER_HARD
+#define SG_ERR_DRIVER_SENSE     DRIVER_SENSE
+#define SG_ERR_SUGGEST_RETRY    SUGGEST_RETRY
+#define SG_ERR_SUGGEST_ABORT    SUGGEST_ABORT
+#define SG_ERR_SUGGEST_REMAP    SUGGEST_REMAP
+#define SG_ERR_SUGGEST_DIE      SUGGEST_DIE
+#define SG_ERR_SUGGEST_SENSE    SUGGEST_SENSE
+#define SG_ERR_SUGGEST_IS_OK    SUGGEST_IS_OK
+#define SG_ERR_DRIVER_MASK      DRIVER_MASK
+#define SG_ERR_SUGGEST_MASK     SUGGEST_MASK
+
+/* The following "category" function returns one of the following */
+#define SG_ERR_CAT_CLEAN 0	/* No errors or other information */
+#define SG_ERR_CAT_MEDIA_CHANGED 1	/* interpreted from sense buffer */
+#define SG_ERR_CAT_RESET 2	/* interpreted from sense buffer */
+#define SG_ERR_CAT_TIMEOUT 3
+#define SG_ERR_CAT_RECOVERED 4	/* Successful command after recovered err */
+#define SG_ERR_CAT_SENSE 98	/* Something else is in the sense buffer */
+#define SG_ERR_CAT_OTHER 99	/* Some other error/warning has occurred */
 
 typedef struct my_sg_scsi_id
 {
@@ -127,86 +242,149 @@ static const char *scsi_type(int type)
   }
 }
 
+static int sg_err_category(int scsi_status,
+			   int host_status,
+			   int driver_status,
+			   const unsigned char *sense_buffer,
+			   int sb_len)
+{
+  scsi_status &= 0x7e;
+  if ((0 == scsi_status) && (0 == host_status) && (0 == driver_status))
+    return SG_ERR_CAT_CLEAN;
+  if ((SCSI_CHECK_CONDITION == scsi_status) ||
+      (SCSI_COMMAND_TERMINATED == scsi_status) ||
+      (SG_ERR_DRIVER_SENSE == (0xf & driver_status)))
+  {
+    if (sense_buffer && (sb_len > 2))
+    {
+      int sense_key;
+      unsigned char asc;
+
+      if (sense_buffer[0] & 0x2)
+      {
+	sense_key = sense_buffer[1] & 0xf;
+	asc = sense_buffer[2];
+      }
+      else
+      {
+	sense_key = sense_buffer[2] & 0xf;
+	asc = (sb_len > 12) ? sense_buffer[12] : 0;
+      }
+
+      if (RECOVERED_ERROR == sense_key)
+	return SG_ERR_CAT_RECOVERED;
+      else if (UNIT_ATTENTION == sense_key)
+      {
+	if (0x28 == asc)
+	  return SG_ERR_CAT_MEDIA_CHANGED;
+	if (0x29 == asc)
+	  return SG_ERR_CAT_RESET;
+      }
+    }
+    return SG_ERR_CAT_SENSE;
+  }
+  if (0 != host_status)
+  {
+    if ((SG_ERR_DID_NO_CONNECT == host_status) ||
+	(SG_ERR_DID_BUS_BUSY == host_status) ||
+	(SG_ERR_DID_TIME_OUT == host_status))
+      return SG_ERR_CAT_TIMEOUT;
+  }
+  if (0 != driver_status)
+  {
+    if (SG_ERR_DRIVER_TIMEOUT == driver_status)
+      return SG_ERR_CAT_TIMEOUT;
+  }
+  return SG_ERR_CAT_OTHER;
+}
+
+static bool do_inq(int sg_fd,
+		   int cmddt,
+		   int evpd,
+		   unsigned int pg_op,
+		   void *resp,
+		   int mx_resp_len,
+		   int noisy)
+{
+  int res;
+  unsigned char inqCmdBlk[INQ_CMD_LEN] = { INQ_CMD_CODE, 0, 0, 0, 0, 0 };
+  unsigned char sense_b[SENSE_BUFF_LEN];
+  sg_io_hdr_t io_hdr;
+
+  if (cmddt)
+    inqCmdBlk[1] |= 2;
+  if (evpd)
+    inqCmdBlk[1] |= 1;
+  inqCmdBlk[2] = (unsigned char) pg_op;
+  inqCmdBlk[4] = (unsigned char) mx_resp_len;
+  memset(&io_hdr, 0, sizeof(io_hdr));
+  io_hdr.interface_id = 'S';
+  io_hdr.cmd_len = sizeof(inqCmdBlk);
+  io_hdr.mx_sb_len = sizeof(sense_b);
+  io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
+  io_hdr.dxfer_len = mx_resp_len;
+  io_hdr.dxferp = resp;
+  io_hdr.cmdp = inqCmdBlk;
+  io_hdr.sbp = sense_b;
+  io_hdr.timeout = 20000;	/* 20 seconds */
+
+  if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
+    return false;
+
+  res =
+    sg_err_category(io_hdr.status, io_hdr.host_status, io_hdr.driver_status,
+		    io_hdr.sbp, io_hdr.sb_len_wr);
+  switch (res)
+  {
+  case SG_ERR_CAT_CLEAN:
+  case SG_ERR_CAT_RECOVERED:
+    return true;
+  default:
+    return false;
+  }
+
+  return true;
+}
+
 static bool do_inquiry(int sg_fd,
 		       hwNode & node)
 {
-  unsigned char inqCmdBlk[INQ_CMD_LEN] =
-    { INQ_CMD_CODE, 0, 0, 0, INQ_REPLY_LEN, 0 };
-  unsigned char inqBuff[INQ_REPLY_LEN];
-  unsigned char sense_buffer[32];
+  char ebuff[EBUFF_SZ];
+  char rsp_buff[MX_ALLOC_LEN + 1];
   char version[5];
-  sg_io_hdr_t io_hdr;
   int k;
+  int len;
 
   if ((ioctl(sg_fd, SG_GET_VERSION_NUM, &k) < 0) || (k < 30000))
     return false;
 
-  memset(&io_hdr, 0, sizeof(sg_io_hdr_t));
-  io_hdr.interface_id = 'S';
-  io_hdr.cmd_len = sizeof(inqCmdBlk);
-  io_hdr.mx_sb_len = sizeof(sense_buffer);
-  io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
-  io_hdr.dxfer_len = INQ_REPLY_LEN;
-  io_hdr.dxferp = inqBuff;
-  io_hdr.cmdp = inqCmdBlk;
-  io_hdr.sbp = sense_buffer;
-  io_hdr.timeout = 20000;	/* 20000 millisecs == 20 seconds */
-
-  if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
+  memset(rsp_buff, 0, sizeof(rsp_buff));
+  if (!do_inq(sg_fd, 0, 0, 0, rsp_buff, 36, 1))
     return false;
 
-  if ((io_hdr.info & SG_INFO_OK_MASK) != SG_INFO_OK)
-    return false;
+  len = rsp_buff[4] + 5;
 
-  char *p = (char *) inqBuff;
-  int f = (int) *(p + 7);
-  unsigned g = (unsigned char) *(p + 1);
-  unsigned ansiversion = ((unsigned char) *(p + 2)) & 7;
+  if ((len > 36) && (len < 256))
+  {
+    memset(rsp_buff, 0, sizeof(rsp_buff));
+    if (!do_inq(sg_fd, 0, 0, 0, rsp_buff, len, 1))
+      return false;
+  }
 
-  node.setVendor(string(p + 8, 8));
-  node.setProduct(string(p + 16, 16));
-  node.setVersion(string(p + 32, 4));
+  if (len != (rsp_buff[4] + 5))
+    return false;		// twin INQUIRYs yield different lengths
 
-  node.setConfig("width", "8");
-  if (!(f & 0x40))
-    node.setConfig("width", "32");
-  if (!(f & 0x20))
-    node.setConfig("width", "16");
-  if (!(f & 0x10))
-    node.addCapability("sync");
-  if (g & 0x80)
-    node.addCapability("removable");
+  unsigned ansiversion = rsp_buff[2] & 0x7;
+
+  node.setVendor(string(rsp_buff + 8, 8));
+  if (len > 16)
+    node.setProduct(string(rsp_buff + 16, 16));
+  if (len > 32)
+    node.setVersion(string(rsp_buff + 32, 4));
 
   snprintf(version, sizeof(version), "%d", ansiversion);
   if (ansiversion)
     node.setConfig("ansiversion", version);
-
-  inqCmdBlk[0] = INQ_CMD_CODE;
-  inqCmdBlk[1] = 1;
-  inqCmdBlk[2] = INQ_PAGE_SERIAL;
-  inqCmdBlk[3] = 0;
-  inqCmdBlk[4] = INQ_REPLY_LEN;
-  inqCmdBlk[5] = 0;
-  memset(&io_hdr, 0, sizeof(io_hdr));
-  memset(inqBuff, 0, sizeof(inqBuff));
-  memset(sense_buffer, 0, sizeof(sense_buffer));
-  io_hdr.interface_id = 'S';
-  io_hdr.cmd_len = sizeof(inqCmdBlk);
-  io_hdr.mx_sb_len = sizeof(sense_buffer);
-  io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
-  io_hdr.dxfer_len = INQ_REPLY_LEN;
-  io_hdr.dxferp = inqBuff;
-  io_hdr.cmdp = inqCmdBlk;
-  io_hdr.sbp = sense_buffer;
-  io_hdr.timeout = 20000;	/* 20000 millisecs == 20 seconds */
-
-  if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
-    return false;
-  if ((io_hdr.info & SG_INFO_OK_MASK) != SG_INFO_OK)
-    return false;
-
-  p = (char *) inqBuff;
-  node.setSerial(string(p + 4, (unsigned char) *(p + 3)));
 
   return true;
 }
@@ -419,4 +597,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.13 2003/02/18 09:06:39 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.14 2003/02/19 16:47:07 ezix Exp $";
