@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.47 2003/06/26 21:30:27 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.48 2003/06/26 21:44:27 ezix Exp $";
 
 struct hwNode_i
 {
@@ -846,7 +846,10 @@ void hwNode::setPhysId(unsigned physid1,
   {
     char buffer[40];
 
-    snprintf(buffer, sizeof(buffer), "%x.%x", physid1, physid2);
+    if (physid2 != 0)
+      snprintf(buffer, sizeof(buffer), "%x.%x", physid1, physid2);
+    else
+      snprintf(buffer, sizeof(buffer), "%x", physid1);
     This->physid = string(buffer);
   }
 }
