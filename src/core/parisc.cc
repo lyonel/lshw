@@ -53,19 +53,19 @@ struct parisc_device
 static struct parisc_device parisc_device_list[] = {
 	{0x00004, "cpu", hw::processor, "Processor"},
 	{0x0000d, "mux", hw::communication, "MUX"},
-	{0x0000e, "serial", hw::communication, "RS-232"},
-	{0x0000f, "display", hw::display, "Graphics"},
+	{0x0000e, "serial", hw::communication, "RS-232 Serial Interface"},
+	{0x0000f, "display", hw::display, "Graphics Display"},
 	{0x00014, "input", hw::input, "HIL"},
-	{0x00015, "display", hw::display, "Graphics"},
-	{0x0003a, "printer", hw::printer, "Centronics"},
+	{0x00015, "display", hw::display, "Graphics Display"},
+	{0x0003a, "printer", hw::printer, "Centronics Parallel interface"},
 	{0x000a8, "input", hw::input, "Keyboard"},
-	{0x00039, "scsi", hw::storage, "Core SCSI"},
-	{0x0003b, "scsi", hw::storage, "FW-SCSI"},
-	{0x0005e, "network", hw::network, "Token Ring"},
-	{0x00089, "scsi", hw::storage, "FW-SCSI"},
-	{0x00091, "fc", hw::storage, "Fibre Channel"},
-	{0x0009a, "network", hw::network, "ATM"},
-	{0x000a7, "fc", hw::storage, "Fibre Channel"},
+	{0x00039, "scsi", hw::storage, "Core SCSI controller"},
+	{0x0003b, "scsi", hw::storage, "FW-SCSI controller"},
+	{0x0005e, "network", hw::network, "Token Ring Interface"},
+	{0x00089, "scsi", hw::storage, "FW-SCSI controller"},
+	{0x00091, "fc", hw::storage, "Fibre Channel controller"},
+	{0x0009a, "network", hw::network, "ATM Interface"},
+	{0x000a7, "fc", hw::storage, "Fibre Channel controller"},
 	{0x00070, "core", hw::bus, "Core Bus"},
 	{0x00076, "eisa", hw::bus, "EISA Bus"},
 	{0x00078, "vme", hw::bus, "VME Bus"},
@@ -78,33 +78,33 @@ static struct parisc_device parisc_device_list[] = {
 	{0x000a5, "pci", hw::bridge, "PCI Bridge"},
 	{0x00052, "lanconsole", hw::network, "LAN/Console"},
 	{0x00060, "lanconsole", hw::network, "LAN/Console"},
-	{0x00071, "scsi", hw::storage, "Core SCSI"},
-	{0x00072, "network", hw::network, "Core Ethernet"},
+	{0x00071, "scsi", hw::storage, "Core SCSI controller"},
+	{0x00072, "network", hw::network, "Core Ethernet Interface"},
 	{0x00072, "input", hw::input, "Core HIL"},
-	{0x00074, "printer", hw::printer, "Core Centronics"},
-	{0x00075, "serial", hw::communication, "Core RS-232"},
-	{0x00077, "display", hw::display, "Graphics"},
+	{0x00074, "printer", hw::printer, "Core Centronics Parallel interface"},
+	{0x00075, "serial", hw::communication, "Core RS-232 Serial Interface"},
+	{0x00077, "display", hw::display, "Graphics Display"},
 	{0x0007a, "audio", hw::multimedia, "Audio"},
 	{0x0007b, "audio", hw::multimedia, "Audio"},
-	{0x0007c, "scsi", hw::storage, "FW-SCSI"},
-	{0x0007d, "network", hw::network, "FDDI"},
+	{0x0007c, "scsi", hw::storage, "FW-SCSI controller"},
+	{0x0007d, "network", hw::network, "FDDI Interface"},
 	{0x0007e, "audio", hw::multimedia, "Audio"},
 	{0x0007f, "audio", hw::multimedia, "Audio"},
-	{0x00082, "scsi", hw::storage, "SCSI"},
+	{0x00082, "scsi", hw::storage, "SCSI controller"},
 	{0x00083, "floppy", hw::storage, "Floppy"},
 	{0x00084, "input", hw::input, "PS/2 port"},
-	{0x00085, "display", hw::display, "Graphics"},
-	{0x00086, "network", hw::network, "Token Ring"},
+	{0x00085, "display", hw::display, "Graphics Display"},
+	{0x00086, "network", hw::network, "Token Ring Interface"},
 	{0x00087, "communication", hw::communication, "ISDN"},
-	{0x00088, "network", hw::network, "VME Networking"},
-	{0x0008a, "network", hw::network, "Core Ethernet"},
-	{0x0008c, "serial", hw::communication, "RS-232"},
+	{0x00088, "network", hw::network, "VME Networking Interface"},
+	{0x0008a, "network", hw::network, "Core Ethernet Interface"},
+	{0x0008c, "serial", hw::communication, "RS-232 Serial Interface"},
 	{0x0008d, "unknown", hw::communication, "RJ-16"},
 	{0x0008f, "firmware", hw::memory, "Boot ROM"},
 	{0x00096, "input", hw::input, "PS/2 port"},
-	{0x00097, "network", hw::network, "100VG LAN"},
-	{0x000a2, "network", hw::network, "10/100BT LAN"},
-	{0x000a3, "scsi", hw::storage, "Ultra2 SCSI"},
+	{0x00097, "network", hw::network, "100VG LAN Interface"},
+	{0x000a2, "network", hw::network, "10/100BT LAN Interface"},
+	{0x000a3, "scsi", hw::storage, "Ultra2 SCSI controller"},
 	{0x00000, "generic", hw::generic, NULL},
 };
 
@@ -144,6 +144,9 @@ static hwNode get_device(long hw_type, long sversion)
     {
       newnode = hwNode(parisc_device_list[i].id, parisc_device_list[i].device_class);
       newnode.setDescription(parisc_device_list[i].description);
+      if(hw_type == TP_NPROC)
+        newnode.setBusInfo(cpubusinfo(currentcpu++));
+
       return newnode;
     }
   }
@@ -282,6 +285,8 @@ bool scan_parisc(hwNode & node)
   if (!core)
     return false;
 
+  if(core->getDescription()=="")
+    core->setDescription("Motherboard");
   pushd(DEVICESPARISC);
   scan_device(*core);
   popd();
