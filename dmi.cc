@@ -922,49 +922,41 @@ static void dmi_table(int fd,
 	hwNode newnode("bank",
 		       hw::memory);
 	unsigned long long clock = 0;
+	unsigned long long capacity = 0;
+	unsigned long long size = 0;
 
 	newnode.setSlot(dmi_string(dm, data[4]).c_str());
 	if (data[6])
-	  printf("\t\tSpeed: %dnS\n", data[6]);
-	clock = 1000000000 / data[6];	// convert value from ns to Hz
+	  clock = 1000000000 / data[6];	// convert value from ns to Hz
 	newnode.setClock(clock);
 	newnode.setProduct(dmi_decode_ram(data[8] << 8 | data[7]));
-	printf("\t\tInstalled Size: ");
+	// installed size
 	switch (data[9] & 0x7F)
 	{
 	case 0x7D:
-	  printf("Unknown");
-	  break;
 	case 0x7E:
-	  printf("Disabled");
-	  break;
 	case 0x7F:
-	  printf("Not Installed");
 	  break;
 	default:
-	  printf("%dMbyte", (1 << (data[9] & 0x7F)));
+	  size = (1 << (data[9] & 0x7F)) << 20;
 	}
 	if (data[9] & 0x80)
-	  printf(" (Double sided)");
-	printf("\n");
-	printf("\t\tEnabled Size: ");
+	  size *= 2;
+	// enabled size
 	switch (data[10] & 0x7F)
 	{
 	case 0x7D:
-	  printf("Unknown");
-	  break;
 	case 0x7E:
-	  printf("Disabled");
-	  break;
 	case 0x7F:
-	  printf("Not Installed");
 	  break;
 	default:
-	  printf("%dMbyte", (1 << (data[10] & 0x7F)));
+	  capacity = (1 << (data[10] & 0x7F)) << 20;
 	}
 	if (data[10] & 0x80)
-	  printf(" (Double sided)");
-	printf("\n");
+	  capacity *= 2;
+
+	newnode.setCapacity(capacity);
+	newnode.setSize(size);
 	if ((data[11] & 4) == 0)
 	{
 	  if (data[11] & (1 << 0))
