@@ -469,7 +469,8 @@ static __inline__ unsigned long long int rdtsc()
   return x;
 }
 
-static float estimate_MHz(int cpunum)
+static float estimate_MHz(int cpunum,
+			  long sleeptime = 250000)
 {
   struct timezone tz;
   struct timeval tvstart, tvstop;
@@ -499,7 +500,7 @@ static float estimate_MHz(int cpunum)
   /*
    * we don't trust that this is any specific length of time 
    */
-  usleep(250000);
+  usleep(sleeptime);
 
   gettimeofday(&tvstop, &tz);
   cycles[1] = rdtsc();
@@ -509,6 +510,20 @@ static float estimate_MHz(int cpunum)
     (tvstop.tv_usec - tvstart.tv_usec);
 
   return (float) (cycles[1] - cycles[0]) / (microseconds / freq);
+}
+
+static float average_MHz(int cpunum,
+			 int tries = 2)
+{
+  float frequency = 0;
+
+  for (int i = 1; i <= tries; i++)
+    frequency += estimate_MHz(cpunum, i * 150000);
+
+  if (tries > 0)
+    return frequency / (float) tries;
+  else
+    return 0;
 }
 
 bool scan_cpuid(hwNode & n)
@@ -541,7 +556,7 @@ bool scan_cpuid(hwNode & n)
     }
 
     if (cpu->getSize() == 0)
-      cpu->setSize((long long) (1000000 * estimate_MHz(currentcpu)));
+      cpu->setSize((long long) (1000000 * average_MHz(currentcpu)));
 
     currentcpu++;
   }
@@ -556,4 +571,4 @@ bool scan_cpuid(hwNode & n)
 }
 #endif
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.8 2003/02/02 18:56:52 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.9 2003/02/02 19:05:14 ezix Exp $";
