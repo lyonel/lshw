@@ -1,0 +1,3 @@
+* use sysfs instead of trying to "guess" a device's parent
+* report wireless-related information (SSID, channel, AP, mode, etc.) - cf. iwconfig
+* SCSI clean-up (cf. newest versions of sg_utils)
