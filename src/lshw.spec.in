@@ -30,8 +30,8 @@ http://www.ezix.org/software/lshw.html
 Summary: HardWare LiSter (GUI version)
 Group: Applications/System
 Requires: %{name}
-Requires: gtk2
-BuildRequires: gtk2-devel
+Requires: gtk2 >= 2.4.0
+BuildRequires: gtk2-devel >= 2.4.0
 
 %description gui
 lshw (Hardware Lister) is a small tool to provide detailed informaton on the hardware configuration of the machine. It can report exact memory configuration, firmware version, mainboard configuration, CPU version and speed, cache configuration, bus speed, etc. on DMI-capable x86 systems and on some PowerPC machines (PowerMac G4 is known to work).
