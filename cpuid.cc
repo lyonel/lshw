@@ -1,4 +1,5 @@
 #include "cpuid.h"
+#include <stdio.h>
 
 #define cpuid(in,a,b,c,d)\
   asm("cpuid": "=a" (a), "=b" (b), "=c" (c), "=d" (d) : "a" (in));
@@ -355,4 +356,4 @@ bool scan_cpuid(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.1 2003/02/02 15:43:42 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.2 2003/02/02 15:56:40 ezix Exp $";
