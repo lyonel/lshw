@@ -313,6 +313,9 @@ bool scan_ide(hwNode & n)
     hwNode ide("ide",
 	       hw::storage);
 
+    ide.setLogicalName(namelist[i]->d_name);
+    ide.setHandle("IDE:" + string(namelist[i]->d_name));
+
     if (loadfile
 	(string(PROC_IDE) + "/" + namelist[i]->d_name + "/config", config))
     {
@@ -345,6 +348,8 @@ bool scan_ide(hwNode & n)
 	  idedevice.setLogicalName(string("/dev/") + devicelist[j]->d_name);
 	  idedevice.setProduct(get_string(basepath + "/model"));
 	  idedevice.claim();
+	  idedevice.setHandle(ide.getHandle() + ":" +
+			      string(devicelist[j]->d_name));
 
 	  probe_ide(devicelist[j]->d_name, idedevice);
 
@@ -352,9 +357,6 @@ bool scan_ide(hwNode & n)
 	  free(devicelist[j]);
 	}
 	free(devicelist);
-
-	ide.setLogicalName(namelist[i]->d_name);
-	ide.setHandle("IDE:" + string(namelist[i]->d_name));
 
 	if (identify[0] == "pci" && identify.size() == 11)
 	{
@@ -381,4 +383,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.10 2003/02/06 23:19:16 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.11 2003/02/07 12:09:40 ezix Exp $";
