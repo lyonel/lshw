@@ -45,12 +45,12 @@ configuration of the machine. It can report exact memory
 configuration, firmware version, mainboard configuration, 
 <hardware>CPU</hardware> version
 and speed, cache configuration, bus speed, etc. on 
-<acronym>DMI</acronym>-capable x86
+<acronym>DMI</acronym>-capable x86 or IA-64
 systems and on some <productname>PowerPC</productname>
 machines (<productname>PowerMac G4</productname> is known to work).
 </para>
 <para>
-It currently supports <hardware>DMI</hardware> (x86 only), <productname>OpenFirmware</productname> device tree (<productname>PowerPC</productname> only),
+It currently supports <hardware>DMI</hardware> (x86 and IA-64 only), <productname>OpenFirmware</productname> device tree (<productname>PowerPC</productname> only),
 <hardware>PCI/AGP</hardware>, <hardware>CPUID</hardware> (x86), <hardware>IDE/ATA/ATAPI</hardware>, <hardware>PCMCIA</hardware> (only tested on x86) and <hardware>SCSI</hardware>.
 </para>
 
