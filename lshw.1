@@ -3,7 +3,8 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "09 May 2004" "$Rev: 591 $" ""
+.TH "LSHW" "1" "10 May 2004" "$Rev: 591 $" ""
+
 .SH NAME
 lshw \- list hardware
 .SH SYNOPSIS
@@ -30,7 +31,7 @@ systems and on some PowerPC
 machines (PowerMac G4 is known to work).
 .PP
 It currently supports DMI (x86 and IA-64 only), OpenFirmware device tree (PowerPC only),
-PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86) and SCSI.
+PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86) and SCSI\&.
 .PP
 .TP
 \fB-version\fR
@@ -46,13 +47,13 @@ Outputs the device tree as an HTML page.
 Outputs the device tree as an XML tree.
 .TP
 \fB-short\fR
-Outputs the device tree showing hardware paths, very much like the output of HP-UX's \fBioscan\fR.
+Outputs the device tree showing hardware paths, very much like the output of HP-UX\&'s \fBioscan\fR\&.
 .TP
 \fB-class \fIclass\fB\fR
-Only show the given class of hardware. \fIclass\fR can be found using \fBlshw -short\fR.
+Only show the given class of hardware. \fIclass\fR can be found using \fBlshw -short\fR\&.
 .TP
 \fB-C \fIclass\fB\fR
-Alias for \fB-class\fR \fIclass\fR.
+Alias for \fB-class\fR \fIclass\fR\&.
 .TP
 \fB-enable \fItest\fB\fR
 .TP
@@ -123,7 +124,7 @@ Don't use DMI to detect hardware.
 .SH "AUTHOR"
 .PP
 \fBlshw\fR is maintained by Lyonel Vincent
-<lyonel@ezix.org>.
+<lyonel@ezix.org>\&.
 .SH "OTHER INFO"
 .PP
 The webpage for \fBlshw\fR is at 
