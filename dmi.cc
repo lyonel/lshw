@@ -882,7 +882,8 @@ static void dmi_table(int fd,
 		       hw::memory);
 
 	size = data[0x0E] * (1 << data[8]);
-	newnode.setCapacity(size);
+	newnode.setCapacity(data[0x0E]);
+	newnode.setSize(data[8]);
 
 	hwNode *memorynode = node.getChild("memory");
 	if (!memorynode)
