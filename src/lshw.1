@@ -3,8 +3,7 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "25 October 2004" "$Rev: 723 $" ""
-
+.TH "LSHW" "1" "06 December 2004" "$Rev: 723 $" ""
 .SH NAME
 lshw \- list hardware
 .SH SYNOPSIS
@@ -31,7 +30,7 @@ systems and on some PowerPC
 machines (PowerMac G4 is known to work).
 .PP
 It currently supports DMI (x86 and IA-64 only), OpenFirmware device tree (PowerPC only),
-PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86) and SCSI\&.
+PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86), SCSI and USB.
 .PP
 .TP
 \fB-version\fR
@@ -47,18 +46,18 @@ Outputs the device tree as an HTML page.
 Outputs the device tree as an XML tree.
 .TP
 \fB-short\fR
-Outputs the device tree showing hardware paths, very much like the output of HP-UX\&'s \fBioscan\fR\&.
+Outputs the device tree showing hardware paths, very much like the output of HP-UX's \fBioscan\fR.
 .TP
 \fB-class \fIclass\fB\fR
-Only show the given class of hardware. \fIclass\fR can be found using \fBlshw -short\fR\&.
+Only show the given class of hardware. \fIclass\fR can be found using \fBlshw -short\fR.
 .TP
 \fB-C \fIclass\fB\fR
-Alias for \fB-class\fR \fIclass\fR\&.
+Alias for \fB-class\fR \fIclass\fR.
 .TP
 \fB-enable \fItest\fB\fR
 .TP
 \fB-disable \fItest\fB\fR
-Enables or disables a test. \fItest\fR can be \fBdmi\fR (for DMI/SMBIOS extensions), \fBdevice-tree\fR (for OpenFirmware device tree), \fBspd\fR (for memory Serial Presence Detect), \fBmemory\fR (for memory-size guessing heuristics), \fBcpuinfo\fR (for kernel-reported CPU detection), \fBcpuid\fR (for CPU detection), \fBpci\fR (for PCI/AGP access), \fBisapnp\fR (for ISA PnP extensions), \fBpcmcia\fR (for PCMCIA/PCCARD), \fBide\fR (for IDE/ATAPI), \fBscsi\fR (for SCSI) or \fBnetwork\fR (for network interfaces detection).
+Enables or disables a test. \fItest\fR can be \fBdmi\fR (for DMI/SMBIOS extensions), \fBdevice-tree\fR (for OpenFirmware device tree), \fBspd\fR (for memory Serial Presence Detect), \fBmemory\fR (for memory-size guessing heuristics), \fBcpuinfo\fR (for kernel-reported CPU detection), \fBcpuid\fR (for CPU detection), \fBpci\fR (for PCI/AGP access), \fBisapnp\fR (for ISA PnP extensions), \fBpcmcia\fR (for PCMCIA/PCCARD), \fBide\fR (for IDE/ATAPI), \fBusb\fR (for USB devices),\fBscsi\fR (for SCSI) or \fBnetwork\fR (for network interfaces detection).
 .SH "BUGS"
 .PP
 \fBlshw\fR currently does not detect 
@@ -124,7 +123,7 @@ Don't use DMI to detect hardware.
 .SH "AUTHOR"
 .PP
 \fBlshw\fR is maintained by Lyonel Vincent
-<lyonel@ezix.org>\&.
+<lyonel@ezix.org>.
 .SH "OTHER INFO"
 .PP
 The webpage for \fBlshw\fR is at 
