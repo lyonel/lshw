@@ -6,7 +6,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.189 2005/02/09 19:34:13 vojtech Exp $
+# $Id: usb.ids,v 1.193 2005/02/24 12:12:47 vojtech Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -69,6 +69,7 @@
 	0405  ScanJet 3400cse
 	0504  DeskJet 885c
 	0505  ScanJet 2100c
+	050c  5219 Wireless Keyboard
 	0517  LaserJet 1000
 	0601  ScanJet 6300c
 	0604  DeskJet 840c
@@ -276,6 +277,7 @@
 	3020  SoundBlaster Audigy 2 NX
 	4003  VideoBlaster WebCam Go Plus [W9967CF]
 	4004  Nomad II MG MP3 Player
+	4005  WebCam Blaster Go ES
 	400a  PC-Cam 300
 	400b  PC-Cam 600
 	400c  WebCam 5 [pwc]
@@ -306,6 +308,7 @@
 0420  Chips and Technologies
 0421  Nokia Mobile Phones
 	0401  6650 GSM Phone
+	040b  N-Gage GSM Phone
 	040f  6230 GSM Phone
 	0410  6630 Imaging Smartphone
 	0800  Connectivity Cable DKU-5
@@ -433,9 +436,11 @@
 045a  SONICblue, Inc.
 	0b4a  SupraMax 2890 56K Modem [Lucent Atlas]
 	0b68  SupraMax 56K Modem
+	5220  Rio Nitrus MP3 Player
 045b  Hitachi, Ltd
 045d  Nortel Networks, Ltd
 045e  Microsoft Corp.
+	0007  SideWinder Game Pad
 	0008  SideWinder Precision Pro
 	0009  IntelliMouse
 	000b  Natural Keyboard Elite
@@ -710,6 +715,7 @@
 	1064  S300 Printer
 	106b  S520 Printer
 	106d  S750 Printer
+	1072  I850 Printer
 	1073  I550 Printer
 	1074  S330 Printer
 	2201  CanoScan FB320U
@@ -929,6 +935,7 @@
 	011a  FinePix S304/3800 (Disk mode)
 	011b  FinePix S304/3800 (PC-Cam mode)
 	011c  FinePix 2650 (Disk mode)
+	012c  FinePix S7000 Zoom (Disk mode)
 	0130  Finepix S5000 Camera (Disk mode)
 	0131  Finepix S5000 Camera (PC-Cam mode)
 04cc  Philips Semiconductors
@@ -1787,14 +1794,23 @@
 	4004  Scan Elite II
 	4006  Dimage 7 Camera
 	4007  Dimage S304 Camera
+	4008  Dimage 5 Camera
 	4009  Dimage X Camera
 	400a  Dimage S404 Camera
 	400b  Dimage 7i Camera
+	400c  Dimage F100 Camera
 	400d  Scan Dual III
+	400f  Dimage 7Hi Camera
+	4010  Dimage Xi Camera
+	4011  Dimage F300 Camera
+	4012  Dimage F200 Camera
 	4014  Dimage S414 Camera
 	4015  Dimage XT Camera [storage]
 	4016  Dimage XT Camera [remote mode]
-	4018  Dimage Z1
+	4018  Dimage Z1  Camera
+	401a  Dimage A1 Camera
+	401c  Dimage X20 Camera
+	401e  Dimage E323 Camera
 068a  Pertech, Inc.
 068b  Potrans International, Inc.
 068e  CH Products, Inc.
@@ -3358,6 +3374,7 @@
 0f4b  St. John Technology Co., Ltd
 0f4c  WorldWide Cable Opto Corp.
 0f4d  Microtune, Inc.
+	1000  Bluetooth Dongle
 0f4e  Freedom Scientific
 0f52  Wing Key Electrical Co., Ltd
 0f53  Dongguan White Horse Cable Factory, Ltd
@@ -3512,6 +3529,7 @@
 10a9  SK Teletech Co., Ltd
 10aa  Cables To Go
 10ab  USI Co., Ltd
+	10c5  Sony-Ericsson datacable
 10ac  Honeywell, Inc.
 10ae  Princeton Technology Corp.
 10b5  Comodo (PLX?)
@@ -3651,7 +3669,16 @@
 	0001  Class 1 Bluetooth Dongle
 1312  ICS Electronics
 132b  Konica Minolta
-	0015  Dimage G530
+	0000  Dimage A2 Camera
+	0003  Dimage Xg Camera
+	0006  Dimage Z2 Camera
+	0008  Dimage X21 Camera
+	000b  Dimage Z10 Camera
+	000d  Dimage X50 Camera
+	0010  Dimage G600 Camera
+	0013  Dimage X31 Camera
+	0015  Dimage G530 Camera
+	0017  Dimage Z3 Camera
 1342  Mobility
 	0200  EasiDock 200 Hub
 	0201  EasiDock 200 Keyboard and Mouse Port
@@ -3785,6 +3812,7 @@
 	0212  Pinnacle Studio PCTV USB (NTSC)
 	0214  Pinnacle Studio PCTV USB (PAL) with FM radio
 	0300  Pinnacle Studio Linx Video input cable (NTSC)
+	0301  Pinnacle Studio Linx Video input cable (PAL)
 	0419  Pinnacle PCTV Bungee USB (PAL) with FM radio
 2318  Shining Technologies, Inc. [hex]
 	0011  CitiDISK Jr. IDE Enclosure
@@ -3865,6 +3893,7 @@
 9710  Noname
 	7715  Printer cable
 c251  Keil Software, Inc.
+	2710  ULink
 eb1a  eMPIA Technology, Inc.
 	17de  KWorld V-Stream XPERT DTV - DVB-T USB cold
 	17df  KWorld V-Stream XPERT DTV - DVB-T USB warm
