@@ -85,7 +85,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.72 2004/02/10 13:24:48 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.73 2004/02/12 10:57:37 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -97,6 +97,46 @@ struct dmi_header
   u8 length;
   u16 handle;
 };
+
+static string dmi_uuid(u8 * p)
+{
+  unsigned int i = 0;
+  bool valid = false;
+  char buffer[60];
+
+  for (i = 0; i < 16; i++)
+    if (p[i] != p[0])
+      valid = true;
+
+  if (!valid)
+    return "";
+
+  snprintf(buffer, sizeof(buffer),
+	   "%02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X",
+	   p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10],
+	   p[11], p[12], p[13], p[14], p[15]);
+
+  return hw::strip(string(buffer));
+}
+
+static string dmi_bootinfo(u8 code)
+{
+  static const char *status[] = {
+    "normal",			/* 0 */
+    "no-bootable-media",
+    "os-error",
+    "hardware-failure-fw",
+    "hardware-failure-os",
+    "user-requested",
+    "security-violation",
+    "image",
+    "watchdog"			/* 8 */
+  };
+  if (code <= 8)
+    return string(status[code]);
+  else
+    return "oem-specific";
+}
 
 static string dmi_string(struct dmi_header *dm,
 			 u8 s)
@@ -520,7 +560,6 @@ static void dmi_table(int fd,
   hwNode *hardwarenode = NULL;
   u8 *data;
   int i = 0;
-  int r = 0, r2 = 0;
   string handle;
   u32 mmoffset = 0;
   void *mmp = NULL;
@@ -533,18 +572,6 @@ static void dmi_table(int fd,
     // memory exhausted
     return;
 
-#ifdef USE_LSEEK
-  if (lseek(fd, (long) base, SEEK_SET) == -1)
-    // i/o error
-    return;
-
-  while (r2 != len && (r = read(fd, buf + r2, len - r2)) != 0)
-    r2 += r;
-  if (r == 0)
-    // i/o error
-    return;
-
-#else
   mmoffset = base % getpagesize();
 
   mmp = mmap(0, mmoffset + len, PROT_READ, MAP_SHARED, fd, base - mmoffset);
@@ -556,7 +583,6 @@ static void dmi_table(int fd,
   memcpy(buf, (u8 *) mmp + mmoffset, len);
 
   munmap(mmp, mmoffset + len);
-#endif
 
   data = buf;
   while (data + sizeof(struct dmi_header) <= (u8 *) buf + len)
@@ -622,6 +648,8 @@ static void dmi_table(int fd,
       node.setProduct(dmi_string(dm, data[5]));
       node.setVersion(dmi_string(dm, data[6]));
       node.setSerial(dmi_string(dm, data[7]));
+      if (dm->length >= 0x19)
+	node.setConfig("uuid", dmi_uuid(data + 8));
       break;
 
     case 2:
@@ -1135,6 +1163,9 @@ static void dmi_table(int fd,
       break;
     case 32:
       // System Boot Information
+      if (dm->length < 0x0B)
+	break;
+      node.setConfig("boot", dmi_bootinfo(data[0x0a]));
       break;
     case 33:
       // 64-bit Memory Error Information
@@ -1190,21 +1221,11 @@ bool scan_dmi(hwNode & n)
     return false;
   if (fd == -1)
     return false;
-#ifdef USE_LSEEK
-  if (lseek(fd, fp, SEEK_SET) == -1)
-  {
-    close(fd);
-    return false;
-  }
-#endif
 
   fp -= 16;
   while (fp < 0xFFFFF)
   {
     fp += 16;
-#ifdef USE_LSEEK
-    if (read(fd, buf, 16) != 16)
-#else
     mmoffset = fp % getpagesize();
     mmp = mmap(0, mmoffset + 0x20, PROT_READ, MAP_SHARED, fd, fp - mmoffset);
     memset(buf, 0, sizeof(buf));
@@ -1214,7 +1235,6 @@ bool scan_dmi(hwNode & n)
       munmap(mmp, mmoffset + 0x20);
     }
     if (mmp == MAP_FAILED)
-#endif
     {
       close(fd);
       return false;
@@ -1233,12 +1253,6 @@ bool scan_dmi(hwNode & n)
       dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
       dmimin = buf[14] ? buf[14] & 0x0F : smminver;
       dmi_table(fd, base, len, num, n, dmimaj, dmimin);
-#ifdef USE_LSEEK
-      /*
-       * dmi_table moved us far away 
-       */
-      lseek(fd, fp + 16, SEEK_SET);
-#endif
     }
   }
   close(fd);
