@@ -13,6 +13,8 @@
 #include <vector>
 #include <linux/hdreg.h>
 
+static char *id = "@(#) $Id: ide.cc,v 1.18 2003/04/29 16:45:06 ezix Exp $";
+
 #define PROC_IDE "/proc/ide"
 
 #define PCI_SLOT(devfn)         (((devfn) >> 3) & 0x1f)
@@ -381,7 +383,7 @@ bool scan_ide(hwNode & n)
 	}
 	else
 	{
-	  for (int k = 0; k < ide.countChildren(); k++)
+	  for (unsigned int k = 0; k < ide.countChildren(); k++)
 	  {
 	    hwNode *candidate =
 	      n.findChildByLogicalName(ide.getChild(k)->getLogicalName());
@@ -399,7 +401,7 @@ bool scan_ide(hwNode & n)
   }
   free(namelist);
 
+  (void) &id;			// avoir "id defined but not used" warning
+
   return false;
 }
-
-static char *id = "@(#) $Id: ide.cc,v 1.17 2003/03/11 09:06:08 ezix Exp $";

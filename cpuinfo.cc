@@ -79,7 +79,7 @@ static void cpuinfo_ia64(hwNode & node,
 
     if (id == "cpu number")
     {
-      unsigned physicalcpu = 0;
+      int physicalcpu = 0;
 
       physicalcpu = atoi(value.c_str());
 
@@ -290,7 +290,6 @@ bool scan_cpuinfo(hwNode & n)
   {
     char buffer[1024];
     size_t count;
-    hwNode *cpu = core->getChild("cpu");
     string cpuinfo_str = "";
 
     while ((count = read(cpuinfo, buffer, sizeof(buffer))) > 0)
@@ -303,7 +302,7 @@ bool scan_cpuinfo(hwNode & n)
     splitlines(cpuinfo_str, cpuinfo_lines);
     cpuinfo_str = "";		// free memory
 
-    for (int i = 0; i < cpuinfo_lines.size(); i++)
+    for (unsigned int i = 0; i < cpuinfo_lines.size(); i++)
     {
       string id = "";
       string value = "";
@@ -337,7 +336,9 @@ bool scan_cpuinfo(hwNode & n)
     close(cpuinfo);
     return false;
   }
+
+  return true;
 }
 
 static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.16 2003/03/14 09:18:24 ezix Exp $";
+  "@(#) $Id: cpuinfo.cc,v 1.17 2003/04/29 16:45:06 ezix Exp $";

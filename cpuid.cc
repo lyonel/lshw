@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
+static char *id = "@(#) $Id: cpuid.cc,v 1.14 2003/04/29 16:45:06 ezix Exp $";
+
 #if defined(__i386__) || defined(__alpha__)
 
 static hwNode *getcache(hwNode & node,
@@ -241,7 +243,7 @@ static bool dointel(unsigned long maxi,
 {
   char buffer[1024];
   unsigned long signature, eax, ebx, ecx, edx, unused;
-  int stepping, model, family, type, reserved, brand, siblings;
+  int stepping, model, family;
 
   if (maxi >= 1)
   {
@@ -299,33 +301,20 @@ static bool dointel(unsigned long maxi,
 
     if (l1cache != 0)
     {
-      hwNode *l1 = cpu->getChild("cache:0");
-      hwNode *l2 = cpu->getChild("cache:1");
+      hwNode *l1 = getcache(*cpu, 0);
+      hwNode *l2 = getcache(*cpu, 1);
 
       if (l1)
-	l1->setSize(l1cache);
-      else
       {
-	hwNode newl1("cache",
-		     hw::memory);
-
-	newl1.setDescription("L1 cache");
-	newl1.setSize(l1cache);
-
-	cpu->addChild(newl1);
+	l1->setSize(l1cache);
+	if (l1->getDescription() == "")
+	  l1->setDescription("L1 cache");
       }
       if (l2 && l2cache)
-	l2->setSize(l2cache);
-      else
       {
-	hwNode newl2("cache",
-		     hw::memory);
-
-	newl2.setDescription("L2 cache");
-	newl2.setSize(l2cache);
-
-	if (l2cache)
-	  cpu->addChild(newl2);
+	l2->setSize(l2cache);
+	if (l2->getDescription() == "")
+	  l2->setDescription("L2 cache");
       }
     }
   }
@@ -422,7 +411,7 @@ static bool docyrix(unsigned long maxi,
 		    hwNode * cpu,
 		    int cpunumber = 0)
 {
-  unsigned long maxei = 0, eax, ebx, ecx, edx;
+  unsigned long eax, ebx, ecx, edx;
   unsigned int family = 0, model = 0, stepping = 0;
   char buffer[1024];
 
@@ -531,14 +520,14 @@ static float average_MHz(int cpunum,
 
 bool scan_cpuid(hwNode & n)
 {
-  unsigned long maxi, unused, eax, ebx, ecx, edx;
+  unsigned long maxi, ebx, ecx, edx;
   hwNode *cpu = NULL;
   int currentcpu = 0;
 
   if (!haveCPUID())
     return false;
 
-  while (cpu = getcpu(n, currentcpu))
+  while ((cpu = getcpu(n, currentcpu)))
   {
     cpu->claim(true);		// claim the cpu and all its children
     cpuid(currentcpu, 0, maxi, ebx, ecx, edx);
@@ -565,6 +554,8 @@ bool scan_cpuid(hwNode & n)
 
     currentcpu++;
   }
+
+  (void) &id;			// avoid warning "id defined but not used"
 
   return true;
 }
@@ -659,6 +650,8 @@ bool scan_cpuid(hwNode & n)
     currentcpu++;
   }
 
+  (void) &id;			// avoid warning "id defined but not used"
+
   return true;
 }
 
@@ -666,9 +659,8 @@ bool scan_cpuid(hwNode & n)
 
 bool scan_cpuid(hwNode & n)
 {
+  (void) &id;			// avoid warning "id defined but not used"
   return true;
 }
 #endif /* __alpha__ */
 #endif /* __i386__ */
-
-static char *id = "@(#) $Id: cpuid.cc,v 1.13 2003/04/29 07:21:47 ezix Exp $";

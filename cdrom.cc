@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <linux/cdrom.h>
 
+static char *id = "@(#) $Id: cdrom.cc,v 1.4 2003/04/29 16:45:06 ezix Exp $";
+
 #ifndef CDC_CD_R
 #define CDC_CD_R 0x2000
 #endif
@@ -75,7 +77,7 @@ bool scan_cdrom(hwNode & n)
     n.setDescription("DVD-RAM writer");
   }
 
+  (void) &id;			// avoid warning "id defined but not used"
+
   return true;
 }
-
-static char *id = "@(#) $Id: cdrom.cc,v 1.3 2003/02/17 17:43:12 ezix Exp $";

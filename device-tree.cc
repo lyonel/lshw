@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <dirent.h>
 
+static char *id =
+  "@(#) $Id: device-tree.cc,v 1.13 2003/04/29 16:45:06 ezix Exp $";
+
 #define DEVICETREE "/proc/device-tree"
 
 static unsigned long get_long(const string & path)
@@ -108,7 +111,6 @@ static void scan_devtree_cpu(hwNode & core)
       string basepath =
 	string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
       unsigned long version = 0;
-      unsigned long cachesize = 0;
       hwNode cpu("cpu",
 		 hw::processor);
       struct dirent **cachelist;
@@ -130,7 +132,7 @@ static void scan_devtree_cpu(hwNode & core)
 	int major = (version & 0xff00) >> 8;
 	char buffer[20];
 
-	snprintf(buffer, sizeof(buffer), "%x.%d.%d",
+	snprintf(buffer, sizeof(buffer), "%lx.%d.%d",
 		 (version & 0xffff0000) >> 16, major, minor);
 	cpu.setVersion(buffer);
 
@@ -300,8 +302,7 @@ bool scan_device_tree(hwNode & n)
     core->addCapability(get_string(DEVICETREE "/compatible"));
   }
 
+  (void) &id;			// avoid warning "id declared but not used"
+
   return true;
 }
-
-static char *id =
-  "@(#) $Id: device-tree.cc,v 1.12 2003/02/06 21:46:33 ezix Exp $";

@@ -6,6 +6,8 @@
 #include <unistd.h>
 //#include <linux/fs.h>
 
+static char *id = "@(#) $Id: disk.cc,v 1.3 2003/04/29 16:45:06 ezix Exp $";
+
 #ifndef BLKROGET
 #define BLKROGET   _IO(0x12,94)	/* get read-only status (0 = read_write) */
 #endif
@@ -42,7 +44,7 @@ bool scan_disk(hwNode & n)
 
   close(fd);
 
+  (void) &id;			// to avoid warning "id defined but not used"
+
   return true;
 }
-
-static char *id = "@(#) $Id: disk.cc,v 1.2 2003/03/12 13:06:01 ezix Exp $";
