@@ -183,7 +183,7 @@ void hwNode::setVendor(const string & vendor)
 string hwNode::getProduct() const
 {
   if (This)
-    return This->product;
+    return This->product + " (" + This->handle + ")";
   else
     return "";
 }
@@ -337,14 +337,14 @@ static string generateId(const string & radical,
   return radical + ":" + string(buffer);
 }
 
-bool hwNode::addChild(const hwNode & node)
+hwNode *hwNode::addChild(const hwNode & node)
 {
   hwNode *existing = NULL;
   string id = node.getId();
   int count = 0;
 
   if (!This)
-    return false;
+    return NULL;
 
   existing = getChild(id);
   if (existing)			// first rename existing instance
@@ -362,5 +362,5 @@ bool hwNode::addChild(const hwNode & node)
   if (existing || getChild(generateId(id, 0)))
     This->children.back().setId(generateId(id, count));
 
-  return true;
+  return getChild(This->children.back().getId());
 }

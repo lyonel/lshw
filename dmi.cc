@@ -895,7 +895,7 @@ static void dmi_table(int fd,
 	  char slotref[10];
 	  u16 slothandle = data[0x0F + 2 * i] << 8 | data[0x0F + 2 * i + 1];
 	  snprintf(slotref, sizeof(slotref), "DMI:%04X", slothandle);
-	  links[slotref] = string(handle);
+	  links[hw::strip(slotref)] = hw::strip(handle);
 	}
 
 	newnode.setProduct(dmi_decode_ram(data[0x0C] << 8 | data[0x0B]) +
@@ -921,6 +921,7 @@ static void dmi_table(int fd,
       {
 	hwNode newnode("bank",
 		       hw::memory);
+	hwNode *controllernode = NULL;
 	unsigned long long clock = 0;
 	unsigned long long capacity = 0;
 	unsigned long long size = 0;
@@ -960,12 +961,37 @@ static void dmi_table(int fd,
 	if ((data[11] & 4) == 0)
 	{
 	  if (data[11] & (1 << 0))
-	    printf("\t\t*** BANK HAS UNCORRECTABLE ERRORS (BIOS DISABLED)\n");
-	  if (data[11] & (1 << 1))
-	    printf("\t\t*** BANK LOGGED CORRECTABLE ERRORS AT BOOT\n");
+	    // bank has uncorrectable errors (BIOS disabled)
+	    newnode.disable();
 	}
 
-	node.addChild(newnode);
+	newnode.setHandle(handle);
+
+	if (links.find(hw::strip(handle)) != links.end())
+	  controllernode = node.findChildByHandle(links[hw::strip(handle)]);
+
+	if (!controllernode)
+	  controllernode = node.findChildByHandle("DMI:FAKE:RAM");
+
+	if (!controllernode)
+	{
+	  hwNode *memorynode = node.getChild("memory");
+
+	  if (!memorynode)
+	    memorynode = node.addChild(hwNode("memory", hw::memory));
+
+	  if (memorynode)
+	  {
+	    hwNode fakecontrollernode("ram",
+				      hw::memory,
+				      "Memory Controller");
+
+	    fakecontrollernode.setHandle("DMI:FAKE:RAM");
+	    controllernode = memorynode->addChild(fakecontrollernode);
+	  }
+	}
+	else if (controllernode)
+	  controllernode->addChild(newnode);
       }
       break;
     case 7:
