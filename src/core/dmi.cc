@@ -1266,6 +1266,7 @@ static void dmi_table(int fd,
 	u16 width = 0;
 	char bits[10];
 	string arrayhandle;
+        newnode.setDescription("empty memory bank");
 	arrayhandle = dmi_handle(data[5] << 8 | data[4]);
 	strcpy(bits, "");
 	// total width
