@@ -75,8 +75,10 @@
  */
 
 #include "dmi.h"
+#include "osutils.h"
 
 #include <map>
+#include <vector>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -85,7 +87,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.73 2004/02/12 10:57:37 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.74 2004/02/25 17:12:45 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -1206,14 +1208,36 @@ static void dmi_table(int fd,
   free(buf);
 }
 
+long get_efi_systab_smbios()
+{
+  long result = 0;
+  vector < string > sysvars;
+
+  if (loadfile("/proc/efi/systab", sysvars))
+    for (unsigned int i = 0; i < sysvars.size(); i++)
+    {
+      vector < string > variable;
+
+      splitlines(sysvars[i], variable, '=');
+
+      if ((variable[0] == "SMBIOS") && (variable.size() == 2))
+      {
+	sscanf(variable[1].c_str(), "%lx", &result);
+      }
+    }
+
+  return result;
+}
+
 bool scan_dmi(hwNode & n)
 {
   unsigned char buf[20];
   int fd = open("/dev/mem",
 		O_RDONLY);
-  long fp = 0xE0000L;
+  long fp = get_efi_systab_smbios();
   u32 mmoffset = 0;
   void *mmp = NULL;
+  bool efi = true;
   u8 smmajver = 0, smminver = 0;
   u16 dmimaj = 0, dmimin = 0;
   if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4)
@@ -1222,8 +1246,14 @@ bool scan_dmi(hwNode & n)
   if (fd == -1)
     return false;
 
+  if (fp <= 0)
+  {
+    efi = false;
+    fp = 0xE0000L;		/* default value for non-EFI capable platforms */
+  }
+
   fp -= 16;
-  while (fp < 0xFFFFF)
+  while (efi || (fp < 0xFFFFF))
   {
     fp += 16;
     mmoffset = fp % getpagesize();
@@ -1253,6 +1283,9 @@ bool scan_dmi(hwNode & n)
       dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
       dmimin = buf[14] ? buf[14] & 0x0F : smminver;
       dmi_table(fd, base, len, num, n, dmimaj, dmimin);
+
+      if (efi)
+	break;			// we don't need to search the memory for EFI systems
     }
   }
   close(fd);
