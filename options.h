@@ -8,4 +8,6 @@ bool disabled(const char * option);
 void enable(const char * option);
 void disable(const char * option);
 
+bool visible(const char * c);
+
 #endif

@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.42 2004/01/19 16:15:15 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.43 2004/02/24 23:19:54 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/share/lshw/pci.ids:/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -621,7 +621,7 @@ bool scan_pci(hwNode & n)
       memset(&d, 0, sizeof(d));
       memset(driver, 0, sizeof(driver));
       cnt = sscanf(buf,
-		   "%x %x %x %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %s",
+		   "%x %x %x %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %[ -z]s",
 		   &dfn,
 		   &vend,
 		   &d.irq,

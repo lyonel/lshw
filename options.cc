@@ -6,15 +6,18 @@
  */
 
 #include "options.h"
+#include "osutils.h"
 
 #include <set>
+#include <vector>
 #include <string>
 
 using namespace std;
 
-static char *id = "@(#) $Id: options.cc,v 1.2 2003/10/13 09:57:00 ezix Exp $";
+static char *id = "@(#) $Id: options.cc,v 1.3 2004/02/24 23:19:54 ezix Exp $";
 
 static set < string > disabled_tests;
+static set < string > visible_classes;
 
 static void remove_option_argument(int i,
 				   int &argc,
@@ -51,6 +54,20 @@ bool parse_options(int &argc,
 
       remove_option_argument(i, argc, argv);
     }
+    else if (strcmp(argv[i], "-class") == 0)
+    {
+      vector < string > classes;
+
+      if (i + 1 >= argc)
+	return false;		// -class requires an argument
+
+      splitlines(argv[i + 1], classes, ',');
+
+      for (unsigned int j = 0; j < classes.size(); j++)
+	visible_classes.insert(classes[j]);
+
+      remove_option_argument(i, argc, argv);
+    }
     else
       i++;
   }
@@ -81,4 +98,11 @@ void disable(const char *option)
   disabled_tests.insert(string(option));
 
   (void) &id;			// avoid warning "id defined but not used"
+}
+
+bool visible(const char *c)
+{
+  if (visible_classes.size() == 0)
+    return true;
+  return visible_classes.find(string(c)) != visible_classes.end();
 }

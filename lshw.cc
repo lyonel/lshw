@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: lshw.cc,v 1.2 2003/11/07 16:51:06 ezix Exp $";
+static char *id = "@(#) $Id: lshw.cc,v 1.3 2004/02/24 23:19:54 ezix Exp $";
 
 void usage(const char *progname)
 {
@@ -17,6 +17,8 @@ void usage(const char *progname)
   fprintf(stderr, "\t-html           output hardware tree as HTML\n");
   fprintf(stderr, "\t-xml            output hardware tree as XML\n");
   fprintf(stderr, "\t-short          output hardware paths\n");
+  fprintf(stderr,
+	  "\t-class class    only show a certain class of hardware\n");
   fprintf(stderr,
 	  "\t-disable test   disable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr, "\n");

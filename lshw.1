@@ -3,12 +3,13 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "17 January 2004" "$Name:  $" ""
+.TH "LSHW" "1" "24 February 2004" "$Name:  $" ""
+
 .SH NAME
 lshw \- list hardware
 .SH SYNOPSIS
 
-\fBlshw\fR [ \fB-version\fR ] [ \fB-help\fR ] [ \fB-html\fR ] [ \fB-short\fR ] [ \fB-disable \fItest\fB\fR\fI ...\fR ] [ \fB-enable \fItest\fB\fR\fI ...\fR ]
+\fBlshw\fR [ \fB-version\fR ] [ \fB-help\fR ] [ \fB-html\fR ] [ \fB-short\fR ] [ \fB-class \fIclass\fB\fR\fI ...\fR ] [ \fB-disable \fItest\fB\fR\fI ...\fR ] [ \fB-enable \fItest\fB\fR\fI ...\fR ]
 
 .SH "DESCRIPTION"
 .PP
@@ -24,7 +25,7 @@ systems and on some PowerPC
 machines (PowerMac G4 is known to work).
 .PP
 It currently supports DMI (x86 only), OpenFirmware device tree (PowerPC only),
-PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86) and SCSI.
+PCI/AGP, CPUID (x86), IDE/ATA/ATAPI, PCMCIA (only tested on x86) and SCSI\&.
 .PP
 .TP
 \fB-version\fR
@@ -40,7 +41,10 @@ Outputs the device tree as an HTML page.
 Outputs the device tree as an XML tree.
 .TP
 \fB-short\fR
-Outputs the device tree showing hardware paths, very much like the output of HP-UX's \fBioscan\fR.
+Outputs the device tree showing hardware paths, very much like the output of HP-UX\&'s \fBioscan\fR\&.
+.TP
+\fB-class \fIclass\fB\fR
+Only show the given class of hardware. \fIclass\fR can be found using \fBlshw -short\fR\&.
 .TP
 \fB-enable \fItest\fB\fR
 .TP
@@ -85,6 +89,23 @@ Used on x86 platforms to access CPU-specific configuration.
 .TP
 \fB/proc/device-tree/*\fR
 Used on PowerPC platforms to access OpenFirmware configuration.
+.TP
+\fB/sys/*\fR
+Used on 2.6 kernels to access hardware/driver configuration information.
+.SH "EXAMPLES"
+.PP
+.TP
+\fBlshw -short\fR
+Lists hardware in a compact format.
+.TP
+\fBlshw -class disk -class storage\fR
+Lists all disks and storage controllers in the system.
+.TP
+\fBlshw -html -class network\fR
+Lists all network interfaces in HTML.
+.TP
+\fBlshw -disable dmi\fR
+Don't use DMI to detect hardware.
 .SH "SEE ALSO"
 .PP
 \fI/proc/*\fR, \fBlinuxinfo\fR(1), \fBlspci\fR(8), \fBlsusb\fR(8)
@@ -94,7 +115,7 @@ Used on PowerPC platforms to access OpenFirmware configuration.
 .SH "AUTHOR"
 .PP
 \fBlshw\fR is maintained by Lyonel Vincent
-<lyonel@ezix.org>.
+<lyonel@ezix.org>\&.
 .SH "OTHER INFO"
 .PP
 The webpage for \fBlshw\fR is at 
