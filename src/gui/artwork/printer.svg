@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="printer.svg"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
+   inkscape:version="0.41"
+   sodipodi:version="0.32"
+   id="svg2"
+   height="600.00000pt"
+   width="600.00000pt">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     inkscape:window-y="26"
+     inkscape:window-x="0"
+     inkscape:window-height="629"
+     inkscape:window-width="793"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="px"
+     inkscape:cy="260.48052"
+     inkscape:cx="375.00000"
+     inkscape:zoom="0.35000000"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF
+       id="RDF5">
+      <cc:Work
+         id="Work6"
+         rdf:about="">
+        <dc:format
+           id="format7">image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+           id="type9" />
+        <dc:title
+           id="title2085">Printer symbol</dc:title>
+        <dc:date
+           id="date2087">2005/03/28</dc:date>
+        <dc:creator
+           id="creator2089">
+          <cc:Agent
+             id="Agent2091">
+            <dc:title
+               id="title2093">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher
+           id="publisher2095">
+          <cc:Agent
+             id="Agent2097">
+            <dc:title
+               id="title2099">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier
+           id="identifier2101">printer</dc:identifier>
+        <dc:source
+           id="source2103">$Id$</dc:source>
+        <dc:language
+           id="language2105">C</dc:language>
+        <dc:subject
+           id="subject2107">
+          <rdf:Bag
+             id="Bag2109">
+            <rdf:li
+               id="li2123">printer</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"
+           id="license2125" />
+      </cc:Work>
+      <cc:License
+         id="License2127"
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           id="permits2129"
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           id="permits2131"
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           id="requires2133"
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           id="permits2135"
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           id="requires2137"
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           id="requires2139"
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <g
+       id="g2076">
+      <g
+         transform="translate(7.149555,0.000000)"
+         id="g2066">
+        <path
+           id="path1293"
+           d="M 188.57143,244.66483 L 188.57143,378.63721 L 574.28571,378.63721 L 574.28571,178.50563 L 274.28571,178.50563 L 188.57143,244.66483 z "
+           style="fill:#ffffff;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:15.310000;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+        <g
+           id="g2061">
+          <rect
+             y="301.28571"
+             x="249.42857"
+             height="15.000000"
+             width="277.14285"
+             id="rect2055"
+             style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:15.310000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+          <rect
+             y="266.28571"
+             x="249.42857"
+             height="15.000000"
+             width="277.14285"
+             id="rect2057"
+             style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:15.310000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+          <rect
+             y="231.28571"
+             x="249.42857"
+             height="15.000000"
+             width="277.14285"
+             id="rect2059"
+             style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:15.310000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+        </g>
+      </g>
+      <path
+         id="rect1291"
+         d="M 131.53125 350.00000 C 120.39585 350.00000 111.43750 358.95834 111.43750 370.09375 L 111.43750 561.34375 C 111.43750 572.47915 120.39584 581.43748 131.53125 581.43750 L 645.62500 581.43750 C 656.76040 581.43750 665.71873 572.47917 665.71875 561.34375 L 665.71875 370.09375 C 665.71875 358.95835 656.76042 350.00000 645.62500 350.00000 L 131.53125 350.00000 z M 599.34375 391.43750 L 619.25000 391.43750 C 623.62662 391.43750 627.15625 394.96715 627.15625 399.34375 L 627.15625 404.96875 C 627.15624 409.34536 623.62660 412.84375 619.25000 412.84375 L 599.34375 412.84375 C 594.96713 412.84376 591.43750 409.34535 591.43750 404.96875 L 591.43750 399.34375 C 591.43750 394.96716 594.96715 391.43750 599.34375 391.43750 z "
+         style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:0.60555232;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+    </g>
+  </g>
+</svg>
