@@ -1,18 +1,19 @@
 #include "mem.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/sysinfo.h>
 #include <fcntl.h>
 #include <unistd.h>
 
 bool scan_memory(hwNode & n)
 {
   struct stat buf;
-  struct sysinfo info;
   hwNode *memory = n.getChild("core/memory");
+  long pagesize = 0;
+  unsigned long long logicalmem = 0;
 
-  if (sysinfo(&info) != 0)
-    memset(&info, 0, sizeof(info));
+  pagesize = sysconf(_SC_PAGESIZE);
+  if (pagesize > 0)
+    logicalmem = pagesize * sysconf(_SC_PHYS_PAGES);
 
   if (memory)
   {
@@ -53,7 +54,10 @@ bool scan_memory(hwNode & n)
     if (memory)
     {
       memory->claim();
-      memory->setSize(buf.st_size);
+      if ((logicalmem == 0) || (logicalmem > buf.st_size / 2))
+	memory->setSize(buf.st_size);
+      else
+	memory->setSize(logicalmem);
       return true;
     }
   }
@@ -61,4 +65,4 @@ bool scan_memory(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: mem.cc,v 1.14 2003/04/02 16:24:44 ezix Exp $";
+static char *id = "@(#) $Id: mem.cc,v 1.15 2003/04/10 17:05:29 ezix Exp $";
