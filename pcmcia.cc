@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.11 2003/11/03 08:59:50 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 /* parts of this code come from the excellent pcmcia-cs package written by
  * David A. Hinds <dahinds@users.sourceforge.net>.

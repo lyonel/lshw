@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.15 2003/05/29 10:55:45 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 #if defined(__i386__) || defined(__alpha__)
 

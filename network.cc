@@ -33,7 +33,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.19 2004/04/14 21:19:54 ezix Exp $";
+  "@(#) $Id$";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
