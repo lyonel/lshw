@@ -9,6 +9,4 @@ std::string sysfs_getbusinfo(const std::string & devclass, const std::string & d
 
 std::string sysfs_driver(const std::string & devclass, const std::string & devname);
 
-//hwNode * findParent(hwNode hwNode & system, 
-
 #endif

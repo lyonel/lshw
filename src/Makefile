@@ -13,7 +13,7 @@ LDFLAGS=
 LDSTATIC=-static
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o sysfs.o display.o
+OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o sysfs.o display.o heuristics.o
 SRCS = $(OBJS:.o=.cc)
 
 DATAFILES = pci.ids
