@@ -2,6 +2,7 @@
 #include "print.h"
 
 #include "mem.h"
+#include "dmi.h"
 
 #include <unistd.h>
 
@@ -16,6 +17,7 @@ int main(int argc,
 		    hw::system);
 
     scan_memory(computer);
+    scan_dmi(computer);
 
     computer.addChild(hwNode("cpu"));
 

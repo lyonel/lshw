@@ -5,7 +5,7 @@ CXXFLAGS=-g
 LDFLAGS=
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o
+OBJS = hw.o main.o print.o mem.o dmi.o
 
 all: $(PACKAGENAME)
 

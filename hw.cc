@@ -50,6 +50,8 @@ hwNode & hwNode::operator = (const hwNode & o)
 
   if (o.This && This)
     (*This) = (*o.This);
+
+  return *this;
 }
 
 hwClass hwNode::getClass() const
@@ -155,6 +157,17 @@ const hwNode *hwNode::getChild(unsigned int i) const
     return NULL;
   else
     return &(This->children[i]);
+}
+
+hwNode *hwNode::getChild(const string & id)
+{
+  if (!This)
+    return NULL;
+
+  for (int i = 0; i < This->children.size(); i++)
+    if (This->children[i].getId() == id)
+      return &(This->children[i]);
+  return NULL;
 }
 
 bool hwNode::addChild(const hwNode & node)
