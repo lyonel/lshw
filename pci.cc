@@ -502,6 +502,15 @@ static string pci_bushandle(u_int8_t bus)
   return "PCIBUS:" + string(buffer);
 }
 
+static string cardbushandle(u_int8_t bus)
+{
+  char buffer[10];
+
+  snprintf(buffer, sizeof(buffer), "%02x", bus);
+
+  return "CARDBUS:" + string(buffer);
+}
+
 static string pci_handle(u_int16_t bus,
 			 u_int8_t dev,
 			 u_int8_t fct)
@@ -619,6 +628,7 @@ bool scan_pci(hwNode & n)
       else
       {
 	hw::hwClass deviceclass = hw::generic;
+	string devicename = "generic";
 
 	switch (dclass >> 8)
 	{
@@ -657,10 +667,14 @@ bool scan_pci(hwNode & n)
 	  break;
 	}
 
-	device = new hwNode(get_class_name(dclass), deviceclass);
+	devicename = get_class_name(dclass);
+	device = new hwNode(devicename, deviceclass);
 
 	if (device)
 	{
+	  if (devicename == "pcmcia")
+	    device->addCapability("pcmcia");
+
 	  if (deviceclass == hw::display)
 	    for (int j = 0; j < 6; j++)
 	      if ((d.size[j] != 0xffffffff)
@@ -740,4 +754,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.22 2003/02/08 14:25:36 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.23 2003/02/09 22:17:06 ezix Exp $";
