@@ -571,6 +571,16 @@ static float average_MHz(int cpunum,
     return 0;
 }
 
+static long round_MHz(float fMHz)
+{
+  long MHz = (long)fMHz;
+
+  if ((MHz % 50) > 15)
+    return ((MHz / 50) * 50) + 50;
+  else
+    return ((MHz / 50) * 50);
+}
+
 bool scan_cpuid(hwNode & n)
 {
   unsigned long maxi, ebx, ecx, edx;
@@ -603,7 +613,7 @@ bool scan_cpuid(hwNode & n)
 
     cpu->claim(true);		// claim the cpu and all its children
     if (cpu->getSize() == 0)
-      cpu->setSize((long long) (1000000 * average_MHz(currentcpu)));
+      cpu->setSize((long long) (1000000 * round_MHz(average_MHz(currentcpu))));
 
     currentcpu++;
   }
