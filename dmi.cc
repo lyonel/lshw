@@ -851,6 +851,9 @@ static void dmi_table(int fd,
 	u = data[0x17] << 8 | data[0x16];
 	newnode.setSize(u * 1000000);
 
+	if (newnode.getSize() > newnode.getCapacity())
+	  newnode.setCapacity(0);
+
 	// CPU enabled/disabled by BIOS?
 	u = data[0x18] & 0x07;
 	if ((u == 2) || (u == 3) || (u == 4))
