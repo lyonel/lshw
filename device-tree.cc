@@ -19,7 +19,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.25 2003/10/30 23:37:00 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.26 2003/10/30 23:53:09 ezix Exp $";
 
 #define DIMMINFOSIZE 0x80
 typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
@@ -334,7 +334,16 @@ static void scan_devtree_memory(hwNode & core)
 
 	    if (read(fd, &dimminfo, sizeof(dimminfo)) > 0)
 	    {
-	      bank.setSerial(string((char *) &dimminfo + 0x49, 18));
+	      if (size > 0)
+	      {
+		char dimmversion[20];
+		snprintf(dimmversion, sizeof(dimmversion),
+			 "%02X%02X,%02X %02X,%02X", dimminfo[0x5b],
+			 dimminfo[0x5c], dimminfo[0x5d], dimminfo[0x5e],
+			 dimminfo[0x48]);
+		bank.setSerial(string((char *) &dimminfo + 0x49, 18));
+		bank.setVersion(dimmversion);
+	      }
 	    }
 	  }
 
