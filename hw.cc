@@ -311,12 +311,21 @@ void hwNode::setClock(unsigned long long clock)
     This->clock = clock;
 }
 
-unsigned int hwNode::countChildren() const
+unsigned int hwNode::countChildren(hw::hwClass c) const
 {
+  unsigned int count = 0;
+
   if (!This)
     return 0;
-  else
+
+  if (c == hw::generic)
     return This->children.size();
+
+  for (int i = 0; i < This->children.size(); i++)
+    if (This->children[i].getClass() == c)
+      count++;
+
+  return count;
 }
 
 const hwNode *hwNode::getChild(unsigned int i) const
@@ -463,7 +472,7 @@ bool hwNode::isCapable(const string & feature) const
     if (This->features[i] == featureid)
       return true;
 
-  false;
+  return false;
 }
 
 void hwNode::addCapability(const string & feature)
@@ -471,6 +480,9 @@ void hwNode::addCapability(const string & feature)
   string featureid = cleanupId(feature);
 
   if (!This)
+    return;
+
+  if (isCapable(featureid))
     return;
 
   This->features.push_back(featureid);

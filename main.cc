@@ -3,6 +3,7 @@
 
 #include "mem.h"
 #include "dmi.h"
+#include "cpuinfo.h"
 
 #include <unistd.h>
 
@@ -18,6 +19,7 @@ int main(int argc,
 
     scan_dmi(computer);
     scan_memory(computer);
+    scan_cpuinfo(computer);
 
     print(computer);
   }

@@ -1565,7 +1565,7 @@ bool scan_dmi(hwNode & n)
   int fd = open("/dev/mem", O_RDONLY);
   long fp = 0xE0000L;
   u8 smmajver = 0, smminver = 0;
-  u16 dmimaj, dmimin;
+  u16 dmimaj = 0, dmimin = 0;
 
   if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4)
     // compiler incompatibility
@@ -1628,3 +1628,6 @@ bool scan_dmi(hwNode & n)
 
   return true;
 }
+
+static char *id =
+  "@(#) $Id: dmi.cc,v 1.56 2003/01/19 18:56:52 ezix Exp $";
