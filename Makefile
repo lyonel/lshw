@@ -8,8 +8,9 @@ MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share/$(PACKAGENAME)
 
 CXX=c++
-CXXFLAGS=-g -Wall
+CXXFLAGS=-g -Wall -Os
 LDFLAGS=
+LDSTATIC=-static
 LIBS=
 
 OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o sysfs.o
@@ -24,6 +25,13 @@ all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 
 $(PACKAGENAME): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(LIBS) $^
+
+$(PACKAGENAME)-static: $(OBJS)
+	$(CXX) $(LDSTATIC) $(LDFLAGS) -o $@ $(LIBS) $^
+	strip $@
+
+$(PACKAGENAME)-compressed: $(PACKAGENAME)-static
+	upx -9 -o $@ $<
 
 $(PACKAGENAME).1: $(PACKAGENAME).sgml
 	docbook2man $<
@@ -41,13 +49,14 @@ install: all
 	-mkdir -p $(DESTDIR)
 	-mkdir -p $(DESTDIR)/$(SBINDIR)
 	cp $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
+	strip $(DESTDIR)/$(SBINDIR)/$(PACKAGENAME)
 	-mkdir -p $(DESTDIR)/$(MANDIR)/man1
 	cp $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
 	-mkdir -p $(DESTDIR)/$(DATADIR)
 	cp $(DATAFILES) $(DESTDIR)/$(DATADIR)
 	
 clean:
-	rm -f $(OBJS) $(PACKAGENAME) core
+	rm -f $(OBJS) $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed core
 
 .timestamp:
 	date --utc +%Y%m%d%H%M%S > $@
