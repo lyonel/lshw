@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.36 2003/08/12 11:45:41 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.37 2003/10/16 11:04:14 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -742,7 +742,7 @@ static bool scan_sg(int sg,
     break;
   }
 
-  device.setDescription(scsi_type(m_id.scsi_type));
+  device.setDescription("SCSI " + string(scsi_type(m_id.scsi_type)));
   device.setHandle(scsi_handle(m_id.host_no,
 			       m_id.channel, m_id.scsi_id, m_id.lun));
   device.setBusInfo(scsi_businfo(m_id.host_no,

@@ -14,7 +14,7 @@
 #include <vector>
 #include <linux/hdreg.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.23 2003/06/27 12:44:50 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.24 2003/10/16 11:04:14 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -176,7 +176,7 @@ static bool probe_ide(const string & name,
       device.addCapability("cdrom");
 
     if (eqpt < 0x20)
-      device.setDescription(description[eqpt]);
+      device.setDescription("IDE " + string(description[eqpt]));
   }
   if (id.config & (1 << 7))
     device.addCapability("removable");
