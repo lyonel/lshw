@@ -31,5 +31,6 @@ class entry
 bool scan_sysfs(hwNode & n);
 
 std::string sysfs_getbusinfo(const sysfs::entry &);
+std::string sysfs_finddevice(const string &name);
 
 #endif

@@ -33,7 +33,7 @@ struct sysfs_t
   temporary(false),
   has_sysfs(false)
   {
-    has_sysfs = exists(path + "/classes/.");
+    has_sysfs = exists(path + "/class/.");
 
     if (!has_sysfs)		// sysfs doesn't seem to be mounted
       // try to mount it in a temporary directory
@@ -189,6 +189,47 @@ string sysfs_getbusinfo(const entry & e)
   if(e.This->devbus != "")
     return sysfs_getbusinfo_bybus(e.This->devbus, e.This->devname);
   return "";
+}
+
+static string finddevice(const string & name, const string & root = "")
+{
+  struct dirent **namelist;
+  int n;
+  string result = "";
+
+  if(exists(name))
+    return root + "/" + name;
+
+  n = scandir(".", &namelist, selectdir, alphasort);
+
+  for (int i = 0; i < n; i++)
+  {
+    pushd(namelist[i]->d_name);
+    string findinchild = finddevice(name, root + "/" + string(namelist[i]->d_name));
+    popd();
+
+    free(namelist[i]);
+    if(findinchild != "")
+    {
+      result = findinchild;
+    }
+  }
+  free(namelist);
+
+  return result;
+}
+
+string sysfs_finddevice(const string & name)
+{
+  string devices = fs.path + string("/devices/");
+  string result = "";
+
+  if(!pushd(devices))
+    return "";
+  result = finddevice(name);
+  popd();
+
+  return result;
 }
 
 string sysfs_getdriver(const string & devclass,

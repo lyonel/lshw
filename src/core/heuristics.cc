@@ -42,9 +42,24 @@ string guessBusInfo(const string & info)
   return "";
 }
 
+static string guessParentBusInfo(const hwNode & child)
+{
+  string sysfs_path = sysfs_finddevice(child.getLogicalName());
+  vector < string > path;
+
+  if(sysfs_path == "") return "";
+
+  splitlines(sysfs_path, path, '/');
+
+  if(path.size()>2)
+    return guessBusInfo(path[path.size()-2]);
+  else
+    return "";
+}
+
 hwNode * guessParent(const hwNode & child, hwNode & base)
 {
   (void)&id;	// to avoid warning "defined but not used"
 
-  return NULL;
+  return base.findChildByBusInfo(guessParentBusInfo(child));
 }
