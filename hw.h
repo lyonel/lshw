@@ -41,6 +41,7 @@ class hwNode
 	string getId() const;
 
 	void setHandle(const string & handle);
+	string getHandle() const;
 
 	bool enabled() const;
 	bool disabled() const;

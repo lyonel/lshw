@@ -1,35 +1,11 @@
 #include "cpuinfo.h"
+#include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <vector>
-
-static int splitlines(const string & s,
-		      vector < string > &lines,
-		      char separator = '\n')
-{
-  size_t i = 0, j = 0;
-  int count;
-
-  lines.clear();
-
-  while ((j < s.length()) && ((i = s.find(separator, j)) != string::npos))
-  {
-    lines.push_back(s.substr(j, i - j));
-    count++;
-    i++;
-    j = i;
-  }
-  if (j < s.length())
-  {
-    lines.push_back(s.substr(j));
-    count++;
-  }
-
-  return count;
-}
 
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
@@ -185,4 +161,4 @@ bool scan_cpuinfo(hwNode & n)
   }
 }
 
-static char *id = "@(#) $Id: cpuinfo.cc,v 1.7 2003/01/21 09:23:27 ezix Exp $";
+static char *id = "@(#) $Id: cpuinfo.cc,v 1.8 2003/01/27 14:25:08 ezix Exp $";

@@ -71,6 +71,19 @@ void print(const hwNode & node,
     tab(level, false);
     cout << "<table bgcolor=\"#e8e0e0\">" << endl;
   }
+  if (node.getHandle() != "")
+  {
+    tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
+    cout << "handle: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getHandle();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
+  }
   if (node.getDescription() != "")
   {
     tab(level + 1, false);
@@ -285,4 +298,4 @@ void print(const hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.21 2003/01/26 21:22:31 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.22 2003/01/27 14:25:08 ezix Exp $";

@@ -189,6 +189,14 @@ void hwNode::setHandle(const string & handle)
   This->handle = handle;
 }
 
+string hwNode::getHandle() const
+{
+  if (This)
+    return This->handle;
+  else
+    return "";
+}
+
 string hwNode::getDescription() const
 {
   if (This)
@@ -533,4 +541,4 @@ string hwNode::getCapabilities() const
   return strip(result);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.25 2003/01/27 00:12:08 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.26 2003/01/27 14:25:08 ezix Exp $";

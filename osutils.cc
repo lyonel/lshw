@@ -1,5 +1,6 @@
 #include "osutils.h"
 #include <stack>
+#include <fcntl.h>
 #include <unistd.h>
 
 using namespace std;
@@ -51,4 +52,50 @@ string pwd()
     return "";
 }
 
-static char *id = "@(#) $Id: osutils.cc,v 1.2 2003/01/25 10:00:30 ezix Exp $";
+int splitlines(const string & s,
+	       vector < string > &lines,
+	       char separator = '\n')
+{
+  size_t i = 0, j = 0;
+  int count;
+
+  lines.clear();
+
+  while ((j < s.length()) && ((i = s.find(separator, j)) != string::npos))
+  {
+    lines.push_back(s.substr(j, i - j));
+    count++;
+    i++;
+    j = i;
+  }
+  if (j < s.length())
+  {
+    lines.push_back(s.substr(j));
+    count++;
+  }
+
+  return count;
+}
+
+bool loadfile(const string & file,
+	      vector < string > &list)
+{
+  char buffer[1024];
+  string buffer_str = "";
+  size_t count = 0;
+  int fd = open(file.c_str(), O_RDONLY);
+
+  if (fd < 0)
+    return false;
+
+  while ((count = read(fd, buffer, sizeof(buffer))) > 0)
+    buffer_str += string(buffer, count);
+
+  splitlines(buffer_str, list);
+
+  close(fd);
+
+  return true;
+}
+
+static char *id = "@(#) $Id: osutils.cc,v 1.3 2003/01/27 14:25:08 ezix Exp $";

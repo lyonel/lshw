@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #define PROC_BUS_PCI "/proc/bus/pci"
+#define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids"
 
 #define PCI_CLASS_REVISION      0x08	/* High 24 bits are class, low 8 revision */
 #define PCI_REVISION_ID         0x08	/* Revision ID */
@@ -260,9 +261,25 @@ static string pci_bushandle(u_int8_t bus)
 {
   char buffer[10];
 
-  snprintf(buffer, sizeof(buffer), "PCI:%02x:", bus);
+  snprintf(buffer, sizeof(buffer), "%02x", bus);
+
+  return "PCIBUS:" + string(buffer);
+}
+
+static string pci_handle(u_int16_t bus,
+			 u_int8_t dev,
+			 u_int8_t fct)
+{
+  char buffer[20];
+
+  snprintf(buffer, sizeof(buffer), "PCI:%02x:%02x.%x", bus, dev, fct);
 
   return string(buffer);
+}
+
+static void add_pci(hwNode & n,
+		    hwNode & core)
+{
 }
 
 bool scan_pci(hwNode & n)
@@ -334,8 +351,8 @@ bool scan_pci(hwNode & n)
 
       if (dclass == PCI_CLASS_BRIDGE_HOST)
       {
-	device = &host;
-	device->setDescription(get_class_description(dclass));
+	host.setDescription(get_class_description(dclass));
+	host.setHandle(pci_bushandle(d.bus));
       }
       else
       {
@@ -385,6 +402,8 @@ bool scan_pci(hwNode & n)
 	  if (dclass == PCI_CLASS_BRIDGE_PCI)
 	    device->
 	      setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
+	  else
+	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
 	  device->setDescription(get_class_description(dclass));
 
 	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
@@ -414,4 +433,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.3 2003/01/27 00:12:08 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.4 2003/01/27 14:25:08 ezix Exp $";
