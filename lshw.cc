@@ -7,20 +7,27 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: lshw.cc,v 1.4 2004/02/26 16:52:33 ezix Exp $";
+static char *id = "@(#) $Id: lshw.cc,v 1.5 2004/02/27 00:14:16 ezix Exp $";
 
 void usage(const char *progname)
 {
   fprintf(stderr, "Hardware Lister (lshw) - %s\n", getpackageversion());
-  fprintf(stderr, "usage: %s [-options ...]\n", progname);
+  fprintf(stderr, "usage: %s [-format] [-options ...]\n", progname);
+  fprintf(stderr, "       %s -version\n", progname);
+  fprintf(stderr, "\n");
   fprintf(stderr, "\t-version        print program version\n");
+  fprintf(stderr, "\nformat can be\n");
   fprintf(stderr, "\t-html           output hardware tree as HTML\n");
   fprintf(stderr, "\t-xml            output hardware tree as XML\n");
   fprintf(stderr, "\t-short          output hardware paths\n");
+  fprintf(stderr, "\noptions can be\n");
   fprintf(stderr,
-	  "\t-class class    only show a certain class of hardware\n");
+	  "\t-class CLASS    only show a certain class of hardware\n");
+  fprintf(stderr, "\t-C CLASS        same as '-class CLASS'\n");
   fprintf(stderr,
-	  "\t-disable test   disable a test (like pci, isapnp, cpuid, etc. )\n");
+	  "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n");
+  fprintf(stderr,
+	  "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr, "\n");
 }
 
@@ -68,6 +75,12 @@ int main(int argc,
       usage(argv[0]);
       exit(1);
     }
+  }
+
+  if (argc > 2)
+  {
+    usage(argv[0]);
+    exit(1);
   }
 
   if (geteuid() != 0)

@@ -18,9 +18,16 @@ list hardware
  <cmdsynopsis>
    <command>lshw</command> 
         <arg choice="opt"><option>-version</option></arg>
+   </cmdsynopsis>
+ <cmdsynopsis>
+   <command>lshw</command> 
         <arg choice="opt"><option>-help</option></arg>
+   </cmdsynopsis>
+ <cmdsynopsis>
+   <command>lshw</command> 
 	<arg choice="opt"><option>-html</option></arg>
 	<arg choice="opt"><option>-short</option></arg>
+	<arg choice="opt"><option>-xml</option></arg>
 	<arg choice="opt" rep="repeat"><option>-class </option><replaceable class="parameter">class</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-disable </option><replaceable class="parameter">test</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-enable </option><replaceable class="parameter">test</replaceable></arg>
@@ -70,6 +77,10 @@ Outputs the device tree showing hardware paths, very much like the output of <pr
 <varlistentry><term>-class <replaceable class="parameter">class</replaceable></term>
 <listitem><para>
 Only show the given class of hardware. <replaceable class="parameter">class</replaceable> can be found using <command>lshw -short</command>.
+</para></listitem></varlistentry>
+<varlistentry><term>-C <replaceable class="parameter">class</replaceable></term>
+<listitem><para>
+Alias for <command>-class</command> <replaceable class="parameter">class</replaceable>.
 </para></listitem></varlistentry>
 <varlistentry><term>-enable <replaceable class="parameter">test</replaceable></term><term>-disable <replaceable class="parameter">test</replaceable></term>
 <listitem><para>
