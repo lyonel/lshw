@@ -274,7 +274,7 @@ void browse(unsigned list, GtkTreeView *treeview)
   switch(list)
   {
     case 1:
-      if((n == selected1) && (find_parent(selected1, &container)!=selected1))
+      if((n == selected1) && (find_parent(selected1, &container)!= &container))
       {
         selected3 = selected2;
         selected2 = selected1;
