@@ -1,3 +1,14 @@
+/*
+ * device-tree.cc
+ *
+ * This module parses the OpenFirmware device tree (published under /proc
+ * by the kernel).
+ *
+ *
+ *
+ *
+ */
+
 #include "device-tree.h"
 #include "osutils.h"
 #include <sys/types.h>
@@ -8,7 +19,17 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.21 2003/09/02 17:01:00 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.22 2003/10/15 07:30:39 ezix Exp $";
+
+#define DIMMINFOSIZE 0x80
+typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
+
+struct dimminfo
+{
+  __uint8_t version3;
+  char serial[16];
+  __uint16_t version1, version2;
+};
 
 #define DEVICETREE "/proc/device-tree"
 
@@ -212,22 +233,36 @@ static void scan_devtree_cpu(hwNode & core)
 static void scan_devtree_memory(hwNode & core)
 {
   struct stat buf;
-  unsigned int currentmc = 0;	// current memory controller
+  int currentmc = -1;		// current memory controller
   hwNode *memory = core.getChild("memory");
 
   while (true)
   {
     char buffer[10];
+    string mcbase;
+    string devtreeslotnames;
+    string reg;
 
     snprintf(buffer, sizeof(buffer), "%d", currentmc);
-    string mcbase = string(DEVICETREE "/memory@") + string(buffer);
-    string devtreeslotnames = mcbase + string("/slot-names");
-    string reg = mcbase + string("/reg");
+    if (currentmc >= 0)
+      mcbase = string(DEVICETREE "/memory@") + string(buffer);
+    else
+      mcbase = string(DEVICETREE "/memory");
+    devtreeslotnames = mcbase + string("/slot-names");
+    reg = mcbase + string("/reg");
 
     if (stat(devtreeslotnames.c_str(), &buf) != 0)
-      break;
+    {
+      if (currentmc < 0)
+      {
+	currentmc++;
+	continue;
+      }
+      else
+	break;
+    }
 
-    if (!memory || (currentmc != 0))
+    if (!memory || (currentmc > 0))
     {
       memory = core.addChild(hwNode("memory", hw::memory));
     }
