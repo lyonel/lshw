@@ -23,7 +23,7 @@ void usage(const char *progname)
   fprintf(stderr, "\t-xml            output hardware tree as XML\n");
   fprintf(stderr, "\t-short          output hardware paths\n");
   fprintf(stderr, "\t-businfo        output bus information\n");
-  if(exists(SBINDIR"/gtk-lshw"))
+  if(getenv("DISPLAY") && exists(SBINDIR"/gtk-lshw"))
     fprintf(stderr, "\t-X              use graphical interface\n");
   fprintf(stderr, "\noptions can be\n");
   fprintf(stderr,
