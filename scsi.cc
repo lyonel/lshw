@@ -377,6 +377,9 @@ static bool do_inquiry(int sg_fd,
 
   unsigned ansiversion = rsp_buff[2] & 0x7;
 
+  if (rsp_buff[1] & 0x80)
+    node.addCapability("removable");
+
   node.setVendor(string(rsp_buff + 8, 8));
   if (len > 16)
     node.setProduct(string(rsp_buff + 16, 16));
@@ -601,4 +604,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.16 2003/02/22 16:12:39 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.17 2003/02/23 00:58:55 ezix Exp $";
