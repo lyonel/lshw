@@ -636,7 +636,6 @@ static bool scan_sg(int sg,
   string host = "";
   string businfo = "";
   hwNode *parent = NULL;
-  hwNode *channel = NULL;
   int emulated = 0;
   bool ghostdeventry = false;
 
@@ -748,27 +747,29 @@ static bool scan_sg(int sg,
   if (emulated)
   {
     parent->addCapability("emulated", "Emulated device");
+    parent->addChild(device);
   }
-
-  channel =
-    parent->findChildByHandle(scsi_handle(m_id.host_no, m_id.channel));
-  if (!channel)
-    channel = parent->addChild(hwNode("channel", hw::bus));
-
-  if (!channel)
+  else
   {
-    close(fd);
-    return true;
+    hwNode *channel =
+      parent->findChildByHandle(scsi_handle(m_id.host_no, m_id.channel));
+    if (!channel)
+      channel = parent->addChild(hwNode("channel", hw::bus));
+
+    if (!channel)
+    {
+      close(fd);
+      return true;
+    }
+  
+    snprintf(buffer, sizeof(buffer), "SCSI Channel %d", m_id.channel);
+    channel->setDescription(buffer);
+    channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
+    channel->setBusInfo(scsi_businfo(m_id.host_no, m_id.channel));
+    channel->setPhysId(m_id.channel);
+    channel->claim();
+    channel->addChild(device);
   }
-
-  snprintf(buffer, sizeof(buffer), "SCSI Channel %d", m_id.channel);
-  channel->setDescription(buffer);
-  channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
-  channel->setBusInfo(scsi_businfo(m_id.host_no, m_id.channel));
-  channel->setPhysId(m_id.channel);
-  channel->claim();
-
-  channel->addChild(device);
 
   close(fd);
 
