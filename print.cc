@@ -15,11 +15,41 @@ static void tab(int level,
     cout << "  ";
 }
 
+void kilobytes(unsigned long long value)
+{
+  const char *prefixes = "KMGTPH";
+  int i = 0;
+
+  while ((i <= strlen(prefixes)) && (value > 10240))
+  {
+    value = value >> 10;
+    i++;
+  }
+
+  cout << value;
+  if ((i > 0) && (i <= strlen(prefixes)))
+    cout << prefixes[i - 1];
+  cout << "B";
+}
+
 void print(const hwNode & node,
 	   int level)
 {
   tab(level);
   cout << node.getId() << endl;
+
+  if (node.getProduct() != "")
+  {
+    tab(level + 1, false);
+    cout << "product: " << node.getProduct() << endl;
+  }
+
+  if (node.getVendor() != "")
+  {
+    tab(level + 1, false);
+    cout << "vendor: " << node.getVendor() << endl;
+  }
+
   if (node.getSize() > 0)
   {
     tab(level + 1, false);
@@ -28,7 +58,7 @@ void print(const hwNode & node,
     {
     case hw::memory:
     case hw::storage:
-      cout << (node.getSize() >> 20) << "MB";
+      kilobytes(node.getSize());
       break;
 
     default:
