@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 #define PROC_BUS_PCI "/proc/bus/pci"
-#define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids"
+#define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
 
 #define PCI_CLASS_REVISION      0x08	/* High 24 bits are class, low 8 revision */
 #define PCI_COMMAND             0x04	/* 16 bits */
@@ -755,4 +755,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.24 2003/02/22 16:02:34 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.25 2003/03/24 18:50:43 ezix Exp $";
