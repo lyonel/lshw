@@ -128,8 +128,8 @@ static bool probe_ide(const string & name,
 
   if (id.config & (1 << 7))
     device.addCapability("removable");
-  if (!(id.config & (1 << 15)))
-    device.addCapability("magnetic");
+  if (id.config & (1 << 15))
+    device.addCapability("nonmagnetic");
   if (id.capability & 1)
     device.addCapability("dma");
   if (id.capability & 2)
@@ -339,4 +339,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.5 2003/02/05 22:21:13 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.6 2003/02/06 10:40:37 ezix Exp $";
