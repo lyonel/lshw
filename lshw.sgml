@@ -155,7 +155,7 @@ Used on PowerPC platforms to access OpenFirmware configuration.
 <refsect1><title>AUTHOR</title>
 <para>
 <application>lshw</application> is maintained by Lyonel Vincent
-<email>vincentl@ec-lyon.fr</email>.
+<email>lyonel@ezix.org</email>.
 </para>
 </refsect1>
 

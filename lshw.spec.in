@@ -6,10 +6,10 @@ Summary: HardWare LiSter
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Vendor: Lyonel Vincent <vincentl@ec-lyon.fr>
+Vendor: Lyonel Vincent <lyonel@ezix.org>
 Source: %{name}-%{version}.tar.gz
 URL: http://www.ezix.org/software/lshw.html
-Copyright: GPL
+License: GPL
 Group: Applications/System
 Buildroot: /var/tmp/%{name}-%{version}-%{release}-root
 
