@@ -17,6 +17,7 @@
 #include "network.h"
 #include "osutils.h"
 #include "sysfs.h"
+#include "heuristics.h"
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
@@ -507,7 +508,7 @@ bool scan_network(hwNode & n)
 	interface.setConfig("driverversion", drvinfo.version);
 	interface.setConfig("firmware", drvinfo.fw_version);
 	if (interface.getBusInfo() == "")
-	  interface.setBusInfo(drvinfo.bus_info);
+	  interface.setBusInfo(guessBusInfo(drvinfo.bus_info));
       }
 
       if (hwNode * existing = n.findChildByBusInfo(interface.getBusInfo()))
