@@ -9,7 +9,8 @@ using namespace hw;
 struct hwNode_i
 {
   hwClass deviceclass;
-  string id, vendor, product, version, serial, slot, handle, description;
+  string id, vendor, product, version, serial, slot, handle, description,
+    logicalname;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -78,6 +79,7 @@ hwNode::hwNode(const string & id,
   This->claimed = false;
   This->handle = "";
   This->description = "";
+  This->logicalname = "";
 }
 
 hwNode::hwNode(const hwNode & o)
@@ -586,4 +588,18 @@ vector < string > hwNode::getConfigValues(const string & separator) const
   return result;
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.29 2003/01/31 22:32:43 ezix Exp $";
+string hwNode::getLogicalName() const
+{
+  if (This)
+    return This->logicalname;
+  else
+    return "";
+}
+
+void hwNode::setLogicalName(const string & name)
+{
+  if (This)
+    This->logicalname = strip(name);
+}
+
+static char *id = "@(#) $Id: hw.cc,v 1.30 2003/02/03 22:51:00 ezix Exp $";

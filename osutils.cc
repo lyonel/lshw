@@ -77,6 +77,11 @@ int splitlines(const string & s,
   return count;
 }
 
+bool exists(const string & path)
+{
+  return access(path.c_str(), F_OK) == 0;
+}
+
 bool loadfile(const string & file,
 	      vector < string > &list)
 {
@@ -98,4 +103,4 @@ bool loadfile(const string & file,
   return true;
 }
 
-static char *id = "@(#) $Id: osutils.cc,v 1.4 2003/01/30 08:04:25 ezix Exp $";
+static char *id = "@(#) $Id: osutils.cc,v 1.5 2003/02/03 22:51:00 ezix Exp $";

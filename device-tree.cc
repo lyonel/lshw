@@ -51,11 +51,6 @@ static unsigned long get_long(const string & path)
   return result;
 }
 
-static bool exists(const string & path)
-{
-  return access(path.c_str(), F_OK) == 0;
-}
-
 static void scan_devtree_root(hwNode & core)
 {
   core.setClock(get_long(DEVICETREE "/clock-frequency"));
@@ -117,7 +112,7 @@ static int selectdir(const struct dirent *d)
   if (d->d_name[0] == '.')
     return 0;
 
-  if (stat(d->d_name, &buf) != 0)
+  if (lstat(d->d_name, &buf) != 0)
     return 0;
 
   return S_ISDIR(buf.st_mode);
@@ -335,4 +330,5 @@ bool scan_device_tree(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: device-tree.cc,v 1.9 2003/01/25 10:00:30 ezix Exp $";
+static char *id =
+  "@(#) $Id: device-tree.cc,v 1.10 2003/02/03 22:51:00 ezix Exp $";
