@@ -728,7 +728,9 @@ static void dmi_table(int fd,
 		      u32 base,
 		      int len,
 		      int num,
-		      hwNode & node)
+		      hwNode & node,
+		      int dmiversionmaj,
+		      int dmiversionmin)
 {
   unsigned char *buf = (unsigned char *) malloc(len);
   struct dmi_header *dm;
@@ -870,7 +872,28 @@ static void dmi_table(int fd,
       break;
 
     case 5:
-      printf("\tMemory Controller\n");
+      // Memory Controller (obsolete in DMI 2.1+)
+      // therefore ignore the entry if the DMI version is recent enough
+      if ((dmiversionmaj < 2)
+	  || ((dmiversionmaj == 2) && (dmiversionmin < 1)))
+      {
+	unsigned long long size = 0;
+	hwNode newnode("ram",
+		       hw::memory);
+
+	size = data[0x0E] * (1 << data[8]);
+	newnode.setCapacity(size);
+
+	hwNode *memorynode = node.getChild("memory");
+	if (!memorynode)
+	{
+	  node.addChild(hwNode("memory", hw::memory));
+	  memorynode = node.getChild("memory");
+	}
+
+	if (memorynode)
+	  memorynode->addChild(newnode);
+      }
       break;
 
     case 6:
@@ -1164,7 +1187,7 @@ static void dmi_table(int fd,
 	newnode.setSize(size);
 
 	if (size == 0)
-	  newnode.setProduct("empty");
+	  newnode.setProduct("");
 
 	{
 	  hwNode *memorynode = node.findChildByHandle(arrayhandle);
@@ -1314,7 +1337,7 @@ bool scan_dmi(hwNode & n)
 
       dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
       dmimin = buf[14] ? buf[14] & 0x0F : smminver;
-      dmi_table(fd, base, len, num, n);
+      dmi_table(fd, base, len, num, n, dmimaj, dmimin);
 
       /*
        * dmi_table moved us far away 
