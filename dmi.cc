@@ -1068,7 +1068,7 @@ static void dmi_table(int fd,
 	if (data[6])
 	  clock = 1000000000 / data[6];	// convert value from ns to Hz
 	newnode.setClock(clock);
-	newnode.setProduct(dmi_decode_ram(data[8] << 8 | data[7]));
+	newnode.setDescription(dmi_decode_ram(data[8] << 8 | data[7]));
 	// installed size
 	switch (data[9] & 0x7F)
 	{
