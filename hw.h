@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 namespace hw {
 
 typedef enum {processor,
@@ -19,11 +21,9 @@ typedef enum {processor,
 	communication,
 	generic} hwClass;
 
-string strip(const string &);
+string hw::strip(const string &);
 
 } // namespace hw
-
-using namespace std;
 
 class hwNode
 {
