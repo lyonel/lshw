@@ -29,6 +29,7 @@
 #define INQ_REPLY_LEN 96
 #define INQ_CMD_CODE 0x12
 #define INQ_CMD_LEN 6
+#define INQ_PAGE_SERIAL 0x80
 
 typedef struct my_sg_scsi_id
 {
@@ -148,11 +149,6 @@ static bool do_inquiry(int sg_fd,
   memset(&io_hdr, 0, sizeof(sg_io_hdr_t));
   io_hdr.interface_id = 'S';
   io_hdr.cmd_len = sizeof(inqCmdBlk);
-  /*
-   * io_hdr.iovec_count = 0; 
- *//*
- * * * memset takes care of this 
- */
   io_hdr.mx_sb_len = sizeof(sense_buffer);
   io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
   io_hdr.dxfer_len = INQ_REPLY_LEN;
@@ -160,17 +156,6 @@ static bool do_inquiry(int sg_fd,
   io_hdr.cmdp = inqCmdBlk;
   io_hdr.sbp = sense_buffer;
   io_hdr.timeout = 20000;	/* 20000 millisecs == 20 seconds */
-  /*
-   * io_hdr.flags = 0; 
- *//*
- * * * take defaults: indirect IO, etc 
- */
-  /*
-   * io_hdr.pack_id = 0; 
-   */
-  /*
-   * io_hdr.usr_ptr = NULL; 
-   */
 
   if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
     return false;
@@ -200,6 +185,33 @@ static bool do_inquiry(int sg_fd,
   snprintf(version, sizeof(version), "%d", ansiversion);
   if (ansiversion)
     node.setConfig("ansiversion", version);
+
+  inqCmdBlk[0] = INQ_CMD_CODE;
+  inqCmdBlk[1] = 1;
+  inqCmdBlk[2] = INQ_PAGE_SERIAL;
+  inqCmdBlk[3] = 0;
+  inqCmdBlk[4] = INQ_REPLY_LEN;
+  inqCmdBlk[5] = 0;
+  memset(&io_hdr, 0, sizeof(io_hdr));
+  memset(inqBuff, 0, sizeof(inqBuff));
+  memset(sense_buffer, 0, sizeof(sense_buffer));
+  io_hdr.interface_id = 'S';
+  io_hdr.cmd_len = sizeof(inqCmdBlk);
+  io_hdr.mx_sb_len = sizeof(sense_buffer);
+  io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
+  io_hdr.dxfer_len = INQ_REPLY_LEN;
+  io_hdr.dxferp = inqBuff;
+  io_hdr.cmdp = inqCmdBlk;
+  io_hdr.sbp = sense_buffer;
+  io_hdr.timeout = 20000;	/* 20000 millisecs == 20 seconds */
+
+  if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
+    return false;
+  if ((io_hdr.info & SG_INFO_OK_MASK) != SG_INFO_OK)
+    return false;
+
+  p = (char *) inqBuff;
+  node.setSerial(string(p + 4, (unsigned char) *(p + 3)));
 
   return true;
 }
@@ -383,4 +395,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.10 2003/02/17 21:41:43 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.11 2003/02/17 23:57:31 ezix Exp $";
