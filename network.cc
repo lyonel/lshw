@@ -33,7 +33,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.16 2004/01/19 16:15:15 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.17 2004/02/17 12:39:58 ezix Exp $";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
@@ -266,6 +266,12 @@ static const char *media_names[] = {
   "flow-control", 0,
 };
 
+static const char *media_descr[] = {
+  "10 MB/s", "10 MB/s (full duplex)",
+  "100 MB/s", "100 MB/s (full duplex)",
+  "100 MB/s (4)", "flow control", NULL
+};
+
 static bool scan_mii(int fd,
 		     hwNode & interface)
 {
@@ -361,7 +367,7 @@ static bool scan_mii(int fd,
   {
     for (i = 15; i >= 11; i--)
       if (bmsr & (1 << i))
-	interface.addCapability(media_names[i - 11]);
+	interface.addCapability(media_names[i - 11], media_descr[i - 11]);
   }
 
   return true;
@@ -437,9 +443,9 @@ bool scan_network(hwNode & n)
 	string hwaddr = getmac((unsigned char *) ifr.ifr_hwaddr.sa_data);
 	interface.addCapability(hwname(ifr.ifr_hwaddr.sa_family));
 	if (ifr.ifr_hwaddr.sa_family >= 256)
-	  interface.addCapability("logical");
+	  interface.addCapability("logical", "Logical interface");
 	else
-	  interface.addCapability("physical");
+	  interface.addCapability("physical", "Physical interface");
 	interface.setDescription(string(hwname(ifr.ifr_hwaddr.sa_family)) +
 				 " interface");
 	interface.setSerial(hwaddr);
