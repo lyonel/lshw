@@ -6,6 +6,7 @@ PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share/$(PACKAGENAME)
+SVNURL='$URL$'
 
 CXX=c++
 CXXFLAGS=-g -Wall
