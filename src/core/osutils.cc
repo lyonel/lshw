@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <regex.h>
 #include <ctype.h>
-#include <linux/fs.h>
 #ifndef MINOR
 #include <linux/kdev_t.h>
 #endif
