@@ -753,24 +753,27 @@ static void dmi_table(int fd,
      * we won't read beyond allocated memory 
      */
     if (data + dm->length > (u8 *) buf + len)
-    {
       // incomplete structure, abort decoding
       break;
-    }
 
     switch (dm->type)
     {
     case 0:
       // BIOS Information Block
-      printf("\t\tVendor: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tVersion: %s\n", dmi_string(dm, data[5]));
-      printf("\t\tRelease: %s\n", dmi_string(dm, data[8]));
-      printf("\t\tBIOS base: 0x%04X0\n", data[7] << 8 | data[6]);
-      printf("\t\tROM size: %dK\n", 64 * data[9]);
-      printf("\t\tCapabilities:\n");
-      u = data[13] << 24 | data[12] << 16 | data[11] << 8 | data[10];
-      u2 = data[17] << 24 | data[16] << 16 | data[15] << 8 | data[14];
-      printf("\t\t\tFlags: 0x%08X%08X\n", u2, u);
+      {
+	hwNode newnode("bios",
+		       hw::memory,
+		       dmi_string(dm,
+				  data[4]));
+	newnode.setVersion(dmi_string(dm, data[5]));
+	newnode.setSize(64 * data[9] * 1024);
+	//printf("\t\tVendor: %s\n", dmi_string(dm, data[4]));
+	//printf("\t\tVersion: %s\n", dmi_string(dm, data[5]));
+	//printf("\t\tRelease: %s\n", dmi_string(dm, data[8]));
+	//printf("\t\tBIOS base: 0x%04X0\n", data[7] << 8 | data[6]);
+	//printf("\t\tROM size: %dK\n", 64 * data[9]);
+	node.addChild(newnode);
+      }
       break;
 
     case 1:

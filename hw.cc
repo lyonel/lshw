@@ -1,5 +1,6 @@
 #include "hw.h"
 #include <vector>
+#include <stdio.h>
 
 using namespace hw;
 
@@ -73,12 +74,28 @@ hwClass hwNode::getClass() const
     return hw::generic;
 }
 
+void hwNode::setClass(hwClass c)
+{
+  if (!This)
+    return;
+
+  This->deviceclass = c;
+}
+
 string hwNode::getId() const
 {
   if (This)
     return This->id;
   else
     return "";
+}
+
+void hwNode::setId(const string & id)
+{
+  if (!This)
+    return;
+
+  This->id = strip(id);
 }
 
 string hwNode::getVendor() const
@@ -181,11 +198,40 @@ hwNode *hwNode::getChild(const string & id)
   return NULL;
 }
 
+static string generateId(const string & radical,
+			 int count)
+{
+  char buffer[10];
+
+  snprintf(buffer, sizeof(buffer), "%d", count);
+
+  return radical + "-" + string(buffer);
+}
+
 bool hwNode::addChild(const hwNode & node)
 {
+  hwNode *existing = NULL;
+  string id = node.getId();
+  int count = 0;
+
   if (!This)
     return false;
 
+  existing = getChild(id);
+  if (existing)			// first rename existing instance
+  {
+    while (getChild(generateId(id, count)))	// find a usable name
+      count++;
+
+    existing->setId(generateId(id, count));	// rename
+  }
+
+  while (getChild(generateId(id, count)))
+    count++;
+
   This->children.push_back(node);
+  if (existing)
+    This->children.back().setId(generateId(id, count));
+
   return true;
 }

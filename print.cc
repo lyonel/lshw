@@ -41,7 +41,7 @@ void print(const hwNode & node,
   if (node.getProduct() != "")
   {
     tab(level + 1, false);
-    cout << "product: " << node.getProduct() << "<" << endl;
+    cout << "product: " << node.getProduct() << endl;
   }
 
   if (node.getVendor() != "")

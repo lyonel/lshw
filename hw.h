@@ -36,6 +36,7 @@ class hwNode
 
 	string getId() const;
 	hw::hwClass getClass() const;
+	void setClass(hw::hwClass c);
 
 	string getVendor() const;
 	void setVendor(const string & vendor);
@@ -62,6 +63,8 @@ class hwNode
 	}
 
   private:
+
+	void setId(const string & id);
 
 	struct hwNode_i * This;
 };
