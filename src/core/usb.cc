@@ -239,7 +239,10 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
       device.setClass(hw::network);
       device.setDescription("Wireless interface");
       if((sub==USB_SC_WIRELESSRADIO) && (prot==USB_PROT_BLUETOOTH))
+      {
+        device.setDescription("Bluetooth wireless interface");
         device.addCapability("bluetooth", "Bluetooth wireless radio");
+      }
       break;
     default:
       return false;
