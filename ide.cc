@@ -1,5 +1,6 @@
 #include "cpuinfo.h"
 #include "osutils.h"
+#include "cdrom.h"
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
@@ -151,7 +152,10 @@ static bool probe_ide(const string & name,
 		strip(string((char *) id.serial_no, sizeof(id.serial_no))));
 
   if (!(pidentity[GEN_CONFIG] & NOT_ATA))
+  {
     device.addCapability("ata");
+    device.setDescription("ATA Disk");
+  }
   else if (!(pidentity[GEN_CONFIG] & NOT_ATAPI))
   {
     u_int8_t eqpt = (pidentity[GEN_CONFIG] & EQPT_TYPE) >> 8;
@@ -240,6 +244,9 @@ static bool probe_ide(const string & name,
     device.setSize((unsigned long long) id.lba_capacity * 512);
   if (device.isCapable("removable"))
     device.setSize(0);		// we'll first have to make sure we have a disk
+
+  if (device.isCapable("cdrom"))
+    scan_cdrom(device);
 
 #if 0
   if (!(iddata[GEN_CONFIG] & NOT_ATA))
@@ -374,4 +381,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.9 2003/02/06 21:46:33 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.10 2003/02/06 23:19:16 ezix Exp $";
