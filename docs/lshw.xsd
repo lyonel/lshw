@@ -21,6 +21,7 @@
       <xs:element name="size" type="measured"/>
       <xs:element name="capacity" type="measured"/>
       <xs:element name="clock" type="measured"/>
+      <xs:element name="width" type="measured"/>
       <xs:element name="configuration" type="configinfo"/>
       <xs:element name="capabilities" type="capinfo"/>
       <xs:element name="resources" type="resinfo"/>
