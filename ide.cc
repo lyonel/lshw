@@ -66,6 +66,13 @@ static const char *description[] = {
   "Unknown",			/* word 0, bits 12-8 = 1f */
 };
 
+/* older kernels (2.2.x) have incomplete id structure for IDE devices */
+#ifndef __NEW_HD_DRIVE_ID
+#define command_set_1 command_sets
+#define command_set_2 word83
+#define hw_config word93
+#endif
+
 static unsigned long long get_longlong(const string & path)
 {
   FILE *in = fopen(path.c_str(), "r");
@@ -198,11 +205,7 @@ static bool probe_ide(const string & name,
 	device.setConfig("mode", "udma1");
       if (id.dma_ultra & 0x400)
 	device.setConfig("mode", "udma2");
-#ifdef __NEW_HD_DRIVE_ID
       if (id.hw_config & 0x2000)
-#else
-      if (id.word93 & 0x2000)
-#endif
       {
 	if (id.dma_ultra & 0x800)
 	  device.setConfig("mode", "udma3");
@@ -395,4 +398,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.12 2003/02/14 00:21:32 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.13 2003/02/15 14:24:53 ezix Exp $";
