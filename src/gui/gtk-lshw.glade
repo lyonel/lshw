@@ -234,11 +234,12 @@
 
 			  <child>
 			    <widget class="GtkScrolledWindow" id="scrolledwindow10">
+			      <property name="border_width">2</property>
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
 			      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-			      <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
-			      <property name="shadow_type">GTK_SHADOW_NONE</property>
+			      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			      <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
 			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
@@ -249,6 +250,8 @@
 				  <property name="rules_hint">False</property>
 				  <property name="reorderable">False</property>
 				  <property name="enable_search">True</property>
+				  <signal name="row_activated" handler="on_treeview1_row_activated" last_modification_time="Wed, 08 Dec 2004 22:31:31 GMT"/>
+				  <signal name="cursor_changed" handler="on_treeview1_cursor_changed" last_modification_time="Wed, 08 Dec 2004 23:44:21 GMT"/>
 				</widget>
 			      </child>
 			    </widget>
@@ -261,11 +264,12 @@
 
 			  <child>
 			    <widget class="GtkScrolledWindow" id="scrolledwindow11">
+			      <property name="border_width">2</property>
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
 			      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-			      <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
-			      <property name="shadow_type">GTK_SHADOW_NONE</property>
+			      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			      <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
 			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
@@ -276,6 +280,8 @@
 				  <property name="rules_hint">False</property>
 				  <property name="reorderable">False</property>
 				  <property name="enable_search">True</property>
+				  <signal name="row_activated" handler="on_treeview2_row_activated" last_modification_time="Wed, 08 Dec 2004 22:49:26 GMT"/>
+				  <signal name="cursor_changed" handler="on_treeview2_cursor_changed" last_modification_time="Wed, 08 Dec 2004 23:44:08 GMT"/>
 				</widget>
 			      </child>
 			    </widget>
@@ -288,11 +294,12 @@
 
 			  <child>
 			    <widget class="GtkScrolledWindow" id="scrolledwindow12">
+			      <property name="border_width">2</property>
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
 			      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-			      <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
-			      <property name="shadow_type">GTK_SHADOW_NONE</property>
+			      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			      <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
 			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
@@ -303,6 +310,8 @@
 				  <property name="rules_hint">False</property>
 				  <property name="reorderable">False</property>
 				  <property name="enable_search">True</property>
+				  <signal name="row_activated" handler="on_treeview3_row_activated" last_modification_time="Wed, 08 Dec 2004 22:56:52 GMT"/>
+				  <signal name="cursor_changed" handler="on_treeview3_cursor_changed" last_modification_time="Wed, 08 Dec 2004 23:42:04 GMT"/>
 				</widget>
 			      </child>
 			    </widget>

@@ -15,6 +15,29 @@
 
 static char *id = "@(#) $Id: print.cc 764 2004-11-26 01:28:23Z ezix $";
 
+static string escape(const string & s)
+{
+  string result = "";
+
+  for (unsigned int i = 0; i < s.length(); i++)
+    switch (s[i])
+    {
+    case '<':
+      result += "&lt;";
+      break;
+    case '>':
+      result += "&gt;";
+      break;
+    case '&':
+      result += "&ampersand;";
+      break;
+    default:
+      result += s[i];
+    }
+
+  return result;
+}
+
 static void decimalkilos(ostringstream & out, unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
@@ -52,7 +75,7 @@ static string printattr(const string & name, const string & value)
 {
   if(value == "") return "";
 
-  return "<b>" + name + ":</b> " + value + "\n";
+  return "<b>" + name + ":</b> " + escape(value) + "\n";
 }
 
 string printmarkup(const hwNode & node)
@@ -61,7 +84,6 @@ string printmarkup(const hwNode & node)
   vector < string > resources;
   ostringstream out;
 
-  config = node.getConfigValues("=");
   resources = node.getResources(":");
 
   out << "<b><i>" + node.getId();
@@ -169,31 +191,38 @@ string printmarkup(const hwNode & node)
       out << endl;
     }
 
-  out << printattr("capabilities", node.getCapabilities());
+  config.clear();
 
-#if 0
+  splitlines(node.getCapabilities(), config, ' ');
+  if (config.size() > 0)
+  {
+     out << "<b>capabilities:</b>";
+     for(unsigned j=0; j<config.size(); j++)
+     {
+       out << " ";
+       if(node.getCapabilityDescription(config[j]) != "")
+       {
+         out << escape(node.getCapabilityDescription(config[j]));
+       }
+       else
+         out << "<i>" << config[j] << "</i>";
+       if(j<config.size()-1) out << ",";
+     }
+     out << endl;
+  }
+
+  config.clear();
+  config = node.getConfigValues("=<i>");
+
     if (config.size() > 0)
     {
-      tab(level + 1, false);
-      if (html)
-	cout << "<tr><td>";
-      cout << "configuration:";
-      if (html)
-	cout << "</td><td><table summary=\"configuration of " << node.
-	  getId() << "\">";
+      out << endl << "<b>configuration:</b>" << endl;
       for (unsigned int i = 0; i < config.size(); i++)
-      {
-	if (html)
-	  cout << "<tr><td>";
-	cout << " " << config[i];
-	if (html)
-	  cout << "</td></tr>";
-      }
-      if (html)
-	cout << "</table></td></tr>";
-      cout << endl;
+	out << " " << config[i] << "</i>" << endl;
+      out << endl;
     }
 
+#if 0
     if (resources.size() > 0)
     {
       tab(level + 1, false);
@@ -224,25 +253,3 @@ string printmarkup(const hwNode & node)
   return out.str();
 }
 
-static string escape(const string & s)
-{
-  string result = "";
-
-  for (unsigned int i = 0; i < s.length(); i++)
-    switch (s[i])
-    {
-    case '<':
-      result += "&lt;";
-      break;
-    case '>':
-      result += "&gt;";
-      break;
-    case '&':
-      result += "&ampersand;";
-      break;
-    default:
-      result += s[i];
-    }
-
-  return result;
-}

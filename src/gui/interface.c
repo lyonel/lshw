@@ -176,7 +176,9 @@ create_lshw (void)
   scrolledwindow10 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow10);
   gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow10, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+  gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow10), 2);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_SHADOW_ETCHED_IN);
 
   treeview1 = gtk_tree_view_new ();
   gtk_widget_show (treeview1);
@@ -186,7 +188,9 @@ create_lshw (void)
   scrolledwindow11 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow11);
   gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow11, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow11), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+  gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow11), 2);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow11), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow11), GTK_SHADOW_ETCHED_IN);
 
   treeview2 = gtk_tree_view_new ();
   gtk_widget_show (treeview2);
@@ -196,7 +200,9 @@ create_lshw (void)
   scrolledwindow12 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow12);
   gtk_box_pack_start (GTK_BOX (hbox2), scrolledwindow12, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+  gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow12), 2);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_SHADOW_ETCHED_IN);
 
   treeview3 = gtk_tree_view_new ();
   gtk_widget_show (treeview3);
@@ -245,6 +251,24 @@ create_lshw (void)
                     NULL);
   g_signal_connect ((gpointer) quitbutton, "clicked",
                     G_CALLBACK (gtk_main_quit),
+                    NULL);
+  g_signal_connect ((gpointer) treeview1, "row_activated",
+                    G_CALLBACK (on_treeview1_row_activated),
+                    NULL);
+  g_signal_connect ((gpointer) treeview1, "cursor_changed",
+                    G_CALLBACK (on_treeview1_cursor_changed),
+                    NULL);
+  g_signal_connect ((gpointer) treeview2, "row_activated",
+                    G_CALLBACK (on_treeview2_row_activated),
+                    NULL);
+  g_signal_connect ((gpointer) treeview2, "cursor_changed",
+                    G_CALLBACK (on_treeview2_cursor_changed),
+                    NULL);
+  g_signal_connect ((gpointer) treeview3, "row_activated",
+                    G_CALLBACK (on_treeview3_row_activated),
+                    NULL);
+  g_signal_connect ((gpointer) treeview3, "cursor_changed",
+                    G_CALLBACK (on_treeview3_cursor_changed),
                     NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */

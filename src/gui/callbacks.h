@@ -25,3 +25,33 @@ void
 on_version_realize                     (GtkWidget       *widget,
                                         gpointer         user_data);
 
+
+void
+on_treeview1_row_activated             (GtkTreeView     *treeview,
+                                        GtkTreePath     *path,
+                                        GtkTreeViewColumn *column,
+                                        gpointer         user_data);
+
+void
+on_treeview2_row_activated             (GtkTreeView     *treeview,
+                                        GtkTreePath     *path,
+                                        GtkTreeViewColumn *column,
+                                        gpointer         user_data);
+
+void
+on_treeview3_row_activated             (GtkTreeView     *treeview,
+                                        GtkTreePath     *path,
+                                        GtkTreeViewColumn *column,
+                                        gpointer         user_data);
+
+void
+on_treeview3_cursor_changed            (GtkTreeView     *treeview,
+                                        gpointer         user_data);
+
+void
+on_treeview1_cursor_changed            (GtkTreeView     *treeview,
+                                        gpointer         user_data);
+
+void
+on_treeview2_cursor_changed            (GtkTreeView     *treeview,
+                                        gpointer         user_data);

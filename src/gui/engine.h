@@ -9,6 +9,12 @@ extern "C" {
 
 void refresh(GtkWidget *);
 
+void activate(GtkTreeView *treeview,
+              GtkTreePath *path,
+              GtkTreeViewColumn *column,
+              gpointer         user_data);
+
+
 #ifdef __cplusplus
 };
 #endif
