@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: print.cc,v 1.57 2004/02/26 16:29:32 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.58 2004/04/14 21:19:54 ezix Exp $";
 
 static void spaces(unsigned int count,
 		   string space = " ")
@@ -297,6 +297,13 @@ void print(hwNode & node,
       case hw::system:
 	decimalkilos(node.getSize());
 	cout << "Hz";
+	if (html)
+	  cout << "</td></tr>";
+	break;
+
+      case hw::network:
+	decimalkilos(node.getSize());
+	cout << "bps";
 	if (html)
 	  cout << "</td></tr>";
 	break;

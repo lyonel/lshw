@@ -33,7 +33,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.18 2004/04/14 20:04:44 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.19 2004/04/14 21:19:54 ezix Exp $";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
@@ -328,21 +328,26 @@ static bool scan_mii(int fd,
       case 0:
 	interface.setConfig("autonegociated", "10bt");
 	interface.setConfig("duplex", "half");
+	interface.setSize(10000000L);
 	break;
       case 1:
 	interface.setConfig("autonegociated", "10bt");
 	interface.setConfig("duplex", "full");
+	interface.setSize(10000000L);
 	break;
       case 2:
 	interface.setConfig("autonegociated", "100bt");
 	interface.setConfig("duplex", "half");
+	interface.setSize(100000000L);
 	break;
       case 3:
 	interface.setConfig("autonegociated", "100bt");
 	interface.setConfig("duplex", "full");
+	interface.setSize(100000000L);
 	break;
       case 4:
 	interface.setConfig("autonegociated", "100bt4");
+	interface.setSize(100000000L);
 	break;
       }
     }
@@ -355,9 +360,15 @@ static bool scan_mii(int fd,
   else
   {
     if (bmcr & 0x2000)
+    {
       interface.setConfig("speed", "100mbps");
+      interface.setSize(100000000L);
+    }
     else
+    {
       interface.setConfig("speed", "10mbps");
+      interface.setSize(10000000L);
+    }
 
     if (bmcr & 0x0100)
       interface.setConfig("duplex", "full");
