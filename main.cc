@@ -18,9 +18,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.28 2003/07/15 07:06:34 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.29 2003/08/11 21:20:18 ezix Exp $";
 
-void usage(const char *progname)
+void usage(
+  const char *progname)
 {
   fprintf(stderr, "Harware Lister (lshw) - %s\n", getpackageversion());
   fprintf(stderr, "usage: %s [-options ...]\n", progname);
@@ -31,8 +32,9 @@ void usage(const char *progname)
   fprintf(stderr, "\n");
 }
 
-int main(int argc,
-	 char **argv)
+int main(
+  int argc,
+  char **argv)
 {
   char hostname[80];
   bool htmloutput = false;
@@ -73,10 +75,16 @@ int main(int argc,
     }
   }
 
+  if (geteuid() != 0)
+  {
+    fprintf(stderr, "WARNING: you should run this program as super-user.\n");
+  }
+
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
-    hwNode computer(hostname,
-		    hw::system);
+    hwNode computer(
+  hostname,
+  hw::system);
 
     scan_dmi(computer);
     scan_device_tree(computer);
