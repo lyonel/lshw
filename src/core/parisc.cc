@@ -231,10 +231,14 @@ static bool scan_device(hwNode & node, string name = "")
     size_t colon = name.rfind(":");
     long hw_type = get_long("hw_type");
     long sversion = get_long("sversion");
-    long hversion = get_long("hversion");
+    //long hversion = get_long("hversion");
     long rev = get_long("rev");
     hwNode newnode = get_device(hw_type, sversion);
+    char buffer[20];
 
+    snprintf(buffer, sizeof(buffer), "%ld", rev);
+    if(rev>0)
+      newnode.setVersion(buffer);
     if(newnode.getBusInfo()=="")
       newnode.setBusInfo(guessBusInfo(name));
     if(exists("driver"))
