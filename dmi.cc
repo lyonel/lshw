@@ -856,6 +856,8 @@ static void dmi_table(int fd,
 	  newnode.attractHandle(dmi_handle(data[0x1B] << 8 | data[0x1A]));
 	  // L2 cache
 	  newnode.attractHandle(dmi_handle(data[0x1D] << 8 | data[0x1C]));
+	  // L3 cache
+	  newnode.attractHandle(dmi_handle(data[0x1F] << 8 | data[0x1E]));
 	}
 	if (dm->length > 0x20)
 	{
@@ -928,8 +930,8 @@ static void dmi_table(int fd,
     case 6:
       // Memory Bank (obsolete in DMI 2.1+)
       // therefore ignore the entry if the DMI version is recent enough
-      //if ((dmiversionmaj < 2)
-      //|| ((dmiversionmaj == 2) && (dmiversionmin < 1)))
+      if ((dmiversionmaj < 2)
+	  || ((dmiversionmaj == 2) && (dmiversionmin < 1)))
       {
 	hwNode newnode("bank",
 		       hw::memory);
