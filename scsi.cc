@@ -36,6 +36,38 @@ typedef struct my_sg_scsi_id
 }
 My_sg_scsi_id;
 
+static string scsi_handle(unsigned int host,
+			  int channel = -1,
+			  int id = -1,
+			  int lun = -1)
+{
+  char buffer[10];
+  string result = "SCSI:";
+
+  snprintf(buffer, sizeof(buffer), "%02d", host);
+  result += string(buffer);
+
+  if (channel < 0)
+    return result;
+
+  snprintf(buffer, sizeof(buffer), "%02d", channel);
+  result += string(":") + string(buffer);
+
+  if (id < 0)
+    return result;
+
+  snprintf(buffer, sizeof(buffer), "%02d", id);
+  result += string(":") + string(buffer);
+
+  if (lun < 0)
+    return result;
+
+  snprintf(buffer, sizeof(buffer), "%02d", lun);
+  result += string(":") + string(buffer);
+
+  return result;
+}
+
 static bool scan_sg(int sg,
 		    hwNode & n)
 {
@@ -45,6 +77,7 @@ static bool scan_sg(int sg,
   char slot_name[16];
   char host[20];
   hwNode *parent = NULL;
+  hwNode *channel = NULL;
   int emulated = 0;
 
   snprintf(buffer, sizeof(buffer), SG_X, sg);
@@ -99,6 +132,21 @@ static bool scan_sg(int sg,
       parent->setDescription("Virtual SCSI adapter");
   }
 
+  channel =
+    parent->findChildByHandle(scsi_handle(m_id.host_no, m_id.channel));
+
+  if (!channel)
+    channel = parent->addChild(hwNode("channel", hw::storage));
+
+  if (!channel)
+  {
+    close(fd);
+    return true;
+  }
+
+  channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
+  channel->claim();
+
   close(fd);
 
   return true;
@@ -114,4 +162,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.3 2003/02/16 20:01:08 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.4 2003/02/17 00:31:48 ezix Exp $";
