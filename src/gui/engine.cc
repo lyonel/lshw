@@ -276,16 +276,16 @@ void browse(unsigned list, GtkTreeView *treeview)
   switch(list)
   {
     case 1:
-      if(n == selected1) return;
-      /*{
+      if((n == selected1) && (find_parent(selected1, &container)!=selected1))
+      {
         selected3 = selected2;
         selected2 = selected1;
-        selected1 = find_parent(selected1, &computer);
-        populate_sublist(list1, find_parent(selected1, &computer), selected1);
+        selected1 = find_parent(selected1, &container);
+        populate_sublist(list1, find_parent(selected1, &container), selected1);
         populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2, selected3);
       }
-      else*/
+      else
       {
         selected1 = n;
         selected2 = NULL;
