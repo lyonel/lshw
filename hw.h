@@ -2,6 +2,7 @@
 #define _HW_H_
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -98,6 +99,10 @@ class hwNode
 	string getCapabilities() const;
 
 	void attractHandle(const string & handle);
+
+	void setConfig(const string & key, const string & value);
+	string getConfig(const string & key) const;
+	vector<string> getConfig() const;
 
   private:
 

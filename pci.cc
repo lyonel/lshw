@@ -629,7 +629,14 @@ bool scan_pci(hwNode & n)
 	    device->
 	      setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
 	  else
+	  {
+	    char irq[10];
+
+	    snprintf(irq, sizeof(irq), "%d", d.irq);
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
+	    if (d.irq != 0)
+	      device->setConfig("irq", irq);
+	  }
 	  device->setDescription(get_class_description(dclass));
 	  device->setVendor(get_device_description(d.vendor_id));
 	  device->setVersion(revision);
@@ -663,4 +670,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.12 2003/01/28 16:33:45 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.13 2003/01/29 19:38:03 ezix Exp $";

@@ -53,6 +53,8 @@ void print(const hwNode & node,
 	   bool html,
 	   int level)
 {
+  vector < string > config = node.getConfig();
+
   tab(level, !html);
 
   if (html)
@@ -284,6 +286,21 @@ void print(const hwNode & node,
     cout << endl;
   }
 
+  if (config.size() > 0)
+  {
+    tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
+    cout << "configuration:";
+    if (html)
+      cout << "</td><td>";
+    for (int i = 0; i < config.size(); i++)
+      cout << " " << config[i];
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
+  }
+
   if (html)
   {
     tab(level, false);
@@ -300,4 +317,4 @@ void print(const hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.23 2003/01/28 16:33:45 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.24 2003/01/29 19:38:03 ezix Exp $";

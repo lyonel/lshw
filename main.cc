@@ -26,10 +26,10 @@ int main(int argc,
     scan_cpuinfo(computer);
     scan_pci(computer);
 
-    print(computer, false);
+    print(computer, true);
   }
 
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.10 2003/01/26 21:22:31 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.11 2003/01/29 19:38:03 ezix Exp $";

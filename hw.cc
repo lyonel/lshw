@@ -1,5 +1,6 @@
 #include "hw.h"
 #include <vector>
+#include <map>
 #include <stdio.h>
 #include <ctype.h>
 
@@ -18,6 +19,8 @@ struct hwNode_i
     vector < hwNode > children;
     vector < string > attracted;
     vector < string > features;
+    map < string,
+    string > config;
 };
 
 string hw::strip(const string & s)
@@ -541,4 +544,38 @@ string hwNode::getCapabilities() const
   return strip(result);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.26 2003/01/27 14:25:08 ezix Exp $";
+void hwNode::setConfig(const string & key,
+		       const string & value)
+{
+  if (!This)
+    return;
+
+  This->config[key] = value;
+}
+
+string hwNode::getConfig(const string & key) const
+{
+  if (!This)
+    return "";
+
+  if (This->config.find(key) == This->config.end())
+    return "";
+
+  return This->config[key];
+}
+
+vector < string > hwNode::getConfig() const
+{
+  vector < string > result;
+
+  if (!This)
+    return result;
+
+  for (map < string, string >::iterator i = This->config.begin();
+       i != This->config.end(); i++)
+    result.push_back(i->first + string("=") + i->second);
+
+  return result;
+}
+
+static char *id = "@(#) $Id: hw.cc,v 1.27 2003/01/29 19:38:03 ezix Exp $";
