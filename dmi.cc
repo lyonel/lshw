@@ -87,7 +87,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.74 2004/02/25 17:12:45 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -364,6 +364,9 @@ static void dmi_cache_describe(hwNode & n,
   case 1:
     n.addCapability("write-back", "Write-back");
     break;
+  case 2:
+    n.addCapability("varies", "Varies With Memory Address");
+    break;
   }
 
   result += "cache";
@@ -375,6 +378,9 @@ static void dmi_cache_describe(hwNode & n,
     break;
   case 4:
     n.addCapability("data", "Data cache");
+    break;
+  case 5:
+    n.addCapability("unified", "Unified cache");
     break;
   }
 
@@ -454,8 +460,9 @@ static char *dmi_memory_device_type(u8 num)
     " SDRAM",
     " SGRAM",
     " RDRAM",
+    " DDR",
   };
-  if (num > 0x11)
+  if (num > 0x12)
     return "";
   return memory_device_type[num];
 }
@@ -491,7 +498,7 @@ static string dmi_memory_device_detail(u16 v)
 static const char *dmi_processor_family(u8 code)
 {
   static const char *processor_family[] = {
-    "",
+    "",		/* 0x00 */
     "Other",
     "Unknown",
     "8086",
@@ -511,7 +518,7 @@ static const char *dmi_processor_family(u8 code)
     "Pentium III",
     "M1",
     "M2",
-    "",
+    "",		/* 0x14 */
     "",
     "",
     "",
@@ -531,10 +538,227 @@ static const char *dmi_processor_family(u8 code)
     "Power PC 620",
     "Power PC x704",
     "Power PC 750",
+    "",		/* 0x28 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Alpha",	/* 0x30 */
+    "Alpha 21064",
+    "Alpha 21066",
+    "Alpha 21164",
+    "Alpha 21164PC",
+    "Alpha 21164a",
+    "Alpha 21264",
+    "Alpha 21364",
+    "",		/* 0x38 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "MIPS",	/* 0x40 */
+    "MIPS R4000",
+    "MIPS R4200",
+    "MIPS R4400",
+    "MIPS R4600",
+    "MIPS R10000",
+    "",		/* 0x46 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "SPARC",
+    "SuperSPARC",
+    "MicroSPARC II",
+    "MicroSPARC IIep",
+    "UltraSPARC",
+    "UltraSPARC II",
+    "UltraSPARC IIi",
+    "UltraSPARC III",
+    "UltraSPARC IIIi",
+    "", /* 0x59 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0x5F */
+    "68040",
+    "68xxx",
+    "68000",
+    "68010",
+    "68020",
+    "68030",
+    "", /* 0x66 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0x6F */
+    "Hobbit",
+    "", /* 0x71 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0x77 */
+    "Crusoe TM5000",
+    "Crusoe TM3000",
+    "", /* 0x7A */
+    "",
+    "",
+    "",
+    "",
+    "", /* 0x7F */
+    "Weitek",
+    "", /* 0x81 */
+    "Itanium",
+    "Athlon 64",
+    "Opteron",
+    "", /* 0x85 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0x8F */
+    "PA-RISC",
+    "PA-RISC 8500",
+    "PA-RISC 8000",
+    "PA-RISC 7300LC",
+    "PA-RISC 7200",
+    "PA-RISC 7100LC",
+    "PA-RISC 7100",
+    "", /* 0x97 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0x9F */
+    "V30",
+    "", /* 0xA1 */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0xAF */
+    "Pentium III Xeon",
+    "Pentium III Speedstep",
+    "Pentium 4",
+    "Xeon",
+    "AS400",
+    "Xeon MP",
+    "Athlon XP",
+    "Athlon MP",
+    "Itanium 2",
+    "Pentium M",
+    "", /* 0xBA */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0xC7 */
+    "IBM390",
+    "G4",
+    "G5",
+    "", /* 0xCB */
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", /* 0xF9 */
+    "i860",
+    "i960",
+    "", /* 0xFC */
+    "",
+    "",
+    "" /* 0xFF */
+    /* master.mif has values beyond that, but they can't be used for DMI */
   };
 
   if (code == 0xFF)
-    return "Other";
+    return "";
 
   if (code > 0x24)
     return "";
