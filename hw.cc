@@ -388,7 +388,7 @@ unsigned int hwNode::countChildren(hw::hwClass c) const
   return count;
 }
 
-const hwNode *hwNode::getChild(unsigned int i) const
+hwNode *hwNode::getChild(unsigned int i)
 {
   if (!This)
     return NULL;
@@ -642,4 +642,4 @@ void hwNode::setLogicalName(const string & name)
     This->logicalname = strip(name);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.34 2003/02/12 09:02:15 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.35 2003/02/13 23:20:25 ezix Exp $";

@@ -798,6 +798,15 @@ static int open_dev(dev_t dev)
   return -1;
 }				/* open_dev */
 
+static string pcmcia_handle(int socket)
+{
+  char buffer[20];
+
+  snprintf(buffer, sizeof(buffer), "PCMCIA:%d", socket);
+
+  return string(buffer);
+}
+
 static int get_tuple(int fd,
 		     cisdata_t code,
 		     ds_ioctl_arg_t & arg)
@@ -855,7 +864,7 @@ static bool pcmcia_ident(int socket,
       device.claim();
       break;
     case 4:			// fixed disk
-      device = hwNode("disk", hw::storage);
+      device = hwNode("storage", hw::storage);
       device.claim();
       break;
     case 5:			// video
@@ -929,6 +938,7 @@ static bool pcmcia_ident(int socket,
   //ioctl(fd, DS_GET_NEXT_DEVICE, &bind);
   //printf("%s : %s -> %d\n", bind.dev_info, bind.name, errno);
 
+  device.setHandle(pcmcia_handle(socket));
   parent->addChild(device);
 
   return true;
@@ -940,7 +950,7 @@ static bool is_cardbus(const hwNode * n)
 }
 
 static hwNode *find_pcmciaparent(int slot,
-				 const hwNode & root)
+				 hwNode & root)
 {
   hwNode *result = NULL;
   int i;
@@ -948,6 +958,10 @@ static hwNode *find_pcmciaparent(int slot,
 
   if (slot < 0)
     return NULL;
+
+  result = root.findChildByHandle(pcmcia_handle(slot));
+  if (result)
+    return result;
 
   for (i = 0; i < root.countChildren(); i++)
   {
@@ -962,7 +976,8 @@ static hwNode *find_pcmciaparent(int slot,
   for (i = 0; i < root.countChildren(); i++)
   {
     result = NULL;
-    result = find_pcmciaparent(slot - currentslot, *root.getChild(i));
+    result =
+      find_pcmciaparent(slot - currentslot, *(hwNode *) root.getChild(i));
     if (result)
       return result;
   }
@@ -980,35 +995,6 @@ bool scan_pcmcia(hwNode & n)
 
   if (major < 0)		// pcmcia support not loaded, there isn't much
     return false;		// we can do
-
-  if (loadfile(VARLIBPCMCIASTAB, stab))
-    for (i = 0; i < stab.size(); i++)
-    {
-      if (stab[i][0] != 'S')
-      {
-	int cnt = 0;
-	int unused = 0;
-	int socket = -1, devmajor = 0, devminor = 0;
-	char devclass[20], driver[20], logicalname[20];
-
-	memset(devclass, 0, sizeof(devclass));
-	memset(driver, 0, sizeof(driver));
-	memset(logicalname, 0, sizeof(logicalname));
-
-	cnt = sscanf(stab[i].c_str(),
-		     "%d %s %s %d %s %d %d",
-		     &socket, devclass, driver, &unused, logicalname,
-		     &devmajor, &devminor);
-
-	if ((cnt == 7) || (cnt == 5))	// we found a correct entry
-	{
-	  if (socket >= sockets)
-	    sockets = socket + 1;
-
-	  //printf("%s in socket %d = %s\n", devclass, socket, logicalname);
-	}
-      }
-    }
 
   memset(fd, 0, sizeof(fd));
   for (i = 0; i < MAX_SOCK; i++)
@@ -1045,7 +1031,94 @@ bool scan_pcmcia(hwNode & n)
     close(fd[j]);
   }
 
+  if (loadfile(VARLIBPCMCIASTAB, stab))
+  {
+    string socketname = "";
+    string carddescription = "";
+
+    for (i = 0; i < stab.size(); i++)
+    {
+      if (stab[i][0] == 'S')
+      {
+	int pos = stab[i].find(':');
+
+	socketname = "";
+	carddescription = "";
+
+	if (pos != string::npos)
+	{
+	  socketname = stab[i].substr(0, pos);
+	  carddescription = stab[i].substr(pos + 1);
+	}
+	else
+	{
+	  carddescription = stab[i];
+	  socketname = "";
+	}
+      }
+      else
+      {
+	int cnt = 0;
+	int unused = 0;
+	int socket = -1, devmajor = 0, devminor = 0;
+	char devclass[20], driver[20], logicalname[20];
+
+	memset(devclass, 0, sizeof(devclass));
+	memset(driver, 0, sizeof(driver));
+	memset(logicalname, 0, sizeof(logicalname));
+
+	cnt = sscanf(stab[i].c_str(),
+		     "%d %s %s %d %s %d %d",
+		     &socket, devclass, driver, &unused, logicalname,
+		     &devmajor, &devminor);
+
+	if ((cnt == 7) || (cnt == 5))	// we found a correct entry
+	{
+	  hwNode *parent = n.findChildByHandle(pcmcia_handle(socket));
+
+	  if (socket >= sockets)
+	    sockets = socket + 1;
+
+	  //printf("%s in socket %d = %s\n", devclass, socket, logicalname);
+
+	  hwNode device = hwNode(devclass, hw::generic);
+
+	  device.setLogicalName(logicalname);
+	  device.setConfig("driver", driver);
+	  device.claim();
+
+	  if (!parent)
+	  {
+	    parent = find_pcmciaparent(socket, n);
+
+	    if (parent)
+	    {
+	      hwNode *realparent = parent->getChild(0);
+	      if (!realparent)
+	      {
+		parent = parent->addChild(hwNode("pccard"));
+		parent->setHandle(pcmcia_handle(socket));
+	      }
+	      else
+		parent = realparent;
+	    }
+	  }
+
+	  if (parent)
+	  {
+	    parent->setSlot(socketname);
+	    if (parent->getDescription() == "")
+	      parent->setDescription(carddescription);
+	    parent->addChild(device);
+	  }
+	  else
+	    n.addChild(device);
+	}
+      }
+    }
+  }
+
   return true;
 }
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.7 2003/02/12 09:02:15 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.8 2003/02/13 23:20:25 ezix Exp $";

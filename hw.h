@@ -86,7 +86,7 @@ class hwNode
 	void setSlot(const string & slot);
 
 	unsigned int countChildren(hw::hwClass c = hw::generic) const;
-	const hwNode * getChild(unsigned int) const;
+	hwNode * getChild(unsigned int);
 	hwNode * getChild(const string & id);
 	hwNode * findChildByHandle(const string & handle);
 	hwNode * findChildByLogicalName(const string & handle);

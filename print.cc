@@ -49,7 +49,7 @@ static void kilobytes(unsigned long long value)
   cout << "B";
 }
 
-void print(const hwNode & node,
+void print(hwNode & node,
 	   bool html,
 	   int level)
 {
@@ -350,4 +350,4 @@ void print(const hwNode & node,
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.31 2003/02/08 14:17:42 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.32 2003/02/13 23:20:25 ezix Exp $";
