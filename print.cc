@@ -50,6 +50,12 @@ void print(const hwNode & node,
     cout << "vendor: " << node.getVendor() << endl;
   }
 
+  if (node.getVersion() != "")
+  {
+    tab(level + 1, false);
+    cout << "version: " << node.getVersion() << endl;
+  }
+
   if (node.getSize() > 0)
   {
     tab(level + 1, false);
