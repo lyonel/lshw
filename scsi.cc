@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.40 2004/01/19 16:15:15 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.41 2004/03/01 23:10:58 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -622,7 +622,7 @@ static bool scan_sg(int sg,
   char buffer[20];
   int fd = -1;
   My_sg_scsi_id m_id;
-  char slot_name[16];
+  char slot_name[32];		// should be 16 but some 2.6 kernels require 32 bytes
   string host = "";
   string businfo = "";
   hwNode *parent = NULL;
