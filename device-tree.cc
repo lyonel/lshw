@@ -1,4 +1,5 @@
 #include "device-tree.h"
+#include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -112,12 +113,11 @@ static void scan_devtree_bootrom(hwNode & core)
 static int selectdir(const struct dirent *d)
 {
   struct stat buf;
-  string fullpath = string(DEVICETREE "/cpus/") + string(d->d_name);
 
   if (d->d_name[0] == '.')
     return 0;
 
-  if (stat(fullpath.c_str(), &buf) != 0)
+  if (stat(d->d_name, &buf) != 0)
     return 0;
 
   return S_ISDIR(buf.st_mode);
@@ -128,7 +128,9 @@ static void scan_devtree_cpu(hwNode & core)
   struct dirent **namelist;
   int n;
 
-  n = scandir(DEVICETREE "/cpus", &namelist, selectdir, NULL);
+  pushd(DEVICETREE "/cpus");
+  n = scandir(".", &namelist, selectdir, NULL);
+  popd();
   if (n < 0)
     return;
   else
@@ -138,8 +140,14 @@ static void scan_devtree_cpu(hwNode & core)
       string basepath =
 	string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
       unsigned long version = 0;
+      unsigned long cachesize = 0;
       hwNode cpu("cpu",
 		 hw::processor);
+      struct dirent **cachelist;
+      int ncache;
+
+      if (hw::strip(get_string(basepath + "/device_type")) != "cpu")
+	break;			// oops, not a CPU!
 
       cpu.setProduct(get_string(basepath + "/name"));
       cpu.setSize(get_long(basepath + "/clock-frequency"));
@@ -148,14 +156,72 @@ static void scan_devtree_cpu(hwNode & core)
 	cpu.addCapability("altivec");
 
       version = get_long(basepath + "/cpu-version");
-      if (version > 0)
+      if (version != 0)
       {
 	int minor = version & 0x00ff;
 	int major = (version & 0xff00) >> 8;
 	char buffer[20];
 
-	snprintf(buffer, sizeof(buffer), "%d.%d", major, minor);
+	snprintf(buffer, sizeof(buffer), "%x.%d.%d",
+		 (version & 0xffff0000) >> 16, major, minor);
 	cpu.setVersion(buffer);
+
+      }
+      if (hw::strip(get_string(basepath + "/state")) != "running")
+	cpu.disable();
+
+      if (exists(basepath + "/performance-monitor"))
+	cpu.addCapability("performance-monitor");
+
+      if (exists(basepath + "/d-cache-size"))
+      {
+	hwNode cache("cache",
+		     hw::memory);
+
+	cache.setDescription("L1 Cache");
+	cache.setSize(get_long(basepath + "/d-cache-size"));
+	if (cache.getSize() > 0)
+	  cpu.addChild(cache);
+      }
+
+      pushd(basepath);
+      ncache = scandir(".", &cachelist, selectdir, NULL);
+      popd();
+      if (ncache > 0)
+      {
+	for (int j = 0; j < ncache; j++)
+	{
+	  hwNode cache("cache",
+		       hw::memory);
+	  string cachebase = basepath + "/" + cachelist[j]->d_name;
+
+	  if (hw::strip(get_string(cachebase + "/device_type")) != "cache" &&
+	      hw::strip(get_string(cachebase + "/device_type")) != "l2-cache")
+	    break;		// oops, not a cache!
+
+	  cache.setDescription("L2 Cache");
+	  cache.setSize(get_long(cachebase + "/d-cache-size"));
+	  cache.setClock(get_long(cachebase + "/clock-frequency"));
+
+	  if (exists(cachebase + "/cache-unified"))
+	    cache.setDescription(cache.getDescription() + " (unified)");
+	  else
+	  {
+	    hwNode icache = cache;
+	    cache.setDescription(cache.getDescription() + " (data)");
+	    icache.setDescription(icache.getDescription() + " (instruction)");
+	    icache.setSize(get_long(cachebase + "/i-cache-size"));
+
+	    if (icache.getSize() > 0)
+	      cpu.addChild(icache);
+	  }
+
+	  if (cache.getSize() > 0)
+	    cpu.addChild(cache);
+
+	  free(cachelist[j]);
+	}
+	free(cachelist);
       }
 
       core.addChild(cpu);
