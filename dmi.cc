@@ -1105,34 +1105,6 @@ static void dmi_table(int fd,
 
 	newnode.setHandle(handle);
 
-	/*
-	 * 
-	 * if(links.find(hw::strip(handle)) != links.end())
-	 * controllernode = node.findChildByHandle(links[hw::strip(handle)]);
-	 * 
-	 * if(!controllernode)
-	 * controllernode = node.findChildByHandle("DMI:FAKE:RAM");
-	 * 
-	 * if(!controllernode)
-	 * {
-	 * hwNode *memorynode = node.getChild("memory");
-	 * 
-	 * if (!memorynode)
-	 * memorynode = node.addChild(hwNode("memory", hw::memory));
-	 * 
-	 * if(memorynode)
-	 * {
-	 * hwNode fakecontrollernode("ram", hw::memory, "Memory Controller");
-	 * 
-	 * fakecontrollernode.setHandle("DMI:FAKE:RAM");
-	 * controllernode = memorynode->addChild(fakecontrollernode);
-	 * }
-	 * }
-	 * else
-	 * if(controllernode)
-	 * controllernode->addChild(newnode);
-	 */
-
 	hardwarenode->addChild(newnode);
       }
       break;
@@ -1284,15 +1256,7 @@ static void dmi_table(int fd,
 	  newnode.setCapacity(u2 * 1024);
 	printf("\t\tNumber of Devices: %u\n", data[14] << 8 | data[13]);
 
-	hwNode *memorynode = node.getChild("memory");
-	if (!memorynode)
-	{
-	  hardwarenode->addChild(hwNode("memory", hw::memory));
-	  memorynode = node.getChild("memory");
-	}
-
-	if (memorynode)
-	  memorynode->addChild(newnode);
+	hardwarenode->addChild(newnode);
       }
       break;
     case 17:
