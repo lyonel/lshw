@@ -5,6 +5,62 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
+static hwNode *getcache(hwNode & node,
+			int n = 0)
+{
+  char cachename[10];
+  hwNode *cache = NULL;
+
+  if (n < 0)
+    n = 0;
+
+  snprintf(cachename, sizeof(cachename), "cache:%d", n);
+  cache = node.getChild(string(cachename));
+
+  if (cache)
+    return cache;
+
+  // "cache:0" is equivalent to "cache" if we only have L1 cache
+  if ((n == 0) && (node.countChildren(hw::memory) <= 1))
+    cache = node.getChild(string("cache"));
+  if (cache)
+    return cache;
+
+  return node.addChild(hwNode("cache", hw::memory));
+}
+
+static hwNode *getcpu(hwNode & node,
+		      int n = 0)
+{
+  char cpuname[10];
+  hwNode *cpu = NULL;
+
+  if (n < 0)
+    n = 0;
+
+  snprintf(cpuname, sizeof(cpuname), "cpu:%d", n);
+  cpu = node.getChild(string("core/") + string(cpuname));
+
+  if (cpu)
+    return cpu;
+
+  if (n > 0)
+    return NULL;
+
+  // "cpu:0" is equivalent to "cpu" on 1-CPU machines
+  if ((n == 0) && (node.countChildren(hw::processor) <= 1))
+    cpu = node.getChild(string("core/cpu"));
+  if (cpu)
+    return cpu;
+
+  hwNode *core = node.getChild("core");
+
+  if (core)
+    return core->addChild(hwNode("cpu", hw::processor));
+  else
+    return NULL;
+}
+
 #ifdef __i386__
 
 #define cpuid_up(in,a,b,c,d)\
@@ -36,30 +92,6 @@ static void cpuid(int cpunumber,
   }
   else
     cpuid_up(idx, eax, ebx, ecx, edx);
-}
-
-static hwNode *getcache(hwNode & node,
-			int n = 0)
-{
-  char cachename[10];
-  hwNode *cache = NULL;
-
-  if (n < 0)
-    n = 0;
-
-  snprintf(cachename, sizeof(cachename), "cache:%d", n);
-  cache = node.getChild(string(cachename));
-
-  if (cache)
-    return cache;
-
-  // "cache:0" is equivalent to "cache" if we only have L1 cache
-  if ((n == 0) && (node.countChildren(hw::memory) <= 1))
-    cache = node.getChild(string("cache"));
-  if (cache)
-    return cache;
-
-  return node.addChild(hwNode("cache", hw::memory));
 }
 
 /* Decode Intel TLB and cache info descriptors */
@@ -404,38 +436,6 @@ static bool docyrix(unsigned long maxi,
   return true;
 }
 
-static hwNode *getcpu(hwNode & node,
-		      int n = 0)
-{
-  char cpuname[10];
-  hwNode *cpu = NULL;
-
-  if (n < 0)
-    n = 0;
-
-  snprintf(cpuname, sizeof(cpuname), "cpu:%d", n);
-  cpu = node.getChild(string("core/") + string(cpuname));
-
-  if (cpu)
-    return cpu;
-
-  if (n > 0)
-    return NULL;
-
-  // "cpu:0" is equivalent to "cpu" on 1-CPU machines
-  if ((n == 0) && (node.countChildren(hw::processor) <= 1))
-    cpu = node.getChild(string("core/cpu"));
-  if (cpu)
-    return cpu;
-
-  hwNode *core = node.getChild("core");
-
-  if (core)
-    return core->addChild(hwNode("cpu", hw::processor));
-  else
-    return NULL;
-}
-
 static __inline__ bool flag_is_changeable_p(unsigned int flag)
 {
   unsigned int f1, f2;
@@ -567,10 +567,105 @@ bool scan_cpuid(hwNode & n)
 }
 
 #else
+
+#ifdef __alpha__
+
+#define BWX (1 << 0)
+#define FIX (1 << 1)
+#define CIX (1 << 2)
+#define MVI (1 << 8)
+#define PAT (1 << 9)
+#define PMI (1 << 12)
+
+bool scan_cpuid(hwNode & n)
+{
+  hwNode *cpu = NULL;
+  int currentcpu = 0;
+  unsigned long ver = 0, mask = 0;
+
+  while (cpu = getcpu(n, currentcpu))
+  {
+  asm("implver %0":"=r"(ver));
+  asm("amask %1, %0": "=r"(mask):"r"(-1));
+
+    cpu->setVendor("Digital Equipment Corporation");
+    cpu->setProduct("Alpha");
+
+    if ((~mask) & BWX)
+      cpu->addCapability("BWX");
+    if ((~mask) & FIX)
+      cpu->addCapability("FIX");
+    if ((~mask) & CIX)
+      cpu->addCapability("CIX");
+    if ((~mask) & MVI)
+      cpu->addCapability("MVI");
+    if ((~mask) & PAT)
+      cpu->addCapability("PAT");
+    if ((~mask) & PMI)
+      cpu->addCapability("PMI");
+
+    switch (ver)
+    {
+    case 0:
+      cpu->setVersion("EV4");
+      break;
+    case 1:
+      switch (~mask)
+      {
+      case 0:
+	cpu->setVersion("EV5");
+	break;
+      case BWX:
+	cpu->setVersion("EV56");
+	break;
+      case BWX | MVI:
+	cpu->setVersion("PCA56");
+	break;
+      default:
+	cpu->setVersion("EV5 unknown");
+      }
+      break;
+    case 2:
+      switch (~mask)
+      {
+      case BWX | FIX | MVI | PAT:
+	cpu->setVersion("EV6");
+	break;
+      case BWX | FIX | MVI | PAT | CIX:
+	cpu->setVersion("EV67");
+	break;
+      case BWX | FIX | MVI | PAT | CIX | PMI:
+	cpu->setVersion("EV68");
+	break;
+      default:
+	cpu->setVersion("EV6 unknown");
+      }
+      break;
+    case 3:
+      switch (~mask)
+      {
+      case BWX | FIX | MVI | PAT | CIX | PMI:
+	cpu->setVersion("EV7x");
+	break;
+      default:
+	cpu->setVersion("EV7 unknown");
+      }
+      break;
+    }
+
+    currentcpu++;
+  }
+
+  return true;
+}
+
+#else
+
 bool scan_cpuid(hwNode & n)
 {
   return true;
 }
-#endif
+#endif /* __alpha__ */
+#endif /* __i386__ */
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.11 2003/02/08 14:25:36 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.12 2003/03/11 16:42:09 ezix Exp $";

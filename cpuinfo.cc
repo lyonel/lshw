@@ -60,6 +60,62 @@ static void cpuinfo_ppc(hwNode & node,
   }
 }
 
+static void cpuinfo_alpha(hwNode & node,
+			  string id,
+			  string value)
+{
+  static int cpusdetected = 0;
+  static int cpusactive = 0;
+  unsigned long long frequency = 0;
+  int i;
+
+  hwNode *cpu = getcpu(node, 0);
+
+  if (id == "platform string" && node.getProduct() == "")
+    node.setProduct(value);
+  if (id == "system serial number" && node.getSerial() == "")
+    node.setSerial(value);
+  if (id == "system type")
+    node.setVersion(node.getVersion() + " " + value);
+  if (id == "system variation")
+    node.setVersion(node.getVersion() + " " + value);
+  if (id == "system revision")
+    node.setVersion(node.getVersion() + " " + value);
+
+  if (id == "cpus detected")
+    cpusdetected = atoi(value.c_str());
+  if (id == "cpus active")
+    cpusactive = atoi(value.c_str());
+  if (id == "cycle frequency [Hz]")
+    frequency = atoll(value.c_str());
+
+  if (cpu)
+  {
+    if (frequency)
+      cpu->setSize(frequency);
+  }
+
+  for (i = 1; i < cpusdetected; i++)
+  {
+    hwNode *mycpu = getcpu(node, i);
+
+    if (mycpu)
+    {
+      mycpu->disable();
+
+      if (cpu)
+	mycpu->setSize(cpu->getSize());
+    }
+  }
+  for (i = 1; i < cpusactive; i++)
+  {
+    hwNode *mycpu = getcpu(node, i);
+
+    if (mycpu)
+      mycpu->enable();
+  }
+}
+
 static void cpuinfo_x86(hwNode & node,
 			string id,
 			string value)
@@ -169,6 +225,9 @@ bool scan_cpuinfo(hwNode & n)
 
 	cpuinfo_x86(n, id, value);
 	//cpuinfo_ppc(n, id, value);
+#ifdef __alpha__
+	cpuinfo_alpha(n, id, value);
+#endif
       }
     }
   }
@@ -180,4 +239,4 @@ bool scan_cpuinfo(hwNode & n)
 }
 
 static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.12 2003/02/08 14:05:18 ezix Exp $";
+  "@(#) $Id: cpuinfo.cc,v 1.13 2003/03/11 16:42:09 ezix Exp $";
