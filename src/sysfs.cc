@@ -170,10 +170,24 @@ static string sysfs_getbusinfo_byclass(const string & devclass, const string & d
   return sysfstobusinfo(hw::strip(buffer));
 }
 
+static string sysfs_getbusinfo_bybus(const string & devbus, const string & devname)
+{
+  string device =
+    fs.path + string("/bus/") + devbus + string("/devices/") + devname;
+  char buffer[PATH_MAX + 1];
+
+  if (!realpath(device.c_str(), buffer))
+    return "";
+
+  return sysfstobusinfo(hw::strip(buffer));
+}
+
 string sysfs_getbusinfo(const entry & e)
 {
   if(e.This->devclass != "")
     return sysfs_getbusinfo_byclass(e.This->devclass, e.This->devname);
+  if(e.This->devbus != "")
+    return sysfs_getbusinfo_bybus(e.This->devbus, e.This->devname);
   return "";
 }
 
