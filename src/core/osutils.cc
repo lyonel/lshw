@@ -145,7 +145,7 @@ string get_string(const string & path,
   return result;
 }
 
-static int selectdir(const struct dirent *d)
+int selectdir(const struct dirent *d)
 {
   struct stat buf;
 
@@ -300,12 +300,12 @@ string join(const string & j, const string & s1, const string & s2)
   return s1 + j + s2;
 }
 
-bool matches(const string & s, const string & pattern)
+bool matches(const string & s, const string & pattern, int cflags)
 {
   regex_t r;
   bool result = false;
 
-  if(regcomp(&r, pattern.c_str(), REG_EXTENDED | REG_NOSUB) != 0)
+  if(regcomp(&r, pattern.c_str(), REG_EXTENDED | REG_NOSUB | cflags) != 0)
     return false;
 
   result = (regexec(&r, s.c_str(), 0, NULL, 0) == 0);

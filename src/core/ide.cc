@@ -93,19 +93,6 @@ static unsigned long long get_longlong(const string & path)
   return l;
 }
 
-static int selectdir(const struct dirent *d)
-{
-  struct stat buf;
-
-  if (d->d_name[0] == '.')
-    return 0;
-
-  if (lstat(d->d_name, &buf) != 0)
-    return 0;
-
-  return S_ISDIR(buf.st_mode);
-}
-
 static string get_pciid(const string & bus,
 			const string & device)
 {
@@ -349,20 +336,16 @@ static const char *manufacturers[] = {
 
 static bool guess_manufacturer(hwNode & device)
 {
-  regex_t r;
   int i = 0;
   bool result = false;
 
   while (manufacturers[i])
-    if (regcomp(&r, manufacturers[i], REG_ICASE | REG_EXTENDED | REG_NOSUB) ==
-	0)
     {
-      if (regexec(&r, device.getProduct().c_str(), 0, NULL, 0) == 0)
+      if (matches(device.getProduct().c_str(), manufacturers[i], REG_ICASE))
       {
 	device.setVendor(manufacturers[i + 1]);
 	result = true;
       }
-      regfree(&r);
       i += 2;
     }
 

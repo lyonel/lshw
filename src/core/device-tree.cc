@@ -146,19 +146,6 @@ static void scan_devtree_bootrom(hwNode & core)
   }
 }
 
-static int selectdir(const struct dirent *d)
-{
-  struct stat buf;
-
-  if (d->d_name[0] == '.')
-    return 0;
-
-  if (lstat(d->d_name, &buf) != 0)
-    return 0;
-
-  return S_ISDIR(buf.st_mode);
-}
-
 static void scan_devtree_cpu(hwNode & core)
 {
   struct dirent **namelist;

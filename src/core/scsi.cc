@@ -775,19 +775,6 @@ static bool scan_sg(int sg,
   return true;
 }
 
-static int selectdir(const struct dirent *d)
-{
-  struct stat buf;
-
-  if (d->d_name[0] == '.')
-    return 0;
-
-  if (lstat(d->d_name, &buf) != 0)
-    return 0;
-
-  return S_ISDIR(buf.st_mode);
-}
-
 static bool scan_hosts(hwNode & node)
 {
   struct dirent **namelist = NULL;

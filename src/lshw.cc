@@ -20,6 +20,7 @@ void usage(const char *progname)
   fprintf(stderr, "\t-html           output hardware tree as HTML\n");
   fprintf(stderr, "\t-xml            output hardware tree as XML\n");
   fprintf(stderr, "\t-short          output hardware paths\n");
+  fprintf(stderr, "\t-businfo        output bus information\n");
   fprintf(stderr, "\noptions can be\n");
   fprintf(stderr,
 	  "\t-class CLASS    only show a certain class of hardware\n");
@@ -55,9 +56,6 @@ int main(int argc,
   bool businfo = false;
 
   disable("isapnp");
-#ifndef DEBUG
-  //disable("usb");
-#endif
 
   // define some aliases for nodes classes
   alias("disc", "disk");
