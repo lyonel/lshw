@@ -243,7 +243,7 @@ create_aboutlshw (void)
   gtk_label_set_justify (GTK_LABEL (aboutext), GTK_JUSTIFY_CENTER);
   gtk_misc_set_padding (GTK_MISC (aboutext), 20, 20);
 
-  version = gtk_label_new ("version");
+  version = gtk_label_new ("VERSION");
   gtk_widget_show (version);
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), version, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (version), GTK_JUSTIFY_CENTER);

@@ -21,6 +21,9 @@ all: gtk-$(PACKAGENAME)
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
+interface.c support.c callbacks.c: gtk-lshw.glade gtk-lshw.gladep
+	glade-2 -w gtk-lshw.glade
+
 gtk-$(PACKAGENAME): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 

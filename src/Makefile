@@ -75,6 +75,7 @@ install: all
 clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
 	make -C core clean
+	make -C gui clean
 
 .timestamp:
 	date --utc +%Y%m%d%H%M%S > $@

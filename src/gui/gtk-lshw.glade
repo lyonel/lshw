@@ -321,7 +321,7 @@
       <child>
 	<widget class="GtkLabel" id="version">
 	  <property name="visible">True</property>
-	  <property name="label" translatable="yes">version</property>
+	  <property name="label" translatable="yes">VERSION</property>
 	  <property name="use_underline">False</property>
 	  <property name="use_markup">False</property>
 	  <property name="justify">GTK_JUSTIFY_CENTER</property>
