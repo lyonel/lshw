@@ -70,6 +70,9 @@ static void populate_list(GtkWidget * list1, hwNode * root)
   gtk_tree_view_set_model(GTK_TREE_VIEW(list1), GTK_TREE_MODEL(list_store));
   g_object_unref(list_store);
 
+  gtk_tree_selection_set_mode(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), GTK_SELECTION_BROWSE);
+  gtk_tree_selection_select_iter(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), &iter);
+
   YIELD();
 }
 
@@ -78,12 +81,12 @@ static void populate_sublist(GtkWidget * list1, hwNode * root)
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn   *col = NULL;
   GtkCellRenderer     *renderer = NULL;
+  GtkTreeIter iter;
 
   list_store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
 
   for(unsigned i = 0; i<root->countChildren(); i++)
   {
-    GtkTreeIter iter;
     string text;
 
     gtk_list_store_append(list_store, &iter);
@@ -112,6 +115,8 @@ static void populate_sublist(GtkWidget * list1, hwNode * root)
 
   gtk_tree_view_set_model(GTK_TREE_VIEW(list1), GTK_TREE_MODEL(list_store));
   g_object_unref(list_store);
+
+  gtk_tree_selection_set_mode(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), GTK_SELECTION_BROWSE);
 
   YIELD();
 }
@@ -166,7 +171,6 @@ void refresh(GtkWidget *mainwindow)
 
   populate_list(list1, root);
   populate_sublist(list2, root);
-  populate_sublist(list3, root->getChild(0));
   display(mainwindow);
 }
 

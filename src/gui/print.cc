@@ -218,7 +218,7 @@ string printmarkup(const hwNode & node)
     {
       out << endl << "<b>configuration:</b>" << endl;
       for (unsigned int i = 0; i < config.size(); i++)
-	out << " " << config[i] << "</i>" << endl;
+	out << "\t" << config[i] << "</i>" << endl;
       out << endl;
     }
 
