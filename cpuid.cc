@@ -314,6 +314,69 @@ static bool doamd(unsigned long maxi,
 		  hwNode * cpu,
 		  int cpunumber = 0)
 {
+  unsigned long maxei = 0, eax, ebx, ecx, edx;
+  long long l1cache = 0, l2cache = 0;
+  unsigned int family = 0, model = 0, stepping = 0;
+  char buffer[1024];
+
+  if (maxi < 1)
+    return false;
+
+  cpuid(cpunumber, 1, eax, ebx, ecx, edx);
+  stepping = eax & 0xf;
+  model = (eax >> 4) & 0xf;
+  family = (eax >> 8) & 0xf;
+  snprintf(buffer, sizeof(buffer), "%d.%d.%d", family, model, stepping);
+  cpu->setVersion(buffer);
+
+  cpuid(cpunumber, 0x80000000, maxei, ebx, ecx, edx);
+
+  if (maxei >= 0x80000005)
+  {
+    cpuid(cpunumber, 0x80000005, eax, ebx, ecx, edx);
+
+    l1cache = (ecx >> 24) * 1024;	// data cache
+    l1cache += (edx >> 24) * 1024;	// instruction cache
+  }
+  if (maxei >= 0x80000006)
+  {
+    cpuid(cpunumber, 0x80000006, eax, ebx, ecx, edx);
+
+    l2cache = (ecx >> 16) * 1024;
+  }
+
+  if (l1cache != 0)
+  {
+    hwNode *l1 = cpu->getChild("cache:0");
+    hwNode *l2 = cpu->getChild("cache:1");
+
+    if (l1)
+      l1->setSize(l1cache);
+    else
+    {
+      hwNode newl1("cache",
+		   hw::memory);
+
+      newl1.setDescription("L1 cache");
+      newl1.setSize(l1cache);
+
+      cpu->addChild(newl1);
+    }
+    if (l2 && l2cache)
+      l2->setSize(l1cache);
+    else
+    {
+      hwNode newl2("cache",
+		   hw::memory);
+
+      newl2.setDescription("L2 cache");
+      newl2.setSize(l2cache);
+
+      if (l2cache)
+	cpu->addChild(newl2);
+    }
+  }
+
   return true;
 }
 
@@ -356,11 +419,34 @@ static hwNode *getcpu(hwNode & node,
     return NULL;
 }
 
+static __inline__ bool flag_is_changeable_p(unsigned int flag)
+{
+  unsigned int f1, f2;
+  __asm__ volatile ("pushfl\n\t"
+		    "pushfl\n\t"
+		    "popl %0\n\t"
+		    "movl %0,%1\n\t"
+		    "xorl %2,%0\n\t"
+		    "pushl %0\n\t"
+		    "popfl\n\t"
+		    "pushfl\n\t" "popl %0\n\t" "popfl\n\t":"=&r" (f1),
+		    "=&r"(f2):"ir"(flag));
+  return ((f1 ^ f2) & flag) != 0;
+}
+
+static bool haveCPUID()
+{
+  return flag_is_changeable_p(0x200000);
+}
+
 bool scan_cpuid(hwNode & n)
 {
   unsigned long maxi, unused, eax, ebx, ecx, edx;
   hwNode *cpu = NULL;
   int currentcpu = 0;
+
+  if (!haveCPUID())
+    return false;
 
   while (cpu = getcpu(n, currentcpu))
   {
@@ -388,4 +474,4 @@ bool scan_cpuid(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.3 2003/02/02 16:46:08 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.4 2003/02/02 17:50:41 ezix Exp $";
