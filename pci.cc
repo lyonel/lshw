@@ -588,6 +588,7 @@ bool scan_pci(hwNode & n)
       char revision[10];
       snprintf(revision, sizeof(revision), "%02x", rev);
       string moredescription = get_class_description(dclass, progif);
+      string drivername = hw::strip(driver);
 
       if (dclass == PCI_CLASS_BRIDGE_HOST)
       {
@@ -691,6 +692,12 @@ bool scan_pci(hwNode & n)
 	  else
 	    device->setClock(33000000UL);	// 33MHz
 
+	  if (drivername != "")
+	  {
+	    device->setConfig("driver", drivername);
+	    device->claimed();
+	  }
+
 	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
 
 	  if (bus)
@@ -718,4 +725,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.18 2003/01/29 22:00:08 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.19 2003/01/30 00:01:08 ezix Exp $";

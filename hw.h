@@ -50,6 +50,7 @@ class hwNode
 	void disable();
 	bool claimed() const;
 	void claim();
+	void unclaim();
 
 	hw::hwClass getClass() const;
 	void setClass(hw::hwClass c);

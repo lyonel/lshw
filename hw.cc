@@ -168,6 +168,14 @@ void hwNode::claim()
   This->claimed = true;
 }
 
+void hwNode::unclaim()
+{
+  if (!This)
+    return;
+
+  This->claimed = false;
+}
+
 string hwNode::getId() const
 {
   if (This)
@@ -578,4 +586,4 @@ vector < string > hwNode::getConfig() const
   return result;
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.27 2003/01/29 19:38:03 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.28 2003/01/30 00:01:08 ezix Exp $";
