@@ -1370,6 +1370,13 @@ static void dmi_table(int fd,
 	start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16);
 	end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16);
 
+	if (end - start < 512)	// memory range is smaller thant 512KB
+	{
+	  // consider that values were expressed in megagytes
+	  start *= 1024;
+	  end *= 1024;
+	}
+
 	newnode.setStart(start * 1024);	// values are in KB
 	if (end != start)
 	  newnode.setSize((end - start + 1) * 1024);	// values are in KB
@@ -1391,6 +1398,13 @@ static void dmi_table(int fd,
 
 	start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16);
 	end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16);
+
+	if (end - start < 512)	// memory range is smaller thant 512KB
+	{
+	  // consider that values were expressed in megagytes
+	  start *= 1024;
+	  end *= 1024;
+	}
 
 	newnode.setStart(start * 1024);	// values are in KB
 	if (end != start)
