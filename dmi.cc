@@ -375,34 +375,32 @@ static char *dmi_memory_device_type(u8 num)
   return memory_device_type[num];
 }
 
-static void dmi_memory_device_detail(u8 v)
+static string dmi_memory_device_detail(u16 v)
 {
-  printf("\t\tType Detail: ");
-  if (v & (1 << 1))
-    printf("Other ");
-  if (v & (1 << 2))
-    printf("Unknown ");
+  string result = " ";
+
   if (v & (1 << 3))
-    printf("Fast-paged ");
+    result += "Fast-paged ";
   if (v & (1 << 4))
-    printf("Static column ");
+    result += "Static column ";
   if (v & (1 << 5))
-    printf("Pseudo-static ");
+    result += "Pseudo-static ";
   if (v & (1 << 6))
-    printf("RAMBUS ");
+    result += "RAMBUS ";
   if (v & (1 << 7))
-    printf("Synchronous ");
+    result += "Synchronous ";
   if (v & (1 << 8))
-    printf("CMOS ");
+    result += "CMOS ";
   if (v & (1 << 9))
-    printf("EDO ");
+    result += "EDO ";
   if (v & (1 << 10))
-    printf("Window DRAM ");
+    result += "Window DRAM ";
   if (v & (1 << 11))
-    printf("Cache DRAM ");
+    result += "Cache DRAM ";
   if (v & (1 << 12))
-    printf("Non-volatile ");
-  printf("\n");
+    result += "Non-volatile ";
+
+  return result;
 }
 
 static const char *dmi_port_type(u8 code)
@@ -761,17 +759,17 @@ static void dmi_table(int fd,
     case 0:
       // BIOS Information Block
       {
-	hwNode newnode("bios",
+	string release(dmi_string(dm,
+				  data[8]));
+	hwNode newnode("rom",
 		       hw::memory,
 		       dmi_string(dm,
 				  data[4]));
 	newnode.setVersion(dmi_string(dm, data[5]));
 	newnode.setSize(64 * data[9] * 1024);
-	//printf("\t\tVendor: %s\n", dmi_string(dm, data[4]));
-	//printf("\t\tVersion: %s\n", dmi_string(dm, data[5]));
-	//printf("\t\tRelease: %s\n", dmi_string(dm, data[8]));
-	//printf("\t\tBIOS base: 0x%04X0\n", data[7] << 8 | data[6]);
-	//printf("\t\tROM size: %dK\n", 64 * data[9]);
+
+	if (release != "")
+	  newnode.setVersion(newnode.getVersion() + " (" + release + ")");
 	node.addChild(newnode);
       }
       break;
@@ -964,14 +962,10 @@ static void dmi_table(int fd,
       break;
 
     case 11:
-      printf("\tOEM Data\n");
-      for (u = 1; u <= data[4]; u++)
-	printf("\t\t%s\n", dmi_string(dm, u));
+      // OEM Data
       break;
     case 12:
-      printf("\tConfiguration Information\n");
-      for (u = 1; u <= data[4]; u++)
-	printf("\t\t%s\n", dmi_string(dm, u));
+      // Configuration Information
       break;
 
     case 13:
@@ -986,25 +980,11 @@ static void dmi_table(int fd,
       break;
 
     case 14:
-      printf("\tGroup Associations\n");
-      for (u = 0; 3 * u + 7 < dm->length; u++)
-      {
-	printf("\t\tGroup Name: %s\n", dmi_string(dm, data[4]));
-	printf("\t\t\tType: 0x%02x\n", *(data + 5 + (u * 3)));
-	printf("\t\t\tHandle: 0x%04x\n", *(u16 *) (data + 6 + (u * 3)));
-      }
+      // Group Associations
       break;
 
     case 15:
-      printf("\tEvent Log\n");
-      printf("\t\tLog Area: %d bytes.\n", data[5] << 8 | data[4]);
-      printf("\t\tLog Header At: %d.\n", data[7] << 8 | data[6]);
-      printf("\t\tLog Data At: %d.\n", data[9] << 8 | data[8]);
-      printf("\t\tLog Type: %d.\n", data[10]);
-      if (data[11] & (1 << 0))
-	printf("\t\tLog Valid: Yes.\n");
-      if (data[11] & (1 << 1))
-	printf("\t\t**Log Is Full**.\n");
+      // Event Log
       break;
 
     case 16:
@@ -1036,201 +1016,163 @@ static void dmi_table(int fd,
       printf("\t\tNumber of Devices: %u\n", data[14] << 8 | data[13]);
       break;
     case 17:
-      printf("\tMemory Device\n");
-      printf("\t\tArray Handle: 0x%04X\n", data[5] << 8 | data[4]);
-      printf("\t\tError Information Handle: ");
-      u = data[7] << 8 | data[6];
-      if (u == 0xffff)
+      // Memory Device
       {
-	printf("None\n");
-      }
-      else if (u == 0xfffe)
-      {
-	printf("Not Provided\n");
-      }
-      else
-      {
-	printf("0x%04X\n", u);
-      }
-      u = data[9] << 8 | data[8];
-      printf("\t\tTotal Width: ");
-      if (u == 0xffff)
-	printf("Unknown\n");
-      else
-	printf("%u bits\n", u);
-      u = data[11] << 8 | data[10];
-      printf("\t\tData Width: ");
-      if (u == 0xffff)
-	printf("Unknown\n");
-      else
-	printf("%u bits\n", u);
-      u = data[13] << 8 | data[12];
-      printf("\t\tSize: ");
-      if (u == 0xffff)
-	printf("Unknown\n");
-      else
-	printf("%u %sbyte\n", (u & 0x7fff), (u & 0x8000) ? "K" : "M");
-      printf("\t\tForm Factor: %s\n",
-	     dmi_memory_device_form_factor(data[14]));
-      if (data[15] != 0)
-      {
-	printf("\t\tSet: ");
-	if (data[15] == 0xff)
-	  printf("Unknown\n");
+	string id;
+	string description;
+	unsigned long long size = 0;
+	u16 width = 0;
+	char bits[10];
+
+	// printf("\t\tArray Handle: 0x%04X\n", data[5] << 8 | data[4]);
+
+	strcpy(bits, "");
+	// total width
+	u = data[9] << 8 | data[8];
+	if (u != 0xffff)
+	  width = u;
+
+	//data width
+	u = data[11] << 8 | data[10];
+	if ((u != 0xffff) && (u != 0))
+	{
+	  if ((u == width) || (width == 0))
+	    snprintf(bits, sizeof(bits), "%d", u);
+	  else
+	    snprintf(bits, sizeof(bits), "%d/%d", width, u);
+	}
 	else
-	  printf("0x%02X\n", data[15]);
+	{
+	  if (width != 0)
+	    snprintf(bits, sizeof(bits), "%d", width);
+	}
+
+	// size
+	u = data[13] << 8 | data[12];
+	if (u != 0xffff)
+	  size = (1024 * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024));
+
+	description += " " + string(dmi_memory_device_form_factor(data[14]));
+	id = string(dmi_string(dm, data[16]));
+	//printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
+	description += " " + string(dmi_memory_device_type(data[18]));
+
+	u = data[20] << 8 | data[19];
+	if (u & 0x1ffe)
+	  description += dmi_memory_device_detail(u);
+
+	if (dm->length > 21)
+	{
+	  char buffer[80];
+
+	  u = data[22] << 8 | data[21];
+	  // speed
+	  if (u == 0)
+	    strcpy(buffer, "");
+	  else
+	    snprintf(buffer, sizeof(buffer), "%u MHz (%.1f ns)", u,
+		     (1000.0 / u));
+	  description += " " + string(buffer);
+	}
+
+	hwNode newnode(id,
+		       hw::memory);
+
+	if (dm->length > 23)
+	  newnode.setVendor(dmi_string(dm, data[23]));
+	if (dm->length > 24)
+	  newnode.setSerial(dmi_string(dm, data[24]));
+	if (dm->length > 25)
+	  printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[25]));
+	if (dm->length > 26)
+	  description += " P/N: " + string(dmi_string(dm, data[26]));
+
+	if (strlen(bits))
+	  description += string(bits) + " bits";
+
+	newnode.setProduct(description);
+	newnode.setSize(size);
+
+	node.addChild(newnode);
       }
-      printf("\t\tLocator: %s\n", dmi_string(dm, data[16]));
-      printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
-      printf("\t\tType: %s\n", dmi_memory_device_type(data[18]));
-      u = data[20] << 8 | data[19];
-      if (u & 0x1ffe)
-	dmi_memory_device_detail(u);
-      if (dm->length > 21)
-      {
-	u = data[22] << 8 | data[21];
-	printf("\t\tSpeed: ");
-	if (u == 0)
-	  printf("Unknown\n");
-	else
-	  printf("%u MHz (%.1f ns)\n", u, (1000.0 / u));
-      }
-      if (dm->length > 23)
-	printf("\t\tManufacturer: %s\n", dmi_string(dm, data[23]));
-      if (dm->length > 24)
-	printf("\t\tSerial Number: %s\n", dmi_string(dm, data[24]));
-      if (dm->length > 25)
-	printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[25]));
-      if (dm->length > 26)
-	printf("\t\tPart Number: %s\n", dmi_string(dm, data[26]));
       break;
     case 18:
-      printf("\t32-bit Memory Error Information\n");
+      // 32-bit Memory Error Information
       break;
     case 19:
-      printf("\tMemory Array Mapped Address\n");
+      // Memory Array Mapped Address
       break;
     case 20:
-      printf("\tMemory Device Mapped Address\n");
+      // Memory Device Mapped Address
       break;
     case 21:
-      printf("\tBuilt-In Pointing Device\n");
+      // Built-In Pointing Device
       break;
     case 22:
-      printf("\tPortable Battery\n");
-      printf("\t\tLocation: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tManufacturer: %s\n", dmi_string(dm, data[5]));
-      printf("\t\tManufacture Date: %s\n", dmi_string(dm, data[6]));
-      printf("\t\tSerial Number: %s\n", dmi_string(dm, data[7]));
-      printf("\t\tName: %s\n", dmi_string(dm, data[8]));
+      // Portable Battery
       break;
 
     case 23:
-      printf("\tSystem Reset\n");
+      // System Reset
       break;
     case 24:
-      printf("\tHardware Security\n");
+      // Hardware Security
       break;
     case 25:
-      printf("\tSystem Power Controls\n");
+      // System Power Controls
       break;
     case 26:
-      printf("\tVoltage Sensor\n");
-      printf("\t\tDescription: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tDevice Location: %s\n", dmi_volt_loc(data[5] & 0x1f));
-      printf("\t\tDevice Status: %s\n", dmi_status(data[5] >> 5));
-      printf("\t\tMaximum Value: %s\n", dmi_millivolt(data, 6));
-      printf("\t\tMinimum Value: %s\n", dmi_millivolt(data, 8));
-      printf("\t\tResolution:    %s\n", dmi_millivolt(data, 10));
-      printf("\t\tTolerance:     %s\n", dmi_millivolt(data, 12));
-      printf("\t\tAccuracy:      %s\n", dmi_accuracy(data, 14));
-      if (dm->length > 0x14)
-	printf("\t\tNominal Value: %s\n", dmi_millivolt(data, 0x14));
+      // Voltage Sensor
       break;
     case 27:
-      printf("\tCooling Device\n");
-      printf("\t\tDevice Type: %s\n", dmi_fan_type(data[5] & 0x1f));
-      printf("\t\tDevice Status: %s\n", dmi_status(data[5] >> 5));
-      if (dm->length > 0x0c)
-	printf("\t\tNominal Speed: %s\n", dmi_speed(data, 0x0c));
+      // Cooling Device
       break;
     case 28:
-      printf("\tTemperature Sensor\n");
-      printf("\t\tDescription: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tDevice Location: %s\n", dmi_temp_loc(data[5] & 0x1f));
-      printf("\t\tDevice Status: %s\n", dmi_status(data[5] >> 5));
-      printf("\t\tMaximum Value: %s\n", dmi_temp(data, 6));
-      printf("\t\tMinimum Value: %s\n", dmi_temp(data, 8));
-      printf("\t\tResolution:    %s\n", dmi_temp(data, 10));
-      printf("\t\tTolerance:     %s\n", dmi_temp(data, 12));
-      printf("\t\tAccuracy:      %s\n", dmi_accuracy(data, 14));
-      if (dm->length > 0x14)
-	printf("\t\tNominal Value: %s\n", dmi_temp(data, 0x14));
+      // Temperature Sensor
       break;
     case 29:
-      printf("\tCurrent Sensor\n");
-      printf("\t\tDescription: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tDevice Location: %s\n", dmi_volt_loc(data[5] & 0x1f));
-      printf("\t\tDevice Status: %s\n", dmi_status(data[5] >> 5));
-      printf("\t\tMaximum Value: %s\n", dmi_millivolt(data, 6));
-      printf("\t\tMinimum Value: %s\n", dmi_millivolt(data, 8));
-      printf("\t\tResolution:    %s\n", dmi_millivolt(data, 10));
-      printf("\t\tTolerance:     %s\n", dmi_millivolt(data, 12));
-      printf("\t\tAccuracy:      %s\n", dmi_accuracy(data, 14));
-      if (dm->length > 0x14)
-	printf("\t\tNominal Value: %s\n", dmi_millivolt(data, 0x14));
+      // Current Sensor
       break;
     case 30:
-      printf("\tOut-of-Band Remote Access\n");
+      // Out-of-Band Remote Access
       break;
     case 31:
-      printf("\tBoot Integrity Services Entry Point\n");
+      // Boot Integrity Services Entry Point
       break;
     case 32:
-      printf("\tSystem Boot Information\n");
+      // System Boot Information
       break;
     case 33:
-      printf("\t64-bit Memory Error Information\n");
+      // 64-bit Memory Error Information
       break;
     case 34:
-      printf("\tManagement Device\n");
-      printf("\t\tDescription: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tDevice Type: %s\n", dmi_mgmt_dev_type(data[5]));
-      printf("\t\tAddress Type: %s\n", dmi_mgmt_addr_type(data[6]));
+      // Management Device
       break;
     case 35:
-      printf("\tManagement Device Component\n");
-      printf("\t\tDescription: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tDevice Handle   : 0x%02x%02x\n", data[6], data[5]);
-      printf("\t\tComponent Handle: 0x%02x%02x\n", data[8], data[7]);
-      printf("\t\tThreshold Handle: 0x%02x%02x\n", data[10], data[9]);
+      // Management Device Component
       break;
     case 36:
-      printf("\tManagement Device Threshold Data\n");
-      if (dm->length > 4)
-	break;
+      // Management Device Threshold Data
+      break;
     case 37:
-      printf("\tMemory Channeln");
+      // Memory Channel
       break;
     case 38:
-      printf("\tIPMI Device\n");
-      if (dm->length > 4)
-	break;
+      // IPMI Device
+      break;
     case 39:
-      printf("\tPower Supply\n");
-      if (dm->length > 4)
-	break;
+      // Power Supply
+      break;
     case 126:
-      printf("\tInactive\n");
+      // Inactive
       break;
 
     case 127:
-      printf("\tEnd-of-Table\n");
+      // End-of-Table
       break;
 
     default:
-      if (dm->length > 4)
-	break;
+      break;
 
     }
     data += dm->length;

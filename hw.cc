@@ -17,9 +17,9 @@ string strip(const string & s)
   string result = s;
 
   while ((result.length() > 0) && (result[0] <= ' '))
-    result.erase(result.begin());
+    result.erase(0, 1);
   while ((result.length() > 0) && (result[result.length() - 1] <= ' '))
-    result.erase(result.end());
+    result.erase(result.length() - 1, 1);
 
   return result;
 }
@@ -230,7 +230,7 @@ bool hwNode::addChild(const hwNode & node)
     count++;
 
   This->children.push_back(node);
-  if (existing)
+  if (existing || getChild(generateId(id, 0)))
     This->children.back().setId(generateId(id, count));
 
   return true;
