@@ -141,6 +141,64 @@ struct pci_dev
   u_int8_t config[256];
 };
 
+struct pci_entry
+{
+  long ids[4];
+  string description;
+
+    pci_entry(const string & description,
+	      long u1 = -1,
+	      long u2 = -1,
+	      long u3 = -1,
+	      long u4 = -1);
+
+  unsigned int matches(long u1 = -1,
+		       long u2 = -1,
+		       long u3 = -1,
+		       long u4 = -1);
+};
+
+static vector < pci_entry > pci_devices;
+static vector < pci_entry > pci_classes;
+
+pci_entry::pci_entry(const string & d,
+		     long u1,
+		     long u2,
+		     long u3,
+		     long u4)
+{
+  description = d;
+  ids[0] = u1;
+  ids[1] = u2;
+  ids[2] = u3;
+  ids[3] = u4;
+}
+
+unsigned int pci_entry::matches(long u1,
+				long u2,
+				long u3,
+				long u4)
+{
+  unsigned int result = 0;
+
+  if (ids[0] == u1)
+  {
+    result++;
+    if (ids[1] == u2)
+    {
+      result++;
+      if (ids[2] == u3)
+      {
+	result++;
+	if (ids[3] == u4)
+	  result++;
+      }
+    }
+  }
+
+  return result;
+}
+
 static const char *get_class_name(unsigned int c)
 {
   switch (c)
@@ -312,7 +370,16 @@ static bool parse_pcidb(vector < string > &list)
       return false;
     }
 
-    printf("%04x %04x %04x %04x %s\n", u[0], u[1], u[2], u[3], line.c_str());
+    //printf("%04x %04x %04x %04x %s\n", u[0], u[1], u[2], u[3], line.c_str());
+    if ((current_catalog == pciclass) ||
+	(current_catalog == pcisubclass) || (current_catalog == pciprogif))
+    {
+      pci_classes.push_back(pci_entry(line, u[0], u[1], u[2], u[3]));
+    }
+    else
+    {
+      pci_devices.push_back(pci_entry(line, u[0], u[1], u[2], u[3]));
+    }
   }
   return true;
 }
@@ -336,49 +403,17 @@ static bool load_pcidb()
   return true;
 }
 
-static const char *get_class_description(unsigned int c)
+static string get_class_description(long c,
+				    long pi = -1)
 {
-  switch (c)
+  for (int i = 0; i < pci_classes.size(); i++)
   {
-  case PCI_CLASS_NOT_DEFINED_VGA:
-    return "VGA Display Adapter";
-  case PCI_CLASS_STORAGE_SCSI:
-    return "SCSI Adapter";
-  case PCI_CLASS_STORAGE_IDE:
-    return "IDE Controller";
-  case PCI_CLASS_STORAGE_FLOPPY:
-    return "Floppy Controller";
-  case PCI_CLASS_STORAGE_IPI:
-    return "IPI Controller";
-  case PCI_CLASS_STORAGE_RAID:
-    return "RAID Controller";
-  case PCI_CLASS_NETWORK_ETHERNET:
-    return "Ethernet Network Adapter";
-  case PCI_CLASS_NETWORK_TOKEN_RING:
-    return "Token Ring Network Adapter";
-  case PCI_CLASS_NETWORK_FDDI:
-    return "FDDI Network Adapter";
-  case PCI_CLASS_NETWORK_ATM:
-    return "ATM Network Adapter";
-  case PCI_CLASS_BRIDGE_HOST:
-    return "Host Bridge";
-  case PCI_CLASS_BRIDGE_ISA:
-    return "ISA Bridge";
-  case PCI_CLASS_BRIDGE_EISA:
-    return "EISA Bridge";
-  case PCI_CLASS_BRIDGE_MC:
-    return "MC Bridge";
-  case PCI_CLASS_BRIDGE_PCI:
-    return "PCI Bridge";
-  case PCI_CLASS_BRIDGE_PCMCIA:
-    return "PCMCIA Bridge";
-  case PCI_CLASS_BRIDGE_NUBUS:
-    return "NUBUS Bridge";
-  case PCI_CLASS_BRIDGE_CARDBUS:
-    return "CARDBUS Bridge";
-  default:
-    return "";
+    if (pci_classes[i].matches(c >> 8, c & 0xff, pi))
+    {
+      return pci_classes[i].description;
+    }
   }
+  return "";
 }
 
 static u_int16_t get_conf_word(struct pci_dev d,
@@ -575,4 +610,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.8 2003/01/28 07:59:23 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.9 2003/01/28 09:43:47 ezix Exp $";
