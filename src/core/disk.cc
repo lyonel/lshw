@@ -14,6 +14,9 @@ static char *id = "@(#) $Id$";
 #ifndef BLKGETSIZE
 #define BLKGETSIZE _IO(0x12,96)	/* return device size */
 #endif
+#ifndef BLKGETSIZE64
+#define BLKGETSIZE64 _IOR(0x12,114,size_t)     /* size in bytes */
+#endif
 #ifndef BLKSSZGET
 #define BLKSSZGET  _IO(0x12,104)	/* get block device sector size */
 #endif
@@ -21,6 +24,7 @@ static char *id = "@(#) $Id$";
 bool scan_disk(hwNode & n)
 {
   long size = 0;
+  unsigned long long bytes = 0;
   int sectsize = 0;
 
   if (n.getLogicalName() == "")
@@ -31,15 +35,22 @@ bool scan_disk(hwNode & n)
   if (fd < 0)
     return false;
 
-  if (!n.isCapable("removable") && (n.getSize() == 0))
+  if (n.getSize() == 0)
   {
-    if (ioctl(fd, BLKGETSIZE, &size) != 0)
-      size = 0;
-    if (ioctl(fd, BLKSSZGET, &sectsize) != 0)
-      sectsize = 0;
+    if(ioctl(fd, BLKGETSIZE64, &bytes) == 0)
+    {
+      n.setSize(bytes);
+    }
+    else
+    {
+      if (ioctl(fd, BLKGETSIZE, &size) != 0)
+        size = 0;
+      if (ioctl(fd, BLKSSZGET, &sectsize) != 0)
+        sectsize = 0;
 
-    if ((size > 0) && (sectsize > 0))
-      n.setSize((unsigned long long) size * (unsigned long long) sectsize);
+      if ((size > 0) && (sectsize > 0))
+        n.setSize((unsigned long long) size * (unsigned long long) sectsize);
+    }
   }
 
   close(fd);
