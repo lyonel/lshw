@@ -5,6 +5,7 @@
 #include "mem.h"
 #include "dmi.h"
 #include "cpuinfo.h"
+#include "cpuid.h"
 #include "device-tree.h"
 #include "pci.h"
 
@@ -62,6 +63,7 @@ int main(int argc,
     scan_device_tree(computer);
     scan_memory(computer);
     scan_cpuinfo(computer);
+    scan_cpuid(computer);
     scan_pci(computer);
 
     print(computer, htmloutput);
@@ -70,4 +72,4 @@ int main(int argc,
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.16 2003/01/31 09:52:41 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.17 2003/02/02 15:43:42 ezix Exp $";
