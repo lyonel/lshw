@@ -3,7 +3,7 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "21 January 2005" "$Rev: 901 $" ""
+.TH "LSHW" "1" "02 February 2005" "$Rev: 944 $" ""
 
 .SH NAME
 lshw \- list hardware
@@ -13,6 +13,9 @@ lshw \- list hardware
 
 
 \fBlshw\fR [ \fB-help\fR ]
+
+
+\fBlshw\fR [ \fB-X\fR ]
 
 
 \fBlshw\fR [ \fB-html\fR | \fB-short\fR | \fB-xml\fR | \fB-businfo\fR ] [ \fB-class \fIclass\fB\fR\fI ...\fR ] [ \fB-disable \fItest\fB\fR\fI ...\fR ] [ \fB-enable \fItest\fB\fR\fI ...\fR ]
@@ -39,6 +42,9 @@ Displays the version of \fBlshw\fR and exits.
 .TP
 \fB-help\fR
 Displays the available command line options and quits.
+.TP
+\fB-X\fR
+Launch the X11 GUI (if available).
 .TP
 \fB-html\fR
 Outputs the device tree as an HTML page.
