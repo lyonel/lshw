@@ -207,7 +207,7 @@ bool scan_usb(hwNode & n)
                 device.setVendor(hw::strip(strval));
               if(strcasecmp(strname, "Product")==0)
                 device.setProduct(hw::strip(strval));
-              if(strcasecmp(strname, "SerialNumber")==0)
+              if((lev>0) && (strcasecmp(strname, "SerialNumber")==0))
                 device.setSerial(hw::strip(strval));
             }
             break;
