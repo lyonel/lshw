@@ -729,8 +729,10 @@ static int isapnp_create_device(hwNode & card,
 		     (isapnp_parse_id
 		      ((tmp[1] << 8) | tmp[0], (tmp[3] << 8) | tmp[2])));
 	dev->
-	  addCapability(isapnp_parse_id
-			((tmp[1] << 8) | tmp[0], (tmp[3] << 8) | tmp[2]));
+	  addCapability(string(isapnp_parse_id
+			       ((tmp[1] << 8) | tmp[0],
+				(tmp[3] << 8) | tmp[2])) +
+			string("-compatible"));
 	compat++;
 	size = 0;
       }
