@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.41 2004/03/01 23:10:58 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.42 2004/04/01 18:00:32 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -704,7 +704,7 @@ static bool scan_sg(int sg,
     return true;
   }
 
-  snprintf(buffer, sizeof(buffer), "Channel %d", m_id.channel);
+  snprintf(buffer, sizeof(buffer), "SCSI Channel %d", m_id.channel);
   channel->setDescription(buffer);
   channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
   channel->setBusInfo(scsi_businfo(m_id.host_no, m_id.channel));

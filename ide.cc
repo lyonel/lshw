@@ -15,7 +15,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.27 2003/11/25 00:31:52 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.28 2004/04/01 18:00:33 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -462,7 +462,9 @@ bool scan_ide(hwNode & n)
 	  string pciid = get_pciid(identify[2], identify[4]);
 	  hwNode *parent = n.findChildByHandle(pciid);
 
-	  ide.setDescription(hw::strip("Channel " + hw::strip(identify[10])));
+	  ide.
+	    setDescription(hw::
+			   strip("IDE Channel " + hw::strip(identify[10])));
 
 	  if (parent)
 	  {
