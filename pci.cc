@@ -1,4 +1,5 @@
 #include "pci.h"
+#include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -194,6 +195,57 @@ static const char *get_class_name(unsigned int c)
   return "generic";
 }
 
+static bool parse_pcidb(vector < string > &list)
+{
+  u_int16_t u[4];
+  string line = "";
+  bool in_class = false;
+  int level = 0;
+
+  memset(u, 0, sizeof(u));
+
+  for (int i = 0; i < list.size(); i++)
+  {
+    line = hw::strip(list[i]);
+
+    if (line.length() == 0 || line[0] == '#')	// ignore empty or commented-out lines
+      continue;
+
+    level = 0;
+    while (level < list[i].length() && list[i][level] == '\t')
+      level++;
+
+    if (in_class || line[0] == 'C')	// class
+    {
+      in_class = true;
+    }
+    else
+    {
+      in_class = false;
+    }
+  }
+  return true;
+}
+
+static bool load_pcidb()
+{
+  vector < string > lines;
+  vector < string > filenames;
+
+  splitlines(PCIID_PATH, filenames, ':');
+  for (int i = filenames.size() - 1; i >= 0; i--)
+  {
+    lines.clear();
+    if (loadfile(filenames[i], lines))
+      parse_pcidb(lines);
+  }
+
+  if (lines.size() == 0)
+    return false;
+
+  return true;
+}
+
 static const char *get_class_description(unsigned int c)
 {
   switch (c)
@@ -290,6 +342,8 @@ bool scan_pci(hwNode & n)
 
   // always consider the host bridge as PCI bus 00:
   host.setHandle(pci_bushandle(0));
+
+  load_pcidb();
 
   f = fopen(PROC_BUS_PCI "/devices", "r");
   if (f)
@@ -433,4 +487,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.4 2003/01/27 14:25:08 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.5 2003/01/27 17:39:31 ezix Exp $";
