@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600.00000pt"
+   height="600.00000pt"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.41"
+   sodipodi:docbase="/home/support"
+   sodipodi:docname="firewire.svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.24748737"
+     inkscape:cx="361.40131"
+     inkscape:cy="717.15504"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="990"
+     inkscape:window-height="696"
+     inkscape:window-x="11"
+     inkscape:window-y="26" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF
+       id="RDF5">
+      <cc:Work
+         rdf:about=""
+         id="Work6">
+        <dc:format
+           id="format7">image/svg+xml</dc:format>
+        <dc:type
+           id="type9"
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       transform="matrix(2.079932,0.000000,0.000000,2.079932,-306.8108,-357.8098)"
+       id="g1299">
+      <path
+         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.27153478pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+         d="M 329.15625,286.37500 C 295.83248,286.05159 268.53463,312.83272 268.18750,346.15625 C 267.84022,379.49489 294.59886,406.80897 327.93750,407.15625 C 361.27614,407.50353 388.62146,380.74487 388.96875,347.40625 C 389.31603,314.06761 362.52614,286.72227 329.18750,286.37500 L 329.15625,286.37500 z M 328.90625,312.65625 L 328.93750,312.65625 C 347.76628,312.85237 362.88363,328.29622 362.68750,347.12500 C 362.49137,365.95377 347.04753,381.07113 328.21875,380.87500 C 309.38997,380.67886 294.27262,365.23503 294.46875,346.40625 C 294.66479,327.58599 310.08586,312.47360 328.90625,312.65625 z "
+         id="path1335" />
+      <g
+         id="g1345"
+         style="fill:#000000;fill-opacity:1.0000000">
+        <rect
+           style="stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+           id="rect1341"
+           width="79.802048"
+           height="27.779196"
+           x="288.90363"
+           y="431.62344" />
+        <rect
+           style="stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+           id="rect1343"
+           width="79.802048"
+           height="27.779196"
+           x="288.90363"
+           y="483.14124" />
+      </g>
+      <g
+         id="g1349"
+         transform="matrix(0.711081,-0.703110,0.703110,0.711081,-324.7465,154.7083)"
+         style="fill:#000000;fill-opacity:1.0000000">
+        <rect
+           style="stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+           id="rect1351"
+           width="79.802048"
+           height="27.779196"
+           x="288.90363"
+           y="431.62344" />
+        <rect
+           style="stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+           id="rect1353"
+           width="79.802048"
+           height="27.779196"
+           x="288.90363"
+           y="483.14124" />
+      </g>
+      <rect
+         style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+         id="rect1355"
+         width="90.528297"
+         height="66.757614"
+         x="58.386784"
+         y="444.23804"
+         transform="matrix(0.702555,-0.711630,0.724194,0.689596,0.000000,0.000000)" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="vectors" />
+</svg>
