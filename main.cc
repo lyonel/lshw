@@ -32,11 +32,12 @@
 #include "network.h"
 #include "isapnp.h"
 #include "fb.h"
+#include "usb.h"
 
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.36 2003/11/11 00:51:19 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.37 2003/11/12 12:42:59 ezix Exp $";
 
 bool scan_system(hwNode & system)
 {
@@ -74,6 +75,9 @@ bool scan_system(hwNode & system)
     status("PCMCIA");
     if (enabled("pcmcia"))
       scan_pcmcia(computer);
+    status("USB");
+    if (enabled("usb"))
+      scan_usb(computer);
     status("IDE");
     if (enabled("ide"))
       scan_ide(computer);
