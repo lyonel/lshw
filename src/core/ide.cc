@@ -389,10 +389,10 @@ bool scan_ide(hwNode & n)
     ide.setLogicalName(namelist[i]->d_name);
     ide.setHandle("IDE:" + string(namelist[i]->d_name));
 
-    if (loadfile
-	(string(PROC_IDE) + "/" + namelist[i]->d_name + "/config", config))
+    if (exists(string(PROC_IDE"/") + namelist[i]->d_name + "/channel"))
     {
       vector < string > identify;
+      string channel = "";
       char *id = namelist[i]->d_name;
 
       while ((*id != 0) && (!isdigit(*id)))
@@ -403,11 +403,16 @@ bool scan_ide(hwNode & n)
 	ide.setPhysId(string(id));
       }
 
+      loadfile(string(PROC_IDE"/") + namelist[i]->d_name + "/config", config);
       if (config.size() > 0)
 	splitlines(config[0], identify, ' ');
       config.clear();
+      loadfile(string(PROC_IDE"/") + namelist[i]->d_name + "/channel", config);
+      if (config.size() > 0)
+        channel = config[0];
+      config.clear();
 
-      if (identify.size() >= 1)
+      //if (identify.size() >= 1)
       {
 	struct dirent **devicelist;
 	int ndevices;
@@ -449,14 +454,14 @@ bool scan_ide(hwNode & n)
 	}
 	free(devicelist);
 
-	if (identify[0] == "pci" && identify.size() == 11)
+	if ( identify.size() == 11 && identify[0] == "pci")
 	{
 	  string pciid = get_pciid(identify[2], identify[4]);
 	  hwNode *parent = n.findChildByHandle(pciid);
 
 	  ide.
 	    setDescription(hw::
-			   strip("IDE Channel " + hw::strip(identify[10])));
+			   strip("IDE Channel " + hw::strip(channel)));
 
 	  if (parent)
 	  {
