@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <stdio.h>
 
 #define PROCBUSUSB "/proc/bus/usb/"
 
@@ -122,7 +123,7 @@ struct usbdevfs_ctrltransfer
 
 #define USBDEVFS_CONTROL	_IOWR('U', 0, struct usbdevfs_ctrltransfer)
 
-static char *id = "@(#) $Id: usb.cc,v 1.8 2004/02/26 16:52:33 ezix Exp $";
+static char *id = "@(#) $Id: usb.cc,v 1.9 2004/02/27 12:15:25 ezix Exp $";
 
 static int usb_control_msg(int fd,
 			   u_int8_t requesttype,
