@@ -1017,6 +1017,12 @@ static int isapnp_build_device_list(
   return 0;
 }
 
+static bool isabus(
+  const hwNode & n)
+{
+  return (n.getClass() == hw::bridge) && n.isCapable("isa");
+}
+
 #endif
 
 bool scan_isapnp(
@@ -1047,7 +1053,12 @@ bool scan_isapnp(
     }
   }
 
-  isapnp_build_device_list(n);
+  hwNode *isaroot = n.findChild(isabus);
+
+  if (isaroot)
+    isapnp_build_device_list(*isaroot);
+  else
+    isapnp_build_device_list(n);
 
 #endif
   return true;

@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.49 2003/06/27 08:11:44 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.50 2003/08/11 21:52:28 ezix Exp $";
 
 struct hwNode_i
 {
@@ -27,7 +27,8 @@ struct hwNode_i
     string > config;
 };
 
-string hw::strip(const string & s)
+string hw::strip(
+  const string & s)
 {
   string result = s;
 
@@ -45,7 +46,8 @@ string hw::strip(const string & s)
   return result;
 }
 
-static string cleanupId(const string & id)
+static string cleanupId(
+  const string & id)
 {
   string result = strip(id);
 
@@ -108,7 +110,7 @@ hwNode::~hwNode()
     delete This;
 }
 
-hwNode & hwNode::operator = (const hwNode & o)
+hwNode & hwNode::operator =(const hwNode & o)
 {
   if (this == &o)
     return *this;		// self-affectation
@@ -127,7 +129,8 @@ hwNode & hwNode::operator = (const hwNode & o)
   return *this;
 }
 
-hwClass hwNode::getClass() const
+hwClass hwNode::getClass(
+  ) const const
 {
   if (This)
     return This->deviceclass;
@@ -135,7 +138,8 @@ hwClass hwNode::getClass() const
     return hw::generic;
 }
 
-const char *hwNode::getClassName() const
+const char *hwNode::getClassName(
+  ) const const
 {
   if (This)
   {
@@ -194,7 +198,8 @@ const char *hwNode::getClassName() const
     return "generic";
 }
 
-void hwNode::setClass(hwClass c)
+void hwNode::setClass(
+  hwClass c)
 {
   if (!This)
     return;
@@ -202,7 +207,8 @@ void hwNode::setClass(hwClass c)
   This->deviceclass = c;
 }
 
-bool hwNode::enabled() const
+bool hwNode::enabled(
+  ) const const
 {
   if (!This)
     return false;
@@ -210,7 +216,8 @@ bool hwNode::enabled() const
   return (This->enabled);
 }
 
-bool hwNode::disabled() const
+bool hwNode::disabled(
+  ) const const
 {
   if (!This)
     return true;
@@ -218,7 +225,8 @@ bool hwNode::disabled() const
   return !(This->enabled);
 }
 
-void hwNode::enable()
+void hwNode::enable(
+  )
 {
   if (!This)
     return;
@@ -226,7 +234,8 @@ void hwNode::enable()
   This->enabled = true;
 }
 
-void hwNode::disable()
+void hwNode::disable(
+  )
 {
   if (!This)
     return;
@@ -234,7 +243,8 @@ void hwNode::disable()
   This->enabled = false;
 }
 
-bool hwNode::claimed() const
+bool hwNode::claimed(
+  ) const const
 {
   if (!This)
     return false;
@@ -252,7 +262,8 @@ bool hwNode::claimed() const
   return false;
 }
 
-void hwNode::claim(bool claimchildren)
+void hwNode::claim(
+  bool claimchildren)
 {
   if (!This)
     return;
@@ -266,7 +277,8 @@ void hwNode::claim(bool claimchildren)
     This->children[i].claim(claimchildren);
 }
 
-void hwNode::unclaim()
+void hwNode::unclaim(
+  )
 {
   if (!This)
     return;
@@ -274,7 +286,8 @@ void hwNode::unclaim()
   This->claimed = false;
 }
 
-string hwNode::getId() const
+string hwNode::getId(
+  ) const const
 {
   if (This)
     return This->id;
@@ -282,7 +295,8 @@ string hwNode::getId() const
     return "";
 }
 
-void hwNode::setId(const string & id)
+void hwNode::setId(
+  const string & id)
 {
   if (!This)
     return;
@@ -290,7 +304,8 @@ void hwNode::setId(const string & id)
   This->id = cleanupId(id);
 }
 
-void hwNode::setHandle(const string & handle)
+void hwNode::setHandle(
+  const string & handle)
 {
   if (!This)
     return;
@@ -298,7 +313,8 @@ void hwNode::setHandle(const string & handle)
   This->handle = handle;
 }
 
-string hwNode::getHandle() const
+string hwNode::getHandle(
+  ) const const
 {
   if (This)
     return This->handle;
@@ -306,7 +322,8 @@ string hwNode::getHandle() const
     return "";
 }
 
-string hwNode::getDescription() const
+string hwNode::getDescription(
+  ) const const
 {
   if (This)
     return This->description;
@@ -314,13 +331,15 @@ string hwNode::getDescription() const
     return "";
 }
 
-void hwNode::setDescription(const string & description)
+void hwNode::setDescription(
+  const string & description)
 {
   if (This)
     This->description = strip(description);
 }
 
-string hwNode::getVendor() const
+string hwNode::getVendor(
+  ) const const
 {
   if (This)
     return This->vendor;
@@ -328,13 +347,15 @@ string hwNode::getVendor() const
     return "";
 }
 
-void hwNode::setVendor(const string & vendor)
+void hwNode::setVendor(
+  const string & vendor)
 {
   if (This)
     This->vendor = strip(vendor);
 }
 
-string hwNode::getProduct() const
+string hwNode::getProduct(
+  ) const const
 {
   if (This)
     return This->product;
@@ -342,13 +363,15 @@ string hwNode::getProduct() const
     return "";
 }
 
-void hwNode::setProduct(const string & product)
+void hwNode::setProduct(
+  const string & product)
 {
   if (This)
     This->product = strip(product);
 }
 
-string hwNode::getVersion() const
+string hwNode::getVersion(
+  ) const const
 {
   if (This)
     return This->version;
@@ -356,13 +379,15 @@ string hwNode::getVersion() const
     return "";
 }
 
-void hwNode::setVersion(const string & version)
+void hwNode::setVersion(
+  const string & version)
 {
   if (This)
     This->version = strip(version);
 }
 
-string hwNode::getSerial() const
+string hwNode::getSerial(
+  ) const const
 {
   if (This)
     return This->serial;
@@ -370,13 +395,15 @@ string hwNode::getSerial() const
     return "";
 }
 
-void hwNode::setSerial(const string & serial)
+void hwNode::setSerial(
+  const string & serial)
 {
   if (This)
     This->serial = strip(serial);
 }
 
-string hwNode::getSlot() const
+string hwNode::getSlot(
+  ) const const
 {
   if (This)
     return This->slot;
@@ -384,13 +411,15 @@ string hwNode::getSlot() const
     return "";
 }
 
-void hwNode::setSlot(const string & slot)
+void hwNode::setSlot(
+  const string & slot)
 {
   if (This)
     This->slot = strip(slot);
 }
 
-unsigned long long hwNode::getStart() const
+unsigned long long hwNode::getStart(
+  ) const const
 {
   if (This)
     return This->start;
@@ -398,13 +427,15 @@ unsigned long long hwNode::getStart() const
     return 0;
 }
 
-void hwNode::setStart(unsigned long long start)
+void hwNode::setStart(
+  unsigned long long start)
 {
   if (This)
     This->start = start;
 }
 
-unsigned long long hwNode::getSize() const
+unsigned long long hwNode::getSize(
+  ) const const
 {
   if (This)
     return This->size;
@@ -412,13 +443,15 @@ unsigned long long hwNode::getSize() const
     return 0;
 }
 
-void hwNode::setSize(unsigned long long size)
+void hwNode::setSize(
+  unsigned long long size)
 {
   if (This)
     This->size = size;
 }
 
-unsigned long long hwNode::getCapacity() const
+unsigned long long hwNode::getCapacity(
+  ) const const
 {
   if (This)
     return This->capacity;
@@ -426,13 +459,15 @@ unsigned long long hwNode::getCapacity() const
     return 0;
 }
 
-void hwNode::setCapacity(unsigned long long capacity)
+void hwNode::setCapacity(
+  unsigned long long capacity)
 {
   if (This)
     This->capacity = capacity;
 }
 
-unsigned long long hwNode::getClock() const
+unsigned long long hwNode::getClock(
+  ) const const
 {
   if (This)
     return This->clock;
@@ -440,13 +475,15 @@ unsigned long long hwNode::getClock() const
     return 0;
 }
 
-void hwNode::setClock(unsigned long long clock)
+void hwNode::setClock(
+  unsigned long long clock)
 {
   if (This)
     This->clock = clock;
 }
 
-unsigned int hwNode::countChildren(hw::hwClass c) const
+unsigned int hwNode::countChildren(
+  hw::hwClass c) const const
 {
   unsigned int count = 0;
 
@@ -463,7 +500,8 @@ unsigned int hwNode::countChildren(hw::hwClass c) const
   return count;
 }
 
-hwNode *hwNode::getChild(unsigned int i)
+hwNode *hwNode::getChild(
+  unsigned int i)
 {
   if (!This)
     return NULL;
@@ -474,7 +512,8 @@ hwNode *hwNode::getChild(unsigned int i)
     return &(This->children[i]);
 }
 
-hwNode *hwNode::getChildByPhysId(const string & physid)
+hwNode *hwNode::getChildByPhysId(
+  const string & physid)
 {
   if (physid == "" || !This)
     return NULL;
@@ -488,7 +527,8 @@ hwNode *hwNode::getChildByPhysId(const string & physid)
   return NULL;
 }
 
-hwNode *hwNode::getChildByPhysId(long physid)
+hwNode *hwNode::getChildByPhysId(
+  long physid)
 {
   char buffer[20];
   if (!This)
@@ -505,7 +545,8 @@ hwNode *hwNode::getChildByPhysId(long physid)
   return NULL;
 }
 
-hwNode *hwNode::getChild(const string & id)
+hwNode *hwNode::getChild(
+  const string & id)
 {
   string baseid = id, path = "";
   size_t pos = 0;
@@ -532,7 +573,28 @@ hwNode *hwNode::getChild(const string & id)
   return NULL;
 }
 
-hwNode *hwNode::findChildByHandle(const string & handle)
+hwNode *hwNode::findChild(
+  bool(*matchfunction) (const hwNode &))
+{
+  if (!This)
+    return NULL;
+
+  if (matchfunction(*this))
+    return this;
+
+  for (unsigned int i = 0; i < This->children.size(); i++)
+  {
+    hwNode *result = This->children[i].findChild(matchfunction);
+
+    if (result)
+      return result;
+  }
+
+  return NULL;
+}
+
+hwNode *hwNode::findChildByHandle(
+  const string & handle)
 {
   if (!This)
     return NULL;
@@ -551,7 +613,8 @@ hwNode *hwNode::findChildByHandle(const string & handle)
   return NULL;
 }
 
-hwNode *hwNode::findChildByLogicalName(const string & name)
+hwNode *hwNode::findChildByLogicalName(
+  const string & name)
 {
   if (!This)
     return NULL;
@@ -570,7 +633,8 @@ hwNode *hwNode::findChildByLogicalName(const string & name)
   return NULL;
 }
 
-hwNode *hwNode::findChildByBusInfo(const string & businfo)
+hwNode *hwNode::findChildByBusInfo(
+  const string & businfo)
 {
   if (!This)
     return NULL;
@@ -592,8 +656,9 @@ hwNode *hwNode::findChildByBusInfo(const string & businfo)
   return NULL;
 }
 
-static string generateId(const string & radical,
-			 int count)
+static string generateId(
+  const string & radical,
+  int count)
 {
   char buffer[10];
 
@@ -602,7 +667,8 @@ static string generateId(const string & radical,
   return radical + ":" + string(buffer);
 }
 
-hwNode *hwNode::addChild(const hwNode & node)
+hwNode *hwNode::addChild(
+  const hwNode & node)
 {
   hwNode *existing = NULL;
   hwNode *samephysid = NULL;
@@ -649,7 +715,8 @@ hwNode *hwNode::addChild(const hwNode & node)
   //return getChild(This->children.back().getId());
 }
 
-void hwNode::attractHandle(const string & handle)
+void hwNode::attractHandle(
+  const string & handle)
 {
   if (!This)
     return;
@@ -657,7 +724,8 @@ void hwNode::attractHandle(const string & handle)
   This->attracted.push_back(handle);
 }
 
-bool hwNode::attractsHandle(const string & handle) const
+bool hwNode::attractsHandle(
+  const string & handle) const const
 {
   unsigned int i = 0;
   if (handle == "" || !This)
@@ -674,7 +742,8 @@ bool hwNode::attractsHandle(const string & handle) const
   return false;
 }
 
-bool hwNode::attractsNode(const hwNode & node) const
+bool hwNode::attractsNode(
+  const hwNode & node) const const
 {
   if (!This || !node.This)
     return false;
@@ -682,7 +751,8 @@ bool hwNode::attractsNode(const hwNode & node) const
   return attractsHandle(node.This->handle);
 }
 
-bool hwNode::isCapable(const string & feature) const
+bool hwNode::isCapable(
+  const string & feature) const const
 {
   string featureid = cleanupId(feature);
 
@@ -696,7 +766,8 @@ bool hwNode::isCapable(const string & feature) const
   return false;
 }
 
-void hwNode::addCapability(const string & feature)
+void hwNode::addCapability(
+  const string & feature)
 {
   string features = feature;
 
@@ -723,7 +794,8 @@ void hwNode::addCapability(const string & feature)
   }
 }
 
-string hwNode::getCapabilities() const
+string hwNode::getCapabilities(
+  ) const const
 {
   string result = "";
 
@@ -736,8 +808,9 @@ string hwNode::getCapabilities() const
   return strip(result);
 }
 
-void hwNode::setConfig(const string & key,
-		       const string & value)
+void hwNode::setConfig(
+  const string & key,
+  const string & value)
 {
   if (!This)
     return;
@@ -747,7 +820,8 @@ void hwNode::setConfig(const string & key,
     This->config.erase(This->config.find(key));
 }
 
-string hwNode::getConfig(const string & key) const
+string hwNode::getConfig(
+  const string & key) const const
 {
   if (!This)
     return "";
@@ -758,7 +832,7 @@ string hwNode::getConfig(const string & key) const
   return This->config[key];
 }
 
-vector < string > hwNode::getConfigValues(const string & separator) const
+vector < string > hwNode::getConfigValues(const string & separator) const const
 {
   vector < string > result;
 
@@ -772,7 +846,8 @@ vector < string > hwNode::getConfigValues(const string & separator) const
   return result;
 }
 
-string hwNode::getLogicalName() const
+string hwNode::getLogicalName(
+  ) const const
 {
   if (This)
     return This->logicalname;
@@ -780,7 +855,8 @@ string hwNode::getLogicalName() const
     return "";
 }
 
-void hwNode::setLogicalName(const string & name)
+void hwNode::setLogicalName(
+  const string & name)
 {
   if (This)
   {
@@ -791,7 +867,8 @@ void hwNode::setLogicalName(const string & name)
   }
 }
 
-string hwNode::getBusInfo() const
+string hwNode::getBusInfo(
+  ) const const
 {
   if (This)
     return This->businfo;
@@ -799,7 +876,8 @@ string hwNode::getBusInfo() const
     return "";
 }
 
-void hwNode::setBusInfo(const string & businfo)
+void hwNode::setBusInfo(
+  const string & businfo)
 {
   if (This)
   {
@@ -820,7 +898,8 @@ void hwNode::setBusInfo(const string & businfo)
   }
 }
 
-string hwNode::getPhysId() const
+string hwNode::getPhysId(
+  ) const const
 {
   if (This)
     return This->physid;
@@ -828,7 +907,8 @@ string hwNode::getPhysId() const
     return "";
 }
 
-void hwNode::setPhysId(long physid)
+void hwNode::setPhysId(
+  long physid)
 {
   if (This)
   {
@@ -839,8 +919,9 @@ void hwNode::setPhysId(long physid)
   }
 }
 
-void hwNode::setPhysId(unsigned physid1,
-		       unsigned physid2)
+void hwNode::setPhysId(
+  unsigned physid1,
+  unsigned physid2)
 {
   if (This)
   {
@@ -854,7 +935,8 @@ void hwNode::setPhysId(unsigned physid1,
   }
 }
 
-void hwNode::setPhysId(const string & physid)
+void hwNode::setPhysId(
+  const string & physid)
 {
   if (This)
   {
@@ -862,7 +944,8 @@ void hwNode::setPhysId(const string & physid)
   }
 }
 
-void hwNode::assignPhysIds()
+void hwNode::assignPhysIds(
+  )
 {
   if (!This)
     return;
@@ -886,7 +969,8 @@ void hwNode::assignPhysIds()
   }
 }
 
-void hwNode::merge(const hwNode & node)
+void hwNode::merge(
+  const hwNode & node)
 {
   if (!This)
     return;
