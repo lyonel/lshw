@@ -29,6 +29,7 @@ list hardware
 	<arg choice="opt"><option>-html</option></arg>
 	<arg choice="opt"><option>-short</option></arg>
 	<arg choice="opt"><option>-xml</option></arg>
+	<arg choice="opt"><option>-businfo</option></arg>
       </group>
 	<arg choice="opt" rep="repeat"><option>-class </option><replaceable class="parameter">class</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-disable </option><replaceable class="parameter">test</replaceable></arg>
@@ -76,9 +77,13 @@ Outputs the device tree as an XML tree.
 <listitem><para>
 Outputs the device tree showing hardware paths, very much like the output of <productname>HP-UX</productname>'s <command>ioscan</command>.
 </para></listitem></varlistentry>
+<varlistentry><term>-businfo</term>
+<listitem><para>
+Outputs the device list showing bus information, detailing <productname>SCSI</productname>, <productname>USB</productname>, <productname>IDE</productname> and <productname>PCI</productname> addresses.
+</para></listitem></varlistentry>
 <varlistentry><term>-class <replaceable class="parameter">class</replaceable></term>
 <listitem><para>
-Only show the given class of hardware. <replaceable class="parameter">class</replaceable> can be found using <command>lshw -short</command>.
+Only show the given class of hardware. <replaceable class="parameter">class</replaceable> can be found using <command>lshw -short</command> or <command>lshw -businfo</command>.
 </para></listitem></varlistentry>
 <varlistentry><term>-C <replaceable class="parameter">class</replaceable></term>
 <listitem><para>
@@ -153,6 +158,11 @@ Used on x86 platforms to access CPU-specific configuration.
 <varlistentry><term>/proc/device-tree/*</term>
 <listitem><para>
 Used on PowerPC platforms to access OpenFirmware configuration.
+</para></listitem></varlistentry>
+
+<varlistentry><term>/proc/bus/usb/*</term>
+<listitem><para>
+Used to access the configuration of installed USB busses and devices.
 </para></listitem></varlistentry>
 
 <varlistentry><term>/sys/*</term>
