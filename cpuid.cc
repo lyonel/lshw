@@ -537,6 +537,7 @@ bool scan_cpuid(hwNode & n)
 
   while (cpu = getcpu(n, currentcpu))
   {
+    cpu->claim(true);		// claim the cpu and all its children
     cpuid(currentcpu, 0, maxi, ebx, ecx, edx);
     maxi &= 0xffff;
 
@@ -571,4 +572,4 @@ bool scan_cpuid(hwNode & n)
 }
 #endif
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.9 2003/02/02 19:05:14 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.10 2003/02/08 14:17:42 ezix Exp $";
