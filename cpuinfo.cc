@@ -60,6 +60,21 @@ static void cpuinfo_ppc(hwNode & node,
   }
 }
 
+static void cpuinfo_hppa(hwNode & node,
+			 string id,
+			 string value)
+{
+  unsigned long long frequency = 0;
+  int i;
+
+  hwNode *cpu = getcpu(node, 0);
+
+  if (id == "model" && node.getProduct() == "")
+    node.setProduct(value);
+  if (id == "software id" && node.getSerial() == "")
+    node.setSerial(value);
+}
+
 static void cpuinfo_alpha(hwNode & node,
 			  string id,
 			  string value)
@@ -225,6 +240,9 @@ bool scan_cpuinfo(hwNode & n)
 
 	cpuinfo_x86(n, id, value);
 	//cpuinfo_ppc(n, id, value);
+#ifdef __hppa__
+	cpuinfo_hppa(n, id, value);
+#endif
 #ifdef __alpha__
 	cpuinfo_alpha(n, id, value);
 #endif
@@ -239,4 +257,4 @@ bool scan_cpuinfo(hwNode & n)
 }
 
 static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.13 2003/03/11 16:42:09 ezix Exp $";
+  "@(#) $Id: cpuinfo.cc,v 1.14 2003/03/12 10:45:18 ezix Exp $";
