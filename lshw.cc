@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: lshw.cc,v 1.5 2004/02/27 00:14:16 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 void usage(const char *progname)
 {
