@@ -425,6 +425,15 @@ static bool get_apple_model(hwNode & n)
   return false;
 }
 
+static void fix_serial_number(hwNode & n)
+{
+  string serial = n.getSerial();
+
+  if(serial.find('\0')==string::npos) return; // nothing to do
+
+  n.setSerial(hw::strip(serial.substr(13)) + hw::strip(serial.substr(0,13)));
+}
+
 bool scan_device_tree(hwNode & n)
 {
   hwNode *core = n.getChild("core");
@@ -439,9 +448,12 @@ bool scan_device_tree(hwNode & n)
   }
 
   n.setProduct(get_string(DEVICETREE "/model"));
+
   n.setSerial(get_string(DEVICETREE "/serial-number"));
   if (n.getSerial() == "")
     n.setSerial(get_string(DEVICETREE "/system-id"));
+  fix_serial_number(n);
+
   n.setVendor(get_string(DEVICETREE "/copyright"));
 
   get_apple_model(n);
