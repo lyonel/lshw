@@ -19,6 +19,17 @@ typedef u_short ioaddr_t;
 #endif
 
 typedef u_char cisdata_t;
+typedef u_int event_t;
+
+typedef struct cs_status_t
+{
+  u_char Function;
+  event_t CardState;
+  event_t SocketState;
+}
+cs_status_t;
+
+#define CS_EVENT_CARD_DETECT            0x000080
 
 typedef struct config_info_t
 {
@@ -732,6 +743,7 @@ ds_ioctl_arg_t;
 #define DS_GET_NEXT_TUPLE               _IOWR('d', 5, tuple_t)
 #define DS_GET_TUPLE_DATA               _IOWR('d', 6, tuple_parse_t)
 #define DS_PARSE_TUPLE                  _IOWR('d', 7, tuple_parse_t)
+#define DS_GET_STATUS                   _IOWR('d', 9, cs_status_t)
 #define DS_GET_DEVICE_INFO              _IOWR('d', 61, bind_info_t)
 
 #define MAX_SOCK 8
@@ -925,17 +937,34 @@ static bool pcmcia_ident(int socket,
   return true;
 }
 
-static hwNode *find_pcmciaparent(const hwNode & root)
+static bool is_cardbus(const hwNode & n)
+{
+  return (n.getClass() == hw::bridge) && n.isCapable("pcmcia");
+}
+
+static hwNode *find_pcmciaparent(int slot,
+				 const hwNode & root)
 {
   hwNode *result = NULL;
+  int i;
+  int currentslot = 0;
 
-  if (root.getClass() == hw::bridge && root.isCapable("pcmcia")
-      && root.countChildren() < 2)
-    return (hwNode *) & root;
+  if (slot < 0)
+    return NULL;
 
-  for (int i = 0; i < root.countChildren(); i++)
+  for (i = 0; i < root.countChildren(); i++)
   {
-    result = find_pcmciaparent(*root.getChild(i));
+    if (is_cardbus(*root.getChild(i)));
+    {
+      if (currentslot == slot)
+	return (hwNode *) root.getChild(i);
+      currentslot++;
+    }
+  }
+
+  for (i = 0; i < root.countChildren(); i++)
+  {
+    result = find_pcmciaparent(slot - currentslot, *root.getChild(i));
     if (result)
       return result;
   }
@@ -945,31 +974,50 @@ static hwNode *find_pcmciaparent(const hwNode & root)
 
 bool scan_pcmcia(hwNode & n)
 {
+  int fd[MAX_SOCK];
   int major = lookup_dev("pcmcia");
+  int sockets = 0;
 
   if (major < 0)
     return false;
 
+  memset(fd, 0, sizeof(fd));
   for (int i = 0; i < MAX_SOCK; i++)
   {
     config_info_t cfg;
-    hwNode *parent = find_pcmciaparent(n);
-    int fd = open_dev((dev_t) (major << 8 + i));
+    hwNode *parent = find_pcmciaparent(i, n);
+    fd[i] = open_dev((dev_t) ((major << 8) + i));
 
-    if (fd < 0)
-      break;
+    if (fd[i] >= 0)
+    {
+      cs_status_t status;
+      sockets++;
 
-    memset(&cfg, 0, sizeof(cfg));
-    ioctl(fd, DS_GET_CONFIGURATION_INFO, &cfg);
-    if (parent)
-      pcmcia_ident(i, fd, *parent);
+      // check that slot is populated
+      memset(&status, 0, sizeof(status));
+      status.Function = 0;
+
+      ioctl(fd[i], DS_GET_STATUS, &status);
+      if (status.CardState & CS_EVENT_CARD_DETECT)
+      {
+	/*
+	 * if (parent)
+	 * pcmcia_ident(i, fd[i], *parent);
+	 * else
+	 */
+	pcmcia_ident(i, fd[i], n);
+      }
+    }
     else
-      pcmcia_ident(i, fd, n);
+      break;
+  }
 
-    close(fd);
+  for (int j = 0; j < sockets; j++)
+  {
+    close(fd[j]);
   }
 
   return true;
 }
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.4 2003/02/10 11:14:39 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.5 2003/02/11 09:11:11 ezix Exp $";
