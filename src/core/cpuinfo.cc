@@ -12,6 +12,16 @@ static char *id =
 
 static int currentcpu = 0;
 
+static void fixBusInfo(hwNode & cpu, int n = 0)
+{
+  char cpuname[10];
+
+  snprintf(cpuname, sizeof(cpuname), "cpu@%d", n);
+
+  if(cpu.getBusInfo()=="")
+    cpu.setBusInfo(cpuname);
+}
+
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
 {
@@ -27,6 +37,7 @@ static hwNode *getcpu(hwNode & node,
   if (cpu)
   {
     cpu->claim(true);		// claim the cpu and all its children
+    fixBusInfo(*cpu, n);
     return cpu;
   }
 
@@ -36,13 +47,18 @@ static hwNode *getcpu(hwNode & node,
   if (cpu)
   {
     cpu->claim(true);
+    fixBusInfo(*cpu, n);
     return cpu;
   }
 
   hwNode *core = node.getChild("core");
 
   if (core)
-    return core->addChild(hwNode("cpu", hw::processor));
+  {
+    cpu = core->addChild(hwNode("cpu", hw::processor));
+    fixBusInfo(*cpu, n);
+    return cpu;
+  }
   else
     return NULL;
 }

@@ -794,21 +794,33 @@ static void printhwnode(hwNode & node,
   }
 }
 
-static const char *cols[] = { "H/W path",
-  "Device",
-  "Class",
-  "Description"
-};
-
-void printhwpath(hwNode & node)
+static void printbusinfo(hwNode & node,
+			vector < hwpath > &l)
 {
-  vector < hwpath > l;
+  hwpath entry;
+
+  entry.path = "";
+  if (node.getBusInfo() != "")
+    entry.path = node.getBusInfo();
+  entry.description = node.getProduct();
+  if (entry.description == "")
+    entry.description = node.getDescription();
+  entry.devname = node.getLogicalName();
+  entry.classname = node.getClassName();
+
+  l.push_back(entry);
+  for (unsigned int i = 0; i < node.countChildren(); i++)
+  {
+    printbusinfo(*node.getChild(i), l);
+  }
+}
+
+static void printincolumns( vector < hwpath > &l, const char *cols[])
+{
   unsigned int l1 = strlen(cols[0]),
     l2 = strlen(cols[1]),
     l3 = strlen(cols[2]);
   unsigned int i = 0;
-
-  printhwnode(node, l);
 
   for (i = 0; i < l.size(); i++)
   {
@@ -845,3 +857,28 @@ void printhwpath(hwNode & node)
     }
 }
 
+static const char *hwpathcols[] = { "H/W path",
+  "Device",
+  "Class",
+  "Description"
+};
+
+void printhwpath(hwNode & node)
+{
+  vector < hwpath > l;
+  printhwnode(node, l);
+  printincolumns(l, hwpathcols);
+}
+
+static const char *businfocols[] = { "Bus info",
+  "Device",
+  "Class",
+  "Description"
+};
+
+void printbusinfo(hwNode & node)
+{
+  vector < hwpath > l;
+  printbusinfo(node, l);
+  printincolumns(l, businfocols);
+}

@@ -52,6 +52,7 @@ int main(int argc,
   bool htmloutput = false;
   bool xmloutput = false;
   bool hwpath = false;
+  bool businfo = false;
 
   disable("isapnp");
 #ifndef DEBUG
@@ -93,7 +94,10 @@ int main(int argc,
     if (strcmp(argv[1], "-short") == 0)
       hwpath = true;
 
-    if (!xmloutput && !htmloutput && !hwpath)
+    if (strcmp(argv[1], "-businfo") == 0)
+      businfo = true;
+
+    if (!xmloutput && !htmloutput && !hwpath && !businfo)
     {
       usage(argv[0]);
       exit(1);
@@ -119,6 +123,9 @@ int main(int argc,
 
     if (hwpath)
       printhwpath(computer);
+    else
+    if (businfo)
+      printbusinfo(computer);
     else
     {
       if (xmloutput)
