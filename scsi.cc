@@ -68,6 +68,33 @@ static string scsi_handle(unsigned int host,
   return result;
 }
 
+static const char *scsi_type(int type)
+{
+  switch (type)
+  {
+  case 0:
+    return "Hard Disk";
+  case 1:
+    return "Tape";
+  case 3:
+    return "Processor";
+  case 4:
+    return "Write-Once Read-Only Memory";
+  case 5:
+    return "CD-ROM";
+  case 6:
+    return "Scanner";
+  case 7:
+    return "Magneto-optical Disk";
+  case 8:
+    return "Medium Changer";
+  case 0xd:
+    return "Enclosure";
+  default:
+    return "";
+  }
+}
+
 static bool scan_sg(int sg,
 		    hwNode & n)
 {
@@ -112,7 +139,7 @@ static bool scan_sg(int sg,
     parent = n.findChildByLogicalName(string(host));
 
   if (!parent)
-    parent = n.addChild(hwNode("scsi", hw::storage));
+    parent = n.addChild(hwNode("scsi", hw::bus));
 
   if (!parent)
   {
@@ -134,7 +161,6 @@ static bool scan_sg(int sg,
 
   channel =
     parent->findChildByHandle(scsi_handle(m_id.host_no, m_id.channel));
-
   if (!channel)
     channel = parent->addChild(hwNode("channel", hw::storage));
 
@@ -144,8 +170,47 @@ static bool scan_sg(int sg,
     return true;
   }
 
+  snprintf(buffer, sizeof(buffer), "Channel %d", m_id.channel);
+  channel->setDescription(buffer);
   channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
   channel->claim();
+
+  hwNode device = hwNode("generic");
+
+  switch (m_id.scsi_type)
+  {
+  case 0:
+    device = hwNode("disk", hw::storage);
+    break;
+  case 1:
+    device = hwNode("tape", hw::storage);
+    break;
+  case 3:
+    device = hwNode("processor", hw::processor);
+    break;
+  case 4:
+  case 5:
+    device = hwNode("cdrom", hw::storage);
+    break;
+  case 6:
+    device = hwNode("scanner", hw::generic);
+    break;
+  case 7:
+    device = hwNode("magnetooptical", hw::storage);
+    break;
+  case 8:
+    device = hwNode("changer", hw::generic);
+    break;
+  case 0xd:
+    device = hwNode("enclosure", hw::generic);
+    break;
+  }
+
+  device.setDescription(scsi_type(m_id.scsi_type));
+  device.setHandle(scsi_handle(m_id.host_no,
+			       m_id.channel, m_id.scsi_id, m_id.lun));
+
+  channel->addChild(device);
 
   close(fd);
 
@@ -162,4 +227,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.4 2003/02/17 00:31:48 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.5 2003/02/17 01:19:17 ezix Exp $";
