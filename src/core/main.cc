@@ -35,6 +35,7 @@
 #include "usb.h"
 #include "sysfs.h"
 #include "display.h"
+#include "parisc.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -53,6 +54,9 @@ bool scan_system(hwNode & system)
     status("DMI");
     if (enabled("dmi"))
       scan_dmi(computer);
+    status("PA-RISC");
+    if (enabled("parisc"))
+      scan_parisc(computer);
     status("device-tree");
     if (enabled("device-tree"))
       scan_device_tree(computer);
