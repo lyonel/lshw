@@ -825,26 +825,33 @@ static bool pcmcia_ident(int socket,
       break;
     case 1:			// memory
       device = hwNode("memory", hw::memory);
+      device.claim();
       break;
     case 2:			// serial
       device = hwNode("serial", hw::communication);
+      device.claim();
       break;
     case 3:			// parallel
-      device = hwNode("parellel", hw::communication);
+      device = hwNode("parallel", hw::communication);
+      device.claim();
       break;
     case 4:			// fixed disk
       device = hwNode("disk", hw::storage);
+      device.claim();
       break;
     case 5:			// video
       device = hwNode("video", hw::display);
+      device.claim();
       break;
     case 6:			// network
       device = hwNode("network", hw::network);
+      device.claim();
       break;
     case 7:			// AIMS ?
       break;
     case 8:			// SCSI
       device = hwNode("scsi", hw::bus);
+      device.claim();
       break;
     default:
       break;
@@ -860,6 +867,8 @@ static bool pcmcia_ident(int socket,
 	device.setDescription(product_info[1]);
 	device.setProduct(product_info[2]);
       }
+      else
+	device.setDescription(product_info[1]);
     }
     else
       device.setDescription(product_info[0]);
@@ -910,8 +919,6 @@ static bool pcmcia_ident(int socket,
 
     usleep(100000);
   }
-
-  device.claim();
 
   parent.addChild(device);
 
@@ -965,4 +972,4 @@ bool scan_pcmcia(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: pcmcia.cc,v 1.3 2003/02/10 09:35:27 ezix Exp $";
+static char *id = "@(#) $Id: pcmcia.cc,v 1.4 2003/02/10 11:14:39 ezix Exp $";
