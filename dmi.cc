@@ -1235,6 +1235,7 @@ static void dmi_table(int fd,
 	hwNode newnode("bank",
 		       hw::memory);
 
+	newnode.setHandle(handle);
 	newnode.setSlot(slot);
 
 	if (dm->length > 23)

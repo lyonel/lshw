@@ -7,10 +7,10 @@ static void tab(int level,
   if (level <= 0)
     return;
   for (int i = 0; i < level - 1; i++)
-    cout << "  |";
+    cout << "   ";
   cout << "  ";
   if (connect)
-    cout << "+-";
+    cout << "*-";
   else
     cout << "  ";
 }
