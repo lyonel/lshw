@@ -12,7 +12,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <dirent.h>
-#include <iconv.h>
 
 #define PROCBUSUSB "/proc/bus/usb/"
 
@@ -107,7 +106,7 @@ struct usbdevfs_ctrltransfer
 
 #define USBDEVFS_CONTROL	_IOWR('U', 0, struct usbdevfs_ctrltransfer)
 
-static char *id = "@(#) $Id: usb.cc,v 1.4 2003/11/18 00:05:07 ezix Exp $";
+static char *id = "@(#) $Id: usb.cc,v 1.5 2003/11/19 17:28:33 ezix Exp $";
 
 static int usb_control_msg(int fd,
 			   u_int8_t requesttype,
@@ -146,7 +145,6 @@ static string get_string(int fd,
   char buf[256];
   unsigned int i;
   int ret;
-  iconv_t cd;
 
   /*
    * string ID 0 means no string 
@@ -291,6 +289,13 @@ bool scan_usb(hwNode & n)
 
 	      if (descriptor.idVendor == 0)
 		device.addCapability("virtual");
+
+	      if (device.getClass() == hw::bus && device.isCapable("virtual"))
+	      {
+		device.setHandle(string("USB:") + string(hubs[i]->d_name));
+		device.setBusInfo("usb@" + string(hubs[i]->d_name));
+		device.setPhysId(string(hubs[i]->d_name));
+	      }
 	    }
 	  }
 	  close(fd);
