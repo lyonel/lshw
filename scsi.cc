@@ -318,6 +318,7 @@ static bool do_inq(int sg_fd,
   inqCmdBlk[2] = (unsigned char) pg_op;
   inqCmdBlk[4] = (unsigned char) mx_resp_len;
   memset(&io_hdr, 0, sizeof(io_hdr));
+  memset(sense_b, 0, sizeof(sense_b));
   io_hdr.interface_id = 'S';
   io_hdr.cmd_len = sizeof(inqCmdBlk);
   io_hdr.mx_sb_len = sizeof(sense_b);
@@ -386,6 +387,13 @@ static bool do_inquiry(int sg_fd,
   if (ansiversion)
     node.setConfig("ansiversion", version);
 
+  if (do_inq(sg_fd, 0, 1, 0x80, rsp_buff, MX_ALLOC_LEN, 0))
+  {
+    len = rsp_buff[3];
+    if (len > 0)
+      node.setSerial(string(rsp_buff + 4, len));
+  }
+
   return true;
 }
 
@@ -397,7 +405,7 @@ static void scan_devices()
 
   for (i = 0; devices[i] != NULL; i++)
   {
-    fd = open(devices[i], O_RDONLY | O_NONBLOCK);
+    fd = open(devices[i], OPEN_FLAG | O_NONBLOCK);
     if (fd >= 0)
     {
       int bus = -1;
@@ -494,6 +502,7 @@ static bool scan_sg(int sg,
   parent->setLogicalName(host);
   parent->claim();
 
+  emulated = 0;
   ioctl(fd, SG_EMULATED_HOST, &emulated);
 
   if (emulated)
@@ -592,9 +601,9 @@ bool scan_scsi(hwNode & n)
   while (scan_sg(i, n))
     i++;
 
-  scan_hosts(n);
+  //scan_hosts(n);
 
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.14 2003/02/19 16:47:07 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.15 2003/02/21 00:55:44 ezix Exp $";
