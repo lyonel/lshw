@@ -50,6 +50,11 @@ static unsigned long get_long(const string & path)
   return result;
 }
 
+static bool exists(const string & path)
+{
+  return access(path.c_str(), F_OK) == 0;
+}
+
 static void scan_devtree_root(hwNode & core)
 {
   core.setClock(get_long(DEVICETREE "/clock-frequency"));
@@ -57,9 +62,7 @@ static void scan_devtree_root(hwNode & core)
 
 static void scan_devtree_bootrom(hwNode & core)
 {
-  struct stat buf;
-
-  if (stat(DEVICETREE "/rom/boot-rom", &buf) == 0)
+  if (exists(DEVICETREE "/rom/boot-rom"))
   {
     hwNode bootrom("firmware",
 		   hw::memory);
@@ -92,14 +95,14 @@ static void scan_devtree_bootrom(hwNode & core)
     core.addChild(bootrom);
   }
 
-  if (stat(DEVICETREE "/openprom", &buf) == 0)
+  if (exists(DEVICETREE "/openprom"))
   {
     hwNode openprom("firmware",
 		    hw::memory);
 
     openprom.setProduct(get_string(DEVICETREE "/openprom/model"));
 
-    if (stat(DEVICETREE "/openprom/supports-bootinfo", &buf) == 0)
+    if (exists(DEVICETREE "/openprom/supports-bootinfo"))
       openprom.addCapability("bootinfo");
 
     core.addChild(openprom);
@@ -134,12 +137,26 @@ static void scan_devtree_cpu(hwNode & core)
     {
       string basepath =
 	string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
+      unsigned long version = 0;
       hwNode cpu("cpu",
 		 hw::processor);
 
       cpu.setProduct(get_string(basepath + "/name"));
       cpu.setSize(get_long(basepath + "/clock-frequency"));
       cpu.setClock(get_long(basepath + "/bus-frequency"));
+      if (exists(basepath + "/altivec"))
+	cpu.addCapability("altivec");
+
+      version = get_long(basepath + "/cpu-version");
+      if (version > 0)
+      {
+	int minor = version & 0x00ff;
+	int major = (version & 0xff00) >> 8;
+	char buffer[20];
+
+	snprintf(buffer, sizeof(buffer), "%d.%d", major, minor);
+	cpu.setVersion(buffer);
+      }
 
       core.addChild(cpu);
 
@@ -226,9 +243,8 @@ static void scan_devtree_memory(hwNode & core)
 bool scan_device_tree(hwNode & n)
 {
   hwNode *core = n.getChild("core");
-  struct stat buf;
 
-  if (stat(DEVICETREE, &buf) != 0)
+  if (!exists(DEVICETREE))
     return false;
 
   if (!core)
