@@ -18,6 +18,15 @@
 
 static char *id = "@(#) $Id$";
 
+using namespace sysfs;
+
+struct sysfs::entry_i
+{
+  string devclass;
+  string devbus;
+  string devname;
+};
+
 struct sysfs_t
 {
   sysfs_t():path("/sys"),
@@ -68,7 +77,7 @@ struct sysfs_t
   bool has_sysfs;
 };
 
-static sysfs_t sysfs;
+static sysfs_t fs;
 
 static int selectdir(const struct dirent *d)
 {
@@ -96,14 +105,14 @@ static string sysfs_getbustype(const string & path)
   - check if this link and 'path' point to the same inode
   - if they do, the bus type is the name of the current directory
  */
-  pushd(sysfs.path + "/bus");
+  pushd(fs.path + "/bus");
   n = scandir(".", &namelist, selectdir, alphasort);
   popd();
 
   for (i = 0; i < n; i++)
   {
     devname =
-      string(sysfs.path + "/bus/") + string(namelist[i]->d_name) +
+      string(fs.path + "/bus/") + string(namelist[i]->d_name) +
       "/devices/" + basename((char *) path.c_str());
 
     if (samefile(devname, path))
@@ -123,10 +132,10 @@ static string sysfstopci(const string & path)
 
 static string sysfstoide(const string & path)
 {
-  if (path.length() > 3)
+  if (path.substr(0, 3) == "ide")
     return "ide@" + path.substr(path.length() - 3);
   else
-    return "";
+    return "ide@" + path;
 }
 
 static string sysfstobusinfo(const string & path)
@@ -142,11 +151,10 @@ static string sysfstobusinfo(const string & path)
   return "";
 }
 
-string sysfs_getbusinfo(const string & devclass,
-			const string & devname)
+static string sysfs_getbusinfo_byclass(const string & devclass, const string & devname)
 {
   string basename =
-    sysfs.path + string("/class/") + devclass + string("/") + devname + "/";
+    fs.path + string("/class/") + devclass + string("/") + devname + "/";
   string device = basename + "/device";
   char buffer[PATH_MAX + 1];
   int namelen = 0;
@@ -162,11 +170,18 @@ string sysfs_getbusinfo(const string & devclass,
   return sysfstobusinfo(hw::strip(buffer));
 }
 
+string sysfs_getbusinfo(const entry & e)
+{
+  if(e.This->devclass != "")
+    return sysfs_getbusinfo_byclass(e.This->devclass, e.This->devname);
+  return "";
+}
+
 string sysfs_getdriver(const string & devclass,
 		       const string & devname)
 {
   string driverpath =
-    sysfs.path + string("/class/") + devclass + string("/") + devname + "/";
+    fs.path + string("/class/") + devclass + string("/") + devname + "/";
   string driver = driverpath + "/driver";
   char buffer[PATH_MAX + 1];
   int namelen = 0;
@@ -175,6 +190,50 @@ string sysfs_getdriver(const string & devclass,
     return "";
 
   return string(basename(buffer));
+}
+
+entry entry::byBus(string devbus, string devname)
+{
+  entry e;
+
+  e.This->devbus = devbus;
+  e.This->devname = devname;
+
+  return e;
+}
+
+entry entry::byClass(string devclass, string devname)
+{
+  entry e;
+
+  e.This->devclass = devclass;
+  e.This->devname = devname;
+
+  return e;
+}
+
+entry::entry()
+{
+  This = new entry_i;
+}
+
+entry & entry::operator =(const entry & e)
+{
+  
+  *This = *(e.This);
+  return *this;
+}
+
+entry::entry(const entry & e)
+{
+  This = new entry_i;
+
+  *This = *(e.This);
+}
+
+entry::~entry()
+{
+  delete This;
 }
 
 bool scan_sysfs(hwNode & n)

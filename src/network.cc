@@ -428,7 +428,7 @@ bool scan_network(hwNode & n)
       interface.setLogicalName(interfaces[i]);
       interface.claim();
 
-      string businfo = sysfs_getbusinfo("net", interface.getLogicalName());
+      string businfo = sysfs_getbusinfo(sysfs::entry::byClass("net", interface.getLogicalName()));
       interface.setBusInfo(businfo);
 
       scan_mii(fd, interface);
