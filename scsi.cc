@@ -29,6 +29,11 @@
 #define INQ_CMD_LEN 6
 #define INQ_PAGE_SERIAL 0x80
 
+#define SENSE_REPLY_LEN 96
+#define SENSE_CMD_CODE 0x1a
+#define SENSE_CMD_LEN 6
+#define SENSE_PAGE_SERIAL 0x80
+
 #define MX_ALLOC_LEN 255
 #define EBUFF_SZ 256
 
@@ -305,6 +310,53 @@ static int sg_err_category(int scsi_status,
   return SG_ERR_CAT_OTHER;
 }
 
+static bool do_modesense(int sg_fd,
+			 int page,
+			 int page_code,
+			 void *resp,
+			 int mx_resp_len)
+{
+  int res;
+  unsigned char senseCmdBlk[SENSE_CMD_LEN] =
+    { SENSE_CMD_CODE, 0, 0, 0, 0, 0 };
+  unsigned char sense_b[SENSE_BUFF_LEN];
+  sg_io_hdr_t io_hdr;
+
+  page &= 0x3f;
+  page_code &= 3;
+
+  senseCmdBlk[2] = (unsigned char) ((page_code << 6) | page);
+  senseCmdBlk[4] = (unsigned char) 0xff;
+  memset(&io_hdr, 0, sizeof(io_hdr));
+  memset(sense_b, 0, sizeof(sense_b));
+  io_hdr.interface_id = 'S';
+  io_hdr.cmd_len = sizeof(senseCmdBlk);
+  io_hdr.mx_sb_len = sizeof(sense_b);
+  io_hdr.dxfer_direction = SG_DXFER_FROM_DEV;
+  io_hdr.dxfer_len = mx_resp_len;
+  io_hdr.dxferp = resp;
+  io_hdr.cmdp = senseCmdBlk;
+  io_hdr.sbp = sense_b;
+  io_hdr.timeout = 20000;	/* 20 seconds */
+
+  if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
+    return false;
+
+  res =
+    sg_err_category(io_hdr.status, io_hdr.host_status, io_hdr.driver_status,
+		    io_hdr.sbp, io_hdr.sb_len_wr);
+  switch (res)
+  {
+  case SG_ERR_CAT_CLEAN:
+  case SG_ERR_CAT_RECOVERED:
+    return true;
+  default:
+    return false;
+  }
+
+  return true;
+}
+
 static bool do_inq(int sg_fd,
 		   int cmddt,
 		   int evpd,
@@ -354,6 +406,20 @@ static bool do_inq(int sg_fd,
   return true;
 }
 
+static unsigned long decode_3_bytes(void *ptr)
+{
+  unsigned char *p = (unsigned char *) ptr;
+
+  return (p[0] << 16) + (p[1] << 8) + p[2];
+}
+
+static u_int16_t decode_word(void *ptr)
+{
+  unsigned char *p = (unsigned char *) ptr;
+
+  return (p[0] << 8) + p[1];
+}
+
 static bool do_inquiry(int sg_fd,
 		       hwNode & node)
 {
@@ -397,11 +463,63 @@ static bool do_inquiry(int sg_fd,
   if (ansiversion)
     node.setConfig("ansiversion", version);
 
+  memset(rsp_buff, 0, sizeof(rsp_buff));
   if (do_inq(sg_fd, 0, 1, 0x80, rsp_buff, MX_ALLOC_LEN, 0))
   {
     len = rsp_buff[3];
     if (len > 0)
       node.setSerial(string(rsp_buff + 4, len));
+  }
+
+  memset(rsp_buff, 0, sizeof(rsp_buff));
+  if (do_modesense(sg_fd, 0x3F, 0, rsp_buff, sizeof(rsp_buff)))
+  {
+    unsigned long long sectsize = 0;
+    unsigned long long heads = 0;
+    unsigned long long cyl = 0;
+    unsigned long long sectors = 0;
+    unsigned long rpm = 0;
+    u_int8_t *end = (u_int8_t *) rsp_buff + (u_int8_t) rsp_buff[0];
+    u_int8_t *p = NULL;
+
+    if (rsp_buff[3] == 8)
+      sectsize = decode_3_bytes(rsp_buff + 9);
+
+    p = (u_int8_t *) & rsp_buff[4];
+    p += (u_int8_t) rsp_buff[3];
+    while (p < end)
+    {
+      u_int8_t page = *p & 0x3F;
+
+      if (page == 3)
+      {
+	sectors = decode_word(p + 10);
+	sectsize = decode_word(p + 12);
+      }
+      if (page == 4)
+      {
+	cyl = decode_3_bytes(p + 2);
+	rpm = decode_word(p + 20);
+	heads = p[5];
+      }
+
+      p += p[1] + 2;
+    }
+
+    node.setCapacity(heads * cyl * sectors * sectsize);
+
+    if (rpm / 10000 >= 1)
+      node.addCapability("10000rpm");
+    else
+    {
+      if (rpm / 7200 >= 1)
+	node.addCapability("7200rpm");
+      else
+      {
+	if (rpm / 5400 >= 1)
+	  node.addCapability("5400rpm");
+      }
+    }
   }
 
   return true;
@@ -675,4 +793,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.24 2003/02/25 08:56:12 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.25 2003/02/26 22:27:35 ezix Exp $";
