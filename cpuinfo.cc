@@ -60,14 +60,71 @@ static void cpuinfo_ppc(hwNode & node,
   }
 }
 
+static void cpuinfo_ia64(hwNode & node,
+			 string id,
+			 string value)
+{
+  unsigned long long frequency = 0;
+  int i;
+  static int currentcpu = -1;
+
+  if (id == "processor")
+    currentcpu++;
+
+  hwNode *cpu = getcpu(node, currentcpu);
+
+  if (cpu)
+  {
+    cpu->claim(true);
+
+    if (id == "cpu number")
+    {
+      unsigned physicalcpu = 0;
+
+      physicalcpu = atoi(value.c_str());
+
+      if (physicalcpu != currentcpu)
+      {
+	cpu->addCapability("emulated");
+	cpu->addCapability("hyperthreading");
+      }
+    }
+
+    if (id == "vendor")
+    {
+      if (value == "GenuineIntel")
+	value = "Intel Corp.";
+      cpu->setVendor(value);
+    }
+
+    if (id == "revision")
+      cpu->setVersion(value);
+
+    if (id == "family")
+      cpu->setProduct(value);
+
+    if (id == "cpu MHz" && cpu->getSize() == 0)
+    {
+      double frequency = 0.0;
+
+      frequency = atof(value.c_str());
+      cpu->setSize((unsigned long long) (frequency * 1E6));
+    }
+  }
+}
+
 static void cpuinfo_hppa(hwNode & node,
 			 string id,
 			 string value)
 {
   unsigned long long frequency = 0;
   int i;
+  static int currentcpu = -1;
 
-  hwNode *cpu = getcpu(node, 0);
+  if (id == "processor")
+    currentcpu++;
+
+  hwNode *cpu = getcpu(node, currentcpu);
 
   if (id == "model" && node.getProduct() == "")
     node.setProduct(value);
@@ -78,6 +135,7 @@ static void cpuinfo_hppa(hwNode & node,
 
   if (cpu)
   {
+    cpu->claim(true);
 
     if (id == "cpu" && cpu->getVersion() == "")
       cpu->setVersion(value);
@@ -124,6 +182,8 @@ static void cpuinfo_alpha(hwNode & node,
 
   if (cpu)
   {
+    cpu->claim(true);
+
     if (frequency)
       cpu->setSize(frequency);
   }
@@ -266,6 +326,9 @@ bool scan_cpuinfo(hwNode & n)
 #ifdef __alpha__
 	cpuinfo_alpha(n, id, value);
 #endif
+#ifdef __ia64__
+	cpuinfo_ia64(n, id, value);
+#endif
       }
     }
   }
@@ -277,4 +340,4 @@ bool scan_cpuinfo(hwNode & n)
 }
 
 static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.15 2003/03/12 13:06:01 ezix Exp $";
+  "@(#) $Id: cpuinfo.cc,v 1.16 2003/03/14 09:18:24 ezix Exp $";
