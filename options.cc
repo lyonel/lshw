@@ -14,7 +14,7 @@
 
 using namespace std;
 
-static char *id = "@(#) $Id: options.cc,v 1.3 2004/02/24 23:19:54 ezix Exp $";
+static char *id = "@(#) $Id: options.cc,v 1.4 2004/02/26 16:05:00 ezix Exp $";
 
 static set < string > disabled_tests;
 static set < string > visible_classes;
@@ -54,7 +54,7 @@ bool parse_options(int &argc,
 
       remove_option_argument(i, argc, argv);
     }
-    else if (strcmp(argv[i], "-class") == 0)
+    else if ((strcmp(argv[i], "-class") == 0) || (strcmp(argv[i], "-C") == 0))
     {
       vector < string > classes;
 
