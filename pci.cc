@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.38 2003/09/02 15:09:28 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.39 2003/10/20 11:16:16 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -671,6 +671,12 @@ bool scan_pci(hwNode & n)
 	if (moredescription != "" && moredescription != host.getDescription())
 	{
 	  host.addCapability(moredescription);
+	  host.describeCapability("VGA", "VGA graphical framebuffer");
+	  host.describeCapability("OHCI", "Open Host Controller Interface");
+	  host.describeCapability("UHCI",
+				  "Universal Host Controller Interface");
+	  host.describeCapability("EHCI",
+				  "Enhanced Host Controller Interface");
 	  host.setDescription(device->getDescription() + " (" +
 			      moredescription + ")");
 	}
@@ -779,11 +785,11 @@ bool scan_pci(hwNode & n)
 	    setProduct(get_device_description(d.vendor_id, d.device_id));
 
 	  if (cmd & PCI_COMMAND_MASTER)
-	    device->addCapability("bus master");
+	    device->addCapability("bus master", "Bus mastering");
 	  if (cmd & PCI_COMMAND_VGA_PALETTE)
-	    device->addCapability("VGA palette");
+	    device->addCapability("VGA palette", "VGA palette");
 	  if (status & PCI_STATUS_CAP_LIST)
-	    device->addCapability("cap list");
+	    device->addCapability("cap list", "capabilities listing");
 	  if (status & PCI_STATUS_66MHZ)
 	    device->setClock(66000000UL);	// 66MHz
 	  else
