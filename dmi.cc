@@ -819,7 +819,7 @@ static void dmi_table(int fd,
       break;
 
     case 2:
-      printf("\tBoard Information Block\n");
+      // Board Information Block
       printf("\t\tVendor: %s\n", dmi_string(dm, data[4]));
       printf("\t\tProduct: %s\n", dmi_string(dm, data[5]));
       printf("\t\tVersion: %s\n", dmi_string(dm, data[6]));
