@@ -290,24 +290,26 @@ static const char *dmi_card_size(u8 v)
   return "";
 }
 
-static void dmi_card_props(u8 v)
+static string dmi_card_props(u8 v)
 {
-  printf("\t\tSlot Features: ");
+  string result = "";
+
   if (v & (1 << 1))
-    printf("5v ");
+    result += "5v ";
   if (v & (1 << 2))
-    printf("3.3v ");
+    result += "3.3v ";
   if (v & (1 << 3))
-    printf("Shared ");
+    result += "Shared ";
   if (v & (1 << 4))
-    printf("PCCard16 ");
+    result += "PCCard16 ";
   if (v & (1 << 5))
-    printf("CardBus ");
+    result += "CardBus ";
   if (v & (1 << 6))
-    printf("Zoom-Video ");
+    result += "Zoom-Video ";
   if (v & (1 << 7))
-    printf("ModemRingResume ");
-  printf("\n");
+    result += "ModemRingResume ";
+
+  return hw::strip(result);
 }
 
 static const char *dmi_chassis_type(u8 code)
@@ -1042,12 +1044,10 @@ static void dmi_table(int fd,
 	if (dm->length > 0x20)
 	{
 	  newnode.setSerial(dmi_string(dm, data[0x20]));
-	  //printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[0x21]));
 	  if (dmi_string(dm, data[0x22]) != "")
 	    newnode.setProduct(newnode.getProduct() + " (" +
 			       string(dmi_string(dm, data[0x22])) + ")");
 	}
-	//printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
 
 	// external clock
 	u = data[0x13] << 8 | data[0x12];
@@ -1197,33 +1197,43 @@ static void dmi_table(int fd,
       break;
 
     case 8:
-      printf("\tPort Connector\n");
-      printf("\t\tInternal Designator: %s\n",
-	     dmi_string(dm, data[4]).c_str());
-      printf("\t\tInternal Connector Type: %s\n",
-	     dmi_port_connector_type(data[5]));
-      printf("\t\tExternal Designator: %s\n",
-	     dmi_string(dm, data[6]).c_str());
-      printf("\t\tExternal Connector Type: %s\n",
-	     dmi_port_connector_type(data[7]));
-      printf("\t\tPort Type: %s\n", dmi_port_type(data[8]));
+      //printf("\tPort Connector\n");
+      //printf("\t\tInternal Designator: %s\n",
+      //dmi_string(dm, data[4]).c_str());
+      //printf("\t\tInternal Connector Type: %s\n",
+      //dmi_port_connector_type(data[5]));
+      //printf("\t\tExternal Designator: %s\n",
+      //dmi_string(dm, data[6]).c_str());
+      //printf("\t\tExternal Connector Type: %s\n",
+      //dmi_port_connector_type(data[7]));
+      //printf("\t\tPort Type: %s\n", dmi_port_type(data[8]));
       break;
 
     case 9:
-      printf("\tCard Slot\n");
-      printf("\t\tSlot: %s\n", dmi_string(dm, data[4]).c_str());
-      printf("\t\tType: %s%s%s\n",
-	     dmi_bus_width(data[6]),
-	     dmi_card_size(data[8]), dmi_bus_name(data[5]));
-      if (data[7] == 3)
-	printf("\t\tStatus: Available.\n");
-      if (data[7] == 4)
-	printf("\t\tStatus: In use.\n");
-      if (data[11] & 0xFE)
-	dmi_card_props(data[11]);
+#if 0
+      {
+	hwNode newnode("cardslot",
+		       hw::bus);
+
+	newnode.setHandle(handle);
+	newnode.setSlot(dmi_string(dm, data[4]));
+	printf("\t\tType: %s%s%s\n",
+	       dmi_bus_width(data[6]),
+	       dmi_card_size(data[8]), dmi_bus_name(data[5]));
+	if (data[7] == 3)
+	  printf("\t\tStatus: Available.\n");
+	if (data[7] == 4)
+	  printf("\t\tStatus: In use.\n");
+	if (data[11] & 0xFE)
+	  dmi_card_props(data[11]);
+
+	//hardwarenode->addChild(newnode);
+      }
+#endif
       break;
 
     case 10:
+#if 0
       printf("\tOn Board Devices Information\n");
       for (u = 2; u * 2 + 1 < dm->length; u++)
       {
@@ -1233,6 +1243,7 @@ static void dmi_table(int fd,
 	printf("\t\tType: %s\n", dmi_onboard_type(data[2 * u]));
 
       }
+#endif
 
       break;
 
@@ -1244,6 +1255,7 @@ static void dmi_table(int fd,
       break;
 
     case 13:
+#if 0
       printf("\tBIOS Language Information\n");
       printf("\t\tInstallable Languages: %u\n", data[4]);
       for (u = 1; u <= data[4]; u++)
@@ -1252,6 +1264,7 @@ static void dmi_table(int fd,
       }
       printf("\t\tCurrently Installed Language: %s\n",
 	     dmi_string(dm, data[21]).c_str());
+#endif
       break;
 
     case 14:
@@ -1430,8 +1443,10 @@ static void dmi_table(int fd,
 
 	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
 
+#if 0
 	if (memoryarray)
 	  memoryarray->addChild(newnode);
+#endif
       }
       break;
     case 20:
@@ -1459,9 +1474,11 @@ static void dmi_table(int fd,
 
 	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
 
+#if 0
 	if (memorydevice && (newnode.getSize() != 0)
 	    && (newnode.getSize() <= memorydevice->getSize()))
 	  memorydevice->addChild(newnode);
+#endif
       }
       break;
     case 21:

@@ -7,11 +7,25 @@
 bool scan_memory(hwNode & n)
 {
   struct stat buf;
+  hwNode *memory = n.getChild("core/memory");
+
+  if (memory)
+  {
+    unsigned long long size = 0;
+
+    for (int i = 0; i < memory->countChildren(); i++)
+      if (memory->getChild(i)->getClass() == hw::memory)
+	size += memory->getChild(i)->getSize();
+
+    if (memory->getSize() == 0)
+    {
+      memory->setSize(size);
+      return true;
+    }
+  }
 
   if (stat("/proc/kcore", &buf) == 0)
   {
-    hwNode *memory = n.getChild("core/ram");
-
     if (!memory)
     {
       hwNode *core = n.getChild("core");
