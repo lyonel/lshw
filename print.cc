@@ -20,7 +20,7 @@ static void tab(int level,
 
 static void decimalkilos(unsigned long long value)
 {
-  const char *prefixes = "KMGTPH";
+  const char *prefixes = "KMGTPEZY";
   int i = 0;
 
   while ((i <= strlen(prefixes)) && ((value > 10000) || (value % 1000 == 0)))
@@ -36,7 +36,7 @@ static void decimalkilos(unsigned long long value)
 
 static void kilobytes(unsigned long long value)
 {
-  const char *prefixes = "KMGTPH";
+  const char *prefixes = "KMGTPEZY";
   int i = 0;
 
   while ((i <= strlen(prefixes)) && ((value > 10240) || (value % 1024 == 0)))
@@ -588,4 +588,4 @@ void printxml(hwNode & node,
   cout << "</node>" << endl;
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.41 2003/04/14 20:36:50 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.42 2003/04/15 06:36:44 ezix Exp $";
