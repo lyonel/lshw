@@ -179,3 +179,5 @@ void print(const hwNode & node,
     print(*node.getChild(i), level + 1);
   }
 }
+
+static char *id = "@(#) $Id: print.cc,v 1.20 2003/01/25 10:00:30 ezix Exp $";

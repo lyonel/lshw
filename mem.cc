@@ -52,3 +52,5 @@ bool scan_memory(hwNode & n)
 
   return false;
 }
+
+static char *id = "@(#) $Id: mem.cc,v 1.11 2003/01/25 10:00:30 ezix Exp $";

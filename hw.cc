@@ -514,3 +514,5 @@ string hwNode::getCapabilities() const
 
   return strip(result);
 }
+
+static char *id = "@(#) $Id: hw.cc,v 1.24 2003/01/25 10:00:30 ezix Exp $";

@@ -50,3 +50,5 @@ string pwd()
   else
     return "";
 }
+
+static char *id = "@(#) $Id: osutils.cc,v 1.2 2003/01/25 10:00:30 ezix Exp $";

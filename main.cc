@@ -28,3 +28,5 @@ int main(int argc,
 
   return 0;
 }
+
+static char *id = "@(#) $Id: main.cc,v 1.8 2003/01/25 10:00:30 ezix Exp $";

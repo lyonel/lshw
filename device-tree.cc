@@ -334,3 +334,5 @@ bool scan_device_tree(hwNode & n)
 
   return true;
 }
+
+static char *id = "@(#) $Id: device-tree.cc,v 1.9 2003/01/25 10:00:30 ezix Exp $";
