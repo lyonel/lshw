@@ -20,7 +20,7 @@ LDFLAGS=-L./core/
 LDSTATIC=-static
 LIBS=-llshw
 
-DATAFILES = pci.ids
+DATAFILES = pci.ids usb.ids oui.txt manuf.txt
 
 all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 
@@ -55,6 +55,9 @@ $(PACKAGENAME).1: $(PACKAGENAME).sgml
 
 pci.ids:
 	wget http://pciids.sourceforge.net/pci.ids
+
+usb.ids:
+	wget http://www.linux-usb.org/usb.ids
 
 oui.txt:
 	wget http://standards.ieee.org/regauth/oui/oui.txt
