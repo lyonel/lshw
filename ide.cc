@@ -1,113 +1,20 @@
 #include "cpuinfo.h"
 #include "osutils.h"
 #include <sys/types.h>
+#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <dirent.h>
 #include <vector>
+#include <linux/hdreg.h>
 
 #define PROC_IDE "/proc/ide"
 
 #define PCI_SLOT(devfn)         (((devfn) >> 3) & 0x1f)
 #define PCI_FUNC(devfn)         ((devfn) & 0x07)
 
-/* device types */
-/* ------------ */
-#define NO_DEV                  0xffff
-#define ATA_DEV                 0x0000
-#define ATAPI_DEV               0x0001
-
-/* word definitions */
-/* ---------------- */
-#define GEN_CONFIG		0	/* general configuration */
-#define LCYLS			1	/* number of logical cylinders */
-#define CONFIG			2	/* specific configuration */
-#define LHEADS			3	/* number of logical heads */
-#define TRACK_BYTES		4	/* number of bytes/track (ATA-1) */
-#define SECT_BYTES		5	/* number of bytes/sector (ATA-1) */
-#define LSECTS			6	/* number of logical sectors/track */
-#define START_SERIAL            10	/* ASCII serial number */
-#define LENGTH_SERIAL           10	/* 10 words (20 bytes or characters) */
-#define BUF_TYPE		20	/* buffer type (ATA-1) */
-#define BUF_SIZE		21	/* buffer size (ATA-1) */
-#define RW_LONG			22	/* extra bytes in R/W LONG cmd ( < ATA-4) */
-#define START_FW_REV            23	/* ASCII firmware revision */
-#define LENGTH_FW_REV		 4	/*  4 words (8 bytes or characters) */
-#define START_MODEL    		27	/* ASCII model number */
-#define LENGTH_MODEL    	20	/* 20 words (40 bytes or characters) */
-#define SECTOR_XFER_MAX	        47	/* r/w multiple: max sectors xfered */
-#define DWORD_IO		48	/* can do double-word IO (ATA-1 only) */
-#define CAPAB_0			49	/* capabilities */
-#define CAPAB_1			50
-#define PIO_MODE		51	/* max PIO mode supported (obsolete) */
-#define DMA_MODE		52	/* max Singleword DMA mode supported (obs) */
-#define WHATS_VALID		53	/* what fields are valid */
-#define LCYLS_CUR		54	/* current logical cylinders */
-#define LHEADS_CUR		55	/* current logical heads */
-#define LSECTS_CUR	        56	/* current logical sectors/track */
-#define CAPACITY_LSB		57	/* current capacity in sectors */
-#define CAPACITY_MSB		58
-#define SECTOR_XFER_CUR		59	/* r/w multiple: current sectors xfered */
-#define LBA_SECTS_LSB		60	/* LBA: total number of user */
-#define LBA_SECTS_MSB		61	/*      addressable sectors */
-#define SINGLE_DMA		62	/* singleword DMA modes */
-#define MULTI_DMA		63	/* multiword DMA modes */
-#define ADV_PIO_MODES		64	/* advanced PIO modes supported */
-				    /*
-				     * multiword DMA xfer cycle time: 
-				     */
-#define DMA_TIME_MIN		65	/*   - minimum */
-#define DMA_TIME_NORM		66	/*   - manufacturer's recommended   */
-				    /*
-				     * minimum PIO xfer cycle time: 
-				     */
-#define PIO_NO_FLOW		67	/*   - without flow control */
-#define PIO_FLOW		68	/*   - with IORDY flow control */
-#define PKT_REL			71	/* typical #ns from PKT cmd to bus rel */
-#define SVC_NBSY		72	/* typical #ns from SERVICE cmd to !BSY */
-#define CDR_MAJOR		73	/* CD ROM: major version number */
-#define CDR_MINOR		74	/* CD ROM: minor version number */
-#define QUEUE_DEPTH		75	/* queue depth */
-#define MAJOR			80	/* major version number */
-#define MINOR			81	/* minor version number */
-#define CMDS_SUPP_0		82	/* command/feature set(s) supported */
-#define CMDS_SUPP_1		83
-#define CMDS_SUPP_2		84
-#define CMDS_EN_0		85	/* command/feature set(s) enabled */
-#define CMDS_EN_1		86
-#define CMDS_EN_2		87
-#define ULTRA_DMA		88	/* ultra DMA modes */
-				    /*
-				     * time to complete security erase 
-				     */
-#define ERASE_TIME		89	/*   - ordinary */
-#define ENH_ERASE_TIME		90	/*   - enhanced */
-#define ADV_PWR			91	/* current advanced power management level
-					 * in low byte, 0x40 in high byte. */
-#define PSWD_CODE		92	/* master password revision code    */
-#define HWRST_RSLT		93	/* hardware reset result */
-#define ACOUSTIC  		94	/* acoustic mgmt values ( >= ATA-6) */
-#define LBA_LSB			100	/* LBA: maximum.  Currently only 48 */
-#define LBA_MID			101	/*      bits are used, but addr 103 */
-#define LBA_48_MSB		102	/*      has been reserved for LBA in */
-#define LBA_64_MSB		103	/*      the future. */
-#define RM_STAT 		127	/* removable media status notification feature set support */
-#define SECU_STATUS		128	/* security status */
-#define CFA_PWR_MODE		160	/* CFA power mode 1 */
-#define START_MEDIA             176	/* media serial number */
-#define LENGTH_MEDIA            20	/* 20 words (40 bytes or characters) */
-#define START_MANUF             196	/* media manufacturer I.D. */
-#define LENGTH_MANUF            10	/* 10 words (20 bytes or characters) */
-#define INTEGRITY		255	/* integrity word */
-
-#define NOT_ATA                 0x8000
-#define NOT_ATAPI               0x4000	/* (check only if bit 15 == 1) */
-#define MEDIA_REMOVABLE         0x0080
-#define CFA_SUPPORT_VAL         0x848a	/* 848a=CFA feature set support */
-
-#define EQPT_TYPE               0x1f00
 #define IORDY_SUP               0x0800	/* 1=support; 0=may be supported */
 #define IORDY_OFF               0x0400	/* 1=may be disabled */
 #define LBA_SUP                 0x0200	/* 1=Logical Block Address support */
@@ -197,36 +104,65 @@ static string print_ascii(const char *base,
 {
   string result = "";
 
-  for (int i = 0; i < length - 1; i++)
+  for (int i = 0; i < length; i++)
   {
-    result += base[i + 1];
+    if (i < length - 1)
+      result += base[i + 1];
     result += base[i];
     i++;
   }
-  return result;
+  return hw::strip(result);
 }
 
 static bool probe_ide(const string & name,
 		      hwNode & device)
 {
-  string filename =
-    string(PROC_IDE) + string("/") + name + string("/identify");
-  FILE *in = fopen(filename.c_str(), "r");
-  u_int16_t iddata[INTEGRITY + 1];
-  int i;
+  static struct hd_driveid id;
+  int fd = open(device.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
 
-  if (!in)
+  if (fd < 0)
     return false;
 
-  memset(iddata, 0, sizeof(iddata));
-  for (i = 0; i <= INTEGRITY; i++)
-    if (fscanf(in, "%x", &iddata[i]) != 1)
-      break;
-  fclose(in);
+  memset(&id, 0, sizeof(id));
+  if (ioctl(fd, HDIO_GET_IDENTITY, &id) != 0)
+  {
+    close(fd);
+    return false;
+  }
 
-  if (i <= INTEGRITY)
-    return false;		// couldn't read the whole structure
+  if (id.model[0])
+    device.setProduct(string((char *) id.model));
+  if (id.fw_rev[0])
+    device.setVersion(string((char *) id.fw_rev));
+  if (id.serial_no[0])
+    device.setSerial(string((char *) id.serial_no));
 
+  if (id.capability & 1)
+    device.addCapability("dma");
+  if (id.capability & 2)
+    device.addCapability("lba");
+  if (id.capability & 8)
+    device.addCapability("iordy");
+  if (id.command_set_1 & 1)
+    device.addCapability("smart");
+  if (id.command_set_1 & 2)
+    device.addCapability("security");
+  if (id.command_set_1 & 4)
+    device.addCapability("removable");
+  if (id.command_set_1 & 8)
+    device.addCapability("pm");
+
+  if (device.isCapable("iordy") && (id.capability & 4))
+    device.setConfig("iordy", "yes");
+
+  if (device.isCapable("smart"))
+  {
+    if (id.command_set_2 & (1 << 14))
+      device.setConfig("smart", "on");
+    else
+      device.setConfig("smart", "off");
+  }
+#if 0
   if (!(iddata[GEN_CONFIG] & NOT_ATA))
     device.addCapability("ata");
   else if (iddata[GEN_CONFIG] == CFA_SUPPORT_VAL)
@@ -240,11 +176,9 @@ static bool probe_ide(const string & name,
     device.setDescription(description[(iddata[GEN_CONFIG] & EQPT_TYPE) >> 8]);
   }
 
-  if (iddata[GEN_CONFIG] & MEDIA_REMOVABLE)
-    device.addCapability("removable");
   if (iddata[START_MODEL])
-    device.
-      setProduct(print_ascii((char *) &iddata[START_MODEL], LENGTH_MODEL));
+    device.setProduct(print_ascii((char *) &iddata[START_MODEL],
+				  LENGTH_MODEL));
   if (iddata[START_SERIAL])
     device.
       setSerial(print_ascii((char *) &iddata[START_SERIAL], LENGTH_SERIAL));
@@ -271,7 +205,7 @@ static bool probe_ide(const string & name,
     device.addCapability("command_queuing");
   if (iddata[CAPAB_0] & OVLP_SUP)
     device.addCapability("overlap_operation");
-
+#endif
   return true;
 }
 
@@ -363,4 +297,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.3 2003/02/05 14:09:07 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.4 2003/02/05 20:38:39 ezix Exp $";
