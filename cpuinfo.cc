@@ -104,8 +104,8 @@ static void cpuinfo_x86(hwNode & node,
 	}
 	else
 	{
-	  cpu->addCapability(value.substr(0, pos - 1));
-	  value = value.substr(pos + 1);
+	  cpu->addCapability(value.substr(0, pos));
+	  value = hw::strip(value.substr(pos));
 	}
       }
   }
@@ -153,7 +153,7 @@ bool scan_cpuinfo(hwNode & n)
       if (pos != string::npos)
       {
 	id = hw::strip(cpuinfo_lines[i].substr(0, pos));
-	value = hw::strip(cpuinfo_lines[i].substr(pos + 1));
+	value = hw::strip(cpuinfo_lines[i].substr(pos));
 
 	cpuinfo_x86(n, id, value);
       }
@@ -166,5 +166,4 @@ bool scan_cpuinfo(hwNode & n)
   }
 }
 
-static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.2 2003/01/19 18:56:52 ezix Exp $";
+static char *id = "@(#) $Id: cpuinfo.cc,v 1.3 2003/01/19 19:01:18 ezix Exp $";
