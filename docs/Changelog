@@ -1,3 +1,15 @@
+*  B.02.02
+  added reporting of battery-related information using DMI
+  added reporting of hardware security (DMI): admin/user/power-on passwords
+  FIX: worked around the disparition of /proc/ide/ide*/config on 2.6.10
+  new "businfo" output style
+  first try to define an XML schema (cf. XSD file in docs/)
+  renamed lm capability to x86-64 (easier to understand)
+  portability fixes for RedHat 7.3
+  updated USB IDs
+  documentation updates
+  added support for /proc/cpuinfo on x86-64
+  code cleanup
 *  B.02.01
   better support for emulated SCSI devices: USB mass storage devices are now properly handled
   added a "go-up" button to the GUI
