@@ -844,6 +844,9 @@ static void dmi_table(int fd,
 	}
 	//printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
 
+	// maximum speed
+	u = data[0x15] << 8 | data[0x14];
+	newnode.setCapacity(u * 1000000);
 	// current speed
 	u = data[0x17] << 8 | data[0x16];
 	newnode.setSize(u * 1000000);

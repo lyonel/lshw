@@ -111,6 +111,30 @@ void print(const hwNode & node,
     cout << endl;
   }
 
+  if (node.getCapacity() > 0)
+  {
+    tab(level + 1, false);
+    cout << "capacity: ";
+    switch (node.getClass())
+    {
+    case hw::memory:
+    case hw::storage:
+      kilobytes(node.getCapacity());
+      break;
+
+    case hw::processor:
+    case hw::bus:
+    case hw::system:
+      decimalkilos(node.getCapacity());
+      cout << "Hz";
+      break;
+
+    default:
+      cout << node.getCapacity();
+    }
+    cout << endl;
+  }
+
   for (int i = 0; i < node.countChildren(); i++)
   {
     print(*node.getChild(i), level + 1);

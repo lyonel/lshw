@@ -11,6 +11,7 @@ struct hwNode_i
   string id, vendor, product, version, serial, slot;
   bool enabled;
   unsigned long long size;
+  unsigned long long capacity;
     vector < hwNode > children;
 };
 
@@ -62,6 +63,7 @@ hwNode::hwNode(const string & id,
   This->product = strip(product);
   This->version = strip(version);
   This->size = 0;
+  This->capacity = 0;
   This->enabled = true;
 }
 
@@ -235,6 +237,20 @@ void hwNode::setSize(unsigned long long size)
 {
   if (This)
     This->size = size;
+}
+
+unsigned long long hwNode::getCapacity() const
+{
+  if (This)
+    return This->capacity;
+  else
+    return 0;
+}
+
+void hwNode::setCapacity(unsigned long long capacity)
+{
+  if (This)
+    This->capacity = capacity;
 }
 
 unsigned int hwNode::countChildren() const
