@@ -2,6 +2,7 @@
 #include "osutils.h"
 #include "cdrom.h"
 #include "disk.h"
+#include "heuristics.h"
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
@@ -454,14 +455,12 @@ bool scan_ide(hwNode & n)
 	}
 	free(devicelist);
 
+	ide.setDescription(hw::strip("IDE Channel " + hw::strip(channel)));
+
 	if ( identify.size() == 11 && identify[0] == "pci")
 	{
 	  string pciid = get_pciid(identify[2], identify[4]);
 	  hwNode *parent = n.findChildByHandle(pciid);
-
-	  ide.
-	    setDescription(hw::
-			   strip("IDE Channel " + hw::strip(channel)));
 
 	  if (parent)
 	  {
@@ -470,16 +469,27 @@ bool scan_ide(hwNode & n)
 	    parent->addChild(ide);
 	  }
 	}
-	else
+	else	// we have to guess the parent device
 	{
-	  for (unsigned int k = 0; k < ide.countChildren(); k++)
-	  {
-	    hwNode *candidate =
-	      n.findChildByLogicalName(ide.getChild(k)->getLogicalName());
+          hwNode * parent = guessParent(ide, n);
+          if(parent)
+          {
+	    parent->claim();
+	    ide.setClock(parent->getClock());
+	    parent->addChild(ide);
+          }
+          else
+	    for (unsigned int k = 0; k < ide.countChildren(); k++)
+	    {
+	      hwNode *candidate =
+	        n.findChildByLogicalName(ide.getChild(k)->getLogicalName());
 
-	    if (candidate)
-	      candidate->merge(*ide.getChild(k));
-	  }
+	      if (candidate)
+              {
+	        candidate->merge(*ide.getChild(k));
+                break;
+              }
+	    }
 	  //n.addChild(ide);
 	}
       }
