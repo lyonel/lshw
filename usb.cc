@@ -122,7 +122,7 @@ struct usbdevfs_ctrltransfer
 
 #define USBDEVFS_CONTROL	_IOWR('U', 0, struct usbdevfs_ctrltransfer)
 
-static char *id = "@(#) $Id: usb.cc,v 1.7 2004/01/17 13:55:39 ezix Exp $";
+static char *id = "@(#) $Id: usb.cc,v 1.8 2004/02/26 16:52:33 ezix Exp $";
 
 static int usb_control_msg(int fd,
 			   u_int8_t requesttype,
@@ -336,7 +336,7 @@ bool scan_usb(hwNode & n)
 
 		if (get_config(fd, i, config))
 		{
-		  printf("config: %d\n", config.iConfiguration);
+		  //printf("config: %d\n", config.iConfiguration);
 		}
 	      }
 	    }

@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: lshw.cc,v 1.3 2004/02/24 23:19:54 ezix Exp $";
+static char *id = "@(#) $Id: lshw.cc,v 1.4 2004/02/26 16:52:33 ezix Exp $";
 
 void usage(const char *progname)
 {
@@ -30,6 +30,11 @@ int main(int argc,
   bool htmloutput = false;
   bool xmloutput = false;
   bool hwpath = false;
+
+  disable("isapnp");
+#ifndef DEBUG
+  disable("usb");
+#endif
 
   if (!parse_options(argc, argv))
   {
@@ -69,8 +74,6 @@ int main(int argc,
   {
     fprintf(stderr, "WARNING: you should run this program as super-user.\n");
   }
-
-  disable("isapnp");
 
   {
     hwNode computer("computer",
