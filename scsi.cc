@@ -354,7 +354,7 @@ static bool do_inquiry(int sg_fd,
   char rsp_buff[MX_ALLOC_LEN + 1];
   char version[5];
   int k;
-  int len;
+  unsigned char len;
 
   if ((ioctl(sg_fd, SG_GET_VERSION_NUM, &k) < 0) || (k < 30000))
     return false;
@@ -363,7 +363,7 @@ static bool do_inquiry(int sg_fd,
   if (!do_inq(sg_fd, 0, 0, 0, rsp_buff, 36, 1))
     return false;
 
-  len = rsp_buff[4] + 5;
+  len = (unsigned char) rsp_buff[4] + 5;
 
   if ((len > 36) && (len < 256))
   {
@@ -372,7 +372,7 @@ static bool do_inquiry(int sg_fd,
       return false;
   }
 
-  if (len != (rsp_buff[4] + 5))
+  if (len != ((unsigned char) rsp_buff[4] + 5))
     return false;		// twin INQUIRYs yield different lengths
 
   unsigned ansiversion = rsp_buff[2] & 0x7;
@@ -604,4 +604,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.17 2003/02/23 00:58:55 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.18 2003/02/23 18:21:59 ezix Exp $";
