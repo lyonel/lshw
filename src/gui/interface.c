@@ -214,6 +214,8 @@ create_lshw (void)
   GTK_WIDGET_SET_FLAGS (description, GTK_CAN_FOCUS);
   gtk_label_set_use_markup (GTK_LABEL (description), TRUE);
   gtk_label_set_selectable (GTK_LABEL (description), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (description), 0, 0);
+  gtk_misc_set_padding (GTK_MISC (description), 5, 5);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
