@@ -54,7 +54,7 @@ string pwd()
 
 int splitlines(const string & s,
 	       vector < string > &lines,
-	       char separator = '\n')
+	       char separator)
 {
   size_t i = 0, j = 0;
   int count;
@@ -98,4 +98,4 @@ bool loadfile(const string & file,
   return true;
 }
 
-static char *id = "@(#) $Id: osutils.cc,v 1.3 2003/01/27 14:25:08 ezix Exp $";
+static char *id = "@(#) $Id: osutils.cc,v 1.4 2003/01/30 08:04:25 ezix Exp $";
