@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.27 2003/04/30 12:47:46 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.28 2003/05/27 21:21:19 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -660,6 +660,8 @@ bool scan_pci(hwNode & n)
 
 	if (device)
 	{
+	  device->setLogicalName(devicepath);
+
 	  if (devicename == "pcmcia")
 	    device->addCapability("pcmcia");
 

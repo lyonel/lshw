@@ -64,7 +64,7 @@ depend:
 
 hw.o: hw.h osutils.h
 main.o: hw.h print.h version.h mem.h dmi.h cpuinfo.h cpuid.h device-tree.h
-main.o: pci.h pcmcia.h ide.h scsi.h
+main.o: pci.h pcmcia.h ide.h scsi.h spd.h
 print.o: print.h hw.h version.h osutils.h
 mem.o: mem.h hw.h
 dmi.o: dmi.h hw.h
@@ -79,3 +79,4 @@ cdrom.o: cdrom.h hw.h
 pcmcia.o: pcmcia.h hw.h osutils.h
 scsi.o: mem.h hw.h cdrom.h disk.h osutils.h
 disk.o: disk.h hw.h
+spd.o: spd.h hw.h osutils.h

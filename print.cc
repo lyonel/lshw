@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
-static char *id = "@(#) $Id: print.cc,v 1.43 2003/04/29 07:56:10 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.44 2003/05/27 21:21:19 ezix Exp $";
 
 static void tab(int level,
 		bool connect = true)
@@ -425,6 +425,7 @@ void printxml(hwNode & node,
     cout << " claimed=\"true\"";
 
   cout << " class=\"" << node.getClassName() << "\"";
+  cout << " handle=\"" << node.getHandle() << "\"";
   cout << ">" << endl;
 
   if (node.getDescription() != "")

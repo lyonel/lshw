@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.31 2003/04/29 07:56:10 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.32 2003/05/27 21:21:19 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -758,9 +758,19 @@ static bool scan_hosts(hwNode & node)
 	  hwNode *controller =
 	    node.findChildByLogicalName(host_logicalname(number));
 
+	  if (!controller)
+	  {
+	    controller = node.addChild(hwNode::hwNode("scsi", hw::storage));
+	    if (controller)
+	      controller->setLogicalName(host_logicalname(number));
+	  }
+
 	  if (controller)
+	  {
 	    controller->setConfig(string("driver"),
 				  string(namelist[i]->d_name));
+	    controller->claim();
+	  }
 	}
 	free(filelist[j]);
       }
@@ -792,12 +802,11 @@ bool scan_scsi(hwNode & n)
 {
   int i = 0;
 
+  scan_hosts(n);
   scan_devices();
 
   while (scan_sg(i, n))
     i++;
-
-  scan_hosts(n);
 
   (void) &id;
 
