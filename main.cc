@@ -11,6 +11,7 @@
 #include "pcmcia.h"
 #include "ide.h"
 #include "scsi.h"
+#include "spd.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -70,6 +71,7 @@ int main(int argc,
 
     scan_dmi(computer);
     scan_device_tree(computer);
+    scan_spd(computer);
     scan_memory(computer);
     scan_cpuinfo(computer);
     scan_cpuid(computer);
@@ -87,4 +89,4 @@ int main(int argc,
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.22 2003/04/10 17:41:16 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.23 2003/04/16 16:24:09 ezix Exp $";
