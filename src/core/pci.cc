@@ -688,12 +688,6 @@ bool scan_pci(hwNode & n)
 	if (moredescription != "" && moredescription != host.getDescription())
 	{
 	  host.addCapability(moredescription);
-	  host.describeCapability("VGA", "VGA graphical framebuffer");
-	  host.describeCapability("OHCI", "Open Host Controller Interface");
-	  host.describeCapability("UHCI",
-				  "Universal Host Controller Interface");
-	  host.describeCapability("EHCI",
-				  "Enhanced Host Controller Interface");
 	  host.setDescription(device->getDescription() + " (" +
 			      moredescription + ")");
 	}
@@ -795,13 +789,10 @@ bool scan_pci(hwNode & n)
 	      && moredescription != device->getDescription())
 	  {
 	    device->addCapability(moredescription);
-	    device->setDescription(device->getDescription() + " (" +
-				   moredescription + ")");
 	  }
 	  device->setVendor(get_device_description(d.vendor_id));
 	  device->setVersion(revision);
-	  device->
-	    setProduct(get_device_description(d.vendor_id, d.device_id));
+	  device->setProduct(get_device_description(d.vendor_id, d.device_id));
 
 	  if (cmd & PCI_COMMAND_MASTER)
 	    device->addCapability("bus master", "Bus mastering");
@@ -824,6 +815,12 @@ bool scan_pci(hwNode & n)
 
 	  bus = n.findChildByHandle(pci_bushandle(d.bus));
 
+	  device->describeCapability("vga", "VGA graphical framebuffer");
+	  device->describeCapability("ohci", "Open Host Controller Interface (USB1)");
+	  device->describeCapability("uhci",
+				  "Universal Host Controller Interface (USB1)");
+	  device->describeCapability("ehci",
+				  "Enhanced Host Controller Interface (USB2)");
 	  if (bus)
 	    bus->addChild(*device);
 	  else

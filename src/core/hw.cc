@@ -779,6 +779,7 @@ void hwNode::describeCapability(const string & feature,
   if (!isCapable(feature))
     return;
 
+
   This->features_descriptions[cleanupId(feature)] = strip(description);
 }
 
