@@ -16,8 +16,8 @@ int main(int argc,
     hwNode computer(hostname,
 		    hw::system);
 
-    scan_memory(computer);
     scan_dmi(computer);
+    scan_memory(computer);
 
     print(computer);
   }

@@ -38,15 +38,14 @@ bool scan_memory(hwNode & n)
 
       if (core)
       {
-	core->addChild(hwNode("ram", hw::memory));
-	memory = core->getChild("ram");
+	core->addChild(hwNode("memory", hw::memory));
+	memory = core->getChild("memory");
       }
     }
 
     if (memory)
     {
       memory->setSize(buf.st_size);
-      memory->setSlot("logical");
       return true;
     }
   }
