@@ -8,28 +8,23 @@
 
   <xs:element name="node" type="nodeinfo" />
 
-  <xs:group name="nodegroup">
-    <xs:all>
+  <xs:complexType name="nodeinfo">
+    <xs:sequence>
       <xs:element name="description" type="xs:string"/>
-      <xs:element name="vendor" type="xs:string"/>
       <xs:element name="product" type="xs:string"/>
-      <xs:element name="version" type="xs:string"/>
+      <xs:element name="vendor" type="xs:string"/>
       <xs:element name="physid" type="xs:string"/>
+      <xs:element name="version" type="xs:string"/>
+      <xs:element name="serial" type="xs:string"/>
       <xs:element name="businfo" type="xs:string"/>
+      <xs:element name="slot" type="xs:string"/>
       <xs:element name="size" type="measured"/>
       <xs:element name="capacity" type="measured"/>
       <xs:element name="clock" type="measured"/>
       <xs:element name="configuration" type="configinfo"/>
       <xs:element name="capabilities" type="capinfo"/>
       <xs:element name="resources" type="resinfo"/>
-    </xs:all>
-  </xs:group>
-
-  <xs:complexType name="nodeinfo">
-    <xs:sequence>
-      <xs:group ref="nodegroup"/>
       <xs:element name="node" type="nodeinfo" maxOccurs="unbounded" />
-      <xs:any minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string" />
     <xs:attribute name="handle" type="xs:string" />
