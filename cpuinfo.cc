@@ -8,7 +8,7 @@
 #include <vector>
 
 static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.19 2003/06/26 21:30:27 ezix Exp $";
+  "@(#) $Id$";
 
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
@@ -225,6 +225,7 @@ static void cpuinfo_x86(hwNode & node,
 			string value)
 {
   static int currentcpu = -1;
+  static string currentcpuphysid = "";
 
   if (id == "processor")
     currentcpu++;

@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.15 2003/05/29 10:55:45 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 #if defined(__i386__) || defined(__alpha__)
 
@@ -242,7 +242,7 @@ static bool dointel(unsigned long maxi,
 		    int cpunumber = 0)
 {
   char buffer[1024];
-  unsigned long signature, eax, ebx, ecx, edx, unused;
+  unsigned long signature, flags, bflags, eax, ebx, ecx, edx, unused;
   int stepping, model, family;
 
   if (!cpu)
@@ -257,9 +257,31 @@ static bool dointel(unsigned long maxi,
     stepping = eax & 0xf;
     model = (eax >> 4) & 0xf;
     family = (eax >> 8) & 0xf;
+    flags = edx;
+    bflags = ebx;
 
     snprintf(buffer, sizeof(buffer), "%d.%d.%d", family, model, stepping);
     cpu->setVersion(buffer);
+
+    /* Hyper-Threading Technology */
+    if (flags & (1 << 28))
+    {
+      char buff[20];
+      unsigned int nr_ht = (bflags >> 16) & 0xFF;
+      unsigned int phys_id = (bflags >> 24) & 0xFF;
+
+      snprintf(buff, sizeof(buff), "%d", phys_id);
+      cpu->setConfig("id", buff);
+
+      hwNode logicalcpu("logicalcpu", hw::processor);
+      logicalcpu.setDescription("Logical CPU");
+      logicalcpu.addCapability("logical", "Logical CPU");
+      cpu->addCapability("ht", "HyperThreading");
+
+      for(unsigned int i=0; i< nr_ht; i++)
+        cpu->addChild(logicalcpu);
+    }
+
   }
 
   if (maxi >= 2)
