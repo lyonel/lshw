@@ -610,10 +610,11 @@ static void addHints(hwNode & n,
 {
   n.addHint("pci.vendor", _vendor);
   n.addHint("pci.device", _device);
-#if 0
-  n.addHint("pci.subvendor", _subvendor);
-  n.addHint("pci.subdevice", _subdevice);
-#endif
+  if(_subvendor && (_subvendor != 0xffff))
+  {
+    n.addHint("pci.subvendor", _subvendor);
+    n.addHint("pci.subdevice", _subdevice);
+  }
   n.addHint("pci.class", _class);
 }
 
