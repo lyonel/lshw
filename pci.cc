@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.33 2003/08/10 16:52:58 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.34 2003/08/11 14:19:45 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -174,7 +174,7 @@ struct pci_entry
   long u1 = -1, long u2 = -1, long u3 = -1, long u4 = -1);
 
   unsigned int matches(
-  long u1 = -1, long u2 = -1, long u3 = -1, long u4 = -1) const;
+  long u1 = -1, long u2 = -1, long u3 = -1, long u4 = -1);
 };
 
 static vector < pci_entry > pci_devices;
@@ -197,7 +197,7 @@ unsigned int pci_entry::matches(
   long u1,
   long u2,
   long u3,
-  long u4) const const
+  long u4)
 {
   unsigned int result = 0;
 
@@ -220,7 +220,7 @@ unsigned int pci_entry::matches(
 }
 
 static bool find_best_match(
-  const vector < pci_entry > &list,
+  vector < pci_entry > &list,
   pci_entry & result,
   long u1 = -1, long u2 = -1, long u3 = -1, long u4 = -1)
 {
