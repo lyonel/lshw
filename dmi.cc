@@ -930,7 +930,7 @@ static void dmi_table(int fd,
 	  hardwarenode->setSerial(dmi_string(dm, data[7]));
 	  hardwarenode->setSlot(dmi_string(dm, data[0x0A]));
 	  hardwarenode->setHandle(handle);
-	  hardwarenode->setDescription(dmi_board_type(data[0x0D]));
+	  hardwarenode->setDescription("Motherboard");
 	}
 	else
 	{
