@@ -227,7 +227,7 @@ static void cpuinfo_x86(hwNode & node,
   static int currentcpu = -1;
   static int siblings = -1;
 
-  if ((siblings<=0) && (id == "siblings"))
+  if ((siblings<0) && (id == "siblings"))
   {
     siblings = atoi(value.c_str());
     siblings--;
