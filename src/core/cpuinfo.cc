@@ -122,8 +122,6 @@ static void cpuinfo_hppa(hwNode & node,
 			 string id,
 			 string value)
 {
-  unsigned long long frequency = 0;
-
   if (id == "processor")
     currentcpu++;
 
