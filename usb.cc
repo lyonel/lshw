@@ -123,7 +123,7 @@ struct usbdevfs_ctrltransfer
 
 #define USBDEVFS_CONTROL	_IOWR('U', 0, struct usbdevfs_ctrltransfer)
 
-static char *id = "@(#) $Id: usb.cc,v 1.9 2004/02/27 12:15:25 ezix Exp $";
+static char *id = "@(#) $Id: usb.cc,v 1.10 2004/03/02 09:10:48 ezix Exp $";
 
 static int usb_control_msg(int fd,
 			   u_int8_t requesttype,
@@ -276,6 +276,8 @@ bool scan_usb(hwNode & n)
 	// device.setPhysId(devices[j]->d_name);
 	device.setHandle(string("USB:") + string(hubs[i]->d_name) + ":" +
 			 string(devices[j]->d_name));
+	device.setBusInfo(string("usb@") + string(hubs[i]->d_name) + "." +
+			  string(devices[j]->d_name));
 
 	memset(&descriptor, sizeof(descriptor), 0);
 	fd = open(devices[j]->d_name, O_RDWR);
@@ -337,7 +339,7 @@ bool scan_usb(hwNode & n)
 
 		if (get_config(fd, i, config))
 		{
-		  //printf("config: %d\n", config.iConfiguration);
+		  printf("config: %d\n", config.iConfiguration);
 		}
 	      }
 	    }
