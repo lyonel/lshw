@@ -84,7 +84,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.70 2003/10/13 09:57:00 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.71 2003/10/21 15:06:21 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -172,61 +172,61 @@ static void dmi_bios_features(u32 data1,
     return;
 
   if (data1 & (1 << 4))		// ISA
-    bios.addCapability("ISA");
+    bios.addCapability("ISA", "ISA bus");
   if (data1 & (1 << 5))		// MCA
-    bios.addCapability("MCA");
+    bios.addCapability("MCA", "MCA bus");
   if (data1 & (1 << 6))		// EISA
-    bios.addCapability("EISA");
+    bios.addCapability("EISA", "EISA bus");
   if (data1 & (1 << 7))		// PCI
-    bios.addCapability("PCI");
+    bios.addCapability("PCI", "PCI bus");
   if (data1 & (1 << 8))		// PCMCIA
-    bios.addCapability("PCMCIA");
+    bios.addCapability("PCMCIA", "PCMCIA/PCCard");
   if (data1 & (1 << 9))		// PNP
-    bios.addCapability("PNP");
+    bios.addCapability("PNP", "Plug-and-Play");
   if (data1 & (1 << 10))	// APM
-    bios.addCapability("APM");
+    bios.addCapability("APM", "Advanced Power Management");
   if (data1 & (1 << 11))	// flashable BIOS
-    bios.addCapability("upgrade");
+    bios.addCapability("upgrade", "BIOS EEPROM can be upgraded");
   if (data1 & (1 << 12))	// BIOS shadowing
-    bios.addCapability("shadowing");
+    bios.addCapability("shadowing", "BIOS shadowing");
   if (data1 & (1 << 13))	// VL-VESA
-    bios.addCapability("VESA");
+    bios.addCapability("VESA", "VESA video extensions");
   if (data1 & (1 << 14))	// ESCD
-    bios.addCapability("ESCD");
+    bios.addCapability("ESCD", "ESCD");
   if (data1 & (1 << 15))	// boot from CD
-    bios.addCapability("cdboot");
+    bios.addCapability("cdboot", "Booting from CD-ROM/DVD");
   if (data1 & (1 << 16))	// selectable boot
-    bios.addCapability("bootselect");
+    bios.addCapability("bootselect", "Selectable boot path");
   if (data1 & (1 << 17))	// BIOS ROM is socketed
-    bios.addCapability("socketedrom");
+    bios.addCapability("socketedrom", "BIOS ROM is socketed");
   if (data1 & (1 << 18))	// PCMCIA boot
-    bios.addCapability("pcmciaboot");
+    bios.addCapability("pcmciaboot", "Booting from PCMCIA");
   if (data1 & (1 << 19))	// Enhanced Disk Drive
-    bios.addCapability("EDD");
+    bios.addCapability("EDD", "Enhanced Disk Drive extensions");
   if (data1 & (1 << 20))	// NEC 9800 floppy
-    bios.addCapability("int13floppynec");
+    bios.addCapability("int13floppynec", "NEC 9800 floppy");
   if (data1 & (1 << 21))	// Toshiba floppy
-    bios.addCapability("int13floppytoshiba");
+    bios.addCapability("int13floppytoshiba", "Toshiba floppy");
   if (data1 & (1 << 22))	// 5.25" 360KB floppy
-    bios.addCapability("int13floppy360");
+    bios.addCapability("int13floppy360", "5.25\" 360KB floppy");
   if (data1 & (1 << 23))	// 5.25" 1.2MB floppy
-    bios.addCapability("int13floppy1200");
+    bios.addCapability("int13floppy1200", "5.25\" 1.2MB floppy");
   if (data1 & (1 << 24))	// 3.5" 720KB floppy
-    bios.addCapability("int13floppy720");
+    bios.addCapability("int13floppy720", "3.5\" 720KB floppy");
   if (data1 & (1 << 25))	// 3.5" 2.88MB floppy
-    bios.addCapability("int13floppy2880");
+    bios.addCapability("int13floppy2880", "3.5\" 2.88MB floppy");
   if (data1 & (1 << 26))	// print screen key
-    bios.addCapability("int5printscreen");
+    bios.addCapability("int5printscreen", "Print Screen key");
   if (data1 & (1 << 27))	// 8042 kbd controller
-    bios.addCapability("int9keyboard");
+    bios.addCapability("int9keyboard", "i8042 keyboard controller");
   if (data1 & (1 << 28))	// serial line control
-    bios.addCapability("int14serial");
+    bios.addCapability("int14serial", "INT14 serial line control");
   if (data1 & (1 << 29))	// printer
-    bios.addCapability("int17printer");
+    bios.addCapability("int17printer", "INT17 printer control");
   if (data1 & (1 << 30))	// CGA/Mono video
-    bios.addCapability("int10video");
+    bios.addCapability("int10video", "INT10 CGA/Mono video");
   if (data1 & (1 << 31))	// NEC PC-98
-    bios.addCapability("pc98");
+    bios.addCapability("pc98", "NEC PC-98");
 }
 
 static void dmi_bios_features_ext(u8 * data,
@@ -237,29 +237,30 @@ static void dmi_bios_features_ext(u8 * data,
     return;
 
   if (data[0] & (1 << 0))	// ACPI
-    bios.addCapability("ACPI");
+    bios.addCapability("ACPI", "ACPI");
   if (data[0] & (1 << 1))	// USB
-    bios.addCapability("USB");
+    bios.addCapability("USB", "USB legacy emulation");
   if (data[0] & (1 << 2))	// AGP
-    bios.addCapability("AGP");
+    bios.addCapability("AGP", "AGP");
   if (data[0] & (1 << 3))	// I2O boot
-    bios.addCapability("I2Oboot");
+    bios.addCapability("I2Oboot", "I2O booting");
   if (data[0] & (1 << 4))	// LS-120 boot
-    bios.addCapability("LS120boot");
+    bios.addCapability("LS120boot", "Booting from LS-120");
   if (data[0] & (1 << 5))	// ATAPI ZIP boot
-    bios.addCapability("ZIPboot");
+    bios.addCapability("ZIPboot", "Booting from ATAPI ZIP");
   if (data[0] & (1 << 6))	// 1394 boot
-    bios.addCapability("IEEE1394boot");
+    bios.addCapability("IEEE1394boot", "Booting from IEEE1394 (Firewire)");
   if (data[0] & (1 << 7))	// smart battery
-    bios.addCapability("smartbattery");
+    bios.addCapability("smartbattery", "Smart battery");
 
   if (len < 1)
     return;
 
   if (data[1] & (1 << 0))	// BIOS boot specification
-    bios.addCapability("biosbootspecification");
+    bios.addCapability("biosbootspecification", "BIOS boot specification");
   if (data[1] & (1 << 1))	// function-key initiated network service boot
-    bios.addCapability("netboot");
+    bios.addCapability("netboot",
+		       "Function-key initiated network service boot");
 }
 
 static unsigned long dmi_cache_size(u16 n)
@@ -280,15 +281,15 @@ static void dmi_cache_sramtype(u16 c,
   //if (c & (1 << 1))
   //result += "";
   if (c & (1 << 2))
-    n.addCapability("non-burst");
+    n.addCapability("non-burst", "Non-burst");
   if (c & (1 << 3))
-    n.addCapability("burst");
+    n.addCapability("burst", "Burst");
   if (c & (1 << 4))
-    n.addCapability("pipeline-burst");
+    n.addCapability("pipeline-burst", "Pipeline burst");
   if (c & (1 << 5))
-    n.addCapability("synchronous");
+    n.addCapability("synchronous", "Synchronous");
   if (c & (1 << 6))
-    n.addCapability("asynchronous");
+    n.addCapability("asynchronous", "Asynchronous");
 }
 
 static void dmi_cache_describe(hwNode & n,
@@ -303,10 +304,10 @@ static void dmi_cache_describe(hwNode & n,
   switch ((config >> 5) & 3)
   {
   case 0:
-    n.addCapability("internal");
+    n.addCapability("internal", "Internal");
     break;
   case 1:
-    n.addCapability("external");
+    n.addCapability("external", "External");
     break;
   }
   snprintf(buffer, sizeof(buffer), "L%d ", (config & 7) + 1);
@@ -315,10 +316,10 @@ static void dmi_cache_describe(hwNode & n,
   switch ((config >> 8) & 3)
   {
   case 0:
-    n.addCapability("write-through");
+    n.addCapability("write-through", "Write-trough");
     break;
   case 1:
-    n.addCapability("write-back");
+    n.addCapability("write-back", "Write-back");
     break;
   }
 
@@ -327,10 +328,10 @@ static void dmi_cache_describe(hwNode & n,
   switch (cachetype)
   {
   case 3:
-    n.addCapability("instruction");
+    n.addCapability("instruction", "Instruction cache");
     break;
   case 4:
-    n.addCapability("data");
+    n.addCapability("data", "Data cache");
     break;
   }
 
@@ -1209,13 +1210,13 @@ bool scan_dmi(hwNode & n)
   {
     char buffer[20];
     snprintf(buffer, sizeof(buffer), "smbios-%d.%d", smmajver, smminver);
-    n.addCapability(string(buffer));
+    n.addCapability(string(buffer), "SMBIOS version");
   }
   if (dmimaj != 0)
   {
     char buffer[20];
     snprintf(buffer, sizeof(buffer), "dmi-%d.%d", dmimaj, dmimin);
-    n.addCapability(string(buffer));
+    n.addCapability(string(buffer), "DMI version");
   }
 
   (void) &id;			// avoid "id defined but not used" warning
