@@ -143,9 +143,39 @@ static const char *hwname(int t)
   }
 }
 
-static string print_ip(struct sockaddr *in)
+static string print_ip(struct sockaddr_in *in)
 {
-  return string(inet_ntoa(*(in_addr *) in));
+  return string(inet_ntoa(in->sin_addr));
+}
+
+static void scan_ip(hwNode & interface)
+{
+  int fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+  if (fd > 0)
+  {
+    struct ifreq ifr;
+
+    // get IP address
+    memset(&ifr, 0, sizeof(ifr));
+    strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+    ifr.ifr_addr.sa_family = AF_INET;
+    if (ioctl(fd, SIOCGIFADDR, &ifr) == 0)
+    {
+      // IP address is in ifr.ifr_addr
+      interface.setConfig("ip", print_ip((sockaddr_in *) (&ifr.ifr_addr)));
+      strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+      if ((interface.getConfig("point-to-point") == "yes")
+	  && (ioctl(fd, SIOCGIFDSTADDR, &ifr) == 0))
+      {
+	// remote PPP address is in ifr.ifr_dstaddr
+	interface.setConfig("remoteip",
+			    print_ip((sockaddr_in *) & ifr.ifr_dstaddr));
+      }
+    }
+
+    close(fd);
+  }
 }
 
 bool scan_network(hwNode & n)
@@ -170,22 +200,7 @@ bool scan_network(hwNode & n)
       interface.setLogicalName(interfaces[i]);
       interface.claim();
 
-      // get IP address
-      memset(&ifr, 0, sizeof(ifr));
-      strcpy(ifr.ifr_name, interfaces[i].c_str());
-      ifr.ifr_addr.sa_family = AF_INET;
-      if (ioctl(fd, SIOCGIFADDR, &ifr) == 0)
-      {
-	// IP address is in ifr.ifr_addr
-	interface.setConfig("ip", print_ip(&ifr.ifr_addr));
-	strcpy(ifr.ifr_name, interfaces[i].c_str());
-	if ((interface.getConfig("point-to-point") == "yes")
-	    && (ioctl(fd, SIOCGIFDSTADDR, &ifr) == 0))
-	{
-	  // remote PPP address is in ifr.ifr_dstaddr
-	  interface.setConfig("remoteip", print_ip(&ifr.ifr_dstaddr));
-	}
-      }
+      scan_ip(interface);
 
       memset(&ifr, 0, sizeof(ifr));
       strcpy(ifr.ifr_name, interfaces[i].c_str());
@@ -262,4 +277,4 @@ bool scan_network(hwNode & n)
     return false;
 }
 
-static char *id = "@(#) $Id: network.cc,v 1.5 2003/06/13 22:23:45 ezix Exp $";
+static char *id = "@(#) $Id: network.cc,v 1.6 2003/06/15 17:48:41 ezix Exp $";
