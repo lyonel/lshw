@@ -11,29 +11,7 @@
 #include "engine.h"
 
 static GtkWidget *about = NULL;
-static GtkWidget *saveas = NULL;
-
 extern GtkWidget *mainwindow;
-
-void
-save_as                                (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-  /*if(!GTK_IS_WIDGET(saveas))
-  {
-    saveas = create_saveas();
-    gtk_widget_show(saveas);
-  }*/
-}
-
-
-void
-on_copy1_activate                      (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-
-}
-
 
 void
 refresh_display                        (GtkMenuItem     *menuitem,

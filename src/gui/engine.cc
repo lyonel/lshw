@@ -178,7 +178,6 @@ void change_selection(unsigned list, GtkTreeView *treeview)
   GtkTreeSelection *selection;
   GtkTreeModel *model;
   GtkTreeIter   iter;
-  GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
   GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
   GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
 
