@@ -2,10 +2,12 @@ PACKAGENAME?=lshw
 
 CXX=c++
 CC=cc
+
+DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)
 INCLUDES=-I../core $(GTKINCLUDES)
-CXXFLAGS=-g -Wall -Os $(INCLUDES)
-CFLAGS=$(CXXFLAGS)
+CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
+CFLAGS=$(CXXFLAGS) $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
 LIBS=-L../core -llshw $(GTKLIBS)
 LDFLAGS=
