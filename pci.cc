@@ -566,11 +566,19 @@ bool scan_pci(hwNode & n)
       }
 
       u_int16_t dclass = get_conf_word(d, PCI_CLASS_DEVICE);
+      u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
+      u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
+
+      char revision[10];
+      snprintf(revision, sizeof(revision), "%02x", rev);
 
       if (dclass == PCI_CLASS_BRIDGE_HOST)
       {
-	host.setDescription(get_class_description(dclass));
+	host.setDescription(get_class_description(dclass, progif));
+	host.setVendor(get_device_description(d.vendor_id));
+	host.setProduct(get_device_description(d.vendor_id, d.device_id));
 	host.setHandle(pci_bushandle(d.bus));
+	host.setVersion(revision);
       }
       else
       {
@@ -624,6 +632,7 @@ bool scan_pci(hwNode & n)
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
 	  device->setDescription(get_class_description(dclass));
 	  device->setVendor(get_device_description(d.vendor_id));
+	  device->setVersion(revision);
 	  device->
 	    setProduct(get_device_description(d.vendor_id, d.device_id));
 
@@ -654,4 +663,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.11 2003/01/28 12:18:29 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.12 2003/01/28 16:33:45 ezix Exp $";
