@@ -647,6 +647,50 @@ static bool scan_sg(int sg,
   host = host_logicalname(m_id.host_no);
   businfo = scsi_businfo(m_id.host_no);
 
+  hwNode device = hwNode("generic");
+
+  switch (m_id.scsi_type)
+  {
+  case 0:
+    device = hwNode("disk", hw::disk);
+    break;
+  case 1:
+    device = hwNode("tape", hw::tape);
+    break;
+  case 3:
+    device = hwNode("processor", hw::processor);
+    break;
+  case 4:
+  case 5:
+    device = hwNode("cdrom", hw::disk);
+    break;
+  case 6:
+    device = hwNode("scanner", hw::generic);
+    break;
+  case 7:
+    device = hwNode("magnetooptical", hw::disk);
+    break;
+  case 8:
+    device = hwNode("changer", hw::generic);
+    break;
+  case 0xd:
+    device = hwNode("enclosure", hw::generic);
+    break;
+  }
+
+  device.setDescription("SCSI " + string(scsi_type(m_id.scsi_type)));
+  device.setHandle(scsi_handle(m_id.host_no,
+			       m_id.channel, m_id.scsi_id, m_id.lun));
+  device.setBusInfo(scsi_businfo(m_id.host_no,
+				 m_id.channel, m_id.scsi_id, m_id.lun));
+  device.setPhysId(m_id.scsi_id, m_id.lun);
+  find_logicalname(device);
+  do_inquiry(fd, device);
+  if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
+    scan_cdrom(device);
+  if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7))
+    scan_disk(device);
+
   memset(slot_name, 0, sizeof(slot_name));
   if (ioctl(fd, SCSI_IOCTL_GET_PCI, slot_name) >= 0)
   {
@@ -656,7 +700,7 @@ static bool scan_sg(int sg,
   if (!parent)
     parent = n.findChildByLogicalName(host);
 
-  if (emulated)			// IDE-SCSI psuedo host controller
+  if (emulated && device.getConfig("driver")=="ide-scsi")	// IDE-SCSI pseudo host controller
   {
     hwNode *ideatapi = n.findChild(atapi);
 
@@ -707,50 +751,6 @@ static bool scan_sg(int sg,
   channel->setBusInfo(scsi_businfo(m_id.host_no, m_id.channel));
   channel->setPhysId(m_id.channel);
   channel->claim();
-
-  hwNode device = hwNode("generic");
-
-  switch (m_id.scsi_type)
-  {
-  case 0:
-    device = hwNode("disk", hw::disk);
-    break;
-  case 1:
-    device = hwNode("tape", hw::tape);
-    break;
-  case 3:
-    device = hwNode("processor", hw::processor);
-    break;
-  case 4:
-  case 5:
-    device = hwNode("cdrom", hw::disk);
-    break;
-  case 6:
-    device = hwNode("scanner", hw::generic);
-    break;
-  case 7:
-    device = hwNode("magnetooptical", hw::disk);
-    break;
-  case 8:
-    device = hwNode("changer", hw::generic);
-    break;
-  case 0xd:
-    device = hwNode("enclosure", hw::generic);
-    break;
-  }
-
-  device.setDescription("SCSI " + string(scsi_type(m_id.scsi_type)));
-  device.setHandle(scsi_handle(m_id.host_no,
-			       m_id.channel, m_id.scsi_id, m_id.lun));
-  device.setBusInfo(scsi_businfo(m_id.host_no,
-				 m_id.channel, m_id.scsi_id, m_id.lun));
-  device.setPhysId(m_id.scsi_id, m_id.lun);
-  find_logicalname(device);
-  do_inquiry(fd, device);
-  if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
-    scan_cdrom(device);
-  if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7))
-    scan_disk(device);
 
   channel->addChild(device);
 
