@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.48 2003/06/26 21:44:27 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.49 2003/06/27 08:11:44 ezix Exp $";
 
 struct hwNode_i
 {
@@ -871,7 +871,7 @@ void hwNode::assignPhysIds()
   {
     long curid = 0;
 
-    if (This->children[i].getClass() == hw::processor)
+    if (This->children[i].getClass() == hw::bridge)
       curid = 0x100;
 
     if (This->children[i].getPhysId() == "")
