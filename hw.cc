@@ -16,7 +16,7 @@ struct hwNode_i
     vector < hwNode > children;
 };
 
-static string strip(const string & s)
+string hw::strip(const string & s)
 {
   string result = s;
 

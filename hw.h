@@ -19,6 +19,8 @@ typedef enum {processor,
 	communication,
 	generic} hwClass;
 
+string strip(const string &);
+
 } // namespace hw
 
 using namespace std;
