@@ -257,7 +257,7 @@ bool scan_ide(hwNode & n)
   int nentries;
 
   pushd(PROC_IDE);
-  nentries = scandir(".", &namelist, selectdir, NULL);
+  nentries = scandir(".", &namelist, selectdir, alphasort);
   popd();
 
   if (nentries < 0)
@@ -283,7 +283,7 @@ bool scan_ide(hwNode & n)
 	int ndevices;
 
 	pushd(string(PROC_IDE) + "/" + namelist[i]->d_name);
-	ndevices = scandir(".", &devicelist, selectdir, NULL);
+	ndevices = scandir(".", &devicelist, selectdir, alphasort);
 	popd();
 
 	for (int j = 0; j < ndevices; j++)
@@ -337,4 +337,4 @@ bool scan_ide(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: ide.cc,v 1.7 2003/02/06 17:26:16 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.8 2003/02/06 19:02:49 ezix Exp $";
