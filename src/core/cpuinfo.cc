@@ -10,6 +10,8 @@
 static char *id =
   "@(#) $Id$";
 
+static int currentcpu = 0;
+
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
 {
@@ -50,8 +52,6 @@ static void cpuinfo_ppc(hwNode & node,
 			string id,
 			string value)
 {
-  static int currentcpu = 0;
-
   hwNode *cpu = getcpu(node, currentcpu);
 
   if (cpu)
@@ -72,7 +72,6 @@ static void cpuinfo_ia64(hwNode & node,
 {
   unsigned long long frequency = 0;
   int i;
-  static int currentcpu = -1;
 
   if (id == "processor")
     currentcpu++;
@@ -126,7 +125,6 @@ static void cpuinfo_hppa(hwNode & node,
 			 string value)
 {
   unsigned long long frequency = 0;
-  static int currentcpu = -1;
 
   if (id == "processor")
     currentcpu++;
@@ -224,8 +222,9 @@ static void cpuinfo_x86(hwNode & node,
 			string id,
 			string value)
 {
-  static int currentcpu = -1;
   static int siblings = -1;
+
+  if(currentcpu < 0) siblings = -1;
 
   if ((siblings<0) && (id == "siblings"))
   {
@@ -385,6 +384,12 @@ bool scan_cpuinfo(hwNode & n)
     vector < string > cpuinfo_lines;
     splitlines(cpuinfo_str, cpuinfo_lines);
     cpuinfo_str = "";		// free memory
+#if defined(__powerpc__)
+    currentcpu = 0;
+#endif
+#if defined(__ia64__) || defined(__hppa__) || defined(__i386__)
+    currentcpu = -1;
+#endif
 
     for (unsigned int i = 0; i < cpuinfo_lines.size(); i++)
     {
