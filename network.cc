@@ -423,9 +423,17 @@ bool scan_network(hwNode & n)
       }
       else
       {
-	// we don't care about loopback interfaces
-	if (!interface.isCapable("loopback"))
-	  n.addChild(interface);
+	existing = n.findChildByLogicalName(interface.getLogicalName());
+	if (existing)
+	{
+	  existing->merge(interface);
+	}
+	else
+	{
+	  // we don't care about loopback interfaces
+	  if (!interface.isCapable("loopback"))
+	    n.addChild(interface);
+	}
       }
     }
 
@@ -436,4 +444,4 @@ bool scan_network(hwNode & n)
     return false;
 }
 
-static char *id = "@(#) $Id: network.cc,v 1.8 2003/06/26 21:55:39 ezix Exp $";
+static char *id = "@(#) $Id: network.cc,v 1.9 2003/06/28 13:47:40 ezix Exp $";

@@ -3,12 +3,13 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "10 April 2003" "$Name:  $" ""
+.TH "LSHW" "1" "28 June 2003" "$Name:  $" ""
+
 .SH NAME
 lshw \- list hardware
 .SH SYNOPSIS
 
-\fBlshw\fR [ \fB-version\fR ] [ \fB-help\fR ] [ \fB-html\fR ] [ \fB-xml\fR ]
+\fBlshw\fR [ \fB-version\fR ] [ \fB-help\fR ] [ \fB-html\fR ] [ \fB-short\fR ]
 
 .SH "DESCRIPTION"
 .PP
@@ -38,6 +39,9 @@ Outputs the device tree as an HTML page.
 .TP
 \fB-xml\fR
 Outputs the device tree as an XML tree.
+.TP
+\fB-short\fR
+Outputs the device tree showing hardware paths, very much like the output of HP-UX's \fBioscan\fR.
 .SH "BUGS"
 .PP
 \fBlshw\fR currently does not detect 
