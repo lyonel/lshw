@@ -160,6 +160,11 @@ Used on x86 platforms to access CPU-specific configuration.
 Used on PowerPC platforms to access OpenFirmware configuration.
 </para></listitem></varlistentry>
 
+<varlistentry><term>/proc/bus/usb/*</term>
+<listitem><para>
+Used to access the configuration of installed USB busses and devices.
+</para></listitem></varlistentry>
+
 <varlistentry><term>/sys/*</term>
 <listitem><para>
 Used on 2.6 kernels to access hardware/driver configuration information.
