@@ -786,21 +786,32 @@ static void dmi_table(int fd,
 
     case 2:
       // Board Information Block
-      printf("\t\tVendor: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tProduct: %s\n", dmi_string(dm, data[5]));
-      printf("\t\tVersion: %s\n", dmi_string(dm, data[6]));
-      printf("\t\tSerial Number: %s\n", dmi_string(dm, data[7]));
+      //
+      // special case: if the system characteristics are still unknown,
+      // use values from the motherboard
+      if (node.getVendor() == "")
+	node.setVendor(dmi_string(dm, data[4]));
+      if (node.getProduct() == "")
+	node.setProduct(dmi_string(dm, data[5]));
+      if (node.getVersion() == "")
+	node.setVersion(dmi_string(dm, data[6]));
+      if (node.getSerial() == "")
+	node.setSerial(dmi_string(dm, data[7]));
       break;
 
     case 3:
-      printf("\tChassis Information Block\n");
-      printf("\t\tVendor: %s\n", dmi_string(dm, data[4]));
-      printf("\t\tChassis Type: %s\n", dmi_chassis_type(data[5]));
-      if (data[5] & 0x80)
-	printf("\t\t\tLock present\n");
-      printf("\t\tVersion: %s\n", dmi_string(dm, data[6]));
-      printf("\t\tSerial Number: %s\n", dmi_string(dm, data[7]));
-      printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[8]));
+      // Chassis Information Block
+      //
+      // special case: if the system characteristics are still unknown,
+      // use values from the chassis
+      if (node.getVendor() == "")
+	node.setVendor(dmi_string(dm, data[4]));
+      if (node.getProduct() == "")
+	node.setProduct(dmi_string(dm, data[5]));
+      if (node.getVersion() == "")
+	node.setVersion(dmi_string(dm, data[6]));
+      if (node.getSerial() == "")
+	node.setSerial(dmi_string(dm, data[7]));
       break;
 
     case 4:

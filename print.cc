@@ -56,6 +56,12 @@ void print(const hwNode & node,
     cout << "version: " << node.getVersion() << endl;
   }
 
+  if (node.getSerial() != "")
+  {
+    tab(level + 1, false);
+    cout << "serial: " << node.getSerial() << endl;
+  }
+
   if (node.getSize() > 0)
   {
     tab(level + 1, false);
