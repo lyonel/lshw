@@ -11,6 +11,8 @@
 #define PCI_REVISION_ID         0x08	/* Revision ID */
 #define PCI_CLASS_PROG          0x09	/* Reg. Level Programming Interface */
 #define PCI_CLASS_DEVICE        0x0a	/* Device class */
+#define PCI_PRIMARY_BUS         0x18	/* Primary bus number */
+#define PCI_SECONDARY_BUS       0x19	/* Secondary bus number */
 
 /*
  * The PCI interface treats multi-function devices as independent
@@ -126,6 +128,116 @@ struct pci_dev
   u_int8_t config[256];
 };
 
+static const char *get_class_name(unsigned int c)
+{
+  switch (c)
+  {
+  case PCI_CLASS_NOT_DEFINED_VGA:
+    return "display";
+  case PCI_CLASS_STORAGE_SCSI:
+    return "scsi";
+  case PCI_CLASS_STORAGE_IDE:
+    return "ide";
+  case PCI_CLASS_BRIDGE_HOST:
+    return "host";
+  case PCI_CLASS_BRIDGE_ISA:
+    return "isa";
+  case PCI_CLASS_BRIDGE_EISA:
+    return "eisa";
+  case PCI_CLASS_BRIDGE_MC:
+    return "mc";
+  case PCI_CLASS_BRIDGE_PCI:
+    return "pci";
+  case PCI_CLASS_BRIDGE_PCMCIA:
+    return "pcmcia";
+  case PCI_CLASS_BRIDGE_NUBUS:
+    return "nubus";
+  case PCI_CLASS_BRIDGE_CARDBUS:
+    return "pcmcia";
+  case PCI_CLASS_SERIAL_FIREWIRE:
+    return "firewire";
+  case PCI_CLASS_SERIAL_USB:
+    return "usb";
+  case PCI_CLASS_SERIAL_FIBER:
+    return "fiber";
+  }
+
+  switch (c >> 8)
+  {
+  case PCI_BASE_CLASS_STORAGE:
+    return "storage";
+  case PCI_BASE_CLASS_NETWORK:
+    return "network";
+  case PCI_BASE_CLASS_DISPLAY:
+    return "display";
+  case PCI_BASE_CLASS_MULTIMEDIA:
+    return "multimedia";
+  case PCI_BASE_CLASS_MEMORY:
+    return "memory";
+  case PCI_BASE_CLASS_BRIDGE:
+    return "bridge";
+  case PCI_BASE_CLASS_COMMUNICATION:
+    return "communication";
+  case PCI_BASE_CLASS_SYSTEM:
+    return "system";
+  case PCI_BASE_CLASS_INPUT:
+    return "input";
+  case PCI_BASE_CLASS_DOCKING:
+    return "docking";
+  case PCI_BASE_CLASS_PROCESSOR:
+    return "processor";
+  case PCI_BASE_CLASS_SERIAL:
+    return "serial";
+  }
+
+  return "generic";
+}
+
+static const char *get_class_description(unsigned int c)
+{
+  switch (c)
+  {
+  case PCI_CLASS_NOT_DEFINED_VGA:
+    return "VGA Display Adapter";
+  case PCI_CLASS_STORAGE_SCSI:
+    return "SCSI Adapter";
+  case PCI_CLASS_STORAGE_IDE:
+    return "IDE Controller";
+  case PCI_CLASS_STORAGE_FLOPPY:
+    return "Floppy Controller";
+  case PCI_CLASS_STORAGE_IPI:
+    return "IPI Controller";
+  case PCI_CLASS_STORAGE_RAID:
+    return "RAID Controller";
+  case PCI_CLASS_NETWORK_ETHERNET:
+    return "Ethernet Network Adapter";
+  case PCI_CLASS_NETWORK_TOKEN_RING:
+    return "Token Ring Network Adapter";
+  case PCI_CLASS_NETWORK_FDDI:
+    return "FDDI Network Adapter";
+  case PCI_CLASS_NETWORK_ATM:
+    return "ATM Network Adapter";
+  case PCI_CLASS_BRIDGE_HOST:
+    return "Host Bridge";
+  case PCI_CLASS_BRIDGE_ISA:
+    return "ISA Bridge";
+  case PCI_CLASS_BRIDGE_EISA:
+    return "EISA Bridge";
+  case PCI_CLASS_BRIDGE_MC:
+    return "MC Bridge";
+  case PCI_CLASS_BRIDGE_PCI:
+    return "PCI Bridge";
+  case PCI_CLASS_BRIDGE_PCMCIA:
+    return "PCMCIA Bridge";
+  case PCI_CLASS_BRIDGE_NUBUS:
+    return "NUBUS Bridge";
+  case PCI_CLASS_BRIDGE_CARDBUS:
+    return "CARDBUS Bridge";
+  default:
+    return "";
+  }
+}
+
 static u_int16_t get_conf_word(struct pci_dev d,
 			       unsigned int pos)
 {
@@ -144,11 +256,23 @@ static u_int8_t get_conf_byte(struct pci_dev d,
   return d.config[pos];
 }
 
+static string pci_bushandle(u_int8_t bus)
+{
+  char buffer[10];
+
+  snprintf(buffer, sizeof(buffer), "PCI:%02x:", bus);
+
+  return string(buffer);
+}
+
 bool scan_pci(hwNode & n)
 {
   FILE *f;
   hwNode host("pci",
 	      hw::bridge);
+
+  // always consider the host bridge as PCI bus 00:
+  host.setHandle(pci_bushandle(0));
 
   f = fopen(PROC_BUS_PCI "/devices", "r");
   if (f)
@@ -163,6 +287,7 @@ bool scan_pci(hwNode & n)
       string devicepath = "";
       char devicename[20];
       char driver[50];
+      hwNode *device = NULL;
 
       memset(&d, 0, sizeof(d));
       memset(driver, 0, sizeof(driver));
@@ -181,7 +306,7 @@ bool scan_pci(hwNode & n)
 		   &d.size[0],
 		   &d.size[1],
 		   &d.size[2],
-		   &d.size[3], &d.size[4], &d.size[5], &d.rom_size);
+		   &d.size[3], &d.size[4], &d.size[5], &d.rom_size, driver);
 
       if (cnt != 9 && cnt != 10 && cnt != 17 && cnt != 18)
 	break;
@@ -205,6 +330,73 @@ bool scan_pci(hwNode & n)
 	close(fd);
       }
 
+      u_int16_t dclass = get_conf_word(d, PCI_CLASS_DEVICE);
+
+      if (dclass == PCI_CLASS_BRIDGE_HOST)
+      {
+	device = &host;
+	device->setDescription(get_class_description(dclass));
+      }
+      else
+      {
+	hw::hwClass deviceclass = hw::generic;
+
+	switch (dclass >> 8)
+	{
+	case PCI_BASE_CLASS_STORAGE:
+	  deviceclass = hw::storage;
+	  break;
+	case PCI_BASE_CLASS_NETWORK:
+	  deviceclass = hw::network;
+	  break;
+	case PCI_BASE_CLASS_MEMORY:
+	  deviceclass = hw::memory;
+	  break;
+	case PCI_BASE_CLASS_BRIDGE:
+	  deviceclass = hw::bridge;
+	  break;
+	case PCI_BASE_CLASS_MULTIMEDIA:
+	  deviceclass = hw::multimedia;
+	  break;
+	case PCI_BASE_CLASS_DISPLAY:
+	  deviceclass = hw::display;
+	  break;
+	case PCI_BASE_CLASS_COMMUNICATION:
+	  deviceclass = hw::communication;
+	  break;
+	case PCI_BASE_CLASS_SYSTEM:
+	  deviceclass = hw::system;
+	  break;
+	case PCI_BASE_CLASS_INPUT:
+	  deviceclass = hw::input;
+	  break;
+	case PCI_BASE_CLASS_PROCESSOR:
+	  deviceclass = hw::processor;
+	  break;
+	case PCI_BASE_CLASS_SERIAL:
+	  deviceclass = hw::bus;
+	  break;
+	}
+
+	device = new hwNode(get_class_name(dclass), deviceclass);
+
+	if (device)
+	{
+	  if (dclass == PCI_CLASS_BRIDGE_PCI)
+	    device->
+	      setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
+	  device->setDescription(get_class_description(dclass));
+
+	  hwNode *bus = host.findChildByHandle(pci_bushandle(d.bus));
+
+	  if (bus)
+	    bus->addChild(*device);
+	  else
+	    host.addChild(*device);
+	  free(device);
+	}
+      }
+
     }
     fclose(f);
 
@@ -222,4 +414,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.2 2003/01/26 22:51:56 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.3 2003/01/27 00:12:08 ezix Exp $";

@@ -10,6 +10,7 @@ struct hwNode_i
   hwClass deviceclass;
   string id, vendor, product, version, serial, slot, handle, description;
   bool enabled;
+  bool claimed;
   unsigned long long start;
   unsigned long long size;
   unsigned long long capacity;
@@ -71,6 +72,7 @@ hwNode::hwNode(const string & id,
   This->capacity = 0;
   This->clock = 0;
   This->enabled = true;
+  This->claimed = false;
   This->handle = "";
   This->description = "";
 }
@@ -145,6 +147,22 @@ void hwNode::disable()
     return;
 
   This->enabled = false;
+}
+
+bool hwNode::claimed() const
+{
+  if (!This)
+    return false;
+
+  return (This->claimed);
+}
+
+void hwNode::claim()
+{
+  if (!This)
+    return;
+
+  This->claimed = true;
 }
 
 string hwNode::getId() const
@@ -515,4 +533,4 @@ string hwNode::getCapabilities() const
   return strip(result);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.24 2003/01/25 10:00:30 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.25 2003/01/27 00:12:08 ezix Exp $";
