@@ -76,7 +76,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.67 2003/07/04 10:06:37 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.68 2003/07/07 15:56:13 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -934,6 +934,8 @@ static void dmi_table(int fd,
     case 17:
       // Memory Device
       {
+	hwNode newnode("bank",
+		       hw::memory);
 	string slot = "";
 	string description = "";
 	unsigned long long size = 0;
@@ -987,10 +989,8 @@ static void dmi_table(int fd,
 	  description += " " + string(buffer);
 	}
 
-	hwNode newnode("bank",
-		       hw::memory);
 	newnode.setHandle(handle);
-	newnode.setPhysId(dm->handle);
+	//newnode.setPhysId(dm->handle);
 	newnode.setSlot(slot);
 	if (dm->length > 23)
 	  newnode.setVendor(dmi_string(dm, data[23]));
@@ -999,7 +999,7 @@ static void dmi_table(int fd,
 	if (dm->length > 26)
 	  newnode.setProduct(dmi_string(dm, data[26]));
 	if (strlen(bits))
-	  description += " " + string(bits) + " bits";
+	  newnode.setConfig("width", hw::strip(bits));
 	newnode.setDescription(description);
 	newnode.setSize(size);
 	newnode.setClock(clock);
