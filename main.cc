@@ -1,6 +1,7 @@
 #include "hw.h"
 #include "print.h"
 
+#include "version.h"
 #include "mem.h"
 #include "dmi.h"
 #include "cpuinfo.h"
@@ -12,6 +13,8 @@ int main(int argc,
 	 char **argv)
 {
   char hostname[80];
+
+  cout << argv[0] << " version " << getpackageversion() << endl << endl;
 
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
@@ -29,4 +32,4 @@ int main(int argc,
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.8 2003/01/25 10:00:30 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.9 2003/01/25 10:03:23 ezix Exp $";
