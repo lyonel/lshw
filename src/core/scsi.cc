@@ -12,6 +12,9 @@
 #include <stdio.h>
 #include <scsi/sg.h>
 #include <scsi/scsi.h>
+#ifndef MKDEV
+#include <linux/kdev_t.h>
+#endif
 
 #include <string>
 #include <map>
@@ -19,6 +22,7 @@
 static char *id = "@(#) $Id$";
 
 #define SG_X "/dev/sg%d"
+#define SG_MAJOR 21
 
 #ifndef SCSI_IOCTL_GET_PCI
 #define SCSI_IOCTL_GET_PCI 0x5387
@@ -634,10 +638,15 @@ static bool scan_sg(int sg,
   hwNode *parent = NULL;
   hwNode *channel = NULL;
   int emulated = 0;
+  bool ghostdeventry = false;
 
   snprintf(buffer, sizeof(buffer), SG_X, sg);
 
+  ghostdeventry = !exists(buffer);
+
+  if(ghostdeventry) mknod(buffer, (S_IFCHR | S_IREAD), MKDEV(SG_MAJOR, sg));
   fd = open(buffer, OPEN_FLAG | O_NONBLOCK);
+  if(ghostdeventry) unlink(buffer);
   if (fd < 0)
     return false;
 
