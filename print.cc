@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: print.cc,v 1.52 2003/10/13 09:57:00 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.53 2003/10/17 22:23:40 ezix Exp $";
 
 static void spaces(unsigned int count,
 		   string space = " ")
@@ -673,7 +673,17 @@ void printxml(hwNode & node,
     for (unsigned int j = 0; j < config.size(); j++)
     {
       tab(level + 2, false);
-      cout << "<capability id=\"" << escape(config[j]) << "\" />";
+      cout << "<capability id=\"" << escape(config[j]);
+      if (node.getCapabilityDescription(config[j]) == "")
+      {
+	cout << "\" />";
+      }
+      else
+      {
+	cout << "\" >";
+	cout << escape(node.getCapabilityDescription(config[j]));
+	cout << "</capability>";
+      }
       cout << endl;
     }
     tab(level + 1, false);

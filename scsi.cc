@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.37 2003/10/16 11:04:14 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.38 2003/10/17 22:23:40 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -452,7 +452,7 @@ static bool do_inquiry(int sg_fd,
   unsigned ansiversion = rsp_buff[2] & 0x7;
 
   if (rsp_buff[1] & 0x80)
-    node.addCapability("removable");
+    node.addCapability("removable", "support is removable");
 
   node.setVendor(string(rsp_buff + 8, 8));
   if (len > 16)
@@ -510,15 +510,15 @@ static bool do_inquiry(int sg_fd,
     node.setCapacity(heads * cyl * sectors * sectsize);
 
     if (rpm / 10000 == 1)
-      node.addCapability("10000rpm");
+      node.addCapability("10000rpm", "10000 rotations per minute");
     else
     {
       if (rpm / 7200 == 1)
-	node.addCapability("7200rpm");
+	node.addCapability("7200rpm", "7200 rotations per minute");
       else
       {
 	if (rpm / 5400 == 1)
-	  node.addCapability("5400rpm");
+	  node.addCapability("5400rpm", "5400 rotations per minute");
       }
     }
   }
@@ -690,7 +690,7 @@ static bool scan_sg(int sg,
 
   if (emulated)
   {
-    parent->addCapability("emulated");
+    parent->addCapability("emulated", "Emulated device");
   }
 
   channel =

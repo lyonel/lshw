@@ -32,7 +32,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.11 2003/10/13 09:57:00 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.12 2003/10/17 22:23:40 ezix Exp $";
 
 #ifndef SIOCETHTOOL
 #define SIOCETHTOOL     0x8946
@@ -223,7 +223,7 @@ static long mii_get_phy_id(int skfd,
     return -1;			// this interface doesn't support ioctls at all
   }
 
-  interface.addCapability("mii");
+  interface.addCapability("mii", "Media Independant Interface");
   return data[0];
 }
 
@@ -324,7 +324,7 @@ static bool scan_mii(int fd,
   }
 
   if (bmcr & 0x1000)
-    interface.addCapability("autonegotiation");
+    interface.addCapability("autonegotiation", "Speed auto-negociation");
   else
   {
     if (bmcr & 0x2000)

@@ -19,7 +19,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.22 2003/10/15 07:30:39 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.23 2003/10/17 22:23:40 ezix Exp $";
 
 #define DIMMINFOSIZE 0x80
 typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
@@ -298,6 +298,7 @@ static void scan_devtree_memory(hwNode & core)
 
 	    bank.setDescription("Memory bank");
 	    bank.setSlot(slotname);
+	    //bank.setPhysId(base);
 	    bank.setSize(size);
 	    memory->addChild(bank);
 	  }

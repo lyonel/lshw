@@ -14,7 +14,7 @@
 #include <vector>
 #include <linux/hdreg.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.24 2003/10/16 11:04:14 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.25 2003/10/17 22:23:40 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -164,40 +164,41 @@ static bool probe_ide(const string & name,
 
   if (!(pidentity[GEN_CONFIG] & NOT_ATA))
   {
-    device.addCapability("ata");
+    device.addCapability("ata", "ATA");
     device.setDescription("ATA Disk");
   }
   else if (!(pidentity[GEN_CONFIG] & NOT_ATAPI))
   {
     u_int8_t eqpt = (pidentity[GEN_CONFIG] & EQPT_TYPE) >> 8;
-    device.addCapability("atapi");
+    device.addCapability("atapi", "ATAPI");
 
     if (eqpt == CD_ROM)
-      device.addCapability("cdrom");
+      device.addCapability("cdrom", "can read CD-ROMs");
 
     if (eqpt < 0x20)
       device.setDescription("IDE " + string(description[eqpt]));
   }
   if (id.config & (1 << 7))
-    device.addCapability("removable");
+    device.addCapability("removable", "support is removable");
   if (id.config & (1 << 15))
-    device.addCapability("nonmagnetic");
+    device.addCapability("nonmagnetic", "support is non-magnetic (optical)");
   if (id.capability & 1)
-    device.addCapability("dma");
+    device.addCapability("dma", "Direct Memory Access");
   if (id.capability & 2)
-    device.addCapability("lba");
+    device.addCapability("lba", "Large Block Addressing");
   if (id.capability & 8)
     device.addCapability("iordy");
   if (id.command_set_1 & 1)
-    device.addCapability("smart");
+    device.addCapability("smart",
+			 "S.M.A.R.T. (Self-Monitoring And Reporting Technology)");
   if (id.command_set_1 & 2)
-    device.addCapability("security");
+    device.addCapability("security", "ATA security extensions");
   if (id.command_set_1 & 4)
-    device.addCapability("removable");
+    device.addCapability("removable", "support is removable");
   if (id.command_set_1 & 8)
-    device.addCapability("pm");
+    device.addCapability("pm", "Power Management");
   if (id.command_set_2 & 8)
-    device.addCapability("apm");
+    device.addCapability("apm", "Advanced Power Management");
 
   if ((id.capability & 8) || (id.field_valid & 2))
   {
@@ -226,7 +227,7 @@ static bool probe_ide(const string & name,
   }
 
   if (id_regs[83] & 8)
-    device.addCapability("apm");
+    device.addCapability("apm", "Advanced Power Management");
 
   //if (device.isCapable("iordy") && (id.capability & 4))
   //device.setConfig("iordy", "yes");

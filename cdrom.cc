@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <linux/cdrom.h>
 
-static char *id = "@(#) $Id: cdrom.cc,v 1.4 2003/04/29 16:45:06 ezix Exp $";
+static char *id = "@(#) $Id: cdrom.cc,v 1.5 2003/10/17 22:23:40 ezix Exp $";
 
 #ifndef CDC_CD_R
 #define CDC_CD_R 0x2000
@@ -50,30 +50,30 @@ bool scan_cdrom(hwNode & n)
   }
 
   if (capabilities & CDC_PLAY_AUDIO)
-    n.addCapability("audio");
+    n.addCapability("audio", "Audio CD playback");
   if (capabilities & CDC_CD_R)
   {
-    n.addCapability("cd-r");
+    n.addCapability("cd-r", "CD-R burning");
     n.setDescription("CD-R writer");
   }
   if (capabilities & CDC_CD_RW)
   {
-    n.addCapability("cd-rw");
+    n.addCapability("cd-rw", "CD-RW burning");
     n.setDescription("CD-R/CD-RW writer");
   }
   if (capabilities & CDC_DVD)
   {
-    n.addCapability("dvd");
+    n.addCapability("dvd", "DVD playback");
     n.setDescription("DVD reader");
   }
   if (capabilities & CDC_DVD_R)
   {
-    n.addCapability("dvd-r");
+    n.addCapability("dvd-r", "DVD-R burning");
     n.setDescription("DVD writer");
   }
   if (capabilities & CDC_DVD_RAM)
   {
-    n.addCapability("dvd-ram");
+    n.addCapability("dvd-ram", "DVD-RAM burning");
     n.setDescription("DVD-RAM writer");
   }
 

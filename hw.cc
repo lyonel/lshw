@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.52 2003/08/20 10:12:48 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.53 2003/10/17 22:23:40 ezix Exp $";
 
 struct hwNode_i
 {
@@ -23,6 +23,8 @@ struct hwNode_i
     vector < hwNode > children;
     vector < string > attracted;
     vector < string > features;
+    map < string,
+    string > features_descriptions;
     vector < resource > resources;
     map < string,
     string > config;
@@ -716,12 +718,16 @@ bool hwNode::isCapable(const string & feature) const
   return false;
 }
 
-void hwNode::addCapability(const string & feature)
+void hwNode::addCapability(const string & feature,
+			   const string & description)
 {
   string features = feature;
 
   if (!This)
     return;
+
+  if (description != "")
+    This->features_descriptions[cleanupId(feature)] = strip(description);
 
   while (features.length() > 0)
   {
@@ -743,6 +749,18 @@ void hwNode::addCapability(const string & feature)
   }
 }
 
+void hwNode::describeCapability(const string & feature,
+				const string & description)
+{
+  if (!This)
+    return;
+
+  if (!isCapable(feature))
+    return;
+
+  This->features_descriptions[cleanupId(feature)] = strip(description);
+}
+
 string hwNode::getCapabilities() const
 {
   string result = "";
@@ -754,6 +772,23 @@ string hwNode::getCapabilities() const
     result += This->features[i] + " ";
 
   return strip(result);
+}
+
+string hwNode::getCapabilityDescription(const string & feature) const
+{
+  string featureid = cleanupId(feature);
+
+  if (!isCapable(feature))
+    return "";
+
+  if (!This)
+    return "";
+
+  if (This->features_descriptions.find(featureid) ==
+      This->features_descriptions.end())
+    return "";
+
+  return This->features_descriptions[featureid];
 }
 
 void hwNode::setConfig(const string & key,

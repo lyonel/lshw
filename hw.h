@@ -131,8 +131,10 @@ class hwNode
 	}
 
 	bool isCapable(const string & feature) const;
-	void addCapability(const string & feature);
+	void addCapability(const string & feature, const string & description = "");
+	void describeCapability(const string & feature, const string & description);
 	string getCapabilities() const;
+	string getCapabilityDescription(const string & feature) const;
 
 	void attractHandle(const string & handle);
 
