@@ -7,6 +7,47 @@
 
 #define DEVICETREE "/proc/device-tree"
 
+static string get_string(const string & path)
+{
+  int fd = open(path.c_str(), O_RDONLY);
+  string result = "";
+
+  if (fd >= 0)
+  {
+    struct stat buf;
+    void *buffer = NULL;
+
+    memset(&buf, 0, sizeof(buf));
+    fstat(fd, &buf);
+
+    buffer = malloc(buf.st_size);
+    if (buffer)
+    {
+      read(fd, buffer, buf.st_size);
+      result = string((char *) buffer, buf.st_size);
+      free(buffer);
+    }
+
+    close(fd);
+  }
+
+  return result;
+}
+
+static void scan_devtree_root(hwNode & core)
+{
+  unsigned long frequency = 0;
+  int fd = open(DEVICETREE "/clock-frequency", O_RDONLY);
+
+  if (fd >= 0)
+  {
+    read(fd, &frequency, sizeof(frequency));
+
+    core.setClock(frequency);
+    close(fd);
+  }
+}
+
 static void scan_devtree_memory(hwNode & core)
 {
   struct stat buf;
@@ -95,9 +136,15 @@ bool scan_device_tree(hwNode & n)
     core = n.getChild("core");
   }
 
+  n.setProduct(get_string(DEVICETREE "/model"));
+  n.setSerial(get_string(DEVICETREE "/system-id"));
+  n.setVendor(get_string(DEVICETREE "/copyright"));
+
   if (core)
   {
+    scan_devtree_root(*core);
     scan_devtree_memory(*core);
+    core->addCapability(get_string(DEVICETREE "/compatible"));
   }
 
   return true;

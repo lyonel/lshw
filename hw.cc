@@ -477,15 +477,29 @@ bool hwNode::isCapable(const string & feature) const
 
 void hwNode::addCapability(const string & feature)
 {
-  string featureid = cleanupId(feature);
+  string features = feature;
 
   if (!This)
     return;
 
-  if (isCapable(featureid))
-    return;
+  while (features.length() > 0)
+  {
+    size_t pos = features.find('\0');
 
-  This->features.push_back(featureid);
+    if (pos == string::npos)
+    {
+      if (!isCapable(cleanupId(features)))
+	This->features.push_back(cleanupId(features));
+      features = "";
+    }
+    else
+    {
+      string featureid = cleanupId(features.substr(0, pos));
+      if (!isCapable(featureid))
+	This->features.push_back(featureid);
+      features = features.substr(pos + 1);
+    }
+  }
 }
 
 string hwNode::getCapabilities() const
