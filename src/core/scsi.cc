@@ -539,15 +539,22 @@ static void scan_devices()
     if (fd >= 0)
     {
       int bus = -1;
-      if (ioctl(fd, SCSI_IOCTL_GET_BUS_NUMBER, &bus) >= 0)
+      char host[50];
+      int * length = (int*)host;
+      *length = sizeof(host);
+      memset(host, 0, sizeof(host));
+      if (ioctl(fd, SCSI_IOCTL_PROBE_HOST, &host) >= 0)
       {
-	memset(&m_idlun, 0, sizeof(m_idlun));
-	if (ioctl(fd, SCSI_IOCTL_GET_IDLUN, &m_idlun) >= 0)
-	{
-	  sg_map[string(devices[i])] = scsi_handle(bus, (m_idlun.mux4 >> 16) & 0xff,
+        if (ioctl(fd, SCSI_IOCTL_GET_BUS_NUMBER, &bus) >= 0)
+        {
+	  memset(&m_idlun, 0, sizeof(m_idlun));
+	  if (ioctl(fd, SCSI_IOCTL_GET_IDLUN, &m_idlun) >= 0)
+	  {
+	    sg_map[string(devices[i])] = scsi_handle(bus, (m_idlun.mux4 >> 16) & 0xff,
 			     m_idlun.mux4 & 0xff,
 			     (m_idlun.mux4 >> 8) & 0xff);
-	}
+	  }
+        }
       }
       close(fd);
     }
