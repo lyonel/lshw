@@ -1018,8 +1018,8 @@ static void dmi_table(int fd,
     case 17:
       // Memory Device
       {
-	string id;
-	string description;
+	string id = "";
+	string description = "";
 	unsigned long long size = 0;
 	u16 width = 0;
 	char bits[10];
@@ -1092,7 +1092,17 @@ static void dmi_table(int fd,
 	newnode.setSize(size);
 
 	if (size > 0)
-	  node.addChild(newnode);
+	{
+	  hwNode *memorynode = node.getChild("memory");
+	  if (!memorynode)
+	  {
+	    node.addChild(hwNode("memory", hw::memory));
+	    memorynode = node.getChild("memory");
+	  }
+
+	  if (memorynode)
+	    memorynode->addChild(newnode);
+	}
       }
       break;
     case 18:

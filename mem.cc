@@ -6,13 +6,12 @@
 
 bool scan_memory(hwNode & n)
 {
+  hwNode memory("memory",
+		hw::memory);
   struct stat buf;
 
   if (stat("/proc/kcore", &buf) == 0)
   {
-    hwNode memory("memory",
-		  hw::memory);
-
     memory.setSize(buf.st_size);
 
     if (stat("/proc/device-tree/memory@0/slot-names", &buf) == 0)
@@ -57,8 +56,7 @@ bool scan_memory(hwNode & n)
       }
     }
 
-    return n.addChild(memory);
   }
 
-  return false;
+  return n.addChild(memory);
 }
