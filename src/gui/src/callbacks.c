@@ -8,12 +8,18 @@
 #include "interface.h"
 #include "support.h"
 
+static GtkWidget *about = NULL;
+static GtkWidget *saveas = NULL;
 
 void
 save_as                                (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-
+  if(!GTK_IS_WIDGET(saveas))
+  {
+    saveas = create_saveas();
+    gtk_widget_show(saveas);
+  }
 }
 
 
@@ -37,9 +43,7 @@ void
 on_about1_activate                     (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  static GtkWidget *about = NULL;
-                                                                                
-  if(!about)
+  if(!GTK_IS_WIDGET(about))
   {
     about = create_aboutlshw();
     gtk_widget_show(about);
@@ -48,9 +52,13 @@ on_about1_activate                     (GtkMenuItem     *menuitem,
 
 
 void
-on_aboutclose_activate                 (GtkButton       *button,
+on_aboutclose                 (GtkButton       *button,
                                         gpointer         user_data)
 {
-
+  if(GTK_IS_WIDGET(about))
+  {
+    gtk_widget_destroy(about);
+    about = NULL;
+  }
 }
 
