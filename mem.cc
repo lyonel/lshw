@@ -13,6 +13,8 @@ bool scan_memory(hwNode & n)
   {
     unsigned long long size = 0;
 
+    memory->claim();
+
     for (int i = 0; i < memory->countChildren(); i++)
       if (memory->getChild(i)->getClass() == hw::memory)
 	size += memory->getChild(i)->getSize();
@@ -45,6 +47,7 @@ bool scan_memory(hwNode & n)
 
     if (memory)
     {
+      memory->claim();
       memory->setSize(buf.st_size);
       return true;
     }
@@ -53,4 +56,4 @@ bool scan_memory(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: mem.cc,v 1.11 2003/01/25 10:00:30 ezix Exp $";
+static char *id = "@(#) $Id: mem.cc,v 1.12 2003/02/08 11:18:41 ezix Exp $";

@@ -20,13 +20,19 @@ static hwNode *getcpu(hwNode & node,
   cpu = node.getChild(string("core/") + string(cpuname));
 
   if (cpu)
+  {
+    cpu->claim();
     return cpu;
+  }
 
   // "cpu:0" is equivalent to "cpu" on 1-CPU machines
   if ((n == 0) && (node.countChildren(hw::processor) <= 1))
     cpu = node.getChild(string("core/cpu"));
   if (cpu)
+  {
+    cpu->claim();
     return cpu;
+  }
 
   hwNode *core = node.getChild("core");
 
@@ -46,6 +52,7 @@ static void cpuinfo_ppc(hwNode & node,
 
   if (cpu)
   {
+    cpu->claim();
     if (id == "revision")
       cpu->setVersion(value);
     if (id == "cpu")
@@ -66,6 +73,7 @@ static void cpuinfo_x86(hwNode & node,
 
   if (cpu)
   {
+    cpu->claim();
     if (id == "vendor_id")
     {
       if (value == "AuthenticAMD")
@@ -171,4 +179,5 @@ bool scan_cpuinfo(hwNode & n)
   }
 }
 
-static char *id = "@(#) $Id: cpuinfo.cc,v 1.10 2003/02/02 18:56:52 ezix Exp $";
+static char *id =
+  "@(#) $Id: cpuinfo.cc,v 1.11 2003/02/08 11:18:41 ezix Exp $";

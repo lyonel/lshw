@@ -164,7 +164,17 @@ bool hwNode::claimed() const
   if (!This)
     return false;
 
-  return (This->claimed);
+  if (This->claimed)
+    return true;
+
+  for (int i = 0; i < This->children.size(); i++)
+    if (This->children[i].claimed())
+    {
+      This->claimed = true;
+      return true;
+    }
+
+  return false;
 }
 
 void hwNode::claim()
@@ -607,4 +617,4 @@ void hwNode::setLogicalName(const string & name)
     This->logicalname = strip(name);
 }
 
-static char *id = "@(#) $Id: hw.cc,v 1.31 2003/02/05 09:32:40 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.32 2003/02/08 11:18:41 ezix Exp $";
