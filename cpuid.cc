@@ -242,7 +242,7 @@ static bool dointel(unsigned long maxi,
 		    int cpunumber = 0)
 {
   char buffer[1024];
-  unsigned long signature, flags, bflags, eax, ebx, ecx, edx, unused;
+  unsigned long signature = 0, flags = 0, bflags = 0, eax = 0, ebx = 0, ecx = 0, edx = 0, unused = 0;
   int stepping, model, family;
 
   if (!cpu)
