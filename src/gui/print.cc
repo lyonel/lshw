@@ -243,7 +243,7 @@ string printmarkup(const hwNode & node)
   }
 
   config.clear();
-  config = node.getConfigValues("=<i>");
+  config = node.getConfigValues(": <i>");
 
     if (config.size() > 0)
     {
