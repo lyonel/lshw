@@ -93,7 +93,11 @@ static bool scan_sg(int sg,
   ioctl(fd, SG_EMULATED_HOST, &emulated);
 
   if (emulated)
+  {
     parent->setConfig("emulated", "true");
+    if (parent->getDescription() == "")
+      parent->setDescription("Virtual SCSI adapter");
+  }
 
   close(fd);
 
@@ -110,4 +114,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.2 2003/02/16 19:57:34 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.3 2003/02/16 20:01:08 ezix Exp $";
