@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <dirent.h>
 
+static char *id = "@(#) $Id: osutils.cc,v 1.9 2003/04/30 12:47:46 ezix Exp $";
+
 using namespace std;
 
 static stack < string > dirs;
@@ -227,7 +229,6 @@ static string find_deventry(string basepath,
 string find_deventry(mode_t mode,
 		     dev_t device)
 {
+  (void) &id;			// avoid warning "id defined but not used"
   return find_deventry("/dev", mode, device);
 }
-
-static char *id = "@(#) $Id: osutils.cc,v 1.8 2003/02/16 00:36:32 ezix Exp $";

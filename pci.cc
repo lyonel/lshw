@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.26 2003/04/30 08:25:47 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.27 2003/04/30 12:47:46 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -230,7 +230,7 @@ static bool find_best_match(const vector < pci_entry > &list,
   int lastmatch = -1;
   unsigned int lastscore = 0;
 
-  for (int i = 0; i < list.size(); i++)
+  for (unsigned int i = 0; i < list.size(); i++)
   {
     unsigned int currentscore = list[i].matches(u1, u2, u3, u4);
 
@@ -320,11 +320,11 @@ static bool parse_pcidb(vector < string > &list)
   long u[4];
   string line = "";
   catalog current_catalog = pcivendor;
-  int level = 0;
+  unsigned int level = 0;
 
   memset(u, 0, sizeof(u));
 
-  for (int i = 0; i < list.size(); i++)
+  for (unsigned int i = 0; i < list.size(); i++)
   {
     line = hw::strip(list[i]);
 
@@ -346,7 +346,7 @@ static bool parse_pcidb(vector < string > &list)
 
 	if ((line.length() < 3) || (line[2] != ' '))
 	  return false;
-	if (sscanf(line.c_str(), "%x", &u[0]) != 1)
+	if (sscanf(line.c_str(), "%lx", &u[0]) != 1)
 	  return false;
 	line = line.substr(3);
 	line = hw::strip(line);
@@ -534,7 +534,7 @@ bool scan_pci(hwNode & n)
 
     while (fgets(buf, sizeof(buf) - 1, f))
     {
-      unsigned int dfn, vend, cnt, known;
+      unsigned int dfn, vend, cnt;
       struct pci_dev d;
       int fd = -1;
       string devicepath = "";
