@@ -14,7 +14,7 @@
 #include <vector>
 #include <linux/hdreg.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.20 2003/06/13 07:15:15 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.21 2003/06/13 22:16:10 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -304,6 +304,22 @@ static bool probe_ide(const string & name,
   return true;
 }
 
+static string master_or_slave(const string & device)
+{
+  if (device == "")
+    return "";
+
+  switch ((device[device.length() - 1] - 'a') % 2)
+  {
+  case 0:
+    return "master";
+  case 1:
+    return "slave";
+  default:
+    return "";
+  }
+}
+
 bool scan_ide(hwNode & n)
 {
   struct dirent **namelist;
@@ -366,6 +382,8 @@ bool scan_ide(hwNode & n)
 	  idedevice.claim();
 	  idedevice.setHandle(ide.getHandle() + ":" +
 			      string(devicelist[j]->d_name));
+	  idedevice.setBusInfo(ide.getBusInfo() + ":" +
+			       master_or_slave(devicelist[j]->d_name));
 
 	  probe_ide(devicelist[j]->d_name, idedevice);
 

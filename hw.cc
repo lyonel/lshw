@@ -7,7 +7,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.45 2003/06/13 22:14:15 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.46 2003/06/13 22:14:58 ezix Exp $";
 
 struct hwNode_i
 {
@@ -698,11 +698,9 @@ void hwNode::setConfig(const string & key,
     return;
 
   This->config[key] = strip(value);
-  <<<<<<<hw.cc if (strip(value) == "")
+  if (strip(value) == "")
     This->config.erase(This->config.find(key));
-  == == == = if (strip(value) == "")
-    This->config.erase(This->config.find(key));
->>>>>>>1.44}
+}
 
 string hwNode::getConfig(const string & key) const
 {
