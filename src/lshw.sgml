@@ -96,7 +96,7 @@ Enables or disables a test. <replaceable class="parameter">test</replaceable> ca
 <refsect1><title>BUGS</title>
 <para>
 <application>lshw</application> currently does not detect 
-<hardware>USB</hardware> or <hardware>Firewire</hardware>(<hardware>IEEE1394</hardware>) devices.
+<hardware>Firewire</hardware>(<hardware>IEEE1394</hardware>) devices.
 </para>
 
 <para>
