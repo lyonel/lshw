@@ -8,6 +8,7 @@
 #include "options.h"
 #include "version.h"
 #include "osutils.h"
+#include "stock.h"
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
@@ -113,7 +114,7 @@ static  void inserticon(const string & icon, const string & comment, GtkTextBuff
 
   pixbuf = gtk_widget_render_icon(GTK_WIDGET(textview),
                                   icon.c_str(),
-                                  GTK_ICON_SIZE_MENU, /* size */
+                                  gtk_icon_size_from_name(LSHW_ICON_SIZE_LOGO), /* size */
                                   NULL);
   gtk_text_buffer_insert_pixbuf(buffer, &iter, pixbuf);
   gtk_text_buffer_insert(buffer, &iter, comment.c_str(), -1);
@@ -156,6 +157,9 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, hwpath.c_str(), -1, "monospace", NULL);
 
   gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
+  if(node.getHint("bus.icon").defined())
+    inserticon(string("lshw-") + node.getHint("bus.icon").asString(), "", buffer, iter, textview);
 
   if(!node.claimed())
     inserticon(GTK_STOCK_DIALOG_QUESTION, "this device hasn't been claimed", buffer, iter, textview);

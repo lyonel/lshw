@@ -69,6 +69,9 @@ class value
 
 	bool operator ==(const value &) const;
 
+        string asString() const;
+        bool defined() const;
+
   private:
 	struct value_i * This;
 

@@ -699,6 +699,7 @@ static bool scan_sg(int sg,
   device.setBusInfo(scsi_businfo(m_id.host_no,
 				 m_id.channel, m_id.scsi_id, m_id.lun));
   device.setPhysId(m_id.channel, m_id.scsi_id, m_id.lun);
+  device.addHint("bus.icon", string("scsi"));
   find_logicalname(device);
   do_inquiry(fd, device);
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))

@@ -1150,6 +1150,14 @@ void hwNode::addHint(const string & id, const value & v)
     This->hints[id] = v;
 }
 
+value hwNode::getHint(const string & id) const
+{
+  if(!This)
+    return value();
+
+  return This->hints[id];
+}
+
 string hwNode::asXML(unsigned level)
 {
   vector < string > config;
@@ -1758,5 +1766,33 @@ bool value::operator==(const value & v) const
   };
 
   return false;
+}
+
+
+string value::asString() const
+{
+  if(!This) return "";
+
+  switch(This->type)
+  {
+    case hw::integer:
+      return "0";
+    case hw::text:
+      return This->s;
+    case hw::boolean:
+      return This->b?"true":"false";
+    case hw::nil:
+      return "(nil)";
+  };
+
+  return "";
+}
+
+bool value::defined() const
+{
+  if(!This) return false;
+  if(This->type==nil) return false;
+
+  return true;
 }
 
