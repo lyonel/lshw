@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: print.cc,v 1.58 2004/04/14 21:19:54 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 static void spaces(unsigned int count,
 		   string space = " ")

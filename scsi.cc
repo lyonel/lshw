@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.42 2004/04/01 18:00:32 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 #define SG_X "/dev/sg%d"
 

@@ -9,7 +9,7 @@
 #include <ctype.h>
 
 static char *id =
-  "@(#) $Id: osutils.cc,v 1.11 2004/04/14 20:04:44 ezix Exp $";
+  "@(#) $Id$";
 
 using namespace std;
 

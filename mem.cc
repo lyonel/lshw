@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-static char *id = "@(#) $Id: mem.cc,v 1.21 2003/10/13 09:57:00 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 static unsigned long long get_kcore_size()
 {

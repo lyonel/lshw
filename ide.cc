@@ -15,7 +15,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.29 2004/04/14 20:04:44 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 #define PROC_IDE "/proc/ide"
 

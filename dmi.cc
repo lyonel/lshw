@@ -87,7 +87,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.74 2004/02/25 17:12:45 ezix Exp $";
+static char *id = "@(#) $Id$";
 
 typedef unsigned char u8;
 typedef unsigned short u16;

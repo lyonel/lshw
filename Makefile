@@ -6,6 +6,7 @@ PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share/$(PACKAGENAME)
+SVNURL='$URL$'
 
 CXX=c++
 CXXFLAGS=-g -Wall
@@ -49,16 +50,13 @@ install: all
 clean:
 	rm -f $(OBJS) $(PACKAGENAME) core
 
-.tag: .version
-	cat $< | sed -e 'y/./_/' > $@
-
 .timestamp:
 	date --utc +%Y%m%d%H%M%S > $@
                                                                                
-release: .tag
-	cvs tag -cF `cat .tag`
+release:
+	svn copy . `dirname ${PWD}`/releases/`cat .version`
 	rm -rf $(PACKAGENAME)-`cat .version`
-	cvs export -r `cat .tag` -d $(PACKAGENAME)-`cat .version` `cat CVS/Repository`
+	svn export ../releases/`cat .version` $(PACKAGENAME)-`cat .version`
 	cat $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat .version`/g" > $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec
 	tar cfz $(PACKAGENAME)-`cat .version`.tar.gz $(PACKAGENAME)-`cat .version`
 	rm -rf $(PACKAGENAME)-`cat .version`
