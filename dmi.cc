@@ -1249,323 +1249,403 @@ static void dmi_table(int fd,
 	  newnode.disable();
 
 	newnode.setSize(dmi_cache_size(data[9] | data[10] << 8));
-	newnode.setCapacity(dmi_cache_size(data[7] | (data[8] << 8));
-			    if ((dm->length > 0x0F) && (data[0x0F] != 0))
-			    {
-			    newnode.setClock(1000000000 / data[0x0F]);	// convert from ns to Hz
-			    }
+	newnode.setCapacity(dmi_cache_size(data[7] | (data[8] << 8)));
+	if ((dm->length > 0x0F) && (data[0x0F] != 0))
+	{
+	  newnode.setClock(1000000000 / data[0x0F]);	// convert from ns to Hz
+	}
 
-			    newnode.setHandle(handle);
-			    hardwarenode->addChild(newnode);}
-    break; case 8:
-			    //printf("\tPort Connector\n");
-			    //printf("\t\tInternal Designator: %s\n",
-			    //dmi_string(dm, data[4]).c_str());
-			    //printf("\t\tInternal Connector Type: %s\n",
-			    //dmi_port_connector_type(data[5]));
-			    //printf("\t\tExternal Designator: %s\n",
-			    //dmi_string(dm, data[6]).c_str());
-			    //printf("\t\tExternal Connector Type: %s\n",
-			    //dmi_port_connector_type(data[7]));
-			    //printf("\t\tPort Type: %s\n", dmi_port_type(data[8]));
-    break; case 9:
+	newnode.setHandle(handle);
+	hardwarenode->addChild(newnode);
+      }
+      break;
+    case 8:
+      //printf("\tPort Connector\n");
+      //printf("\t\tInternal Designator: %s\n",
+      //dmi_string(dm, data[4]).c_str());
+      //printf("\t\tInternal Connector Type: %s\n",
+      //dmi_port_connector_type(data[5]));
+      //printf("\t\tExternal Designator: %s\n",
+      //dmi_string(dm, data[6]).c_str());
+      //printf("\t\tExternal Connector Type: %s\n",
+      //dmi_port_connector_type(data[7]));
+      //printf("\t\tPort Type: %s\n", dmi_port_type(data[8]));
+      break;
+    case 9:
 #if 0
-			    {
-			    hwNode newnode("cardslot",
-					   hw::bus);
-			    newnode.setHandle(handle);
-			    newnode.setSlot(dmi_string(dm, data[4]));
-			    printf("\t\tType: %s%s%s\n",
-				   dmi_bus_width(data[6]),
-				   dmi_card_size(data[8]),
-				   dmi_bus_name(data[5]));
-			    if (data[7] ==
-				3) printf("\t\tStatus: Available.\n");
-			    if (data[7] == 4) printf("\t\tStatus: In use.\n");
-			    if (data[11] & 0xFE) dmi_card_props(data[11]);
-			    //hardwarenode->addChild(newnode);
-			    }
+      {
+	hwNode newnode("cardslot",
+		       hw::bus);
+	newnode.setHandle(handle);
+	newnode.setSlot(dmi_string(dm, data[4]));
+	printf("\t\tType: %s%s%s\n",
+	       dmi_bus_width(data[6]),
+	       dmi_card_size(data[8]), dmi_bus_name(data[5]));
+	if (data[7] == 3)
+	  printf("\t\tStatus: Available.\n");
+	if (data[7] == 4)
+	  printf("\t\tStatus: In use.\n");
+	if (data[11] & 0xFE)
+	  dmi_card_props(data[11]);
+	//hardwarenode->addChild(newnode);
+      }
 #endif
-    break; case 10:
+      break;
+    case 10:
 #if 0
-			    printf("\tOn Board Devices Information\n");
-			    for (u = 2; u * 2 + 1 < dm->length; u++)
-			    {
-			    printf("\t\tDescription: %s : %s\n",
-				   dmi_string(dm, data[1 + 2 * u]).c_str(),
-				   (data[2 * u]) & 0x80 ? "Enabled" :
-				   "Disabled");
-			    printf("\t\tType: %s\n",
-				   dmi_onboard_type(data[2 * u]));}
+      printf("\tOn Board Devices Information\n");
+      for (u = 2; u * 2 + 1 < dm->length; u++)
+      {
+	printf("\t\tDescription: %s : %s\n",
+	       dmi_string(dm, data[1 + 2 * u]).c_str(),
+	       (data[2 * u]) & 0x80 ? "Enabled" : "Disabled");
+	printf("\t\tType: %s\n", dmi_onboard_type(data[2 * u]));
+      }
 #endif
 
-    break; case 11:
-			    // OEM Data
-    break; case 12:
-			    // Configuration Information
-    break; case 13:
+      break;
+    case 11:
+      // OEM Data
+      break;
+    case 12:
+      // Configuration Information
+      break;
+    case 13:
 #if 0
-			    printf("\tBIOS Language Information\n");
-			    printf("\t\tInstallable Languages: %u\n",
-				   data[4]); for (u = 1; u <= data[4]; u++)
-			    {
-			    printf("\t\t\t%s\n", dmi_string(dm, u).c_str());}
-			    printf("\t\tCurrently Installed Language: %s\n",
-				   dmi_string(dm, data[21]).c_str());
+      printf("\tBIOS Language Information\n");
+      printf("\t\tInstallable Languages: %u\n", data[4]);
+      for (u = 1; u <= data[4]; u++)
+      {
+	printf("\t\t\t%s\n", dmi_string(dm, u).c_str());
+      }
+      printf("\t\tCurrently Installed Language: %s\n",
+	     dmi_string(dm, data[21]).c_str());
 #endif
-    break; case 14:
-			    // Group Associations
-    break; case 15:
-			    // Event Log
-    break; case 16:
-			    // Physical Memory Array
-			    {
-			    string id = "";
-			    string description = ""; switch (data[5])
-			    {
-    case 0x03:
-    description = "System Memory"; break; case 0x04:
-    description = "Video Memory"; break; case 0x05:
-    description = "Flash Memory"; break; case 0x06:
-    description = "NVRAM"; break; case 0x07:
-    description = "Cache Memory"; break; default:
-			    description = "Generic Memory";}
+      break;
+    case 14:
+      // Group Associations
+      break;
+    case 15:
+      // Event Log
+      break;
+    case 16:
+      // Physical Memory Array
+      {
+	string id = "";
+	string description = "";
+	switch (data[5])
+	{
+	case 0x03:
+	  description = "System Memory";
+	  break;
+	case 0x04:
+	  description = "Video Memory";
+	  break;
+	case 0x05:
+	  description = "Flash Memory";
+	  break;
+	case 0x06:
+	  description = "NVRAM";
+	  break;
+	case 0x07:
+	  description = "Cache Memory";
+	  break;
+	default:
+	  description = "Generic Memory";
+	}
 
-			    hwNode newnode("memory",
-					   hw::memory);
-			    newnode.setHandle(handle);
-			    newnode.setDescription(description);
-			    newnode.
-			    setSlot(dmi_memory_array_location(data[4]));
-			    //printf("\t\tError Correction Type: %s\n",
-			    //dmi_memory_array_error_correction_type(data[6]));
-			    u2 = data[10] << 24 | data[9] << 16 | data[8] << 8 | data[7]; if (u2 != 0x80000000)	// magic value for "unknown"
-			    newnode.setCapacity(u2 * 1024);
-			    hardwarenode->addChild(newnode);}
-    break; case 17:
-			    // Memory Device
-			    {
-			    string slot = "";
-			    string description = "";
-			    unsigned long long size = 0;
-			    unsigned long long clock = 0;
-			    u16 width = 0;
-			    char bits[10];
-			    string arrayhandle;
-			    arrayhandle = dmi_handle(data[5] << 8 | data[4]);
-			    strcpy(bits, "");
-			    // total width
-			    u = data[9] << 8 | data[8];
-			    if (u != 0xffff) width = u;
-			    //data width
-			    u = data[11] << 8 | data[10];
-			    if ((u != 0xffff) && (u != 0))
-			    {
-			    if ((u == width) || (width == 0))
-			    snprintf(bits, sizeof(bits), "%d", u);
-			    else
-			    snprintf(bits, sizeof(bits), "%d/%d", width, u);}
-			    else
-			    {
-			    if (width != 0)
-			    snprintf(bits, sizeof(bits), "%d", width);}
+	hwNode newnode("memory",
+		       hw::memory);
+	newnode.setHandle(handle);
+	newnode.setDescription(description);
+	newnode.setSlot(dmi_memory_array_location(data[4]));
+	//printf("\t\tError Correction Type: %s\n",
+	//dmi_memory_array_error_correction_type(data[6]));
+	u2 = data[10] << 24 | data[9] << 16 | data[8] << 8 | data[7];
+	if (u2 != 0x80000000)	// magic value for "unknown"
+	  newnode.setCapacity(u2 * 1024);
+	hardwarenode->addChild(newnode);
+      }
+      break;
+    case 17:
+      // Memory Device
+      {
+	string slot = "";
+	string description = "";
+	unsigned long long size = 0;
+	unsigned long long clock = 0;
+	u16 width = 0;
+	char bits[10];
+	string arrayhandle;
+	arrayhandle = dmi_handle(data[5] << 8 | data[4]);
+	strcpy(bits, "");
+	// total width
+	u = data[9] << 8 | data[8];
+	if (u != 0xffff)
+	  width = u;
+	//data width
+	u = data[11] << 8 | data[10];
+	if ((u != 0xffff) && (u != 0))
+	{
+	  if ((u == width) || (width == 0))
+	    snprintf(bits, sizeof(bits), "%d", u);
+	  else
+	    snprintf(bits, sizeof(bits), "%d/%d", width, u);
+	}
+	else
+	{
+	  if (width != 0)
+	    snprintf(bits, sizeof(bits), "%d", width);
+	}
 
-			    // size
-			    u = data[13] << 8 | data[12];
-			    if (u != 0xffff)
-			    size =
-			    (1024 * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024));
-			    description +=
-			    string(dmi_memory_device_form_factor(data[14]));
-			    slot = dmi_string(dm, data[16]);
-			    //printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
-			    description +=
-			    string(dmi_memory_device_type(data[18]));
-			    u = data[20] << 8 | data[19];
-			    if (u & 0x1ffe) description +=
-			    dmi_memory_device_detail(u); if (dm->length > 21)
-			    {
-			    char buffer[80]; u = data[22] << 8 | data[21];
-			    // speed
-			    clock = u * 1000000;	// u is a frequency in MHz
-			    if (u == 0) strcpy(buffer, "");
-			    else
-			    snprintf(buffer, sizeof(buffer),
-				     "%u MHz (%.1f ns)", u, (1000.0 / u));
-			    description += " " + string(buffer);}
+	// size
+	u = data[13] << 8 | data[12];
+	if (u != 0xffff)
+	  size = (1024 * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024));
+	description += string(dmi_memory_device_form_factor(data[14]));
+	slot = dmi_string(dm, data[16]);
+	//printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
+	description += string(dmi_memory_device_type(data[18]));
+	u = data[20] << 8 | data[19];
+	if (u & 0x1ffe)
+	  description += dmi_memory_device_detail(u);
+	if (dm->length > 21)
+	{
+	  char buffer[80];
+	  u = data[22] << 8 | data[21];
+	  // speed
+	  clock = u * 1000000;	// u is a frequency in MHz
+	  if (u == 0)
+	    strcpy(buffer, "");
+	  else
+	    snprintf(buffer, sizeof(buffer),
+		     "%u MHz (%.1f ns)", u, (1000.0 / u));
+	  description += " " + string(buffer);
+	}
 
-			    hwNode newnode("bank",
-					   hw::memory);
-			    newnode.setHandle(handle);
-			    newnode.setSlot(slot);
-			    if (dm->length > 23)
-			    newnode.setVendor(dmi_string(dm, data[23]));
-			    if (dm->length > 24)
-			    newnode.setSerial(dmi_string(dm, data[24]));
-			    if (dm->length > 26)
-			    newnode.setProduct(dmi_string(dm, data[26]));
-			    if (strlen(bits))
-			    description += " " + string(bits) + " bits";
-			    newnode.setDescription(description);
-			    newnode.setSize(size);
-			    newnode.setClock(clock);
-			    hwNode * memoryarray =
-			    hardwarenode->findChildByHandle(arrayhandle);
-			    if (memoryarray) memoryarray->addChild(newnode);
-			    else
-			    {
-			    hwNode ramnode("memory",
-					   hw::memory);
-			    ramnode.addChild(newnode);
-			    hardwarenode->addChild(ramnode);}
-			    }
-    break; case 18:
-			    // 32-bit Memory Error Information
-    break; case 19:
-			    // Memory Array Mapped Address
-			    {
-			    hwNode newnode("range",
-					   hw::address); unsigned long start,
-			    end; string arrayhandle = dmi_handle(data[0x0D] << 8 | data[0x0C]); start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16); end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16); if (end - start < 512)	// memory range is smaller thant 512KB
-			    {
-			    // consider that values were expressed in megagytes
-			    start *= 1024; end *= 1024;}
+	hwNode newnode("bank",
+		       hw::memory);
+	newnode.setHandle(handle);
+	newnode.setSlot(slot);
+	if (dm->length > 23)
+	  newnode.setVendor(dmi_string(dm, data[23]));
+	if (dm->length > 24)
+	  newnode.setSerial(dmi_string(dm, data[24]));
+	if (dm->length > 26)
+	  newnode.setProduct(dmi_string(dm, data[26]));
+	if (strlen(bits))
+	  description += " " + string(bits) + " bits";
+	newnode.setDescription(description);
+	newnode.setSize(size);
+	newnode.setClock(clock);
+	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
+	if (memoryarray)
+	  memoryarray->addChild(newnode);
+	else
+	{
+	  hwNode ramnode("memory",
+			 hw::memory);
+	  ramnode.addChild(newnode);
+	  hardwarenode->addChild(ramnode);
+	}
+      }
+      break;
+    case 18:
+      // 32-bit Memory Error Information
+      break;
+    case 19:
+      // Memory Array Mapped Address
+      {
+	hwNode newnode("range",
+		       hw::address);
+	unsigned long start, end;
+	string arrayhandle = dmi_handle(data[0x0D] << 8 | data[0x0C]);
+	start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16);
+	end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16);
+	if (end - start < 512)	// memory range is smaller thant 512KB
+	{
+	  // consider that values were expressed in megagytes
+	  start *= 1024;
+	  end *= 1024;
+	}
 
-			    newnode.setStart(start * 1024);	// values are in KB
-			    if (end != start) newnode.setSize((end - start + 1) * 1024);	// values are in KB
-			    newnode.setHandle(handle);
-			    hwNode * memoryarray =
-			    hardwarenode->findChildByHandle(arrayhandle);
+	newnode.setStart(start * 1024);	// values are in KB
+	if (end != start)
+	  newnode.setSize((end - start + 1) * 1024);	// values are in KB
+	newnode.setHandle(handle);
+	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
 #if 0
-			    if (memoryarray) memoryarray->addChild(newnode);
+	if (memoryarray)
+	  memoryarray->addChild(newnode);
 #endif
-			    }
-    break; case 20:
-			    // Memory Device Mapped Address
-			    {
-			    hwNode newnode("range",
-					   hw::address); unsigned long start,
-			    end; string devicehandle = dmi_handle(data[0x0D] << 8 | data[0x0C]); start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16); end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16); if (end - start < 512)	// memory range is smaller than 512KB
-			    {
-			    // consider that values were expressed in megagytes
-			    start *= 1024; end *= 1024;}
+      }
+      break;
+    case 20:
+      // Memory Device Mapped Address
+      {
+	hwNode newnode("range",
+		       hw::address);
+	unsigned long start, end;
+	string devicehandle = dmi_handle(data[0x0D] << 8 | data[0x0C]);
+	start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16);
+	end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16);
+	if (end - start < 512)	// memory range is smaller than 512KB
+	{
+	  // consider that values were expressed in megagytes
+	  start *= 1024;
+	  end *= 1024;
+	}
 
-			    newnode.setStart(start * 1024);	// values are in KB
-			    if (end != start) newnode.setSize((end - start + 1) * 1024);	// values are in KB
-			    newnode.setHandle(handle);
-			    hwNode * memorydevice =
-			    hardwarenode->findChildByHandle(devicehandle);
+	newnode.setStart(start * 1024);	// values are in KB
+	if (end != start)
+	  newnode.setSize((end - start + 1) * 1024);	// values are in KB
+	newnode.setHandle(handle);
+	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
 #if 0
-			    if (memorydevice && (newnode.getSize() != 0)
-				&& (newnode.getSize() <=
-				    memorydevice->getSize()))memorydevice->
-			    addChild(newnode);
+	if (memorydevice && (newnode.getSize() != 0)
+	    && (newnode.getSize() <= memorydevice->getSize()))
+	  memorydevice->addChild(newnode);
 #endif
-			    }
-    break; case 21:
-			    // Built-In Pointing Device
-    break; case 22:
-			    // Portable Battery
-    break; case 23:
-			    // System Reset
-    break; case 24:
-			    // Hardware Security
-    break; case 25:
-			    // System Power Controls
-    break; case 26:
-			    // Voltage Sensor
-    break; case 27:
-			    // Cooling Device
-    break; case 28:
-			    // Temperature Sensor
-    break; case 29:
-			    // Current Sensor
-    break; case 30:
-			    // Out-of-Band Remote Access
-    break; case 31:
-			    // Boot Integrity Services Entry Point
-    break; case 32:
-			    // System Boot Information
-    break; case 33:
-			    // 64-bit Memory Error Information
-    break; case 34:
-			    // Management Device
-    break; case 35:
-			    // Management Device Component
-    break; case 36:
-			    // Management Device Threshold Data
-    break; case 37:
-			    // Memory Channel
-    break; case 38:
-			    // IPMI Device
-    break; case 39:
-			    // Power Supply
-    break; case 126:
-			    // Inactive
-    break; case 127:
-			    // End-of-Table
-    break; default:
-			    break;}
-			    data += dm->length;
-			    while (*data || data[1]) data++; data += 2; i++;}
-			    free(buf);}
+      }
+      break;
+    case 21:
+      // Built-In Pointing Device
+      break;
+    case 22:
+      // Portable Battery
+      break;
+    case 23:
+      // System Reset
+      break;
+    case 24:
+      // Hardware Security
+      break;
+    case 25:
+      // System Power Controls
+      break;
+    case 26:
+      // Voltage Sensor
+      break;
+    case 27:
+      // Cooling Device
+      break;
+    case 28:
+      // Temperature Sensor
+      break;
+    case 29:
+      // Current Sensor
+      break;
+    case 30:
+      // Out-of-Band Remote Access
+      break;
+    case 31:
+      // Boot Integrity Services Entry Point
+      break;
+    case 32:
+      // System Boot Information
+      break;
+    case 33:
+      // 64-bit Memory Error Information
+      break;
+    case 34:
+      // Management Device
+      break;
+    case 35:
+      // Management Device Component
+      break;
+    case 36:
+      // Management Device Threshold Data
+      break;
+    case 37:
+      // Memory Channel
+      break;
+    case 38:
+      // IPMI Device
+      break;
+    case 39:
+      // Power Supply
+      break;
+    case 126:
+      // Inactive
+      break;
+    case 127:
+      // End-of-Table
+      break;
+    default:
+      break;
+    }
+    data += dm->length;
+    while (*data || data[1])
+      data++;
+    data += 2;
+    i++;
+  }
+  free(buf);
+}
 
-			    bool scan_dmi(hwNode & n)
-			    {
-			    unsigned char buf[20]; int fd = open("/dev/mem",
-								 O_RDONLY);
-			    long fp = 0xE0000L;
-			    u8 smmajver = 0, smminver = 0;
-			    u16 dmimaj = 0, dmimin = 0;
-			    if (sizeof(u8) != 1 || sizeof(u16) != 2
-				|| sizeof(u32) != 4)
-			    // compiler incompatibility
-			    return false;
-			    if (fd == -1)
-			    return false; if (lseek(fd, fp, SEEK_SET) == -1)
-			    {
-			    close(fd); return false;}
+bool scan_dmi(hwNode & n)
+{
+  unsigned char buf[20];
+  int fd = open("/dev/mem",
+		O_RDONLY);
+  long fp = 0xE0000L;
+  u8 smmajver = 0, smminver = 0;
+  u16 dmimaj = 0, dmimin = 0;
+  if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4)
+    // compiler incompatibility
+    return false;
+  if (fd == -1)
+    return false;
+  if (lseek(fd, fp, SEEK_SET) == -1)
+  {
+    close(fd);
+    return false;
+  }
 
-			    fp -= 16; while (fp < 0xFFFFF)
-			    {
-			    fp += 16; if (read(fd, buf, 16) != 16)
-			    {
-			    close(fd); return false;}
-			    else
-			    if (memcmp(buf, "_SM_", 4) == 0)
-			    {
-			    // SMBIOS
-			    smmajver = buf[6]; smminver = buf[7];}
-			    else
-			    if (memcmp(buf, "_DMI_", 5) == 0)
-			    {
-			    u16 num = buf[13] << 8 | buf[12];
-			    u16 len = buf[7] << 8 | buf[6];
-			    u32 base =
-			    buf[11] << 24 | buf[10] << 16 | buf[9] << 8 |
-			    buf[8];
-			    dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
-			    dmimin = buf[14] ? buf[14] & 0x0F : smminver;
-			    dmi_table(fd, base, len, num, n, dmimaj, dmimin);
-			    /*
-			     * dmi_table moved us far away 
-			     */
-			    lseek(fd, fp + 16, SEEK_SET);}
-			    }
-			    close(fd); if (smmajver != 0)
-			    {
-			    char buffer[20];
-			    snprintf(buffer, sizeof(buffer), "smbios-%d.%d",
-				     smmajver, smminver);
-			    n.addCapability(string(buffer));}
-			    if (dmimaj != 0)
-			    {
-			    char buffer[20];
-			    snprintf(buffer, sizeof(buffer), "dmi-%d.%d",
-				     dmimaj, dmimin);
-			    n.addCapability(string(buffer));}
+  fp -= 16;
+  while (fp < 0xFFFFF)
+  {
+    fp += 16;
+    if (read(fd, buf, 16) != 16)
+    {
+      close(fd);
+      return false;
+    }
+    else if (memcmp(buf, "_SM_", 4) == 0)
+    {
+      // SMBIOS
+      smmajver = buf[6];
+      smminver = buf[7];
+    }
+    else if (memcmp(buf, "_DMI_", 5) == 0)
+    {
+      u16 num = buf[13] << 8 | buf[12];
+      u16 len = buf[7] << 8 | buf[6];
+      u32 base = buf[11] << 24 | buf[10] << 16 | buf[9] << 8 | buf[8];
+      dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
+      dmimin = buf[14] ? buf[14] & 0x0F : smminver;
+      dmi_table(fd, base, len, num, n, dmimaj, dmimin);
+      /*
+       * dmi_table moved us far away 
+       */
+      lseek(fd, fp + 16, SEEK_SET);
+    }
+  }
+  close(fd);
+  if (smmajver != 0)
+  {
+    char buffer[20];
+    snprintf(buffer, sizeof(buffer), "smbios-%d.%d", smmajver, smminver);
+    n.addCapability(string(buffer));
+  }
+  if (dmimaj != 0)
+  {
+    char buffer[20];
+    snprintf(buffer, sizeof(buffer), "dmi-%d.%d", dmimaj, dmimin);
+    n.addCapability(string(buffer));
+  }
 
-			    return true;}
+  return true;
+}
 
-			    static char *id =
-			    "@(#) $Id: dmi.cc,v 1.60 2003/01/30 17:28:19 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.61 2003/01/30 17:34:56 ezix Exp $";
