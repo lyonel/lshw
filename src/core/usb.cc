@@ -88,7 +88,7 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
   }
   else
   {
-    if(lev==0)		// USB host
+    // USB host
     {
       string businfo = guessBusInfo(device.getSerial());
       parent = n.findChildByBusInfo(businfo);
@@ -250,7 +250,7 @@ bool scan_usb(hwNode & n)
     {
       string line = hw::strip(string(buffer));
       free(buffer);
-      
+
       if(line.length()<=0)
       {
         if(defined)
