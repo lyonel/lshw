@@ -1068,6 +1068,7 @@ static void dmi_table(int fd,
 	unsigned long long capacity = 0;
 	unsigned long long size = 0;
 
+        newnode.setDescription("empty memory bank");
 	newnode.setSlot(dmi_string(dm, data[4]).c_str());
 	if (data[6])
 	  clock = 1000000000 / data[6];	// convert value from ns to Hz
