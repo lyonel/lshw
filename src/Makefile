@@ -91,14 +91,14 @@ release:
 	rm -rf $(PACKAGENAME)-`cat ../.version`
 	svn export ../../releases/`cat ../.version` $(PACKAGENAME)-`cat ../.version`
 	cat $(PACKAGENAME)-`cat ../.version`/src/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat ../.version`/g" > $(PACKAGENAME)-`cat ../.version`/$(PACKAGENAME).spec
-	tar cfz $(PACKAGENAME)-`cat ../.version`.tar.gz $(PACKAGENAME)-`cat ../.version`
+	tar cfz $(PACKAGENAME)-`cat ../.version`.tar.gz --owner=0 --group=0 --numeric-owner --mode="go-w" $(PACKAGENAME)-`cat ../.version`
 	rm -rf $(PACKAGENAME)-`cat ../.version`
 
 snapshot: .timestamp
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
 	svn export -r HEAD .. $(PACKAGENAME)-$(SNAPSHOT)
 	cat $(PACKAGENAME)-$(SNAPSHOT)/src/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/$(SNAPSHOT)/g" > $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec
-	tar cfz $(PACKAGENAME)-$(SNAPSHOT).tar.gz $(PACKAGENAME)-$(SNAPSHOT)
+	tar cfz $(PACKAGENAME)-$(SNAPSHOT).tar.gz --owner=0 --group=0 --numeric-owner --mode="go-w" $(PACKAGENAME)-$(SNAPSHOT)
 	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
 	rm -f .timestamp
 
