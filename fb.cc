@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id: fb.cc,v 1.2 2003/11/03 12:22:07 ezix Exp $";
+static char *id = "@(#) $Id: fb.cc,v 1.3 2003/11/03 12:39:32 ezix Exp $";
 
 #define FB_MODES_SHIFT	5	/* 32 modes per framebuffer */
 #define FB_NUM_MINORS	256	/* 256 Minors               */
@@ -268,7 +268,7 @@ bool scan_fb(hwNode & n)
 	    switch (fbconfig.vmode & FB_VMODE_MASK)
 	    {
 	    case FB_VMODE_INTERLACED:
-	      vtotal <<= 2;
+	      vtotal >>= 1;
 	      break;
 	    case FB_VMODE_DOUBLE:
 	      vtotal <<= 1;
@@ -281,7 +281,7 @@ bool scan_fb(hwNode & n)
 
 	      double drate = 1E12 / fbconfig.pixclock;
 	      double hrate = drate / htotal;
-	      double vrate = hrate / vtotal * 2;
+	      double vrate = hrate / vtotal;
 
 	      snprintf(freq, sizeof(freq), "%5.2fHz", vrate);
 	      fbdev->setConfig("frequency", freq);
