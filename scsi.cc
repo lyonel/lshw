@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.38 2003/10/17 22:23:40 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.39 2003/11/17 22:29:46 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -428,7 +428,7 @@ static bool do_inquiry(int sg_fd,
   char rsp_buff[MX_ALLOC_LEN + 1];
   char version[5];
   int k;
-  unsigned char len;
+  unsigned int len;
 
   if ((ioctl(sg_fd, SG_GET_VERSION_NUM, &k) < 0) || (k < 30000))
     return false;
@@ -437,7 +437,7 @@ static bool do_inquiry(int sg_fd,
   if (!do_inq(sg_fd, 0, 0, 0, rsp_buff, 36, 1))
     return false;
 
-  len = (unsigned char) rsp_buff[4] + 5;
+  len = (unsigned int) rsp_buff[4] + 5;
 
   if ((len > 36) && (len < 256))
   {
@@ -446,7 +446,7 @@ static bool do_inquiry(int sg_fd,
       return false;
   }
 
-  if (len != ((unsigned char) rsp_buff[4] + 5))
+  if (len != ((unsigned int) rsp_buff[4] + 5))
     return false;		// twin INQUIRYs yield different lengths
 
   unsigned ansiversion = rsp_buff[2] & 0x7;
