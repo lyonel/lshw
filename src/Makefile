@@ -17,7 +17,7 @@ CXX=c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
-LDFLAGS=-L./core/
+LDFLAGS=-L./core/ -Wl,--as-needed -Os -s
 LDSTATIC=-static
 LIBS=-llshw
 
