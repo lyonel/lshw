@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <linux/fs.h>
+#ifndef MINOR
+#include <linux/kdev_t.h>
+#endif
 
 static char *id =
   "@(#) $Id$";
