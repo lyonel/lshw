@@ -28,6 +28,14 @@ const char *getpackageversion()
     lastslash = strrchr(releasename, '/');
   }
 
+  lastslash = strrchr(releasename, '/');
+  if(lastslash)
+  {
+    *lastslash = '\0';  // cut the basename off
+                                                                                
+    lastslash = strrchr(releasename, '/');
+  }
+
   if(lastslash)
   {
     free(releasename);
