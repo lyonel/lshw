@@ -20,13 +20,24 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc 910 2005-01-23 00:02:58Z ezix $";
+  "@(#) $Id$";
 
-#define DEVICESPARISC "/tmp/sys/devices/parisc"
+#define DEVICESPARISC "/sys/devices/parisc"
 
-#define HWTYPE_CPU	0x00
-#define HWTYPE_GRAPHICS	0x0a
-#define HWTYPE_FBUS	0x0c
+#define TP_NPROC	0x00
+#define TP_MEMORY	0x01
+#define TP_B_DMA	0x02
+#define TP_A_DMA	0x04
+#define TP_A_DIRECT	0x05
+#define TP_BCPORT	0x07
+#define TP_CIO		0x08
+#define TP_CONSOLE	0x09
+#define TP_FIO		0x0a
+#define TP_BA		0x0b
+#define TP_IOA		0x0c
+#define TP_BRIDGE	0x0d
+#define TP_FABRIC	0x0e
+#define TP_FAULTY	0x1f
 
 static long get_long(const string & path)
 {
@@ -43,7 +54,17 @@ static long get_long(const string & path)
   return result;
 }
 
+static string cpubusinfo(int cpu)
+{
+  char buffer[10];
 
+  snprintf(buffer, sizeof(buffer), "cpu@%d", cpu);
+
+  return string(buffer);
+}
+
+static int currentcpu = 0;
+                                                                                
 static bool scan_device(hwNode & node, string name = "")
 {
   struct dirent **namelist;
@@ -57,19 +78,60 @@ static bool scan_device(hwNode & node, string name = "")
 
     switch(get_long("hw_type"))
     {
-      case HWTYPE_CPU:
+      case TP_NPROC:
         newnode = hwNode("cpu", hw::processor);
-        newnode.setDescription("CPU");
+        newnode.setDescription("Processor");
+        newnode.setBusInfo(cpubusinfo(currentcpu++));
         break;
-      case HWTYPE_GRAPHICS:
-        newnode = hwNode("display", hw::display);
+      case TP_MEMORY:
+        newnode = hwNode("memory", hw::memory);
+        newnode.setDescription("Memory");
         break;
-      case HWTYPE_FBUS:
+      case TP_B_DMA:
+        newnode.addCapability("b-dma", "Type B DMA I/O");
+        break;
+      case TP_A_DMA:
+        newnode.addCapability("a-dma", "Type A DMA I/O");
+        break;
+      case TP_A_DIRECT:
+        newnode.addCapability("a-direct", "Type A Direct I/O");
+        break;
+      case TP_BCPORT:
+        newnode = hwNode("busconverter", hw::bridge);
+        newnode.setDescription("Bus converter port");
+        break;
+      case TP_CIO:
+        newnode.setDescription("HP-CIO adapter");
+        break;
+      case TP_CONSOLE:
+        newnode = hwNode("console", hw::input);
+        newnode.setDescription("Console");
+        break;
+      case TP_FIO:
+        newnode.setDescription("Foreign I/O module");
+        break;
+      case TP_BA:
         newnode = hwNode("bus", hw::bus);
+        newnode.setDescription("Bus adapter");
+        break;
+      case TP_IOA:
+        newnode.setDescription("I/O adapter");
+        break;
+      case TP_BRIDGE:
+        newnode = hwNode("bridge", hw::bridge);
+        newnode.setDescription("Bus bridge to foreign bus");
+        break;
+      case TP_FABRIC:
+        newnode.setDescription("Fabric ASIC");
+        break;
+      case TP_FAULTY:
+        newnode.disable();
+        newnode.setDescription("Faulty module");
         break;
     }
 
-    newnode.setBusInfo(guessBusInfo(name));
+    if(newnode.getBusInfo()=="")
+      newnode.setBusInfo(guessBusInfo(name));
     if(exists("driver"))
     {
       string driver = readlink("driver");
@@ -107,6 +169,8 @@ static bool scan_device(hwNode & node, string name = "")
 bool scan_parisc(hwNode & node)
 {
   hwNode *core = node.getChild("core");
+
+  currentcpu = 0;
 
   if (!core)
   {
