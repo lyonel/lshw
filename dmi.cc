@@ -873,11 +873,11 @@ static void dmi_table(int fd,
 
     handle = dmi_handle(dm->handle);
 
-    hardwarenode = node.getChild("hardware");
+    hardwarenode = node.getChild("core");
     if (!hardwarenode)
     {
-      node.addChild(hwNode("hardware", hw::bus));
-      hardwarenode = node.getChild("hardware");
+      node.addChild(hwNode("core", hw::bus));
+      hardwarenode = node.getChild("core");
     }
     if (!hardwarenode)
       hardwarenode = &node;
@@ -1342,7 +1342,18 @@ static void dmi_table(int fd,
 	newnode.setSize(size);
 	newnode.setClock(clock);
 
-	hardwarenode->addChild(newnode);
+	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
+
+	if (memoryarray)
+	  memoryarray->addChild(newnode);
+	else
+	{
+	  hwNode ramnode("ram",
+			 hw::memory);
+
+	  ramnode.addChild(newnode);
+	  hardwarenode->addChild(ramnode);
+	}
       }
       break;
     case 18:
