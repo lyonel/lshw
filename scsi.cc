@@ -180,10 +180,10 @@ static const char *devices[] = {
   "/dev/dvd", "/dev/dvd0", "/dev/dvd1", "/dev/dvd2",
   "/dev/st0", "/dev/st1", "/dev/st2", "/dev/st3", "/dev/st4", "/dev/st5",
   "/dev/nst0", "/dev/nst1", "/dev/nst2", "/dev/nst3", "/dev/nst4",
-    "/dev/nst5",
+  "/dev/nst5",
   "/dev/nosst0", "/dev/nosst1", "/dev/nosst2", "/dev/nosst3", "/dev/nosst4",
   "/dev/tape", "/dev/tape0", "/dev/tape1", "/dev/tape2", "/dev/tape3",
-    "/dev/tape4",
+  "/dev/tape4",
   NULL
 };
 
@@ -440,7 +440,6 @@ static void find_logicalname(hwNode & n)
 
   for (i = sg_map.begin(); i != sg_map.end(); i++)
   {
-    printf("%s -> %s\n", i->first.c_str(), i->second.c_str());
     if (i->first == n.getHandle())
     {
       n.setLogicalName(i->second);
@@ -673,4 +672,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.22 2003/02/25 00:20:22 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.23 2003/02/25 00:24:21 ezix Exp $";
