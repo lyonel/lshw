@@ -9,13 +9,34 @@
 #include <limits.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <dirent.h>
+#include <libgen.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
-static char *id = "@(#) $Id: sysfs.cc,v 1.1 2004/01/19 16:15:15 ezix Exp $";
+static char *id = "@(#) $Id: sysfs.cc,v 1.2 2004/01/19 17:20:45 ezix Exp $";
 
 #define SYS		"/sys"
 
+static int selectdir(const struct dirent *d)
+{
+  struct stat buf;
+
+  if (d->d_name[0] == '.')
+    return 0;
+
+  if (lstat(d->d_name, &buf) != 0)
+    return 0;
+
+  return S_ISDIR(buf.st_mode);
+}
+
 static string sysfs_getbustype(const string & path)
 {
+  struct dirent **namelist;
+  int i, n;
+  string devname;
+
 /*
   to determine to which kind of bus a device is connected:
   - for each subdirectory of /sys/bus,
@@ -23,7 +44,29 @@ static string sysfs_getbustype(const string & path)
   - check if this link and 'path' point to the same inode
   - if they do, the bus type is the name of the current directory
  */
-  return "pci";
+  pushd(SYS "/bus");
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  for (i = 0; i < n; i++)
+  {
+    devname =
+      string(SYS "/bus/") + string(namelist[i]->d_name) + "/devices/" +
+      basename((char *) path.c_str());
+
+    if (samefile(devname, path))
+      return string(namelist[i]->d_name);
+  }
+
+  return "";
+}
+
+static string sysfstopci(const string & path)
+{
+  if (path.length() > 7)
+    return path.substr(path.length() - 7);
+  else
+    return "";
 }
 
 static string sysfstobusinfo(const string & path)
@@ -31,12 +74,7 @@ static string sysfstobusinfo(const string & path)
   string bustype = sysfs_getbustype(path);
 
   if (bustype == "pci")
-  {
-    if (path.length() > 7)
-      return path.substr(path.length() - 7);
-    else
-      return "";
-  }
+    return sysfstopci(path);
 
   return "";
 }
