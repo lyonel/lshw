@@ -1,3 +1,5 @@
+PACKAGENAME?=lshw
+
 CXX=c++
 CC=cc
 GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)

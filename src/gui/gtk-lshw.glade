@@ -295,7 +295,6 @@
 	<widget class="GtkLabel" id="aboutext">
 	  <property name="visible">True</property>
 	  <property name="label" translatable="yes">&lt;big&gt;&lt;b&gt;GTK+ front-end for &lt;tt&gt;lshw&lt;/tt&gt;&lt;/b&gt;&lt;/big&gt;
-&lt;i&gt;A.01.08&lt;/i&gt;
 
 (c) 2004, Lyonel Vincent
 &lt;tt&gt;lyonel@ezix.org&lt;/tt&gt;

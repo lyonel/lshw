@@ -7,6 +7,7 @@
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
+#include "version.h"
 
 static GtkWidget *about = NULL;
 static GtkWidget *saveas = NULL;
@@ -66,7 +67,7 @@ void
 on_version_realize                     (GtkWidget       *widget,
                                         gpointer         user_data)
 {
-  gtk_label_set_text(GTK_LABEL(widget), "coucou");
+  gtk_label_set_text(GTK_LABEL(widget), getpackageversion());
 }
 
 

@@ -20,9 +20,6 @@ LDFLAGS=-L./core/
 LDSTATIC=-static
 LIBS=-llshw
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o lshw.o usb.o sysfs.o display.o heuristics.o
-SRCS = $(OBJS:.o=.cc)
-
 DATAFILES = pci.ids
 
 all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
@@ -36,11 +33,15 @@ core/lib$(PACKAGENAME).a:
 $(PACKAGENAME): core/lib$(PACKAGENAME).a $(PACKAGENAME).o
 	$(CXX) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS) 
 
+.PHONY: gui
+gui: core/lib$(PACKAGENAME).a
+	make -C gui all
+
 .PHONY: static
 static: $(PACKAGENAME)-static
 
-$(PACKAGENAME)-static: $(OBJS)
-	$(CXX) $(LDSTATIC) $(LDFLAGS) -o $@ $(LIBS) $^
+$(PACKAGENAME)-static: core/lib$(PACKAGENAME).a $(PACKAGENAME).o
+	$(CXX) $(LDSTATIC) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS)
 	strip $@
 
 .PHONY: compressed
