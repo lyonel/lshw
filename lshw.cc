@@ -7,11 +7,11 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: lshw.cc,v 1.1 2003/10/13 09:57:00 ezix Exp $";
+static char *id = "@(#) $Id: lshw.cc,v 1.2 2003/11/07 16:51:06 ezix Exp $";
 
 void usage(const char *progname)
 {
-  fprintf(stderr, "Harware Lister (lshw) - %s\n", getpackageversion());
+  fprintf(stderr, "Hardware Lister (lshw) - %s\n", getpackageversion());
   fprintf(stderr, "usage: %s [-options ...]\n", progname);
   fprintf(stderr, "\t-version        print program version\n");
   fprintf(stderr, "\t-html           output hardware tree as HTML\n");
