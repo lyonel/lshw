@@ -3,7 +3,7 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "09 January 2005" "$Rev: 810 $" ""
+.TH "LSHW" "1" "21 January 2005" "$Rev: 901 $" ""
 
 .SH NAME
 lshw \- list hardware
@@ -15,7 +15,7 @@ lshw \- list hardware
 \fBlshw\fR [ \fB-help\fR ]
 
 
-\fBlshw\fR [ \fB-html\fR | \fB-short\fR | \fB-xml\fR ] [ \fB-class \fIclass\fB\fR\fI ...\fR ] [ \fB-disable \fItest\fB\fR\fI ...\fR ] [ \fB-enable \fItest\fB\fR\fI ...\fR ]
+\fBlshw\fR [ \fB-html\fR | \fB-short\fR | \fB-xml\fR | \fB-businfo\fR ] [ \fB-class \fIclass\fB\fR\fI ...\fR ] [ \fB-disable \fItest\fB\fR\fI ...\fR ] [ \fB-enable \fItest\fB\fR\fI ...\fR ]
 
 .SH "DESCRIPTION"
 .PP
@@ -49,8 +49,11 @@ Outputs the device tree as an XML tree.
 \fB-short\fR
 Outputs the device tree showing hardware paths, very much like the output of HP-UX\&'s \fBioscan\fR\&.
 .TP
+\fB-businfo\fR
+Outputs the device list showing bus information, detailing SCSI, USB, IDE and PCI addresses.
+.TP
 \fB-class \fIclass\fB\fR
-Only show the given class of hardware. \fIclass\fR can be found using \fBlshw -short\fR\&.
+Only show the given class of hardware. \fIclass\fR can be found using \fBlshw -short\fR or \fBlshw -businfo\fR\&.
 .TP
 \fB-C \fIclass\fB\fR
 Alias for \fB-class\fR \fIclass\fR\&.
@@ -98,6 +101,9 @@ Used on x86 platforms to access CPU-specific configuration.
 .TP
 \fB/proc/device-tree/*\fR
 Used on PowerPC platforms to access OpenFirmware configuration.
+.TP
+\fB/proc/bus/usb/*\fR
+Used to access the configuration of installed USB busses and devices.
 .TP
 \fB/sys/*\fR
 Used on 2.6 kernels to access hardware/driver configuration information.
