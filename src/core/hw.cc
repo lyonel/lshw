@@ -28,6 +28,7 @@ struct hwNode_i
     map < string, string > features_descriptions;
     vector < resource > resources;
     map < string, string > config;
+    map < string, value > hints;
 };
 
 string hw::strip(const string & s)
@@ -1085,6 +1086,10 @@ void hwNode::merge(const hwNode & node)
   for (map < string, string >::iterator i = node.This->config.begin();
        i != node.This->config.end(); i++)
     setConfig(i->first, i->second);
+
+  for (map < string, value >::iterator i = node.This->hints.begin();
+       i != node.This->hints.end(); i++)
+    addHint(i->first, i->second);
 }
 
 void hwNode::addResource(const resource & r)
@@ -1133,6 +1138,12 @@ unsigned int hwNode::getWidth() const
     return This->width;
   else
     return 0;
+}
+
+void hwNode::addHint(const string & id, const value & v)
+{
+  if(This)
+    This->hints[id] = v;
 }
 
 struct hw::resource_i
@@ -1350,3 +1361,112 @@ bool resource::operator == (const resource & r)
 	 default:return false;
        }
      }
+
+struct hw::value_i
+{
+  hw::hwValueType type;
+
+    long long ll;
+    string s;
+    bool b;
+
+  int refcount;
+};
+
+value::value()
+{
+  This = new hw::value_i;
+
+  if(This)
+  {
+    This->type = nil;
+    This->refcount = 1;
+  }
+}
+
+value::~value()
+{
+  if(This)
+  {
+    This->refcount--;
+    if(This->refcount<=0)
+      delete This;
+    This = NULL;
+  }
+}
+
+value::value(long long ll)
+{
+  This = new hw::value_i;
+
+  if(This)
+  {
+    This->type = integer;
+    This->ll = ll;
+    This->refcount = 1;
+  }
+}
+
+value::value(const string & s)
+{
+  This = new hw::value_i;
+
+  if(This)
+  {
+    This->type = text;
+    This->s = s;
+    This->refcount = 1;
+  }
+}
+
+value::value(const value & v)
+{
+  This = v.This;
+
+  if(This)
+  {
+    This->refcount++;
+  }
+}
+
+value & value::operator=(const value & v)
+{
+  if(v.This == This) return *this;
+
+  if(This)
+  {
+    This->refcount--;
+    if(This->refcount<=0)
+      delete This;
+  }
+
+  This = v.This;
+  if(This)
+    This->refcount++;
+
+  return *this;
+}
+
+bool value::operator==(const value & v) const
+{
+  if(v.This == This) return true;
+
+  if(!v.This || !This) return false;
+
+  if(v.This->type != This->type) return false;
+
+  switch(This->type)
+  {
+    case hw::integer:
+      return This->ll == v.This->ll;
+    case hw::text:
+      return This->s == v.This->s;
+    case hw::boolean:
+      return This->b == v.This->b;
+    case hw::nil:
+      return true;
+  };
+
+  return false;
+}
+

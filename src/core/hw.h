@@ -28,6 +28,7 @@ typedef enum {
 	generic} hwClass;
 
 typedef enum { none, iomem, ioport, mem, irq, dma } hwResourceType;
+typedef enum { nil, boolean, integer, text } hwValueType;
 
 string hw::strip(const string &);
 
@@ -52,6 +53,24 @@ class resource
 
   private:
 	struct resource_i * This;
+
+};
+
+class value
+{
+  public:
+
+        value();
+        ~value();
+        value(const value &);
+        value(long long);
+        value(const string &);
+	value & operator =(const value &);
+
+	bool operator ==(const value &) const;
+
+  private:
+	struct value_i * This;
 
 };
 
@@ -168,7 +187,8 @@ class hwNode
 	bool usesResource(const hw::resource &) const;
 	vector<string> getResources(const string & separator = "") const;
 
-        void setSpeed(double s, const string & units = "");
+	void addHint(const string &, const hw::value &);
+	hw::value getHint(const string &) const;
 
 	void merge(const hwNode & node);
 

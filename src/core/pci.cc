@@ -594,6 +594,22 @@ static bool scan_resources(hwNode & n,
   return true;
 }
 
+static void addHints(hwNode & n,
+		long _vendor,
+		long _device,
+		long _subvendor,
+		long _subdevice,
+		long _class)
+{
+  n.addHint("pci.vendor", _vendor);
+  n.addHint("pci.device", _device);
+#if 0
+  n.addHint("pci.subvendor", _subvendor);
+  n.addHint("pci.subdevice", _subdevice);
+#endif
+  n.addHint("pci.class", _class);
+}
+
 bool scan_pci(hwNode & n)
 {
   FILE *f;
@@ -684,6 +700,7 @@ bool scan_pci(hwNode & n)
 	host.setProduct(get_device_description(d.vendor_id, d.device_id));
 	host.setHandle(pci_bushandle(d.bus));
 	host.setVersion(revision);
+        addHints(host, d.vendor_id, d.device_id, 0, 0, dclass);
 	host.claim();
 	host.setBusInfo(businfo);
 	if (d.size[0] > 0)

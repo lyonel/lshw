@@ -264,6 +264,8 @@ static bool describeUSB(hwNode & device, unsigned vendor, unsigned prodid)
   if(usbvendors.find(vendor)==usbvendors.end()) return false;
 
   device.setVendor(usbvendors[vendor]);
+  device.addHint("usb.idVendor", vendor);
+  device.addHint("usb.idProduct", prodid);
 
   if(usbproducts.find(PRODID(vendor, prodid))!=usbproducts.end())
     device.setProduct(usbproducts[PRODID(vendor, prodid)]);
@@ -412,6 +414,9 @@ bool scan_usb(hwNode & n)
               device.describeCapability("usb-1.00", "USB 1.0");
               device.describeCapability("usb-1.10", "USB 1.1");
               device.describeCapability("usb-2.00", "USB 2.0");
+              device.addHint("usb.bDeviceClass", cls);
+              device.addHint("usb.bDeviceSubClass", sub);
+              device.addHint("usb.bDeviceProtocol", prot);
             }
             break;
           case 'P':
