@@ -390,8 +390,7 @@ bool scan_cpuinfo(hwNode & n)
     cpuinfo_str = "";		// free memory
 #if defined(__powerpc__)
     currentcpu = 0;
-#endif
-#if defined(__ia64__) || defined(__hppa__) || defined(__i386__) || defined(__x86_64__)
+#else
     currentcpu = -1;
 #endif
 
