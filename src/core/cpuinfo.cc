@@ -138,9 +138,9 @@ static void cpuinfo_hppa(hwNode & node,
   {
     cpu->claim(true);
 
-    if (id == "cpu" && cpu->getVersion() == "")
+    if (id == "cpu family" && cpu->getVersion() == "")
       cpu->setVersion(value);
-    if (id == "cpu family" && cpu->getProduct() == "")
+    if (id == "cpu" && cpu->getProduct() == "")
       cpu->setProduct(value);
     if (id == "cpu MHz" && cpu->getSize() == 0)
     {
