@@ -66,12 +66,12 @@ string pwd()
     return "";
 }
 
-int splitlines(const string & s,
+size_t splitlines(const string & s,
 	       vector < string > &lines,
 	       char separator)
 {
   size_t i = 0, j = 0;
-  int count;
+  size_t count = 0;
 
   lines.clear();
 

@@ -14,7 +14,7 @@ bool samefile(const std::string & path1, const std::string & path2);
 std::string resolvesymlinks(const std::string & path);
 bool loadfile(const std::string & file, std::vector < std::string > &lines);
 
-int splitlines(const std::string & s,
+size_t splitlines(const std::string & s,
 		std::vector < std::string > &lines,
 		char separator = '\n');
 std::string get_string(const std::string & path, const std::string & def = "");
