@@ -107,7 +107,7 @@ struct usbdevfs_ctrltransfer
 
 #define USBDEVFS_CONTROL	_IOWR('U', 0, struct usbdevfs_ctrltransfer)
 
-static char *id = "@(#) $Id: usb.cc,v 1.3 2003/11/18 00:02:54 ezix Exp $";
+static char *id = "@(#) $Id: usb.cc,v 1.4 2003/11/18 00:05:07 ezix Exp $";
 
 static int usb_control_msg(int fd,
 			   u_int8_t requesttype,
@@ -161,14 +161,10 @@ static string get_string(int fd,
 		    (USB_DT_STRING << 8) | id, 0, sizeof(b), b);
   if (ret < 0)
   {
-    fprintf(stderr, "cannot get string descriptor %d, error = %s(%d)\n", id,
-	    strerror(errno), errno);
     return "";
   }
   if (ret < 2 || b[0] < 2 || b[1] != USB_DT_STRING)
   {
-    fprintf(stderr, "string descriptor %d invalid (%02x %02x; len=%d)\n", id,
-	    b[0], b[1], ret);
     return "";
   }
 
