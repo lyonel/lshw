@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600.00000pt"
+   height="600.00000pt"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.41"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
+   sodipodi:docname="disc.svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="374.99974"
+     inkscape:cy="358.37609"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="883"
+     inkscape:window-height="615"
+     inkscape:window-x="0"
+     inkscape:window-y="26" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF
+       id="RDF5">
+      <cc:Work
+         rdf:about=""
+         id="Work6">
+        <dc:format
+           id="format7">image/svg+xml</dc:format>
+        <dc:type
+           id="type9"
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title
+           id="title1294">Hard disc</dc:title>
+        <dc:date
+           id="date1296">2003/03/28</dc:date>
+        <dc:creator
+           id="creator1298">
+          <cc:Agent
+             id="Agent1300">
+            <dc:title
+               id="title1302">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher
+           id="publisher1304">
+          <cc:Agent
+             id="Agent1306">
+            <dc:title
+               id="title1308">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier
+           id="identifier1310">disc</dc:identifier>
+        <dc:source
+           id="source1312">$Id$</dc:source>
+        <dc:language
+           id="language1314">C</dc:language>
+        <dc:subject
+           id="subject1316">
+          <rdf:Bag
+             id="Bag1318">
+            <rdf:li
+               id="li1380">disc disk hard drive storage</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"
+           id="license1382" />
+      </cc:Work>
+      <cc:License
+         id="License1384"
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           id="permits1386"
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           id="permits1388"
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           id="requires1390"
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           id="permits1392"
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           id="requires1394"
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           id="requires1396"
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2097"
+       transform="translate(-4.040610,-50.50763)">
+      <path
+         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:30.000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+         d="M 385.43947,393.19801 C 215.57418,393.19801 77.712480,448.68828 77.712480,517.07561 C 77.712480,585.46294 215.57418,640.95323 385.43947,640.95320 C 555.30479,640.95320 693.16645,585.46294 693.16645,517.07561 C 693.16645,448.68828 555.30479,393.19799 385.43947,393.19801 z M 385.43947,496.35649 C 413.83533,496.35649 436.88758,505.64351 436.88758,517.07561 C 436.88758,528.50772 413.83536,537.79473 385.43947,537.79473 C 357.04359,537.79471 333.99137,528.50771 333.99137,517.07561 C 333.99134,505.64352 357.04362,496.35649 385.43947,496.35649 z "
+         id="path2060" />
+      <path
+         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:30.000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+         d="M 385.43946,299.94524 C 215.57416,299.94525 77.720715,355.43292 77.720715,423.82024 C 77.720716,492.20758 215.57417,547.69526 385.43946,547.69524 C 555.30476,547.69526 693.15821,492.20757 693.15821,423.82024 C 693.15822,355.43293 555.30477,299.94521 385.43946,299.94524 z M 386.87696,311.60149 C 410.85394,311.60148 430.31446,319.75211 430.31446,329.78899 C 430.31446,339.82587 410.85394,347.97649 386.87696,347.97649 C 362.89998,347.97650 343.43946,339.82587 343.43946,329.78899 C 343.43946,319.75211 362.89998,311.60149 386.87696,311.60149 z M 385.43946,403.10149 C 413.83531,403.10147 436.87696,412.38814 436.87696,423.82024 C 436.87697,435.25237 413.83535,444.53899 385.43946,444.53899 C 357.04357,444.53899 334.00196,435.25234 334.00196,423.82024 C 334.00194,412.38817 357.04361,403.10149 385.43946,403.10149 z "
+         id="path2062" />
+      <path
+         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:30.000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+         d="M 385.43946,206.68729 C 215.57417,206.68729 77.712487,262.17756 77.712487,330.56489 C 77.712487,398.95221 215.57417,454.44251 385.43946,454.44248 C 555.30477,454.44248 693.16644,398.95221 693.16644,330.56489 C 693.16644,262.17756 555.30477,206.68726 385.43946,206.68729 z M 385.43946,309.84577 C 413.83531,309.84577 436.88757,319.13279 436.88757,330.56489 C 436.88757,341.99700 413.83535,351.28400 385.43946,351.28400 C 357.04358,351.28399 333.99136,341.99699 333.99136,330.56489 C 333.99132,319.13280 357.04359,309.84577 385.43946,309.84577 z "
+         id="path2064" />
+    </g>
+  </g>
+</svg>
