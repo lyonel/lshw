@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 #ifdef __i386__
 
@@ -455,6 +456,61 @@ static bool haveCPUID()
   return flag_is_changeable_p(0x200000);
 }
 
+/*
+ * Estimate CPU MHz routine by Andrea Arcangeli <andrea@suse.de>
+ * Small changes by David Sterba <sterd9am@ss1000.ms.mff.cuni.cz>
+ *
+ */
+
+static __inline__ unsigned long long int rdtsc()
+{
+  unsigned long long int x;
+  __asm__ volatile (".byte 0x0f, 0x31":"=A" (x));
+  return x;
+}
+
+static float estimate_MHz(int cpunum)
+{
+  struct timezone tz;
+  struct timeval tvstart, tvstop;
+  unsigned long long int cycles[2];	/* gotta be 64 bit */
+  float microseconds;		/* total time taken */
+  unsigned long eax, ebx, ecx, edx;
+  double freq = 1.0f;
+
+  /*
+   * Make sure we have a TSC (and hence RDTSC) 
+   */
+  cpuid(cpunum, 1, eax, ebx, ecx, edx);
+  if ((edx & (1 << 4)) == 0)
+  {
+    return 0;			// can't estimate frequency
+  }
+
+  memset(&tz, 0, sizeof(tz));
+
+  /*
+   * get this function in cached memory 
+   */
+  gettimeofday(&tvstart, &tz);
+  cycles[0] = rdtsc();
+  gettimeofday(&tvstart, &tz);
+
+  /*
+   * we don't trust that this is any specific length of time 
+   */
+  usleep(250000);
+
+  gettimeofday(&tvstop, &tz);
+  cycles[1] = rdtsc();
+  gettimeofday(&tvstop, &tz);
+
+  microseconds = (tvstop.tv_sec - tvstart.tv_sec) * 1000000 +
+    (tvstop.tv_usec - tvstart.tv_usec);
+
+  return (float) (cycles[1] - cycles[0]) / (microseconds / freq);
+}
+
 bool scan_cpuid(hwNode & n)
 {
   unsigned long maxi, unused, eax, ebx, ecx, edx;
@@ -484,6 +540,9 @@ bool scan_cpuid(hwNode & n)
       return false;
     }
 
+    if (cpu->getSize() == 0)
+      cpu->setSize((long long) (1000000 * estimate_MHz(currentcpu)));
+
     currentcpu++;
   }
 
@@ -497,4 +556,4 @@ bool scan_cpuid(hwNode & n)
 }
 #endif
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.7 2003/02/02 18:38:42 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.8 2003/02/02 18:56:52 ezix Exp $";
