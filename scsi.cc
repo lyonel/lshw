@@ -613,7 +613,7 @@ static bool scan_sg(int sg,
   }
 
   if (!parent)
-    parent = n.findChildByLogicalName(string(host));
+    parent = n.findChildByLogicalName(host);
 
   if (!parent)
     parent = n.addChild(hwNode("scsi", hw::bus));
@@ -793,4 +793,4 @@ bool scan_scsi(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: scsi.cc,v 1.27 2003/02/28 22:16:04 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.28 2003/03/08 18:27:18 ezix Exp $";

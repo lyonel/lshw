@@ -15,6 +15,9 @@ all: $(PACKAGENAME)
 
 $(PACKAGENAME): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(LIBS) $^
+
+$(PACKAGENAME).1: $(PACKAGENAME).sgml
+	docbook2man $<
 	
 clean:
 	rm -f $(OBJS) $(PACKAGENAME) core

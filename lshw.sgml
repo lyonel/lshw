@@ -1,0 +1,92 @@
+<!DOCTYPE RefEntry PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+<refentry id="lshw">
+
+<refmeta>
+<refentrytitle>lshw</refentrytitle>
+<manvolnum>1</manvolnum>
+<refmiscinfo>lshw</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>lshw</refname>
+<refpurpose>
+list hardware
+</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+ <cmdsynopsis>
+   <command>lshw</command> 
+        <arg choice="opt">-version</arg>
+        <arg choice="opt">-help</arg>
+	<arg choice="opt">-html</arg>
+   </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1><title>COPYRIGHT</title>
+<para>
+<application>lshw</application> is (c) Lyonel Vincent 
+<email>vincentl@ec-lyon.fr</email>
+<ulink url="http://ezix.org/software/lshw.html"></ulink></para>
+</refsect1>
+
+<refsect1><title>DESCRIPTIONS</title>
+<para>
+<indexterm><primary>lshw</primary></indexterm>
+<application>lshw</application>
+is small tool to provide detailed information on the hardware
+configuration of the machine. It can report exact memory
+configuration, firmware version, mainboard configuration, 
+<hardware>CPU</hardware> version
+and speed, cache configuration, bus speed, etc. on 
+<acronym>DMI</acronym>-capable x86
+systems and on some <productname>PowerPC</productname>
+machines (<productname>PowerMac G4</productname> is known to work).
+</para>
+
+<para>
+<variablelist>
+<varlistentry><term>-version</term>
+<listitem><para>
+Displays the version of <application>lshw</application> and exits.
+</para></listitem></varlistentry>
+<varlistentry><term>-help</term>
+<listitem><para>
+Displays the available command line options and quits.
+</para></listitem></varlistentry>
+<varlistentry><term>-html</term>
+<listitem><para>
+Creates a HTML fragment for inclusion into a web page.
+</para></listitem></varlistentry>
+</variablelist>
+</para>
+
+</refsect1>
+
+<refsect1><title>BUGS</title>
+<para>
+<application>lshw</application> currently does not detect 
+<hardware>USB</hardware> or <hardware>Firewire</hardware>(<hardware>IEEE1394</hardware>) devices.
+</para>
+
+<para>
+Not all architectures supported by GNU/Linux are fully supported (e.g.
+<hardware>CPU</hardware> detection).
+</para>
+
+</refsect1>
+
+<refsect1><title>NOTES</title>
+<para>
+<application>lshw</application> must be run as super user or it will only report partial information.
+</para>
+
+</refsect1>
+
+<refsect1><title>SEE ALSO</title>
+<para><filename>/proc/*</filename>, <application>linuxinfo</application>(1),
+<application>lspci</application>(8)
+</para>
+</refsect1>
+</refentry>
+
