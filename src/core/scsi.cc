@@ -709,7 +709,7 @@ static bool scan_sg(int sg,
   memset(slot_name, 0, sizeof(slot_name));
   if (ioctl(fd, SCSI_IOCTL_GET_PCI, slot_name) >= 0)
   {
-    parent = n.findChildByBusInfo(guessBusInfo(slot_name));
+    parent = n.findChildByBusInfo(guessBusInfo(hw::strip(slot_name)));
   }
 
   if (!parent)
@@ -740,6 +740,8 @@ static bool scan_sg(int sg,
     return true;
   }
 
+  if(parent->getBusInfo() == "")
+    parent->setBusInfo(guessBusInfo(hw::strip(slot_name)));
   parent->setLogicalName(host);
   parent->claim();
 
