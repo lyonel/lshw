@@ -18,5 +18,10 @@ on_about1_activate                     (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
 void
-on_aboutclose                          (GtkButton       *button,
+on_aboutclose_activate                 (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_version_realize                     (GtkWidget       *widget,
+                                        gpointer         user_data);
+

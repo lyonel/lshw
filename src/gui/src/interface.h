@@ -4,4 +4,3 @@
 
 GtkWidget* create_lshw (void);
 GtkWidget* create_aboutlshw (void);
-GtkWidget* create_saveas (void);

@@ -15,11 +15,11 @@ void
 save_as                                (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
-  if(!GTK_IS_WIDGET(saveas))
+  /*if(!GTK_IS_WIDGET(saveas))
   {
     saveas = create_saveas();
     gtk_widget_show(saveas);
-  }
+  }*/
 }
 
 
@@ -52,13 +52,21 @@ on_about1_activate                     (GtkMenuItem     *menuitem,
 
 
 void
-on_aboutclose                 (GtkButton       *button,
+on_aboutclose_activate          (GtkButton       *button,
                                         gpointer         user_data)
 {
   if(GTK_IS_WIDGET(about))
   {
     gtk_widget_destroy(about);
-    about = NULL;
   }
 }
+
+
+void
+on_version_realize                     (GtkWidget       *widget,
+                                        gpointer         user_data)
+{
+  gtk_label_set_text(GTK_LABEL(widget), "coucou");
+}
+
 
