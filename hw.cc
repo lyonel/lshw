@@ -172,7 +172,7 @@ void hwNode::setHandle(const string & handle)
 string hwNode::getDescription() const
 {
   if (This)
-    return This->description + " " + This->handle;
+    return This->description;
   else
     return "";
 }
