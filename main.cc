@@ -6,6 +6,7 @@
 #include "dmi.h"
 #include "cpuinfo.h"
 #include "device-tree.h"
+#include "pci.h"
 
 #include <unistd.h>
 
@@ -13,8 +14,6 @@ int main(int argc,
 	 char **argv)
 {
   char hostname[80];
-
-  cout << argv[0] << " version " << getpackageversion() << endl << endl;
 
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
@@ -25,11 +24,12 @@ int main(int argc,
     scan_device_tree(computer);
     scan_memory(computer);
     scan_cpuinfo(computer);
+    scan_pci(computer);
 
-    print(computer);
+    print(computer, false);
   }
 
   return 0;
 }
 
-static char *id = "@(#) $Id: main.cc,v 1.9 2003/01/25 10:03:23 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.10 2003/01/26 21:22:31 ezix Exp $";

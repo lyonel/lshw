@@ -50,60 +50,127 @@ static void kilobytes(unsigned long long value)
 }
 
 void print(const hwNode & node,
+	   bool html,
 	   int level)
 {
-  tab(level);
+  tab(level, !html);
+
+  if (html)
+    cout << "<b>";
   cout << node.getId();
   if (node.disabled())
     cout << " DISABLED";
+  if (html)
+    cout << "</b><br>";
   cout << endl;
 
+  if (html)
+  {
+    tab(level, false);
+    cout << "<ul>" << endl;
+    tab(level, false);
+    cout << "<table bgcolor=\"#e8e0e0\">" << endl;
+  }
   if (node.getDescription() != "")
   {
     tab(level + 1, false);
-    cout << "description: " << node.getDescription() << endl;
+    if (html)
+      cout << "<tr><td>";
+    cout << "description: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getDescription();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
   }
 
   if (node.getProduct() != "")
   {
     tab(level + 1, false);
-    cout << "product: " << node.getProduct() << endl;
+    if (html)
+      cout << "<tr><td>";
+    cout << "product: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getProduct();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
   }
 
   if (node.getVendor() != "")
   {
     tab(level + 1, false);
-    cout << "vendor: " << node.getVendor() << endl;
+    if (html)
+      cout << "<tr><td>";
+    cout << "vendor: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getVendor();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
   }
 
   if (node.getVersion() != "")
   {
     tab(level + 1, false);
-    cout << "version: " << node.getVersion() << endl;
+    if (html)
+      cout << "<tr><td>";
+    cout << "version: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getVersion();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
   }
 
   if (node.getSerial() != "")
   {
     tab(level + 1, false);
-    cout << "serial: " << node.getSerial() << endl;
+    if (html)
+      cout << "<tr><td>";
+    cout << "serial: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getSerial();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
   }
 
   if (node.getSlot() != "")
   {
     tab(level + 1, false);
-    cout << "slot: " << node.getSlot() << endl;
+    if (html)
+      cout << "<tr><td>";
+    cout << "slot: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getSlot();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
   }
 
   if (node.getSize() > 0)
   {
     tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
     cout << "size: ";
+    if (html)
+      cout << "</td><td>";
     switch (node.getClass())
     {
     case hw::memory:
     case hw::address:
     case hw::storage:
       kilobytes(node.getSize());
+      if (html)
+	cout << "</td></tr>";
       break;
 
     case hw::processor:
@@ -111,10 +178,14 @@ void print(const hwNode & node,
     case hw::system:
       decimalkilos(node.getSize());
       cout << "Hz";
+      if (html)
+	cout << "</td></tr>";
       break;
 
     default:
       cout << node.getSize();
+      if (html)
+	cout << "</td></tr>";
     }
     cout << endl;
   }
@@ -122,6 +193,8 @@ void print(const hwNode & node,
   if (node.getCapacity() > 0)
   {
     tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
     cout << "capacity: ";
     switch (node.getClass())
     {
@@ -129,6 +202,8 @@ void print(const hwNode & node,
     case hw::address:
     case hw::storage:
       kilobytes(node.getCapacity());
+      if (html)
+	cout << "</td></tr>";
       break;
 
     case hw::processor:
@@ -136,10 +211,14 @@ void print(const hwNode & node,
     case hw::system:
       decimalkilos(node.getCapacity());
       cout << "Hz";
+      if (html)
+	cout << "</td></tr>";
       break;
 
     default:
       cout << node.getCapacity();
+      if (html)
+	cout << "</td></tr>";
     }
     cout << endl;
   }
@@ -147,6 +226,8 @@ void print(const hwNode & node,
   if (node.getClass() == hw::address)
   {
     tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
     if (node.getSize() == 0)
       cout << "address: " << hex << setfill('0') << setw(8) << node.
 	getStart() << dec;
@@ -160,24 +241,48 @@ void print(const hwNode & node,
   if (node.getClock() > 0)
   {
     tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
     cout << "clock: ";
+    if (html)
+      cout << "</td><td>";
     decimalkilos(node.getClock());
     cout << "Hz";
     if (node.getClass() == hw::memory)
       cout << " (" << 1.0e9 / node.getClock() << "ns)";
+    if (html)
+      cout << "</td></tr>";
     cout << endl;
   }
 
   if (node.getCapabilities() != "")
   {
     tab(level + 1, false);
-    cout << "capabilities: " << node.getCapabilities() << endl;
+    if (html)
+      cout << "<tr><td>";
+    cout << "capabilities: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getCapabilities();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
   }
 
+  if (html)
+  {
+    tab(level, false);
+    cout << "</table>" << endl;
+  }
   for (int i = 0; i < node.countChildren(); i++)
   {
-    print(*node.getChild(i), level + 1);
+    print(*node.getChild(i), html, level + 1);
+  }
+  if (html)
+  {
+    tab(level, false);
+    cout << "</ul>" << endl;
   }
 }
 
-static char *id = "@(#) $Id: print.cc,v 1.20 2003/01/25 10:00:30 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.21 2003/01/26 21:22:31 ezix Exp $";

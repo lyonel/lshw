@@ -3,6 +3,6 @@
 
 #include "hw.h"
 
-void print(const hwNode & node, int level = 0);
+void print(const hwNode & node, bool html=true, int level = 0);
 
 #endif
