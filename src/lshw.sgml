@@ -105,7 +105,7 @@ Not all architectures supported by GNU/Linux are fully supported (e.g.
 </para>
 
 <para>
-"Virtual" <hardware>SCSI</hardware> interfaces used for <hardware>USB</hardware> mass storage and <hardware>SCSI</hardware> emulation over <hardware>IDE</hardware> are not reported correctly yet.
+"Virtual" <hardware>SCSI</hardware> interfaces used for <hardware>SCSI</hardware> emulation over <hardware>IDE</hardware> are not reported correctly yet.
 </para>
 
 </refsect1>
