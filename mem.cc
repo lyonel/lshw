@@ -17,7 +17,7 @@ bool scan_memory(hwNode & n)
       if (memory->getChild(i)->getClass() == hw::memory)
 	size += memory->getChild(i)->getSize();
 
-    if (memory->getSize() == 0)
+    if ((size > 0) && (memory->getSize() == 0))
     {
       memory->setSize(size);
       return true;
