@@ -384,6 +384,23 @@ static bool docyrix(unsigned long maxi,
 		    hwNode * cpu,
 		    int cpunumber = 0)
 {
+  unsigned long maxei = 0, eax, ebx, ecx, edx;
+  long long l1cache = 0, l2cache = 0;
+  unsigned int family = 0, model = 0, stepping = 0;
+  char buffer[1024];
+
+  if (maxi < 1)
+    return false;
+
+  cpuid(cpunumber, 1, eax, ebx, ecx, edx);
+  stepping = eax & 0xf;
+  model = (eax >> 4) & 0xf;
+  family = (eax >> 8) & 0xf;
+  snprintf(buffer, sizeof(buffer), "%d.%d.%d", family, model, stepping);
+  cpu->setVersion(buffer);
+
+  cpuid(cpunumber, 0x80000000, maxei, ebx, ecx, edx);
+
   return true;
 }
 
@@ -474,4 +491,4 @@ bool scan_cpuid(hwNode & n)
   return true;
 }
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.4 2003/02/02 17:50:41 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.5 2003/02/02 17:53:16 ezix Exp $";
