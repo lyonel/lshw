@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id: fb.cc,v 1.3 2003/11/03 12:39:32 ezix Exp $";
+static char *id = "@(#) $Id: fb.cc,v 1.4 2003/11/03 17:33:57 ezix Exp $";
 
 #define FB_MODES_SHIFT	5	/* 32 modes per framebuffer */
 #define FB_NUM_MINORS	256	/* 256 Minors               */
@@ -249,15 +249,46 @@ bool scan_fb(hwNode & n)
 	    fbdev->setDescription(hw::strip(fbi.id));
 	  fbdev->addCapability("fb");
 
+	  switch (fbi.visual)
+	  {
+	  case FB_VISUAL_MONO01:
+	    fbdev->setConfig("visual", "mono01");
+	    break;
+	  case FB_VISUAL_MONO10:
+	    fbdev->setConfig("visual", "mono10");
+	    break;
+	  case FB_VISUAL_TRUECOLOR:
+	    fbdev->setConfig("visual", "truecolor");
+	    break;
+	  case FB_VISUAL_PSEUDOCOLOR:
+	    fbdev->setConfig("visual", "pseudocolor");
+	    break;
+	  case FB_VISUAL_DIRECTCOLOR:
+	    fbdev->setConfig("visual", "directcolor");
+	    break;
+	  case FB_VISUAL_STATIC_PSEUDOCOLOR:
+	    fbdev->setConfig("visual", "static_pseudocolor");
+	    break;
+	  }
+
+	  if (fbi.accel != FB_ACCEL_NONE)
+	    fbdev->addCapability("accelerated");
+
 	  if (ioctl(fd[i], FBIOGET_VSCREENINFO, &fbconfig) == 0)
 	  {
 	    char vidmode[20];
 	    unsigned int htotal = 0;
 	    unsigned int vtotal = 0;
 
-	    snprintf(vidmode, sizeof(vidmode), "%dx%dx%d", fbconfig.xres,
-		     fbconfig.yres, fbconfig.bits_per_pixel);
+	    snprintf(vidmode, sizeof(vidmode), "%dx%d", fbconfig.xres,
+		     fbconfig.yres);
 	    fbdev->setConfig("mode", vidmode);
+	    snprintf(vidmode, sizeof(vidmode), "%d", fbconfig.xres);
+	    fbdev->setConfig("xres", vidmode);
+	    snprintf(vidmode, sizeof(vidmode), "%d", fbconfig.yres);
+	    fbdev->setConfig("yres", vidmode);
+	    snprintf(vidmode, sizeof(vidmode), "%d", fbconfig.bits_per_pixel);
+	    fbdev->setConfig("depth", vidmode);
 
 	    vtotal =
 	      fbconfig.upper_margin + fbconfig.yres + fbconfig.lower_margin +
