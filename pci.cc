@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.41 2003/12/09 13:47:54 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.42 2004/01/19 16:15:15 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/share/lshw/pci.ids:/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -702,6 +702,8 @@ bool scan_pci(hwNode & n)
 	  host.setClock(66000000UL);	// 66MHz
 	else
 	  host.setClock(33000000UL);	// 33MHz
+
+	scan_resources(host, d);
 
 	if (core)
 	  core->addChild(host);

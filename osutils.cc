@@ -4,8 +4,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <limits.h>
+#include <stdlib.h>
 
-static char *id = "@(#) $Id: osutils.cc,v 1.9 2003/04/30 12:47:46 ezix Exp $";
+static char *id = "@(#) $Id: osutils.cc,v 1.10 2004/01/19 16:15:15 ezix Exp $";
 
 using namespace std;
 
@@ -231,4 +233,18 @@ string find_deventry(mode_t mode,
 {
   (void) &id;			// avoid warning "id defined but not used"
   return find_deventry("/dev", mode, device);
+}
+
+bool samefile(const string & path1,
+	      const string & path2)
+{
+  struct stat stat1;
+  struct stat stat2;
+
+  if (stat(path1.c_str(), &stat1) != 0)
+    return false;
+  if (stat(path2.c_str(), &stat2) != 0)
+    return false;
+
+  return (stat1.st_dev == stat2.st_dev) && (stat1.st_ino == stat2.st_ino);
 }

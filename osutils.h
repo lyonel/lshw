@@ -10,6 +10,8 @@ std::string popd();
 std::string pwd();
 
 bool exists(const std::string & path);
+bool samefile(const std::string & path1, const std::string & path2);
+std::string resolvesymlinks(const std::string & path);
 bool loadfile(const std::string & file, std::vector < std::string > &lines);
 
 int splitlines(const std::string & s,

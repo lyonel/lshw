@@ -16,6 +16,7 @@
 
 #include "network.h"
 #include "osutils.h"
+#include "sysfs.h"
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
@@ -32,7 +33,7 @@
 using namespace std;
 
 static char *id =
-  "@(#) $Id: network.cc,v 1.15 2004/01/14 17:34:21 ezix Exp $";
+  "@(#) $Id: network.cc,v 1.16 2004/01/19 16:15:15 ezix Exp $";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
@@ -388,6 +389,9 @@ bool scan_network(hwNode & n)
       interface.setLogicalName(interfaces[i]);
       interface.claim();
 
+      string businfo = sysfs_getbusinfo("net", interface.getLogicalName());
+      interface.setBusInfo(businfo);
+
       scan_mii(fd, interface);
       scan_ip(interface);
 
@@ -450,7 +454,8 @@ bool scan_network(hwNode & n)
 	interface.setConfig("driver", drvinfo.driver);
 	interface.setConfig("driverversion", drvinfo.version);
 	interface.setConfig("firmware", drvinfo.fw_version);
-	interface.setBusInfo(drvinfo.bus_info);
+	if (interface.getBusInfo() == "")
+	  interface.setBusInfo(drvinfo.bus_info);
       }
 
       if (hwNode * existing = n.findChildByBusInfo(interface.getBusInfo()))

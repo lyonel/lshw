@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.39 2003/11/17 22:29:46 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.40 2004/01/19 16:15:15 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -583,7 +583,7 @@ static string scsi_businfo(int host,
 
   if (channel >= 0)
   {
-    snprintf(businfo, sizeof(businfo), ":%d", channel);
+    snprintf(businfo, sizeof(businfo), ".%d", channel);
     result += string(businfo);
 
     if (target >= 0)
