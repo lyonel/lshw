@@ -1399,7 +1399,7 @@ static void dmi_table(int fd,
 	start = ((data[4] | data[5] << 8) | (data[6] | data[7] << 8) << 16);
 	end = ((data[8] | data[9] << 8) | (data[10] | data[11] << 8) << 16);
 
-	if (end - start < 512)	// memory range is smaller thant 512KB
+	if (end - start < 512)	// memory range is smaller than 512KB
 	{
 	  // consider that values were expressed in megagytes
 	  start *= 1024;
@@ -1413,7 +1413,8 @@ static void dmi_table(int fd,
 
 	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
 
-	if (memorydevice && (newnode.getSize() != 0))
+	if (memorydevice && (newnode.getSize() != 0)
+	    && (newnode.getSize() > memorydevice->getSize()))
 	  memorydevice->addChild(newnode);
       }
       break;
