@@ -889,14 +889,19 @@ static void dmi_table(int fd,
       //
       // special case: if the system characteristics are still unknown,
       // use values from the motherboard
-      if (node.getVendor() == "")
-	node.setVendor(dmi_string(dm, data[4]));
-      if (node.getProduct() == "")
-	node.setProduct(dmi_string(dm, data[5]));
-      if (node.getVersion() == "")
-	node.setVersion(dmi_string(dm, data[6]));
-      if (node.getSerial() == "")
-	node.setSerial(dmi_string(dm, data[7]));
+      {
+	hwNode newnode("board",
+		       hw::bus);
+
+	newnode.setVendor(dmi_string(dm, data[4]));
+	newnode.setProduct(dmi_string(dm, data[5]));
+	newnode.setVersion(dmi_string(dm, data[6]));
+	newnode.setSerial(dmi_string(dm, data[7]));
+
+	newnode.setHandle(handle);
+
+	node.addChild(newnode);
+      }
       break;
 
     case 3:
@@ -937,8 +942,9 @@ static void dmi_table(int fd,
 	{
 	  newnode.setSerial(dmi_string(dm, data[0x20]));
 	  //printf("\t\tAsset Tag: %s\n", dmi_string(dm, data[0x21]));
-	  newnode.setProduct(newnode.getProduct() + " (" +
-			     string(dmi_string(dm, data[0x22])) + ")");
+	  if (dmi_string(dm, data[0x22]) != "")
+	    newnode.setProduct(newnode.getProduct() + " (" +
+			       string(dmi_string(dm, data[0x22])) + ")");
 	}
 	//printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
 
