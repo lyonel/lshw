@@ -178,6 +178,162 @@ static void scan_ip(hwNode & interface)
   }
 }
 
+static int mii_new_ioctl = -1;
+
+static long mii_get_phy_id(int skfd,
+			   hwNode & interface)
+{
+  struct ifreq ifr;
+
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  u16 *data = (u16 *) (&ifr.ifr_data);
+
+  mii_new_ioctl = -1;
+
+  if (ioctl(skfd, 0x8947, &ifr) >= 0)
+  {
+    mii_new_ioctl = 1;		// new ioctls
+  }
+  else if (ioctl(skfd, SIOCDEVPRIVATE, &ifr) >= 0)
+  {
+    mii_new_ioctl = 0;		// old ioctls
+  }
+  else
+  {
+    return -1;			// this interface doesn't support ioctls at all
+  }
+
+  interface.addCapability("mii");
+  return data[0];
+}
+
+static int mdio_read(int skfd,
+		     int phy_id,
+		     int location,
+		     hwNode & interface)
+{
+  struct ifreq ifr;
+
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  u16 *data = (u16 *) (&ifr.ifr_data);
+
+  data[0] = phy_id;
+  data[1] = location;
+
+  if (ioctl(skfd, mii_new_ioctl ? 0x8948 : SIOCDEVPRIVATE + 1, &ifr) < 0)
+    return -1;
+
+  return data[3];
+}
+
+static const char *media_names[] = {
+  "10bt", "10bt-fd", "100bt", "100bt-fd", "100bt4",
+  "flow-control", 0,
+};
+
+static bool scan_mii(int fd,
+		     hwNode & interface)
+{
+  long phy_id = mii_get_phy_id(fd, interface);
+
+  if (phy_id < 0)
+    return false;
+
+  int mii_reg, i;
+  u16 mii_val[32];
+  u16 bmcr, bmsr, nway_advert, lkpar;
+
+  for (mii_reg = 0; mii_reg < 8; mii_reg++)
+    mii_val[mii_reg] = mdio_read(fd, phy_id, mii_reg, interface);
+
+  if (mii_val[0] == 0xffff || mii_val[1] == 0x0000)	// no MII transceiver present
+    return false;
+
+  /*
+   * Descriptive rename. 
+   */
+  bmcr = mii_val[0];
+  bmsr = mii_val[1];
+  nway_advert = mii_val[4];
+  lkpar = mii_val[5];
+
+  if (lkpar & 0x4000)
+  {
+    int negotiated = nway_advert & lkpar & 0x3e0;
+    int max_capability = 0;
+    /*
+     * Scan for the highest negotiated capability, highest priority
+     * (100baseTx-FDX) to lowest (10baseT-HDX). 
+     */
+    int media_priority[] = { 8, 9, 7, 6, 5 };	/* media_names[i-5] */
+    for (i = 0; media_priority[i]; i++)
+      if (negotiated & (1 << media_priority[i]))
+      {
+	max_capability = media_priority[i];
+	break;
+      }
+
+    if (max_capability)
+    {
+      switch (max_capability - 5)
+      {
+      case 0:
+	interface.setConfig("autonegociated", "10bt");
+	interface.setConfig("duplex", "half");
+	break;
+      case 1:
+	interface.setConfig("autonegociated", "10bt");
+	interface.setConfig("duplex", "full");
+	break;
+      case 2:
+	interface.setConfig("autonegociated", "100bt");
+	interface.setConfig("duplex", "half");
+	break;
+      case 3:
+	interface.setConfig("autonegociated", "100bt");
+	interface.setConfig("duplex", "full");
+	break;
+      case 4:
+	interface.setConfig("autonegociated", "100bt4");
+	break;
+      }
+    }
+    else
+      interface.setConfig("autonegociated", "none");
+  }
+
+  if (bmcr & 0x1000)
+    interface.addCapability("autonegotiation");
+  else
+  {
+    if (bmcr & 0x2000)
+      interface.setConfig("speed", "100mbps");
+    else
+      interface.setConfig("speed", "10mbps");
+
+    if (bmcr & 0x0100)
+      interface.setConfig("duplex", "full");
+    else
+      interface.setConfig("duplex", "half");
+  }
+
+  if ((bmsr & 0x0016) == 0x0004)
+    interface.setConfig("link", "yes");
+  else
+    interface.setConfig("link", "no");
+
+  if (bmsr & 0xF800)
+  {
+    for (i = 15; i >= 11; i--)
+      if (bmsr & (1 << i))
+	interface.addCapability(media_names[i - 11]);
+  }
+
+  return true;
+}
+
 bool scan_network(hwNode & n)
 {
   vector < string > interfaces;
@@ -200,6 +356,7 @@ bool scan_network(hwNode & n)
       interface.setLogicalName(interfaces[i]);
       interface.claim();
 
+      scan_mii(fd, interface);
       scan_ip(interface);
 
       memset(&ifr, 0, sizeof(ifr));
@@ -277,4 +434,4 @@ bool scan_network(hwNode & n)
     return false;
 }
 
-static char *id = "@(#) $Id: network.cc,v 1.6 2003/06/15 17:48:41 ezix Exp $";
+static char *id = "@(#) $Id: network.cc,v 1.7 2003/06/18 11:55:26 ezix Exp $";
