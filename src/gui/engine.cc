@@ -35,6 +35,7 @@ static void clear_list(GtkWidget * list1)
     gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
 }
 
+#if 0
 static void populate_list(GtkWidget * list1, hwNode * root)
 {
   GtkListStore *list_store = NULL;
@@ -92,6 +93,7 @@ static void populate_list(GtkWidget * list1, hwNode * root)
   gtk_tree_selection_set_mode(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), GTK_SELECTION_BROWSE);
   gtk_tree_selection_select_iter(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), &iter);
 }
+#endif
 
 static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=NULL)
 {
@@ -213,20 +215,25 @@ void refresh(GtkWidget *mainwindow)
   display(mainwindow);
 }
 
-void activate(GtkTreeView *treeview,
-              GtkTreePath     *path,
-              GtkTreeViewColumn *column,
-              gpointer         user_data)
+void change_selection(unsigned list, GtkTreeView *treeview)
 {
+  GtkTreeSelection *selection;
   GtkTreeModel *model;
   GtkTreeIter   iter;
+  GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
+  GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
+  GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
 
   model = gtk_tree_view_get_model(treeview);
 
   displayed = NULL;
 
-  if(gtk_tree_model_get_iter(model, &iter, path))
-    gtk_tree_model_get(model, &iter, COL_NODE, &displayed, -1);
+  selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+  if (gtk_tree_selection_get_selected(selection, &model, &iter))
+    gtk_tree_model_get (model, &iter, COL_NODE, &displayed, -1);
+
+  if(list<2) populate_sublist(list2, NULL);
+  if(list<3) populate_sublist(list3, NULL);
 
   display(mainwindow);
 }
@@ -263,14 +270,7 @@ void browse(unsigned list, GtkTreeView *treeview)
   if (gtk_tree_selection_get_selected(selection, &model, &iter))
     gtk_tree_model_get (model, &iter, COL_NODE, &n, -1);
 
-  if(!n) return;
-
-  //if(n->countChildren()==0)
-  {
-    displayed = n;
-    display(mainwindow);
-  }
-
+  if(n)
   switch(list)
   {
     case 1:
@@ -287,31 +287,37 @@ void browse(unsigned list, GtkTreeView *treeview)
       else
       {
         selected1 = n;
-        selected2 = selected1->getChild(0);
-        selected3 = selected2?selected2->getChild(0):NULL;
+        selected2 = NULL;
+        selected3 = NULL;
         populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2, selected3);
       }
       break;
     case 2:
-      if(n == selected2) return;	// nothing to change
-      populate_sublist(list3, n);
+      //if(n == selected2) break;	// nothing to change
       selected2 = n;
-      selected3 = selected2->getChild(0);;
+      selected3 = NULL;
+      populate_sublist(list3, selected2, selected3);
       break;
     case 3:
-      if(n == selected3) return;	// nothing to change
+      //if(n == selected3) break;	// nothing to change
       selected3 = n;
       if(n->countChildren()>0)
       {
         hwNode *oldselected1 = selected1;
         selected1 = selected2;
         selected2 = n;
-        selected3 = selected2->getChild(0);;
+        selected3 = NULL;
         populate_sublist(list1, oldselected1, selected1);
         populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2, selected3);
       }
       break;
   }
+
+  /*if(n)
+  {
+    displayed = n;
+    display(mainwindow);
+  }*/
 }

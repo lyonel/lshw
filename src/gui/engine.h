@@ -9,10 +9,7 @@ extern "C" {
 
 void refresh(GtkWidget *);
 
-void activate(GtkTreeView *treeview,
-              GtkTreePath *path,
-              GtkTreeViewColumn *column,
-              gpointer         user_data);
+void change_selection(unsigned list, GtkTreeView *treeview);
 
 void browse(unsigned list, GtkTreeView *treeview);
 

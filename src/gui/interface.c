@@ -248,11 +248,20 @@ create_lshw (void)
   g_signal_connect ((gpointer) quitbutton, "clicked",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
+  g_signal_connect ((gpointer) treeview1, "row_activated",
+                    G_CALLBACK (on_treeview1_row_activated),
+                    NULL);
   g_signal_connect ((gpointer) treeview1, "cursor_changed",
                     G_CALLBACK (on_treeview1_cursor_changed),
                     NULL);
+  g_signal_connect ((gpointer) treeview2, "row_activated",
+                    G_CALLBACK (on_treeview2_row_activated),
+                    NULL);
   g_signal_connect ((gpointer) treeview2, "cursor_changed",
                     G_CALLBACK (on_treeview2_cursor_changed),
+                    NULL);
+  g_signal_connect ((gpointer) treeview3, "row_activated",
+                    G_CALLBACK (on_treeview3_row_activated),
                     NULL);
   g_signal_connect ((gpointer) treeview3, "cursor_changed",
                     G_CALLBACK (on_treeview3_cursor_changed),
