@@ -6,7 +6,7 @@ DESTDIR=/
 PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
-DATADIR=$(PREFIX)/share/$(PACKAGENAME)
+DATADIR=$(PREFIX)/share
 export DESTDIR
 export PREFIX
 export SBINDIR
@@ -74,8 +74,8 @@ install: all
 	strip $(DESTDIR)/$(SBINDIR)/$(PACKAGENAME)
 	-mkdir -p $(DESTDIR)/$(MANDIR)/man1
 	cp $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
-	-mkdir -p $(DESTDIR)/$(DATADIR)
-	cp $(DATAFILES) $(DESTDIR)/$(DATADIR)
+	-mkdir -p $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
+	cp $(DATAFILES) $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
 
 install-gui: gui
 	-mkdir -p $(DESTDIR)

@@ -48,9 +48,19 @@ http://www.ezix.org/software/lshw.html
 %setup
 
 %build
-%{__make} %{?_smp_mflags}
+%{__make} %{?_smp_mflags} \
+	PREFIX="%{_prefix}" \
+	SBINDIR="%{_sbindir}" \
+	MANDIR="%{_mandir}" \
+	DATADIR="%{_datadir}" \
+	all
 %if %{?_with_gui:1}%{!?_with_gui:0}
-%{__make} %{?_smp_mflags} gui
+%{__make} %{?_smp_mflags} \
+	PREFIX="%{_prefix}" \
+	SBINDIR="%{_sbindir}" \
+	MANDIR="%{_mandir}" \
+	DATADIR="%{_datadir}" \
+	gui
 %endif
 
 %install
@@ -61,6 +71,7 @@ http://www.ezix.org/software/lshw.html
 	PREFIX="%{_prefix}" \
 	SBINDIR="%{_sbindir}" \
 	MANDIR="%{_mandir}" \
+	DATADIR="%{_datadir}" \
 	install
 %if %{?_with_gui:1}%{!?_with_gui:0}
 %{__make} \
@@ -68,6 +79,7 @@ http://www.ezix.org/software/lshw.html
 	PREFIX="%{_prefix}" \
 	SBINDIR="%{_sbindir}" \
 	MANDIR="%{_mandir}" \
+	DATADIR="%{_datadir}" \
 	install-gui
 %endif
 
