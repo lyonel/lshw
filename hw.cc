@@ -11,11 +11,22 @@ struct hwNode_i
     vector < hwNode > children;
 };
 
+string strip(const string & s)
+{
+  string result = s;
+
+  while ((result.length() > 0) && (result[0] <= ' '))
+    result.erase(result.begin());
+  while ((result.length() > 0) && (result[result.length() - 1] <= ' '))
+    result.erase(result.end());
+
+  return result;
+}
+
 hwNode::hwNode(const string & id,
 	       hwClass c,
 	       const string & vendor,
-	       const string & product,
-	       const string & version)
+	       const string & product, const string & version)
 {
   This = new hwNode_i;
 
@@ -23,10 +34,10 @@ hwNode::hwNode(const string & id,
     return;
 
   This->deviceclass = c;
-  This->id = id;
-  This->vendor = vendor;
-  This->product = product;
-  This->version = version;
+  This->id = strip(id);
+  This->vendor = strip(vendor);
+  This->product = strip(product);
+  This->version = strip(version);
   This->size = 0;
 }
 
@@ -81,7 +92,7 @@ string hwNode::getVendor() const
 void hwNode::setVendor(const string & vendor)
 {
   if (This)
-    This->vendor = vendor;
+    This->vendor = strip(vendor);
 }
 
 string hwNode::getProduct() const
@@ -95,7 +106,7 @@ string hwNode::getProduct() const
 void hwNode::setProduct(const string & product)
 {
   if (This)
-    This->product = product;
+    This->product = strip(product);
 }
 
 string hwNode::getVersion() const
@@ -109,7 +120,7 @@ string hwNode::getVersion() const
 void hwNode::setVersion(const string & version)
 {
   if (This)
-    This->version = version;
+    This->version = strip(version);
 }
 
 string hwNode::getSerial() const
@@ -123,7 +134,7 @@ string hwNode::getSerial() const
 void hwNode::setSerial(const string & serial)
 {
   if (This)
-    This->serial = serial;
+    This->serial = strip(serial);
 }
 
 unsigned long long hwNode::getSize() const

@@ -10,43 +10,6 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
 
-static void dump_raw_data(void *data,
-			  unsigned int length)
-{
-  char buffer1[80], buffer2[80], *b1, *b2, c;
-  unsigned char *p = (unsigned char *) data;
-  unsigned long column = 0;
-  unsigned int length_printed = 0;
-  const unsigned char maxcolumn = 16;
-  while (length_printed < length)
-  {
-    printf("\t");
-    b1 = buffer1;
-    b2 = buffer2;
-    for (column = 0; column < maxcolumn && length_printed < length; column++)
-    {
-      b1 += sprintf(b1, "%02x ", (unsigned int) *p);
-      if (*p < 32 || *p > 126)
-	c = '.';
-      else
-	c = *p;
-      b2 += sprintf(b2, "%c", c);
-      p++;
-      length_printed++;
-    }
-    /*
-     * pad out the line 
-     */
-    for (; column < maxcolumn; column++)
-    {
-      b1 += sprintf(b1, "   ");
-      b2 += sprintf(b2, " ");
-    }
-
-    printf("%s\t%s\n", buffer1, buffer2);
-  }
-}
-
 struct dmi_header
 {
   u8 type;
@@ -1231,21 +1194,18 @@ static void dmi_table(int fd,
     case 36:
       printf("\tManagement Device Threshold Data\n");
       if (dm->length > 4)
-	dump_raw_data(data + 4, dm->length - 4);
-      break;
+	break;
     case 37:
       printf("\tMemory Channeln");
       break;
     case 38:
       printf("\tIPMI Device\n");
       if (dm->length > 4)
-	dump_raw_data(data + 4, dm->length - 4);
-      break;
+	break;
     case 39:
       printf("\tPower Supply\n");
       if (dm->length > 4)
-	dump_raw_data(data + 4, dm->length - 4);
-      break;
+	break;
     case 126:
       printf("\tInactive\n");
       break;
@@ -1256,8 +1216,7 @@ static void dmi_table(int fd,
 
     default:
       if (dm->length > 4)
-	dump_raw_data(data + 4, dm->length - 4);
-      break;
+	break;
 
     }
     data += dm->length;
