@@ -62,6 +62,30 @@ static string dmi_decode_ram(u16 data)
   return hw::strip(result);
 }
 
+static const char *dmi_board_type(u8 data)
+{
+  static const char *boardtypes[] = {
+    "",
+    "",
+    "",
+    "Server Blade",
+    "Connectivitiy Switch",
+    "System Management Module",
+    "Processor Module",
+    "I/O Module",
+    "Memory Module",
+    "Daughter Board",
+    "Mother Board",
+    "Processor/Memory Module",
+    "Processor/IO Module ",
+    "Interconnect Board",
+  };
+  if (data > 0x0D)
+    return "";
+  else
+    return boardtypes[data];
+}
+
 static void dmi_bios_features(u32 data1,
 			      u32 data2,
 			      hwNode & bios)
@@ -810,6 +834,7 @@ static void dmi_table(int fd,
 {
   unsigned char *buf = (unsigned char *) malloc(len);
   struct dmi_header *dm;
+  hwNode *hardwarenode = NULL;
   u8 *data;
   int i = 0;
   int r = 0, r2 = 0;
@@ -848,6 +873,15 @@ static void dmi_table(int fd,
 
     handle = dmi_handle(dm->handle);
 
+    hardwarenode = node.getChild("hardware");
+    if (!hardwarenode)
+    {
+      node.addChild(hwNode("hardware", hw::bus));
+      hardwarenode = node.getChild("hardware");
+    }
+    if (!hardwarenode)
+      hardwarenode = &node;
+
     switch (dm->type)
     {
     case 0:
@@ -871,7 +905,7 @@ static void dmi_table(int fd,
 
 	if (release != "")
 	  newnode.setVersion(newnode.getVersion() + " (" + release + ")");
-	node.addChild(newnode);
+	hardwarenode->addChild(newnode);
       }
       break;
 
@@ -887,20 +921,38 @@ static void dmi_table(int fd,
     case 2:
       // Board Information Block
       {
-	hwNode newnode("board",
-		       hw::bus);
 
-	for (int i = 0; i < data[0x0E]; i++)
-	  newnode.
-	    addCapability(dmi_handle
-			  (data[0x0F + 2 * i + 1] << 8 | data[0x0F + 2 * i]));
+	if ((dm->length <= 0x0E) || (data[0x0E] == 0))	// we are the only system board on the computer so connect everything to us
+	{
+	  hardwarenode->setVendor(dmi_string(dm, data[4]));
+	  hardwarenode->setProduct(dmi_string(dm, data[5]));
+	  hardwarenode->setVersion(dmi_string(dm, data[6]));
+	  hardwarenode->setSerial(dmi_string(dm, data[7]));
+	  hardwarenode->setSlot(dmi_string(dm, data[0x0A]));
+	  hardwarenode->setHandle(handle);
+	  hardwarenode->setDescription(dmi_board_type(data[0x0D]));
+	}
+	else
+	{
+	  hwNode newnode("board",
+			 hw::bus);
 
-	newnode.setVendor(dmi_string(dm, data[4]));
-	newnode.setProduct(dmi_string(dm, data[5]));
-	newnode.setVersion(dmi_string(dm, data[6]));
-	newnode.setSerial(dmi_string(dm, data[7]));
-	newnode.setHandle(handle);
-	node.addChild(newnode);
+	  if (dm->length >= 0x0E)
+	    for (int i = 0; i < data[0x0E]; i++)
+	      newnode.
+		attractHandle(dmi_handle
+			      (data[0x0F + 2 * i + 1] << 8 |
+			       data[0x0F + 2 * i]));
+
+	  newnode.setVendor(dmi_string(dm, data[4]));
+	  newnode.setProduct(dmi_string(dm, data[5]));
+	  newnode.setVersion(dmi_string(dm, data[6]));
+	  newnode.setSerial(dmi_string(dm, data[7]));
+	  newnode.setSlot(dmi_string(dm, data[0x0A]));
+	  newnode.setHandle(handle);
+	  newnode.setDescription(dmi_board_type(data[0x0D]));
+	  hardwarenode->addChild(newnode);
+	}
       }
       break;
 
@@ -965,7 +1017,7 @@ static void dmi_table(int fd,
 
 	newnode.setHandle(handle);
 
-	node.addChild(newnode);
+	hardwarenode->addChild(newnode);
       }
       break;
 
@@ -995,15 +1047,7 @@ static void dmi_table(int fd,
 	newnode.setProduct(dmi_decode_ram(data[0x0C] << 8 | data[0x0B]) +
 			   " Memory Controller");
 
-	hwNode *memorynode = node.getChild("memory");
-	if (!memorynode)
-	{
-	  node.addChild(hwNode("memory", hw::memory));
-	  memorynode = node.getChild("memory");
-	}
-
-	if (memorynode)
-	  memorynode->addChild(newnode);
+	hardwarenode->addChild(newnode);
       }
       break;
 
@@ -1089,7 +1133,7 @@ static void dmi_table(int fd,
 	 * controllernode->addChild(newnode);
 	 */
 
-	node.addChild(newnode);
+	hardwarenode->addChild(newnode);
       }
       break;
     case 7:
@@ -1130,7 +1174,7 @@ static void dmi_table(int fd,
 
 	newnode.setHandle(handle);
 
-	node.addChild(newnode);
+	hardwarenode->addChild(newnode);
       }
       break;
 
@@ -1243,7 +1287,7 @@ static void dmi_table(int fd,
 	hwNode *memorynode = node.getChild("memory");
 	if (!memorynode)
 	{
-	  node.addChild(hwNode("memory", hw::memory));
+	  hardwarenode->addChild(hwNode("memory", hw::memory));
 	  memorynode = node.getChild("memory");
 	}
 
@@ -1337,20 +1381,7 @@ static void dmi_table(int fd,
 	if (size == 0)
 	  newnode.setProduct("");
 
-	{
-	  hwNode *memorynode = node.findChildByHandle(arrayhandle);
-
-	  if (!memorynode)
-	    memorynode = node.getChild("memory");
-	  if (!memorynode)
-	  {
-	    node.addChild(hwNode("memory", hw::memory));
-	    memorynode = node.getChild("memory");
-	  }
-
-	  if (memorynode)
-	    memorynode->addChild(newnode);
-	}
+	hardwarenode->addChild(newnode);
       }
       break;
     case 18:
