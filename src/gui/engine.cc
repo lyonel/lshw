@@ -27,8 +27,6 @@ enum
     NUM_COLS
   };
 
-static string curpath = "/";
-
 static void clear_list(GtkWidget * list1)
 {
   GtkTreeViewColumn *col;
@@ -281,6 +279,7 @@ void browse(unsigned list, GtkTreeView *treeview)
         selected3 = selected2;
         selected2 = selected1;
         selected1 = find_parent(selected1, &container);
+        if(selected1 == &container) selected1 = container.getChild(0);
         populate_sublist(list1, find_parent(selected1, &container), selected1);
         populate_sublist(list2, selected1, selected2);
         populate_sublist(list3, selected2, selected3);
@@ -288,17 +287,17 @@ void browse(unsigned list, GtkTreeView *treeview)
       else
       {
         selected1 = n;
-        selected2 = NULL;
-        selected3 = NULL;
-        populate_sublist(list2, n);
-        populate_sublist(list3, NULL);
+        selected2 = selected1->getChild(0);
+        selected3 = selected2?selected2->getChild(0):NULL;
+        populate_sublist(list2, selected1, selected2);
+        populate_sublist(list3, selected2, selected3);
       }
       break;
     case 2:
       if(n == selected2) return;	// nothing to change
       populate_sublist(list3, n);
       selected2 = n;
-      selected3 = NULL;
+      selected3 = selected2->getChild(0);;
       break;
     case 3:
       if(n == selected3) return;	// nothing to change
@@ -308,13 +307,11 @@ void browse(unsigned list, GtkTreeView *treeview)
         hwNode *oldselected1 = selected1;
         selected1 = selected2;
         selected2 = n;
-        selected3 = NULL;
+        selected3 = selected2->getChild(0);;
         populate_sublist(list1, oldselected1, selected1);
         populate_sublist(list2, selected1, selected2);
-        populate_sublist(list3, selected2);
+        populate_sublist(list3, selected2, selected3);
       }
       break;
-    default:
-      return;
   }
 }
