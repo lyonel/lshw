@@ -649,7 +649,9 @@ static bool scan_sg(int sg,
 
   memset(slot_name, 0, sizeof(slot_name));
   if (ioctl(fd, SCSI_IOCTL_GET_PCI, slot_name) >= 0)
+  {
     parent = n.findChildByBusInfo(guessBusInfo(slot_name));
+  }
 
   if (!parent)
     parent = n.findChildByLogicalName(host);
