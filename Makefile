@@ -1,5 +1,10 @@
 PACKAGENAME = lshw
 
+DESTDIR=
+PREFIX=/usr
+SBINDIR=$(PREFIX)/sbin
+MANDIR=$(PREFIX)/share/man
+
 CXX=c++
 CXXFLAGS=-g
 LDFLAGS=
@@ -18,6 +23,13 @@ $(PACKAGENAME): $(OBJS)
 
 $(PACKAGENAME).1: $(PACKAGENAME).sgml
 	docbook2man $<
+
+install: all
+	-mkdir -p $(DESTDIR)
+	-mkdir -p $(DESTDIR)/$(SBINDIR)
+	cp $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
+	-mkdir -p $(DESTDIR)/$(MANDIR)/man1
+	cp $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
 	
 clean:
 	rm -f $(OBJS) $(PACKAGENAME) core
@@ -29,6 +41,7 @@ release: .tag
 	cvs tag -cF `cat .tag`
 	rm -rf $(PACKAGENAME)-`cat .version`
 	cvs export -r `cat .tag` -d $(PACKAGENAME)-`cat .version` `cat CVS/Repository`
+	cat $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat .version`/g" > $(PACKAGENAME)-`cat .version`/$(PACKAGENAME).spec
 	tar cfz $(PACKAGENAME)-`cat .version`.tar.gz $(PACKAGENAME)-`cat .version`
 	rm -rf $(PACKAGENAME)-`cat .version`
 
