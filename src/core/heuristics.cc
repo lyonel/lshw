@@ -32,6 +32,11 @@ string guessBusInfo(const string & info)
     snprintf(buffer, sizeof(buffer), "usb@%u:%u", host, port);
     return string(buffer);
   }
+
+  if(matches(info, "^parisc[0-9]+(:parisc[0-9]+)*$")) // PA-RISC: pariscx:y:z:t
+  {
+    return "parisc@" + info.substr(5);
+  }
   return "";
 }
 
