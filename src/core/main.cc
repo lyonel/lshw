@@ -36,6 +36,7 @@
 #include "sysfs.h"
 #include "display.h"
 #include "parisc.h"
+#include "cpufreq.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -102,6 +103,9 @@ bool scan_system(hwNode & system)
     status("Display");
     if (enabled("display"))
       scan_display(computer);
+    status("CPUFreq");
+    if (enabled("cpufreq"))
+      scan_cpufreq(computer);
     status("");
 
     if (computer.getDescription() == "")
