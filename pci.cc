@@ -602,6 +602,7 @@ bool scan_pci(hwNode & n)
 	host.setProduct(get_device_description(d.vendor_id, d.device_id));
 	host.setHandle(pci_bushandle(d.bus));
 	host.setVersion(revision);
+	host.claim();
 
 	if (moredescription != "" && moredescription != host.getDescription())
 	{
@@ -667,8 +668,11 @@ bool scan_pci(hwNode & n)
 		device->setSize(d.size[j]);
 
 	  if (dclass == PCI_CLASS_BRIDGE_PCI)
+	  {
 	    device->
 	      setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
+	    device->claim();
+	  }
 	  else
 	  {
 	    char irq[10];
@@ -736,4 +740,4 @@ bool scan_pci(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: pci.cc,v 1.21 2003/02/08 14:05:18 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.22 2003/02/08 14:25:36 ezix Exp $";

@@ -556,6 +556,7 @@ bool scan_cpuid(hwNode & n)
       return false;
     }
 
+    cpu->claim(true);		// claim the cpu and all its children
     if (cpu->getSize() == 0)
       cpu->setSize((long long) (1000000 * average_MHz(currentcpu)));
 
@@ -572,4 +573,4 @@ bool scan_cpuid(hwNode & n)
 }
 #endif
 
-static char *id = "@(#) $Id: cpuid.cc,v 1.10 2003/02/08 14:17:42 ezix Exp $";
+static char *id = "@(#) $Id: cpuid.cc,v 1.11 2003/02/08 14:25:36 ezix Exp $";
