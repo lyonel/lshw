@@ -35,7 +35,8 @@ string guessBusInfo(const string & info)
     return "firewire@" + info.substr(0, dash);
   }
 
-#ifdef __hppa__
+#if 1
+//#ifdef __hppa__
   if(matches(info, "^[0-9]+(:[0-9]+)*$")) // PA-RISC: x:y:z:t corresponds to /x/y/z/t
   {
     string result = "parisc@";

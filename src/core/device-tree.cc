@@ -146,10 +146,20 @@ static void scan_devtree_bootrom(hwNode & core)
   }
 }
 
+static string cpubusinfo(int cpu)
+{
+  char buffer[20];
+
+  snprintf(buffer, sizeof(buffer), "cpu@%d", cpu);
+
+  return string(buffer);
+}
+
 static void scan_devtree_cpu(hwNode & core)
 {
   struct dirent **namelist;
   int n;
+  int currentcpu=0;
 
   pushd(DEVICETREE "/cpus");
   n = scandir(".", &namelist, selectdir, alphasort);
@@ -173,6 +183,8 @@ static void scan_devtree_cpu(hwNode & core)
 
       cpu.setProduct(get_string(basepath + "/name"));
       cpu.setDescription("CPU");
+      cpu.claim();
+      cpu.setBusInfo(cpubusinfo(currentcpu++));
       cpu.setSize(get_long(basepath + "/clock-frequency"));
       cpu.setClock(get_long(basepath + "/bus-frequency"));
       if (exists(basepath + "/altivec"))
