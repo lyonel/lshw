@@ -278,6 +278,7 @@ static bool dointel(unsigned long maxi,
       logicalcpu.setDescription("Logical CPU");
       logicalcpu.addCapability("logical", "Logical CPU");
       logicalcpu.setWidth(cpu->getWidth());
+      logicalcpu.claim();
       cpu->addCapability("ht", "HyperThreading");
 
       if(nr_ht>1)
@@ -287,6 +288,7 @@ static bool dointel(unsigned long maxi,
 	  logicalcpu.setHandle(buff);
           logicalcpu.setPhysId(phys_id, i+1);
           cpu->addChild(logicalcpu);
+          cpu->claim();
         }
     }
 
