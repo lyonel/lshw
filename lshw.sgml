@@ -25,9 +25,11 @@ list hardware
    </cmdsynopsis>
  <cmdsynopsis>
    <command>lshw</command> 
+      <group choice="opt">
 	<arg choice="opt"><option>-html</option></arg>
 	<arg choice="opt"><option>-short</option></arg>
 	<arg choice="opt"><option>-xml</option></arg>
+      </group>
 	<arg choice="opt" rep="repeat"><option>-class </option><replaceable class="parameter">class</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-disable </option><replaceable class="parameter">test</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-enable </option><replaceable class="parameter">test</replaceable></arg>
