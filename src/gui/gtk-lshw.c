@@ -7,6 +7,7 @@
 #include "interface.h"
 #include "support.h"
 
+static char *id = "@(#) $Id$";
 
 GtkWidget *mainwindow;
 
@@ -31,6 +32,9 @@ main (int argc, char *argv[])
   gtk_widget_show (mainwindow);
 
   gtk_main ();
+
+  (void) &::id;                 // avoid warning "id defined but not used"
+
   return 0;
 }
 

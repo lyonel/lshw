@@ -26,6 +26,8 @@
 #define GLADE_HOOKUP_OBJECT_NO_REF(component,widget,name) \
   g_object_set_data (G_OBJECT (component), name, widget)
 
+static char *id = "@(#) $Id$";
+
 GtkWidget*
 create_lshw (void)
 {
@@ -338,6 +340,8 @@ create_aboutlshw (void)
   GLADE_HOOKUP_OBJECT (aboutlshw, version, "version");
   GLADE_HOOKUP_OBJECT_NO_REF (aboutlshw, dialog_action_area1, "dialog_action_area1");
   GLADE_HOOKUP_OBJECT (aboutlshw, closebutton1, "closebutton1");
+
+  (void) &::id;                 // avoid warning "id defined but not used"
 
   return aboutlshw;
 }

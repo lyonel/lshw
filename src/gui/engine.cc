@@ -3,6 +3,8 @@
 #include "main.h"
 #include "print.h"
 
+static char *id = "@(#) $Id$";
+
 extern "C" {
 #include "support.h"
 };
@@ -269,4 +271,6 @@ void browse(unsigned list, GtkTreeView *treeview)
       }
       break;
   }
+
+  (void) &::id;                 // avoid warning "id defined but not used"
 }

@@ -13,6 +13,8 @@
 static GtkWidget *about = NULL;
 extern GtkWidget *mainwindow;
 
+static char *id = "@(#) $Id$";
+
 void
 refresh_display                        (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
@@ -101,6 +103,8 @@ on_treeview3_cursor_changed            (GtkTreeView     *treeview,
                                         gpointer         user_data)
 {
   change_selection(3, treeview);
+
+  (void) &::id;                 // avoid warning "id defined but not used"
 }
 
 
