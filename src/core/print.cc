@@ -313,6 +313,13 @@ void print(hwNode & node,
 	  cout << "</td></tr>";
 	break;
 
+      case hw::power:
+	cout << node.getSize();
+	cout << "mWh";
+	if (html)
+	  cout << "</td></tr>";
+	break;
+
       default:
 	cout << node.getSize();
 	if (html)
@@ -345,6 +352,13 @@ void print(hwNode & node,
       case hw::system:
 	decimalkilos(node.getCapacity());
 	cout << "Hz";
+	if (html)
+	  cout << "</td></tr>";
+	break;
+
+      case hw::power:
+	cout << node.getCapacity();
+	cout << "mWh";
 	if (html)
 	  cout << "</td></tr>";
 	break;
@@ -647,6 +661,10 @@ void printxml(hwNode & node,
         cout << " units=\"Hz\"";
         break;
   
+      case hw::power:
+        cout << " units=\"mWh\"";
+        break;
+  
       default:
         cout << "";
       }
@@ -673,6 +691,10 @@ void printxml(hwNode & node,
       case hw::bus:
       case hw::system:
         cout << " units=\"Hz\"";
+        break;
+  
+      case hw::power:
+        cout << " units=\"mWh\"";
         break;
   
       default:

@@ -188,6 +188,9 @@ const char *hwNode::getClassName() const
     case communication:
       return "communication";
 
+    case power:
+      return "power";
+
     default:
       return "generic";
     }

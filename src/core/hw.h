@@ -24,6 +24,7 @@ typedef enum {
 	printer,
 	multimedia,
 	communication,
+	power,
 	generic} hwClass;
 
 typedef enum { none, iomem, ioport, mem, irq, dma } hwResourceType;

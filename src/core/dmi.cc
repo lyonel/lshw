@@ -112,6 +112,38 @@ static const char *dmi_hardware_security_status(u8 code)
   return status[code & 0x03];
 }
 
+static string dmi_battery_voltage(u16 code)
+{
+  char buffer[20];
+  if(code==0) return "";
+
+  snprintf(buffer, sizeof(buffer), "%.1fV", ((float)code/1000.0));
+  return buffer;
+}
+
+static unsigned long long dmi_battery_capacity(u16 code, u8 multiplier)
+{
+  return (unsigned long long)code * (unsigned long long)multiplier;
+}
+
+static const char *dmi_battery_chemistry(u8 code)
+{
+  static const char *chemistry[]={
+                "Other", /* 0x01 */
+                "Unknown",
+                "Lead Acid",
+                "Nickel Cadmium",
+                "Nickel Metal Hydride",
+                "Lithium Ion",
+                "Zinc Air",
+                "Lithium Polymer" /* 0x08 */
+        };
+
+  if(code>=0x01 && code<=0x08)
+    return chemistry[code-0x01];
+  return "";
+}
+
 
 static string dmi_uuid(u8 * p)
 {
@@ -1420,6 +1452,31 @@ static void dmi_table(int fd,
       break;
     case 22:
       // Portable Battery
+      if (dm->length < 0x10)
+	break;
+      else
+      {
+        hwNode batt("battery", hw::power);
+
+        batt.claim();
+	batt.setHandle(handle);
+	batt.setVendor(dmi_string(dm, data[0x05]));
+	batt.setProduct(dmi_string(dm, data[0x08]));	// name
+	batt.setSlot(dmi_string(dm, data[0x04]));	// location
+	if(data[0x06] || dm->length<0x1A)	// manufacture date
+          batt.setVersion(dmi_string(dm, data[0x06]));
+	if(data[0x07] || dm->length<0x1A)
+          batt.setSerial(dmi_string(dm, data[0x07]));
+        batt.setConfig("voltage", dmi_battery_voltage(data[0x0c] + 256*data[0x0d]));
+        if(dm->length<0x1A)
+          batt.setCapacity(dmi_battery_capacity(data[0x0a] + 256*data[0x0b], 1));
+        else
+          batt.setCapacity(dmi_battery_capacity(data[0x0a] + 256*data[0x0b], data[0x15]));
+        if(data[0x09]!=0x02 || dm->length<0x1A)
+          batt.setDescription(hw::strip(string(dmi_battery_chemistry(data[0x09])) + " Battery"));
+
+        node.addChild(batt);
+      }
       break;
     case 23:
       // System Reset
