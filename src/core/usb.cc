@@ -102,6 +102,11 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
     {
       string businfo = guessBusInfo(device.getSerial());
       parent = n.findChildByBusInfo(businfo);
+      if(!parent)	// still no luck
+      {
+        unsigned long long ioport = strtoll(device.getSerial().c_str(), NULL, 16);
+        parent = n.findChildByResource(hw::resource::ioport(ioport, ioport));
+      }
       device.setSerial("");	// serial# has no meaning for USB hosts
     }
     if(parent)
