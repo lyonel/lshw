@@ -174,7 +174,7 @@ bool scan_cpuinfo(hwNode & n)
 	value = hw::strip(cpuinfo_lines[i].substr(pos + 1));
 
 	cpuinfo_x86(n, id, value);
-	cpuinfo_ppc(n, id, value);
+	//cpuinfo_ppc(n, id, value);
       }
     }
   }
@@ -185,4 +185,4 @@ bool scan_cpuinfo(hwNode & n)
   }
 }
 
-static char *id = "@(#) $Id: cpuinfo.cc,v 1.6 2003/01/20 22:48:44 ezix Exp $";
+static char *id = "@(#) $Id: cpuinfo.cc,v 1.7 2003/01/21 09:23:27 ezix Exp $";

@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <dirent.h>
 
 #define DEVICETREE "/proc/device-tree"
 
@@ -34,18 +35,24 @@ static string get_string(const string & path)
   return result;
 }
 
-static void scan_devtree_root(hwNode & core)
+static unsigned long get_long(const string & path)
 {
-  unsigned long frequency = 0;
-  int fd = open(DEVICETREE "/clock-frequency", O_RDONLY);
+  unsigned long result = 0;
+  int fd = open(path.c_str(), O_RDONLY);
 
   if (fd >= 0)
   {
-    read(fd, &frequency, sizeof(frequency));
+    read(fd, &result, sizeof(result));
 
-    core.setClock(frequency);
     close(fd);
   }
+
+  return result;
+}
+
+static void scan_devtree_root(hwNode & core)
+{
+  core.setClock(get_long(DEVICETREE "/clock-frequency"));
 }
 
 static void scan_devtree_bootrom(hwNode & core)
@@ -96,6 +103,49 @@ static void scan_devtree_bootrom(hwNode & core)
       openprom.addCapability("bootinfo");
 
     core.addChild(openprom);
+  }
+}
+
+static int selectdir(const struct dirent *d)
+{
+  struct stat buf;
+  string fullpath = string(DEVICETREE "/cpus/") + string(d->d_name);
+
+  if (d->d_name[0] == '.')
+    return 0;
+
+  if (stat(fullpath.c_str(), &buf) != 0)
+    return 0;
+
+  return S_ISDIR(buf.st_mode);
+}
+
+static void scan_devtree_cpu(hwNode & core)
+{
+  struct dirent **namelist;
+  int n;
+
+  n = scandir(DEVICETREE "/cpus", &namelist, selectdir, NULL);
+  if (n < 0)
+    return;
+  else
+  {
+    for (int i = 0; i < n; i++)
+    {
+      string basepath =
+	string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
+      hwNode cpu("cpu",
+		 hw::processor);
+
+      cpu.setProduct(get_string(basepath + "/name"));
+      cpu.setSize(get_long(basepath + "/clock-frequency"));
+      cpu.setClock(get_long(basepath + "/bus-frequency"));
+
+      core.addChild(cpu);
+
+      free(namelist[i]);
+    }
+    free(namelist);
   }
 }
 
@@ -196,6 +246,7 @@ bool scan_device_tree(hwNode & n)
     scan_devtree_root(*core);
     scan_devtree_bootrom(*core);
     scan_devtree_memory(*core);
+    scan_devtree_cpu(*core);
     core->addCapability(get_string(DEVICETREE "/compatible"));
   }
 
