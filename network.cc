@@ -119,25 +119,25 @@ static const char *hwname(int t)
   switch (t)
   {
   case ARPHRD_ETHER:
-    return "ethernet";
+    return "Ethernet";
   case ARPHRD_SLIP:
-    return "slip";
+    return "SLIP";
   case ARPHRD_LOOPBACK:
     return "loopback";
   case ARPHRD_FDDI:
-    return "fddi";
+    return "FDDI";
   case ARPHRD_IRDA:
-    return "irda";
+    return "IRDA";
   case ARPHRD_PPP:
-    return "ppp";
+    return "PPP";
   case ARPHRD_X25:
-    return "x25";
+    return "X25";
   case ARPHRD_TUNNEL:
-    return "iptunnel";
+    return "IPtunnel";
   case ARPHRD_DLCI:
-    return "framerelay.dlci";
+    return "Framerelay.DLCI";
   case ARPHRD_FRAD:
-    return "framerelay.ad";
+    return "Framerelay.AD";
   default:
     return "";
   }
@@ -400,6 +400,8 @@ bool scan_network(hwNode & n)
       {
 	string hwaddr = getmac((unsigned char *) ifr.ifr_hwaddr.sa_data);
 	interface.addCapability(hwname(ifr.ifr_hwaddr.sa_family));
+	interface.setDescription(string(hwname(ifr.ifr_hwaddr.sa_family)) +
+				 " controller");
 	interface.setSerial(hwaddr);
       }
 
@@ -434,4 +436,4 @@ bool scan_network(hwNode & n)
     return false;
 }
 
-static char *id = "@(#) $Id: network.cc,v 1.7 2003/06/18 11:55:26 ezix Exp $";
+static char *id = "@(#) $Id: network.cc,v 1.8 2003/06/26 21:55:39 ezix Exp $";

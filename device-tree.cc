@@ -8,7 +8,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.16 2003/06/26 21:30:27 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.17 2003/06/26 21:55:48 ezix Exp $";
 
 #define DEVICETREE "/proc/device-tree"
 
@@ -124,6 +124,7 @@ static void scan_devtree_cpu(hwNode & core)
 	break;			// oops, not a CPU!
 
       cpu.setProduct(get_string(basepath + "/name"));
+      cpu.setDescription("CPU");
       cpu.setSize(get_long(basepath + "/clock-frequency"));
       cpu.setClock(get_long(basepath + "/bus-frequency"));
       if (exists(basepath + "/altivec"))
@@ -258,6 +259,7 @@ static void scan_devtree_memory(hwNode & core)
 	    read(fd2, &base, sizeof(base));
 	    read(fd2, &size, sizeof(size));
 
+	    bank.setDescription("Memory bank");
 	    bank.setSlot(slotname);
 	    bank.setSize(size);
 	    memory->addChild(bank);
