@@ -13,7 +13,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.41"
-   sodipodi:docbase="/home/support"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
    sodipodi:docname="wifi.svg">
   <defs
      id="defs3" />
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.70000000"
-     inkscape:cx="368.34143"
-     inkscape:cy="279.59398"
+     inkscape:cx="368.34144"
+     inkscape:cy="279.59399"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:window-width="959"
@@ -45,7 +45,72 @@
         <dc:type
            id="type9"
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title
+           id="title1291">WiFi logo</dc:title>
+        <dc:date
+           id="date1293">2005/03/28</dc:date>
+        <dc:creator
+           id="creator1295">
+          <cc:Agent
+             id="Agent1297">
+            <dc:title
+               id="title1299">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights
+           id="rights1301">
+          <cc:Agent
+             id="Agent1303">
+            <dc:title
+               id="title1305" />
+          </cc:Agent>
+        </dc:rights>
+        <dc:identifier
+           id="identifier1307">wifi</dc:identifier>
+        <dc:language
+           id="language1309">C</dc:language>
+        <dc:subject
+           id="subject1311">
+          <rdf:Bag
+             id="Bag1313">
+            <rdf:li
+               id="li1341">wireless wifi</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           id="license1343"
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+        <dc:publisher
+           id="publisher1312">
+          <cc:Agent
+             id="Agent1314">
+            <dc:title
+               id="title1316">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
       </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/"
+         id="License1345">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction"
+           id="permits1347" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution"
+           id="permits1349" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice"
+           id="requires1351" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks"
+           id="permits1353" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike"
+           id="requires1355" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/SourceCode"
+           id="requires1357" />
+      </cc:License>
     </rdf:RDF>
   </metadata>
   <g

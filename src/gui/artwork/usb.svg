@@ -13,7 +13,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.41"
-   sodipodi:docbase="/home/support"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
    sodipodi:docname="usb.svg">
   <defs
      id="defs3" />
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="294.01518"
-     inkscape:cy="432.89919"
+     inkscape:zoom="0.70000000"
+     inkscape:cx="482.41619"
+     inkscape:cy="332.89921"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:window-width="1009"
@@ -45,7 +45,64 @@
         <dc:type
            id="type9"
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title
+           id="title1292">USB logo</dc:title>
+        <dc:date
+           id="date1294">2005/03/28</dc:date>
+        <dc:creator
+           id="creator1296">
+          <cc:Agent
+             id="Agent1298">
+            <dc:title
+               id="title1300">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:identifier
+           id="identifier1302">usb</dc:identifier>
+        <dc:language
+           id="language1304">C</dc:language>
+        <dc:subject
+           id="subject1306">
+          <rdf:Bag
+             id="Bag1308">
+            <rdf:li
+               id="li1360">USB universal serial bus</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           id="license1362"
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+        <dc:publisher
+           id="publisher1310">
+          <cc:Agent
+             id="Agent1312">
+            <dc:title
+               id="title1314">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
       </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/"
+         id="License1364">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction"
+           id="permits1366" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution"
+           id="permits1368" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice"
+           id="requires1370" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks"
+           id="permits1372" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike"
+           id="requires1374" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/SourceCode"
+           id="requires1376" />
+      </cc:License>
     </rdf:RDF>
   </metadata>
   <g
@@ -54,8 +111,9 @@
      id="layer1">
     <path
        style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
-       d="M 428.08018,238.53420 C 411.79548,238.37616 397.88778,248.94696 393.09888,263.66015 L 346.22178,263.66015 L 320.08678,271.34033 L 298.04408,290.81546 L 245.25832,343.09672 L 221.16387,360.01554 L 187.39352,360.45280 C 182.80033,335.12497 160.77907,315.77093 134.09197,315.49294 L 134.04712,315.49294 C 103.82356,315.19962 79.053464,339.46808 78.738644,369.69144 C 78.423674,399.92849 102.71131,424.72979 132.94835,425.04477 C 159.14314,425.31764 181.22924,407.11249 186.87777,382.58517 L 306.25128,383.07849 L 330.85028,399.99730 L 396.45128,465.59835 L 427.72138,477.89784 L 477.43508,477.89784 L 477.43508,503.01258 L 550.22298,503.01258 L 550.22298,430.23590 L 477.43508,430.23590 L 477.43508,456.37092 L 429.77318,456.37092 L 409.78228,448.67953 L 346.22178,383.07849 L 598.91648,383.07849 L 598.91648,406.65719 L 672.20888,370.26325 L 598.91648,333.36476 L 598.91648,360.00433 L 261.14564,359.49979 L 321.10708,297.99110 L 341.61368,285.69161 L 392.95318,285.69161 C 397.50668,300.39550 411.12828,311.16443 427.34018,311.33331 C 447.43338,311.54261 463.91728,295.40255 464.12658,275.30935 C 464.33588,255.21616 448.19578,238.74351 428.10258,238.53420 L 428.08018,238.53420 z "
-       id="rect1337" />
+       d="M 428.08018,238.53420 C 411.79548,238.37616 397.88778,248.94696 393.09888,263.66015 L 346.22178,263.66015 C 336.08154,264.07735 329.15559,265.92313 320.08678,271.34033 C 310.95350,277.83204 305.39165,284.32375 298.04408,290.81546 L 245.25832,343.09672 C 236.15541,351.23633 227.05250,359.73307 221.16387,360.01554 L 187.39352,360.45280 C 182.80033,335.12497 160.77907,315.77093 134.09197,315.49294 L 134.04712,315.49294 C 103.82356,315.19962 79.053464,339.46808 78.738644,369.69144 C 78.423674,399.92849 102.71131,424.72979 132.94835,425.04477 C 159.14314,425.31764 181.22924,407.11249 186.87777,382.58517 L 306.25128,383.07849 C 315.16523,383.00381 320.86490,388.28627 330.85028,399.99730 L 396.45128,465.59835 C 409.31337,475.32581 413.29764,476.31595 427.72138,477.89784 L 477.43508,477.89784 L 477.43508,503.01258 L 550.22298,503.01258 L 550.22298,430.23590 L 477.43508,430.23590 L 477.43508,456.37092 L 429.77318,456.37092 C 416.35973,456.55966 418.58877,455.18984 409.78228,448.67953 L 346.22178,383.07849 L 598.91648,383.07849 L 598.91648,406.65719 L 672.20888,370.26325 L 598.91648,333.36476 L 598.91648,360.00433 L 261.14564,359.49979 L 321.10708,297.99110 C 327.58547,291.74841 330.49244,286.57716 341.61368,285.69161 L 392.95318,285.69161 C 397.50668,300.39550 411.12828,311.16443 427.34018,311.33331 C 447.43338,311.54261 463.91728,295.40255 464.12658,275.30935 C 464.33588,255.21616 448.19578,238.74351 428.10258,238.53420 L 428.08018,238.53420 z "
+       id="rect1337"
+       sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccc" />
   </g>
   <g
      inkscape:groupmode="layer"

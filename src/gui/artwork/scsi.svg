@@ -8,63 +8,120 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="scsi.svg"
-   sodipodi:docbase="/home/support"
-   inkscape:version="0.41"
-   sodipodi:version="0.32"
-   id="svg2"
+   width="600.00000pt"
    height="600.00000pt"
-   width="600.00000pt">
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.41"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
+   sodipodi:docname="scsi.svg">
   <defs
      id="defs3" />
   <sodipodi:namedview
-     inkscape:window-y="47"
-     inkscape:window-x="1"
-     inkscape:window-height="535"
-     inkscape:window-width="640"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="px"
-     inkscape:cy="519.99994"
-     inkscape:cx="374.99971"
-     inkscape:zoom="0.24748737"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     id="base"
      pagecolor="#ffffff"
-     id="base" />
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.24748737"
+     inkscape:cx="374.99972"
+     inkscape:cy="519.99995"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="640"
+     inkscape:window-height="535"
+     inkscape:window-x="1"
+     inkscape:window-y="47" />
   <metadata
      id="metadata4">
     <rdf:RDF
        id="RDF5">
       <cc:Work
-         id="Work6"
-         rdf:about="">
+         rdf:about=""
+         id="Work6">
         <dc:format
            id="format7">image/svg+xml</dc:format>
         <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
-           id="type9" />
+           id="type9"
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title
+           id="title1293">SCSI logo</dc:title>
+        <dc:date
+           id="date1295">2005/03/28</dc:date>
+        <dc:creator
+           id="creator1297">
+          <cc:Agent
+             id="Agent1299">
+            <dc:title
+               id="title1301">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher
+           id="publisher1303">
+          <cc:Agent
+             id="Agent1305">
+            <dc:title
+               id="title1307">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier
+           id="identifier1309">scsi</dc:identifier>
+        <dc:language
+           id="language1311">C</dc:language>
+        <dc:subject
+           id="subject1313">
+          <rdf:Bag
+             id="Bag1315">
+            <rdf:li
+               id="li1323">SCSI</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"
+           id="license1325" />
       </cc:Work>
+      <cc:License
+         id="License1327"
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           id="permits1329"
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           id="permits1331"
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           id="requires1333"
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           id="permits1335"
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           id="requires1337"
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           id="requires1339"
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     id="layer1">
     <g
        id="g1312">
       <path
-         id="rect1291"
+         style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
          d="M 375.70312,39.265239 L 46.390239,368.57812 L 375.70312,697.89101 L 567.63842,505.95571 L 507.02611,445.34340 L 375.70312,576.66639 L 167.61486,368.57812 L 375.70312,160.48986 L 498.93858,283.72531 L 559.55089,223.11300 L 375.70312,39.265239 z "
-         style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+         id="rect1291" />
       <rect
-         y="324.28571"
-         x="385.71426"
-         height="85.714287"
-         width="265.71429"
+         style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
          id="rect1310"
-         style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:12.000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+         width="265.71429"
+         height="85.714287"
+         x="385.71426"
+         y="324.28571" />
     </g>
   </g>
 </svg>

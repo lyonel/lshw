@@ -8,53 +8,110 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="network.svg"
-   sodipodi:docbase="/home/support"
-   inkscape:version="0.41"
-   sodipodi:version="0.32"
-   id="svg2"
+   width="600.00000pt"
    height="600.00000pt"
-   width="600.00000pt">
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.41"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
+   sodipodi:docname="network.svg">
   <defs
      id="defs3" />
   <sodipodi:namedview
-     inkscape:window-y="47"
-     inkscape:window-x="1"
-     inkscape:window-height="599"
-     inkscape:window-width="899"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="px"
-     inkscape:cy="519.99994"
-     inkscape:cx="374.99990"
-     inkscape:zoom="0.12374369"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     id="base"
      pagecolor="#ffffff"
-     id="base" />
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.12374369"
+     inkscape:cx="374.99989"
+     inkscape:cy="519.99993"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="899"
+     inkscape:window-height="599"
+     inkscape:window-x="1"
+     inkscape:window-y="47" />
   <metadata
      id="metadata4">
     <rdf:RDF
        id="RDF5">
       <cc:Work
-         id="Work6"
-         rdf:about="">
+         rdf:about=""
+         id="Work6">
         <dc:format
            id="format7">image/svg+xml</dc:format>
         <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
-           id="type9" />
+           id="type9"
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title
+           id="title1291">Network logo</dc:title>
+        <dc:date
+           id="date1293">2005/03/28</dc:date>
+        <dc:creator
+           id="creator1295">
+          <cc:Agent
+             id="Agent1297">
+            <dc:title
+               id="title1299">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher
+           id="publisher1301">
+          <cc:Agent
+             id="Agent1303">
+            <dc:title
+               id="title1305">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier
+           id="identifier1307">network</dc:identifier>
+        <dc:language
+           id="language1309">C</dc:language>
+        <dc:subject
+           id="subject1311">
+          <rdf:Bag
+             id="Bag1313">
+            <rdf:li
+               id="li1353">lan network ethernet</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"
+           id="license1355" />
       </cc:Work>
+      <cc:License
+         id="License1357"
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           id="permits1359"
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           id="permits1361"
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           id="requires1363"
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           id="permits1365"
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           id="requires1367"
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           id="requires1369"
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     id="layer1">
     <path
-       id="rect1291"
+       style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:50.500000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
        d="M 362.37179,176.85167 L 362.37179,299.25629 L 399.09318,299.25629 L 399.09318,327.21809 L 139.97791,327.21809 C 131.13844,306.58929 110.66028,292.10325 86.808397,292.10327 C 54.884025,292.10327 28.972216,318.01506 28.972216,349.93945 C 28.972216,381.86382 54.884025,407.77561 86.808397,407.77563 C 110.66001,407.77563 131.13829,393.32748 139.97791,372.69905 L 242.41527,372.69905 L 242.41527,409.42044 L 205.69388,409.42044 L 205.69388,531.82505 L 328.09850,531.82505 L 328.09850,409.42044 L 291.37712,409.42044 L 291.37712,372.69905 L 543.53062,372.69905 L 543.53062,409.42044 L 506.80924,409.42044 L 506.80924,531.82505 L 629.21385,531.82505 L 629.21385,409.42044 L 592.49247,409.42044 L 592.49247,372.69905 L 724.34519,372.69905 L 724.34519,327.21809 L 448.05502,327.21809 L 448.05502,299.25629 L 484.77641,299.25629 L 484.77641,176.85167 L 362.37179,176.85167 z "
-       style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:50.500000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+       id="rect1291" />
   </g>
 </svg>
