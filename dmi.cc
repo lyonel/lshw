@@ -189,9 +189,30 @@ static string dmi_cache_describe(u16 config,
   string result = "";
   char buffer[10];
 
+  result = dmi_cache_sramtype(sramtype);
+  switch ((config >> 5) & 3)
+  {
+  case 0:
+    result += " Internal";
+    break;
+  case 1:
+    result += " External";
+    break;
+  }
   snprintf(buffer, sizeof(buffer), "L%d ", (config & 7) + 1);
-  result += string(buffer) + "Cache";
-  result += " " + dmi_cache_sramtype(sramtype);
+  result += " " + string(buffer);
+
+  switch ((config >> 8) & 3)
+  {
+  case 0:
+    result += "write-through ";
+    break;
+  case 1:
+    result += "write-back ";
+    break;
+  }
+
+  result += "Cache";
 
   switch (cachetype)
   {
