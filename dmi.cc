@@ -482,28 +482,41 @@ static const char *dmi_processor_family(u8 code)
     "Unknown",
     "8086",
     "80286",
-    "Intel386 processor",
-    "Intel486 processor",
+    "i386",
+    "i486",
     "8087",
     "80287",
     "80387",
     "80487",
-    "Pentium processor Family",
-    "Pentium Pro processor",
-    "Pentium II processor",
-    "Pentium processor with MMX technology",
-    "Celeron processor",
-    "Pentium II Xeon processor",
-    "Pentium III processor",
-    "M1 Family",
-    "M1", "M1", "M1", "M1", "M1", "M1",	/* 13h - 18h */
-    "K5 Family",
-    "K5", "K5", "K5", "K5", "K5", "K5",	/* 1Ah - 1Fh */
-    "Power PC Family",
+    "Pentium",
+    "Pentium Pro",
+    "Pentium II",
+    "Pentium MMX",
+    "Celeron",
+    "Pentium II Xeon",
+    "Pentium III",
+    "M1",
+    "M2",
+    "",
+    "",
+    "",
+    "",
+    "Duron",
+    "K5",
+    "K6",
+    "K6-2",
+    "K6-3",
+    "Athlon",
+    "AMD2900",
+    "K6-2+",
+    "Power PC",
     "Power PC 601",
     "Power PC 603",
     "Power PC 603+",
     "Power PC 604",
+    "Power PC 620",
+    "Power PC x704",
+    "Power PC 750",
   };
 
   if (code == 0xFF)
@@ -819,10 +832,10 @@ static void dmi_table(int fd,
 		       hw::cpu);
 
 	newnode.setSlot(dmi_string(dm, data[4]));
-	printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
+	//printf("\t\tProcessor Type: %s\n", dmi_processor_type(data[5]));
 	newnode.setProduct(dmi_processor_family(data[6]));
-	newnode.setVendor(dmi_string(dm, data[7]));
 	newnode.setVersion(dmi_string(dm, data[0x10]));
+	newnode.setVendor(dmi_string(dm, data[7]));
 	if (dm->length > 0x20)
 	{
 	  newnode.setSerial(dmi_string(dm, data[0x20]));
