@@ -53,6 +53,7 @@ clean:
 	date --utc +%Y%m%d%H%M%S > $@
                                                                                
 release:
+	mkdir -p ../releases
 	svn copy . `dirname ${PWD}`/releases/`cat .version`
 	svn commit `dirname ${PWD}`/releases/`cat .version` -m "release:"`cat .version`
 	rm -rf $(PACKAGENAME)-`cat .version`
