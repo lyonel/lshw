@@ -73,7 +73,7 @@ release:
 	svn commit `dirname ${PWD}`/releases/`cat ../.version` -m "released version "`cat ../.version`" of "$(PACKAGENAME)
 	rm -rf $(PACKAGENAME)-`cat ../.version`
 	svn export ../../releases/`cat ../.version` $(PACKAGENAME)-`cat ../.version`
-	cat $(PACKAGENAME)-`cat ../.version`/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat ../.version`/g" > $(PACKAGENAME)-`cat ../.version`/$(PACKAGENAME).spec
+	cat $(PACKAGENAME)-`cat ../.version`/src/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/`cat ../.version`/g" > $(PACKAGENAME)-`cat ../.version`/$(PACKAGENAME).spec
 	tar cfz $(PACKAGENAME)-`cat ../.version`.tar.gz $(PACKAGENAME)-`cat ../.version`
 	rm -rf $(PACKAGENAME)-`cat ../.version`
 
