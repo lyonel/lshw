@@ -23,11 +23,36 @@
 #define USB_CLASS_AUDIO                 1
 #define USB_CLASS_COMM                  2
 #define USB_CLASS_HID                   3
+#define USB_CLASS_IMAGING               6
 #define USB_CLASS_PRINTER               7
 #define USB_CLASS_MASS_STORAGE          8
 #define USB_CLASS_HUB                   9
-#define USB_CLASS_DATA                  10
+#define USB_CLASS_DATA                  0xa
+#define USB_CLASS_SMARTCARD             0xb
+#define USB_CLASS_VIDEO                 0xe
+#define USB_CLASS_WIRELESS              0xe0
 #define USB_CLASS_VENDOR_SPEC           0xff
+
+#define USB_SC_AUDIOCONTROL		1
+#define USB_SC_AUDIOSTREAMING		2
+#define USB_SC_AUDIOMIDISTREAMING	3
+#define USB_SC_COMMMODEM		2
+#define USB_SC_COMMETHERNET		6
+#define USB_SC_COMMOBEX			0xb
+#define USB_SC_HIDNONE			0
+#define USB_SC_HIDBOOT			1
+#define USB_PROT_HIDKBD			1
+#define USB_PROT_HIDMOUSE		2
+#define USB_SC_PRINTER			1
+#define USB_PROT_PRINTERUNIDIR		1
+#define USB_PROT_PRINTERBIDIR		2
+#define USB_PROT_PRINTER1284		3
+#define USB_SC_STORAGERBC		1
+#define USB_SC_STORAGEATAPI		2
+#define USB_SC_STORAGEFLOPPY		4
+#define USB_SC_STORAGESCSI		6
+#define USB_SC_WIRELESSRADIO		1
+#define USB_PROT_BLUETOOTH		1
 
 static map<u_int16_t,string> usbvendors;
 static map<u_int32_t,string> usbproducts;
@@ -110,7 +135,7 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
   }
 }
 
-static bool setUSBClass(hwNode & device, unsigned cls)
+static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned prot)
 {
   if(device.getClass()!=hw::generic) return false;
   switch(cls)
@@ -118,22 +143,82 @@ static bool setUSBClass(hwNode & device, unsigned cls)
     case USB_CLASS_AUDIO:
       device.setClass(hw::multimedia);
       device.setDescription("Audio device");
+      switch(sub)
+      {
+        case USB_SC_AUDIOCONTROL:
+          device.addCapability("audio-control", "Control device");
+          break;
+        case USB_SC_AUDIOMIDISTREAMING:
+          device.addCapability("midi", "MIDI");
+        case USB_SC_AUDIOSTREAMING:
+          device.addCapability("audio-streaming", "Audio streaming");
+        break;
+      }
       break;
     case USB_CLASS_COMM:
       device.setClass(hw::communication);
       device.setDescription("Communication device");
+      if(sub == USB_SC_COMMMODEM)
+      {
+        device.setDescription("Modem");
+        if((prot>=1) && (prot<=6)) device.addCapability("atcommands", "AT (Hayes) compatible");
+      }
+      if(sub==USB_SC_COMMETHERNET) device.addCapability("ethernet", "Ethernet networking");
+      if(sub==USB_SC_COMMOBEX) device.addCapability("obex", "OBEX networking");
       break;
     case USB_CLASS_HID:
       device.setClass(hw::input);
       device.setDescription("Human interface device");
+      if((sub==USB_SC_HIDNONE)||(sub==USB_SC_HIDBOOT))
+      {
+        switch(prot)
+        {
+          case USB_PROT_HIDKBD:
+            device.setDescription("Keyboard");
+            break;
+          case USB_PROT_HIDMOUSE:
+            device.setDescription("Mouse");
+            break;
+        }
+      }
       break;
     case USB_CLASS_PRINTER:
       device.setClass(hw::printer);
       device.setDescription("Printer");
+      if(sub==USB_SC_PRINTER)
+      {
+        switch(prot)
+        {
+          case USB_PROT_PRINTERUNIDIR:
+            device.addCapability("unidirectional", "Unidirectional");
+            break;
+          case USB_PROT_PRINTERBIDIR:
+            device.addCapability("bidirectional", "Bidirectional");
+            break;
+          case USB_PROT_PRINTER1284:
+            device.addCapability("ieee1284.4", "IEEE 1284.4 compatible bidirectional");
+            break;
+        }
+      }
       break;
     case USB_CLASS_MASS_STORAGE:
-      device.setClass(hw::disk);	// hw::storage is for storage controllers
+      device.setClass(hw::storage);
       device.setDescription("Mass storage device");
+      switch(sub)
+      {
+        case USB_SC_STORAGERBC:
+          device.addCapability("flash", "RBC (typically Flash) mass storage");
+          break;
+        case USB_SC_STORAGEATAPI:
+          device.addCapability("atapi", "SFF-8020i, MMC-2 (ATAPI)");
+          break;
+        case USB_SC_STORAGEFLOPPY:
+          device.addCapability("floppy", "Floppy (UFI)");
+          break;
+        case USB_SC_STORAGESCSI:
+          device.addCapability("scsi", "SCSI");
+          break;
+      }
       break;
     case USB_CLASS_HUB:
       device.setClass(hw::bus);
@@ -141,6 +226,20 @@ static bool setUSBClass(hwNode & device, unsigned cls)
       break;
     case USB_CLASS_DATA:
       device.setClass(hw::generic);
+      break;
+    case USB_CLASS_SMARTCARD:
+      device.setClass(hw::generic);
+      device.setDescription("Smart card reader");
+      break;
+    case USB_CLASS_VIDEO:
+      device.setClass(hw::multimedia);
+      device.setDescription("Video");
+      break;
+    case USB_CLASS_WIRELESS:
+      device.setClass(hw::network);
+      device.setDescription("Wireless interface");
+      if((sub==USB_SC_WIRELESSRADIO) && (prot==USB_PROT_BLUETOOTH))
+        device.addCapability("bluetooth", "Bluetooth wireless radio");
       break;
     default:
       return false;
@@ -297,7 +396,7 @@ bool scan_usb(hwNode & n)
             cls = sub = prot = mxps = numcfgs = 0;
             if(sscanf(line.c_str(), "D: Ver=%s Cls=%x(%*5c) Sub=%x Prot=%x MxPS=%u #Cfgs=%u", ver, &cls, &sub, &prot, &mxps, &numcfgs)>0)
             {
-              setUSBClass(device, cls);
+              setUSBClass(device, cls, sub, prot);
               device.addCapability(string("usb-")+string(ver));
             }
             break;
@@ -336,7 +435,7 @@ bool scan_usb(hwNode & n)
             memset(driver, 0, sizeof(driver));
             if((sscanf(line.c_str(), "I: If#=%u Alt=%u #EPs=%u Cls=%x(%*5c) Sub=%x Prot=%x Driver=%[ -z]", &ifnum, &alt, &numeps, &cls, &sub, &prot, driver)>0) && (cfgnum>0))
             {
-               setUSBClass(device, cls);
+               setUSBClass(device, cls, sub, prot);
                if((strlen(driver)!=0) && (strcasecmp("(none)", driver)!=0))
                {
                  device.setConfig("driver", hw::strip(driver));

@@ -824,6 +824,8 @@ static bool scan_hosts(hwNode & node)
 	  {
 	    controller->setConfig(string("driver"),
 				  string(namelist[i]->d_name));
+            controller->setHandle(scsi_handle(number));
+            controller->addCapability("scsi-host", "SCSI host adapter");
 	    controller->claim();
 	  }
 	}
