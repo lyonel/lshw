@@ -1414,7 +1414,7 @@ static void dmi_table(int fd,
 	hwNode *memorydevice = hardwarenode->findChildByHandle(devicehandle);
 
 	if (memorydevice && (newnode.getSize() != 0)
-	    && (newnode.getSize() > memorydevice->getSize()))
+	    && (newnode.getSize() <= memorydevice->getSize()))
 	  memorydevice->addChild(newnode);
       }
       break;
