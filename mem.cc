@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-static char *id = "@(#) $Id: mem.cc,v 1.19 2003/04/29 07:56:10 ezix Exp $";
+static char *id = "@(#) $Id: mem.cc,v 1.20 2003/06/26 21:30:27 ezix Exp $";
 
 static unsigned long long get_kcore_size()
 {
@@ -68,7 +68,7 @@ bool scan_memory(hwNode & n)
 
     if (!core)
     {
-      n.addChild(hwNode("core", hw::system));
+      n.addChild(hwNode("core", hw::bus));
       core = n.getChild("core");
     }
 
@@ -82,6 +82,9 @@ bool scan_memory(hwNode & n)
   if (memory)
   {
     memory->claim();
+
+    if (memory->getDescription() == "")
+      memory->setDescription("System memory");
 
     if (memory->getSize() > logicalmem)	// we already have a value
       return true;

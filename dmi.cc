@@ -76,7 +76,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static char *id = "@(#) $Id: dmi.cc,v 1.65 2003/04/29 07:56:10 ezix Exp $";
+static char *id = "@(#) $Id: dmi.cc,v 1.66 2003/06/26 21:30:27 ezix Exp $";
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -569,6 +569,8 @@ static void dmi_table(int fd,
 	newnode.setVersion(dmi_string(dm, data[5]));
 	newnode.setCapacity(64 * data[9] * 1024);
 	newnode.setSize(16 * (0x10000 - (data[7] << 8 | data[6])));
+	//newnode.setPhysId(16 * (data[7] << 8 | data[6]));
+	newnode.setPhysId(dm->handle);
 	newnode.setDescription("BIOS");
 	newnode.claim();
 
@@ -627,6 +629,7 @@ static void dmi_table(int fd,
 	  newnode.setSerial(dmi_string(dm, data[7]));
 	  newnode.setSlot(dmi_string(dm, data[0x0A]));
 	  newnode.setHandle(handle);
+	  newnode.setPhysId(dm->handle);
 	  newnode.setDescription(dmi_board_type(data[0x0D]));
 	  hardwarenode->addChild(newnode);
 	}
@@ -655,9 +658,11 @@ static void dmi_table(int fd,
 		       hw::processor);
 
 	newnode.setSlot(dmi_string(dm, data[4]));
+	newnode.setDescription("CPU");
 	newnode.setProduct(dmi_processor_family(data[6]));
 	newnode.setVersion(dmi_string(dm, data[0x10]));
 	newnode.setVendor(dmi_string(dm, data[7]));
+	newnode.setPhysId(dm->handle);
 	if (dm->length > 0x1A)
 	{
 	  // L1 cache
@@ -710,6 +715,7 @@ static void dmi_table(int fd,
 		       hw::memory);
 
 	newnode.setHandle(handle);
+	newnode.setPhysId(dm->handle);
 
 	size = data[0x0E] * (1 << data[8]) * 1024 * 1024;
 	newnode.setCapacity(size);
@@ -815,6 +821,7 @@ static void dmi_table(int fd,
 	}
 
 	newnode.setHandle(handle);
+	newnode.setPhysId(dm->handle);
 	hardwarenode->addChild(newnode);
       }
       break;
@@ -916,6 +923,7 @@ static void dmi_table(int fd,
 	hwNode newnode("memory",
 		       hw::memory);
 	newnode.setHandle(handle);
+	newnode.setPhysId(dm->handle);
 	newnode.setDescription(description);
 	newnode.setSlot(dmi_memory_array_location(data[4]));
 	//printf("\t\tError Correction Type: %s\n",
@@ -985,6 +993,7 @@ static void dmi_table(int fd,
 	hwNode newnode("bank",
 		       hw::memory);
 	newnode.setHandle(handle);
+	newnode.setPhysId(dm->handle);
 	newnode.setSlot(slot);
 	if (dm->length > 23)
 	  newnode.setVendor(dmi_string(dm, data[23]));
@@ -1035,7 +1044,7 @@ static void dmi_table(int fd,
 	hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
 #if 0
 	if (memoryarray)
-	  memoryarray->addChild(newnode);
+	  memoryarray->setPhysId(newnode.getStart());
 #endif
       }
       break;
@@ -1063,7 +1072,7 @@ static void dmi_table(int fd,
 #if 0
 	if (memorydevice && (newnode.getSize() != 0)
 	    && (newnode.getSize() <= memorydevice->getSize()))
-	  memorydevice->addChild(newnode);
+	  memorydevice->setPhysId(newnode.getStart());
 #endif
       }
       break;

@@ -5,5 +5,6 @@
 
 void print(hwNode & node, bool html=true, int level = 0);
 void printxml(hwNode & node, int level = 0);
+void printhwpath(hwNode & node);
 
 #endif

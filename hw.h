@@ -8,14 +8,15 @@ using namespace std;
 
 namespace hw {
 
-typedef enum {processor,
+typedef enum {
+	system,
+	bridge,
 	memory,
+	processor,
 	address,
 	storage,
 	disk,
 	tape,
-	system,
-	bridge,
 	bus,
 	network,
 	display,
@@ -90,6 +91,8 @@ class hwNode
 
 	unsigned int countChildren(hw::hwClass c = hw::generic) const;
 	hwNode * getChild(unsigned int);
+	hwNode * getChildByPhysId(long);
+	hwNode * getChildByPhysId(const string &);
 	hwNode * getChild(const string & id);
 	hwNode * findChildByHandle(const string & handle);
 	hwNode * findChildByLogicalName(const string & handle);
@@ -111,10 +114,16 @@ class hwNode
 	vector<string> getConfigValues(const string & separator = "") const;
 
 	string getLogicalName() const;
-	void setLogicalName(const string & name);
+	void setLogicalName(const string &);
 
 	string getBusInfo() const;
-	void setBusInfo(const string & businfo);
+	void setBusInfo(const string &);
+
+	string getPhysId() const;
+	void setPhysId(long);
+	void setPhysId(unsigned, unsigned);
+	void setPhysId(const string &);
+        void assignPhysIds();
 
 	void merge(const hwNode & node);
   private:

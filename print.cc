@@ -4,7 +4,14 @@
 #include <iostream>
 #include <iomanip>
 
-static char *id = "@(#) $Id: print.cc,v 1.46 2003/06/13 07:15:15 ezix Exp $";
+static char *id = "@(#) $Id: print.cc,v 1.47 2003/06/26 21:30:27 ezix Exp $";
+
+static void spaces(unsigned int count,
+		   string space = " ")
+{
+  while (count-- > 0)
+    cout << space;
+}
 
 static void tab(int level,
 		bool connect = true)
@@ -157,6 +164,20 @@ void print(hwNode & node,
     if (html)
       cout << "</td><td>";
     cout << node.getVendor();
+    if (html)
+      cout << "</td></tr>";
+    cout << endl;
+  }
+
+  if (node.getPhysId() != "")
+  {
+    tab(level + 1, false);
+    if (html)
+      cout << "<tr><td>";
+    cout << "physical id: ";
+    if (html)
+      cout << "</td><td>";
+    cout << node.getPhysId();
     if (html)
       cout << "</td></tr>";
     cout << endl;
@@ -469,6 +490,15 @@ void printxml(hwNode & node,
     cout << endl;
   }
 
+  if (node.getPhysId() != "")
+  {
+    tab(level + 1, false);
+    cout << "<physid>";
+    cout << node.getPhysId();
+    cout << "</physid>";
+    cout << endl;
+  }
+
   if (node.getBusInfo() != "")
   {
     tab(level + 1, false);
@@ -620,4 +650,84 @@ void printxml(hwNode & node,
   cout << "</node>" << endl;
 
   (void) &id;			// avoid "id defined but not used" warning
+}
+
+struct hwpath
+{
+  string path;
+  string description;
+  string devname;
+  string classname;
+};
+
+static void printhwnode(hwNode & node,
+			vector < hwpath > &l,
+			string prefix = "")
+{
+  hwpath entry;
+
+  entry.path = "";
+  if (node.getPhysId() != "")
+    entry.path = prefix + "/" + node.getPhysId();
+  entry.description = node.getDescription();
+  if (entry.description == "")
+    entry.description = node.getProduct();
+  entry.devname = node.getLogicalName();
+  entry.classname = node.getClassName();
+
+  l.push_back(entry);
+  for (unsigned int i = 0; i < node.countChildren(); i++)
+  {
+    printhwnode(*node.getChild(i), l, entry.path);
+  }
+}
+
+static const char *cols[] = { "H/W path",
+  "device",
+  "class",
+  "description"
+};
+
+void printhwpath(hwNode & node)
+{
+  vector < hwpath > l;
+  unsigned int l1 = strlen(cols[0]),
+    l2 = strlen(cols[1]),
+    l3 = strlen(cols[2]);
+  unsigned int i = 0;
+
+  printhwnode(node, l);
+
+  for (i = 0; i < l.size(); i++)
+  {
+    if (l1 < l[i].path.length())
+      l1 = l[i].path.length();
+    if (l2 < l[i].devname.length())
+      l2 = l[i].devname.length();
+    if (l3 < l[i].classname.length())
+      l3 = l[i].classname.length();
+  }
+
+  cout << cols[0];
+  spaces(2 + l1 - strlen(cols[0]));
+  cout << cols[1];
+  spaces(2 + l2 - strlen(cols[1]));
+  cout << cols[2];
+  spaces(2 + l3 - strlen(cols[2]));
+  cout << cols[3];
+  cout << endl;
+
+  spaces(l1 + l2 + l3 + strlen(cols[3]) + 3, "-");
+  cout << endl;
+
+  for (i = 0; i < l.size(); i++)
+  {
+    cout << l[i].path;
+    spaces(2 + l1 - l[i].path.length());
+    cout << l[i].devname;
+    spaces(2 + l2 - l[i].devname.length());
+    cout << l[i].classname;
+    spaces(2 + l3 - l[i].classname.length());
+    cout << l[i].description << endl;
+  }
 }

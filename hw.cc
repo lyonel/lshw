@@ -7,13 +7,13 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id: hw.cc,v 1.46 2003/06/13 22:14:58 ezix Exp $";
+static char *id = "@(#) $Id: hw.cc,v 1.47 2003/06/26 21:30:27 ezix Exp $";
 
 struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, serial, slot, handle, description,
-    logicalname, businfo;
+    logicalname, businfo, physid;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -85,6 +85,7 @@ hwNode::hwNode(const string & id,
   This->description = string("");
   This->logicalname = string("");
   This->businfo = string("");
+  This->physid = string("");
 
   (void) &::id;			// avoid warning "id defined but not used"
 }
@@ -473,6 +474,37 @@ hwNode *hwNode::getChild(unsigned int i)
     return &(This->children[i]);
 }
 
+hwNode *hwNode::getChildByPhysId(const string & physid)
+{
+  if (physid == "" || !This)
+    return NULL;
+
+  for (unsigned int i = 0; i < This->children.size(); i++)
+  {
+    if (This->children[i].getPhysId() == physid)
+      return &(This->children[i]);
+  }
+
+  return NULL;
+}
+
+hwNode *hwNode::getChildByPhysId(long physid)
+{
+  char buffer[20];
+  if (!This)
+    return NULL;
+
+  snprintf(buffer, sizeof(buffer), "%lx", physid);
+
+  for (unsigned int i = 0; i < This->children.size(); i++)
+  {
+    if (This->children[i].getPhysId() == string(buffer))
+      return &(This->children[i]);
+  }
+
+  return NULL;
+}
+
 hwNode *hwNode::getChild(const string & id)
 {
   string baseid = id, path = "";
@@ -573,6 +605,7 @@ static string generateId(const string & radical,
 hwNode *hwNode::addChild(const hwNode & node)
 {
   hwNode *existing = NULL;
+  hwNode *samephysid = NULL;
   string id = node.getId();
   int count = 0;
 
@@ -583,6 +616,15 @@ hwNode *hwNode::addChild(const hwNode & node)
   for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].attractsNode(node))
       return This->children[i].addChild(node);
+
+  // find if another child already has the same physical id
+  // in that case, we remove BOTH physical ids and let auto-allocation proceed
+  if (node.getPhysId() != "")
+    samephysid = getChildByPhysId(node.getPhysId());
+  if (samephysid)
+  {
+    samephysid->setPhysId("");
+  }
 
   existing = getChild(id);
   if (existing)			// first rename existing instance
@@ -599,6 +641,9 @@ hwNode *hwNode::addChild(const hwNode & node)
   This->children.push_back(node);
   if (existing || getChild(generateId(id, 0)))
     This->children.back().setId(generateId(id, count));
+
+  if (samephysid)
+    This->children.back().setPhysId("");
 
   return &(This->children.back());
   //return getChild(This->children.back().getId());
@@ -775,6 +820,69 @@ void hwNode::setBusInfo(const string & businfo)
   }
 }
 
+string hwNode::getPhysId() const
+{
+  if (This)
+    return This->physid;
+  else
+    return "";
+}
+
+void hwNode::setPhysId(long physid)
+{
+  if (This)
+  {
+    char buffer[20];
+
+    snprintf(buffer, sizeof(buffer), "%lx", physid);
+    This->physid = string(buffer);
+  }
+}
+
+void hwNode::setPhysId(unsigned physid1,
+		       unsigned physid2)
+{
+  if (This)
+  {
+    char buffer[40];
+
+    snprintf(buffer, sizeof(buffer), "%x.%x", physid1, physid2);
+    This->physid = string(buffer);
+  }
+}
+
+void hwNode::setPhysId(const string & physid)
+{
+  if (This)
+  {
+    This->physid = strip(physid);
+  }
+}
+
+void hwNode::assignPhysIds()
+{
+  if (!This)
+    return;
+
+  for (unsigned int i = 0; i < This->children.size(); i++)
+  {
+    long curid = 0;
+
+    if (This->children[i].getClass() == hw::processor)
+      curid = 0x100;
+
+    if (This->children[i].getPhysId() == "")
+    {
+      while (getChildByPhysId(curid))
+	curid++;
+
+      This->children[i].setPhysId(curid);
+    }
+
+    This->children[i].assignPhysIds();
+  }
+}
+
 void hwNode::merge(const hwNode & node)
 {
   if (!This)
@@ -814,6 +922,8 @@ void hwNode::merge(const hwNode & node)
     This->logicalname = node.getLogicalName();
   if (This->businfo == "")
     This->businfo = node.getBusInfo();
+  if (This->physid == "")
+    This->physid = node.getPhysId();
 
   for (unsigned int i = 0; i < node.This->features.size(); i++)
     addCapability(node.This->features[i]);

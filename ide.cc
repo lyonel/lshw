@@ -14,7 +14,7 @@
 #include <vector>
 #include <linux/hdreg.h>
 
-static char *id = "@(#) $Id: ide.cc,v 1.21 2003/06/13 22:16:10 ezix Exp $";
+static char *id = "@(#) $Id: ide.cc,v 1.22 2003/06/26 21:30:27 ezix Exp $";
 
 #define PROC_IDE "/proc/ide"
 
@@ -304,20 +304,31 @@ static bool probe_ide(const string & name,
   return true;
 }
 
+static bool is_master(const string & device)
+{
+  if (device == "")
+    return false;
+
+  switch ((device[device.length() - 1] - 'a') % 2)
+  {
+  case 0:
+    return true;
+  case 1:
+    return false;
+  default:
+    return false;
+  }
+}
+
 static string master_or_slave(const string & device)
 {
   if (device == "")
     return "";
 
-  switch ((device[device.length() - 1] - 'a') % 2)
-  {
-  case 0:
+  if (is_master(device))
     return "master";
-  case 1:
+  else
     return "slave";
-  default:
-    return "";
-  }
 }
 
 bool scan_ide(hwNode & n)
@@ -350,7 +361,10 @@ bool scan_ide(hwNode & n)
       while ((*id != 0) && (!isdigit(*id)))
 	id++;
       if (*id != 0)
+      {
 	ide.setBusInfo("ide@" + string(id));
+	ide.setPhysId(string(id));
+      }
 
       if (config.size() > 0)
 	splitlines(config[0], identify, ' ');
@@ -384,6 +398,10 @@ bool scan_ide(hwNode & n)
 			      string(devicelist[j]->d_name));
 	  idedevice.setBusInfo(ide.getBusInfo() + ":" +
 			       master_or_slave(devicelist[j]->d_name));
+	  if (is_master(devicelist[j]->d_name))
+	    idedevice.setPhysId(0);
+	  else
+	    idedevice.setPhysId(1);
 
 	  probe_ide(devicelist[j]->d_name, idedevice);
 

@@ -8,7 +8,7 @@
 #include <vector>
 
 static char *id =
-  "@(#) $Id: cpuinfo.cc,v 1.18 2003/04/30 08:25:47 ezix Exp $";
+  "@(#) $Id: cpuinfo.cc,v 1.19 2003/06/26 21:30:27 ezix Exp $";
 
 static hwNode *getcpu(hwNode & node,
 		      int n = 0)
@@ -294,7 +294,7 @@ bool scan_cpuinfo(hwNode & n)
 
   if (!core)
   {
-    n.addChild(hwNode("core", hw::system));
+    n.addChild(hwNode("core", hw::bus));
     core = n.getChild("core");
   }
 

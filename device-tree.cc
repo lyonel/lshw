@@ -8,7 +8,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: device-tree.cc,v 1.15 2003/05/01 19:13:38 ezix Exp $";
+  "@(#) $Id: device-tree.cc,v 1.16 2003/06/26 21:30:27 ezix Exp $";
 
 #define DEVICETREE "/proc/device-tree"
 
@@ -355,7 +355,7 @@ bool scan_device_tree(hwNode & n)
 
   if (!core)
   {
-    n.addChild(hwNode("core", hw::system));
+    n.addChild(hwNode("core", hw::bus));
     core = n.getChild("core");
   }
 

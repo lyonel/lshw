@@ -200,7 +200,7 @@ bool scan_spd(hwNode & n)
 
     if (!core)
     {
-      n.addChild(hwNode("core", hw::system));
+      n.addChild(hwNode("core", hw::bus));
       core = n.getChild("core");
     }
 
@@ -221,4 +221,4 @@ bool scan_spd(hwNode & n)
   return false;
 }
 
-static char *id = "@(#) $Id: spd.cc,v 1.2 2003/04/17 19:50:07 ezix Exp $";
+static char *id = "@(#) $Id: spd.cc,v 1.3 2003/06/26 21:30:27 ezix Exp $";

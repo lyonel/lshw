@@ -15,7 +15,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id: scsi.cc,v 1.33 2003/06/13 09:29:55 ezix Exp $";
+static char *id = "@(#) $Id: scsi.cc,v 1.34 2003/06/26 21:30:27 ezix Exp $";
 
 #define SG_X "/dev/sg%d"
 
@@ -695,6 +695,7 @@ static bool scan_sg(int sg,
   channel->setDescription(buffer);
   channel->setHandle(scsi_handle(m_id.host_no, m_id.channel));
   channel->setBusInfo(scsi_businfo(m_id.host_no, m_id.channel));
+  channel->setPhysId(m_id.channel);
   channel->claim();
 
   hwNode device = hwNode("generic");
@@ -733,6 +734,7 @@ static bool scan_sg(int sg,
 			       m_id.channel, m_id.scsi_id, m_id.lun));
   device.setBusInfo(scsi_businfo(m_id.host_no,
 				 m_id.channel, m_id.scsi_id, m_id.lun));
+  device.setPhysId(m_id.scsi_id, m_id.lun);
   find_logicalname(device);
   do_inquiry(fd, device);
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
@@ -844,8 +846,8 @@ bool scan_scsi(hwNode & n)
 {
   int i = 0;
 
-  scan_hosts(n);
   scan_devices();
+  scan_hosts(n);
 
   while (scan_sg(i, n))
     i++;

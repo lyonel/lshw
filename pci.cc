@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: pci.cc,v 1.30 2003/06/13 07:15:15 ezix Exp $";
+static char *id = "@(#) $Id: pci.cc,v 1.31 2003/06/26 21:30:27 ezix Exp $";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -132,6 +132,8 @@ static char *id = "@(#) $Id: pci.cc,v 1.30 2003/06/13 07:15:15 ezix Exp $";
 #define PCI_CLASS_SERIAL_FIBER		0x0c04
 
 #define PCI_CLASS_OTHERS		0xff
+
+#define PCI_ADDR_MEM_MASK (~(pciaddr_t) 0xf)
 
 typedef unsigned long long pciaddr_t;
 typedef enum
@@ -604,6 +606,8 @@ bool scan_pci(hwNode & n)
 	host.setVersion(revision);
 	host.claim();
 	host.setBusInfo(businfo);
+	if (d.size[0] > 0)
+	  host.setPhysId(d.base_addr[0] & PCI_ADDR_MEM_MASK);
 
 	if (moredescription != "" && moredescription != host.getDescription())
 	{
@@ -665,6 +669,7 @@ bool scan_pci(hwNode & n)
 	if (device)
 	{
 	  device->setBusInfo(businfo);
+	  device->setPhysId(PCI_SLOT(dfn & 0xff), PCI_FUNC(dfn & 0xff));
 
 	  if (devicename == "pcmcia")
 	    device->addCapability("pcmcia");
@@ -737,7 +742,7 @@ bool scan_pci(hwNode & n)
     hwNode *core = n.getChild("core");
     if (!core)
     {
-      n.addChild(hwNode("core", hw::system));
+      n.addChild(hwNode("core", hw::bus));
       core = n.getChild("core");
     }
 
