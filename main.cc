@@ -13,11 +13,12 @@
 #include "scsi.h"
 #include "spd.h"
 #include "network.h"
+#include "isapnp.h"
 
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.27 2003/06/27 13:56:56 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.28 2003/07/15 07:06:34 ezix Exp $";
 
 void usage(const char *progname)
 {
@@ -84,6 +85,7 @@ int main(int argc,
     scan_cpuinfo(computer);
     scan_cpuid(computer);
     scan_pci(computer);
+    scan_isapnp(computer);
     scan_pcmcia(computer);
     scan_ide(computer);
     scan_scsi(computer);
