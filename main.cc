@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id: main.cc,v 1.31 2003/09/27 22:34:09 ezix Exp $";
+static char *id = "@(#) $Id: main.cc,v 1.32 2003/09/29 17:07:52 ezix Exp $";
 
 void usage(const char *progname)
 {
@@ -30,7 +30,7 @@ void usage(const char *progname)
   fprintf(stderr, "\t-xml            output hardware tree as XML\n");
   fprintf(stderr, "\t-short          output hardware paths\n");
   fprintf(stderr,
-	  "\t-disable test   disable test (like pci, isapnp, cpuid, etc. )\n");
+	  "\t-disable test   disable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr, "\n");
 }
 
