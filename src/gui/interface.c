@@ -52,15 +52,32 @@ create_lshw (void)
   GtkWidget *savebutton;
   GtkWidget *quitbutton;
   GtkWidget *scrolledwindow1;
-  GtkWidget *hwtree;
+  GtkWidget *viewport1;
+  GtkWidget *hbox1;
+  GtkWidget *scrolledwindow4;
+  GtkWidget *treeview1;
+  GtkWidget *vseparator1;
+  GtkWidget *scrolledwindow5;
+  GtkWidget *treeview2;
+  GtkWidget *vseparator2;
+  GtkWidget *scrolledwindow6;
+  GtkWidget *treeview3;
+  GtkWidget *vseparator3;
+  GtkWidget *object;
+  GtkWidget *properties;
+  GtkWidget *objectname;
+  GtkWidget *hscale1;
   GtkWidget *statusbar1;
   GtkAccelGroup *accel_group;
+  GtkTooltips *tooltips;
+
+  tooltips = gtk_tooltips_new ();
 
   accel_group = gtk_accel_group_new ();
 
   lshw = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (lshw), "lshw");
-  gtk_window_set_default_size (GTK_WINDOW (lshw), 480, 640);
+  gtk_window_set_default_size (GTK_WINDOW (lshw), 638, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox1);
@@ -146,10 +163,78 @@ create_lshw (void)
   gtk_box_pack_start (GTK_BOX (vbox1), scrolledwindow1, TRUE, TRUE, 0);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-  hwtree = gtk_tree_view_new ();
-  gtk_widget_show (hwtree);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow1), hwtree);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (hwtree), FALSE);
+  viewport1 = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewport1);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow1), viewport1);
+
+  hbox1 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox1);
+  gtk_container_add (GTK_CONTAINER (viewport1), hbox1);
+
+  scrolledwindow4 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow4);
+  gtk_box_pack_start (GTK_BOX (hbox1), scrolledwindow4, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+  treeview1 = gtk_tree_view_new ();
+  gtk_widget_show (treeview1);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow4), treeview1);
+  gtk_tooltips_set_tip (tooltips, treeview1, "first level", NULL);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview1), FALSE);
+
+  vseparator1 = gtk_vseparator_new ();
+  gtk_widget_show (vseparator1);
+  gtk_box_pack_start (GTK_BOX (hbox1), vseparator1, FALSE, TRUE, 0);
+
+  scrolledwindow5 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow5);
+  gtk_box_pack_start (GTK_BOX (hbox1), scrolledwindow5, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+  treeview2 = gtk_tree_view_new ();
+  gtk_widget_show (treeview2);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow5), treeview2);
+  gtk_tooltips_set_tip (tooltips, treeview2, "second level", NULL);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview2), FALSE);
+
+  vseparator2 = gtk_vseparator_new ();
+  gtk_widget_show (vseparator2);
+  gtk_box_pack_start (GTK_BOX (hbox1), vseparator2, FALSE, TRUE, 0);
+
+  scrolledwindow6 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow6);
+  gtk_box_pack_start (GTK_BOX (hbox1), scrolledwindow6, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow6), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+  treeview3 = gtk_tree_view_new ();
+  gtk_widget_show (treeview3);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow6), treeview3);
+  gtk_tooltips_set_tip (tooltips, treeview3, "third level", NULL);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview3), FALSE);
+
+  vseparator3 = gtk_vseparator_new ();
+  gtk_widget_show (vseparator3);
+  gtk_box_pack_start (GTK_BOX (hbox1), vseparator3, FALSE, TRUE, 0);
+
+  object = gtk_frame_new (NULL);
+  gtk_widget_show (object);
+  gtk_box_pack_start (GTK_BOX (hbox1), object, TRUE, TRUE, 0);
+
+  properties = gtk_label_new ("<b>DVD reader</b>\n\n<b>product</b>: DVD-ROM SD-R2512\n<b>vendor</b>: TOSHIBA\n<b>bus info</b>:scsi@0.0:0.0\n<b>logical name</b>: /dev/cdrom\n<b>logical name</b>: /dev/cdwriter\n<b>logical name</b>: /dev/scd0\n<b>version</b>: 1A04\n<b>capabilities</b>: removable audio cd-r cd-rw dvd\n<b>configuration</b>: ansiversion=2");
+  gtk_widget_show (properties);
+  gtk_container_add (GTK_CONTAINER (object), properties);
+  gtk_label_set_use_markup (GTK_LABEL (properties), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (properties), 0, 0);
+  gtk_misc_set_padding (GTK_MISC (properties), 10, 10);
+
+  objectname = gtk_label_new ("cdrom");
+  gtk_widget_show (objectname);
+  gtk_frame_set_label_widget (GTK_FRAME (object), objectname);
+
+  hscale1 = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, 0, 0, 0, 0)));
+  gtk_widget_show (hscale1);
+  gtk_box_pack_start (GTK_BOX (vbox1), hscale1, FALSE, FALSE, 0);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale1), FALSE);
 
   statusbar1 = gtk_statusbar_new ();
   gtk_widget_show (statusbar1);
@@ -206,8 +291,23 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, savebutton, "savebutton");
   GLADE_HOOKUP_OBJECT (lshw, quitbutton, "quitbutton");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow1, "scrolledwindow1");
-  GLADE_HOOKUP_OBJECT (lshw, hwtree, "hwtree");
+  GLADE_HOOKUP_OBJECT (lshw, viewport1, "viewport1");
+  GLADE_HOOKUP_OBJECT (lshw, hbox1, "hbox1");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow4, "scrolledwindow4");
+  GLADE_HOOKUP_OBJECT (lshw, treeview1, "treeview1");
+  GLADE_HOOKUP_OBJECT (lshw, vseparator1, "vseparator1");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow5, "scrolledwindow5");
+  GLADE_HOOKUP_OBJECT (lshw, treeview2, "treeview2");
+  GLADE_HOOKUP_OBJECT (lshw, vseparator2, "vseparator2");
+  GLADE_HOOKUP_OBJECT (lshw, scrolledwindow6, "scrolledwindow6");
+  GLADE_HOOKUP_OBJECT (lshw, treeview3, "treeview3");
+  GLADE_HOOKUP_OBJECT (lshw, vseparator3, "vseparator3");
+  GLADE_HOOKUP_OBJECT (lshw, object, "object");
+  GLADE_HOOKUP_OBJECT (lshw, properties, "properties");
+  GLADE_HOOKUP_OBJECT (lshw, objectname, "objectname");
+  GLADE_HOOKUP_OBJECT (lshw, hscale1, "hscale1");
   GLADE_HOOKUP_OBJECT (lshw, statusbar1, "statusbar1");
+  GLADE_HOOKUP_OBJECT_NO_REF (lshw, tooltips, "tooltips");
 
   gtk_window_add_accel_group (GTK_WINDOW (lshw), accel_group);
 

@@ -8,6 +8,5 @@
   <pixmaps_directory>.</pixmaps_directory>
   <gnome_support>FALSE</gnome_support>
   <gettext_support>FALSE</gettext_support>
-  <use_widget_names>FALSE</use_widget_names>
   <output_build_files>FALSE</output_build_files>
 </glade-project>
