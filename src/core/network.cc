@@ -307,6 +307,7 @@ bool scan_network(hwNode & n)
 
       interface.setLogicalName(interfaces[i]);
       interface.claim();
+      interface.addHint("icon", string("network"));
 
       string businfo = sysfs_getbusinfo(sysfs::entry::byClass("net", interface.getLogicalName()));
       interface.setBusInfo(businfo);
@@ -375,6 +376,8 @@ bool scan_network(hwNode & n)
 	interface.addCapability("wireless", "Wireless-LAN");
 	interface.setConfig("wireless", hw::strip(buffer + IFNAMSIZ));
 	interface.setDescription("Wireless interface");
+        interface.addHint("icon", string("wifi"));
+        interface.addHint("bus.icon", string("radio"));
       }
 
       edata.cmd = ETHTOOL_GLINK;
