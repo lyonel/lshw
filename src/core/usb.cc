@@ -251,6 +251,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
       {
         device.setDescription("Bluetooth wireless interface");
         device.addCapability("bluetooth", "Bluetooth wireless radio");
+	device.addHint("icon", string("bluetooth"));
       }
       break;
     default:
