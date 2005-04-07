@@ -1482,6 +1482,7 @@ static void dmi_table(int fd,
       {
         hwNode batt("battery", hw::power);
 
+        batt.addHint("icon", string("battery"));
         batt.claim();
 	batt.setHandle(handle);
 	batt.setVendor(dmi_string(dm, data[0x05]));
