@@ -118,7 +118,7 @@ static  void inserticon(const string & icon, const string & comment, GtkTextBuff
                                   NULL);
   gtk_text_buffer_insert_pixbuf(buffer, &iter, pixbuf);
   gtk_text_buffer_insert(buffer, &iter, comment.c_str(), -1);
-  gtk_text_buffer_insert(buffer, &iter, "\n", -1);
+  //gtk_text_buffer_insert(buffer, &iter, "\n", -1);
 }
 
 void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath)
@@ -158,14 +158,19 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
 
   gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 
+  if(node.getHint("icon").defined())
+    inserticon(string("lshw-") + node.getHint("icon").asString(), "", buffer, iter, textview);
+
   if(node.getHint("bus.icon").defined())
     inserticon(string("lshw-") + node.getHint("bus.icon").asString(), "", buffer, iter, textview);
 
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
   if(!node.claimed())
-    inserticon(GTK_STOCK_DIALOG_QUESTION, "this device hasn't been claimed", buffer, iter, textview);
+    inserticon(LSHW_STOCK_DISABLED, "this device hasn't been claimed\n", buffer, iter, textview);
 
   if(!node.enabled())
-    inserticon(GTK_STOCK_NO, "this device has been disabled", buffer, iter, textview);
+    inserticon(LSHW_STOCK_DISABLED, "this device has been disabled\n", buffer, iter, textview);
 
   gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
 
