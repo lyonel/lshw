@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="audio.svg"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
+   inkscape:version="0.41"
+   sodipodi:version="0.32"
+   id="svg2"
+   height="600.00000pt"
+   width="600.00000pt">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     inkscape:window-y="26"
+     inkscape:window-x="0"
+     inkscape:window-height="676"
+     inkscape:window-width="842"
+     gridspacingy="10.000000px"
+     gridspacingx="10.000000px"
+     showgrid="true"
+     inkscape:grid-points="true"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="px"
+     inkscape:cy="386.78850"
+     inkscape:cx="374.99983"
+     inkscape:zoom="0.17500000"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF
+       id="RDF5">
+      <cc:Work
+         id="Work6"
+         rdf:about="">
+        <dc:format
+           id="format7">image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+           id="type9" />
+        <dc:title
+           id="title2866">Audio</dc:title>
+        <dc:date
+           id="date2868">2005/03/28</dc:date>
+        <dc:creator
+           id="creator2870">
+          <cc:Agent
+             id="Agent2872">
+            <dc:title
+               id="title2874">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher
+           id="publisher2876">
+          <cc:Agent
+             id="Agent2878">
+            <dc:title
+               id="title2880">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier
+           id="identifier2882">audo</dc:identifier>
+        <dc:language
+           id="language2884">C</dc:language>
+        <dc:subject
+           id="subject2886">
+          <rdf:Bag
+             id="Bag2888">
+            <rdf:li
+               id="li2130">sound audio music</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"
+           id="license2918" />
+        <dc:source
+           id="source1314">$Id: radio.svg 1007 2005-03-28 19:35:40Z ezix $</dc:source>
+      </cc:Work>
+      <cc:License
+         id="License2920"
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           id="permits2922"
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           id="permits2924"
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           id="requires2926"
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           id="permits2928"
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           id="requires2930"
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           id="requires2932"
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <path
+       id="path1323"
+       d="M 328.56250 161.43750 L 328.56250 420.09375 C 312.26836 413.29621 287.68284 417.89306 266.18750 433.40625 C 238.05228 453.71143 225.87903 484.99479 239.03125 503.21875 C 252.18347 521.44270 285.67729 519.74267 313.81250 499.43750 C 333.65088 485.12015 345.50735 465.36544 346.18750 448.56250 L 347.15625 448.56250 L 347.15625 238.87500 C 386.97640 236.28799 409.69713 245.11894 455.96875 301.75000 L 455.96875 250.71875 C 450.90001 198.41400 410.38553 180.12356 347.15625 161.96875 L 347.15625 161.43750 L 328.56250 161.43750 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+    <path
+       id="path2092"
+       d="M 446.78500,361.39324 L 446.78500,545.22619 C 435.20438,540.39502 417.73088,543.66211 402.45365,554.68769 C 382.45730,569.11905 373.80549,591.35285 383.15308,604.30504 C 392.50066,617.25722 416.30549,616.04897 436.30183,601.61762 C 450.40142,591.44195 458.82809,577.40182 459.31149,565.45959 L 460.00000,565.45959 L 460.00000,416.42986 C 488.30110,414.59121 504.44924,420.86757 537.33555,461.11657 L 537.33555,424.84748 C 533.73308,387.67329 504.93851,374.67386 460.00000,361.77082 L 460.00000,361.39324 L 446.78500,361.39324 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000003pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+  </g>
+</svg>
