@@ -8,47 +8,48 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="audio.svg"
-   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
-   inkscape:version="0.41"
-   sodipodi:version="0.32"
-   id="svg2"
+   width="600.00000pt"
    height="600.00000pt"
-   width="600.00000pt">
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.41"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
+   sodipodi:docname="audio.svg">
   <defs
      id="defs3" />
   <sodipodi:namedview
-     inkscape:window-y="26"
-     inkscape:window-x="0"
-     inkscape:window-height="676"
-     inkscape:window-width="842"
-     gridspacingy="10.000000px"
-     gridspacingx="10.000000px"
-     showgrid="true"
-     inkscape:grid-points="true"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="px"
-     inkscape:cy="386.78850"
-     inkscape:cx="374.99983"
-     inkscape:zoom="0.17500000"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     gridtolerance="4.0000000px"
+     id="base"
      pagecolor="#ffffff"
-     id="base" />
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="-186.58610"
+     inkscape:cy="270.18473"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:grid-points="true"
+     showgrid="true"
+     gridspacingx="10.000000px"
+     gridspacingy="10.000000px"
+     inkscape:window-width="842"
+     inkscape:window-height="676"
+     inkscape:window-x="0"
+     inkscape:window-y="26" />
   <metadata
      id="metadata4">
     <rdf:RDF
        id="RDF5">
       <cc:Work
-         id="Work6"
-         rdf:about="">
+         rdf:about=""
+         id="Work6">
         <dc:format
            id="format7">image/svg+xml</dc:format>
         <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
-           id="type9" />
+           id="type9"
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:title
            id="title2866">Audio</dc:title>
         <dc:date
@@ -82,46 +83,85 @@
           </rdf:Bag>
         </dc:subject>
         <cc:license
-           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"
-           id="license2918" />
+           id="license2918"
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
         <dc:source
-           id="source1314">$Id: radio.svg 1007 2005-03-28 19:35:40Z ezix $</dc:source>
+           id="source1314">$Id$</dc:source>
       </cc:Work>
       <cc:License
-         id="License2920"
-         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/"
+         id="License2920">
         <cc:permits
-           id="permits2922"
-           rdf:resource="http://web.resource.org/cc/Reproduction" />
+           rdf:resource="http://web.resource.org/cc/Reproduction"
+           id="permits2922" />
         <cc:permits
-           id="permits2924"
-           rdf:resource="http://web.resource.org/cc/Distribution" />
+           rdf:resource="http://web.resource.org/cc/Distribution"
+           id="permits2924" />
         <cc:requires
-           id="requires2926"
-           rdf:resource="http://web.resource.org/cc/Notice" />
+           rdf:resource="http://web.resource.org/cc/Notice"
+           id="requires2926" />
         <cc:permits
-           id="permits2928"
-           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks"
+           id="permits2928" />
         <cc:requires
-           id="requires2930"
-           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+           rdf:resource="http://web.resource.org/cc/ShareAlike"
+           id="requires2930" />
         <cc:requires
-           id="requires2932"
-           rdf:resource="http://web.resource.org/cc/SourceCode" />
+           rdf:resource="http://web.resource.org/cc/SourceCode"
+           id="requires2932" />
       </cc:License>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     id="layer1">
     <path
-       id="path1323"
-       d="M 328.56250 161.43750 L 328.56250 420.09375 C 312.26836 413.29621 287.68284 417.89306 266.18750 433.40625 C 238.05228 453.71143 225.87903 484.99479 239.03125 503.21875 C 252.18347 521.44270 285.67729 519.74267 313.81250 499.43750 C 333.65088 485.12015 345.50735 465.36544 346.18750 448.56250 L 347.15625 448.56250 L 347.15625 238.87500 C 386.97640 236.28799 409.69713 245.11894 455.96875 301.75000 L 455.96875 250.71875 C 450.90001 198.41400 410.38553 180.12356 347.15625 161.96875 L 347.15625 161.43750 L 328.56250 161.43750 z "
-       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+       d="M 584.75000,149.46875 L 584.75000,408.12500 C 568.45586,401.32746 543.87034,405.92431 522.37500,421.43750 C 494.23978,441.74268 482.06653,473.02604 495.21875,491.25000 C 508.37097,509.47395 541.86479,507.77392 570.00000,487.46875 C 589.83838,473.15140 601.69485,453.39669 602.37500,436.59375 L 603.34375,436.59375 L 603.34375,226.90625 C 643.16390,224.31924 665.88463,233.15019 712.15625,289.78125 L 712.15625,238.75000 C 707.08751,186.44525 666.57303,168.15481 603.34375,150.00000 L 603.34375,149.46875 L 584.75000,149.46875 z "
+       id="path1323" />
     <path
-       id="path2092"
-       d="M 446.78500,361.39324 L 446.78500,545.22619 C 435.20438,540.39502 417.73088,543.66211 402.45365,554.68769 C 382.45730,569.11905 373.80549,591.35285 383.15308,604.30504 C 392.50066,617.25722 416.30549,616.04897 436.30183,601.61762 C 450.40142,591.44195 458.82809,577.40182 459.31149,565.45959 L 460.00000,565.45959 L 460.00000,416.42986 C 488.30110,414.59121 504.44924,420.86757 537.33555,461.11657 L 537.33555,424.84748 C 533.73308,387.67329 504.93851,374.67386 460.00000,361.77082 L 460.00000,361.39324 L 446.78500,361.39324 z "
-       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000003pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000003pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+       d="M 406.78500,295.93365 L 406.78500,479.76660 C 395.20438,474.93543 377.73088,478.20252 362.45365,489.22810 C 342.45730,503.65946 333.80549,525.89326 343.15308,538.84545 C 352.50066,551.79763 376.30549,550.58938 396.30183,536.15803 C 410.40142,525.98236 418.82809,511.94223 419.31149,500.00000 L 420.00000,500.00000 L 420.00000,350.97027 C 448.30110,349.13162 464.44924,355.40798 497.33555,395.65698 L 497.33555,359.38789 C 493.73308,322.21370 464.93851,309.21427 420.00000,296.31123 L 420.00000,295.93365 L 406.78500,295.93365 z "
+       id="path2092" />
+    <g
+       transform="matrix(3.154894,0.000000,0.000000,3.154894,-34.27897,-687.6653)"
+       id="g2844">
+      <path
+         sodipodi:nodetypes="ccccc"
+         id="path2842"
+         d="M 30.000000,350.00000 L 74.142136,320.00000 L 74.899750,430.00000 L 30.000000,400.00000 L 30.000000,350.00000 z "
+         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:0.25000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+      <path
+         transform="matrix(0.337150,0.000000,0.000000,0.454547,-0.950000,204.5448)"
+         d="M 145.46196 375.00000 A 47.730984 55.000000 0 1 1  49.999996,375.00000 A 47.730984 55.000000 0 1 1  145.46196 375.00000 z"
+         sodipodi:ry="55.000000"
+         sodipodi:rx="47.730984"
+         sodipodi:cy="375.00000"
+         sodipodi:cx="97.730980"
+         id="path2840"
+         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:1.8491486pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(0.723799,0.000000,0.000000,0.988764,4.435053,4.213484)"
+         d="M 145.46196 375.00000 A 47.730984 55.000000 0 1 1  49.999996,375.00000 A 47.730984 55.000000 0 1 1  145.46196 375.00000 z"
+         sodipodi:ry="55.000000"
+         sodipodi:rx="47.730984"
+         sodipodi:cy="375.00000"
+         sodipodi:cx="97.730980"
+         id="path2080"
+         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.1240386;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(0.642374,0.000000,0.000000,0.758523,15.36111,96.11690)"
+         d="M 99.999998 367.66620 A 22.725882 32.333809 0 1 1  54.548235,367.66620 A 22.725882 32.333809 0 1 1  99.999998 367.66620 z"
+         sodipodi:ry="32.333809"
+         sodipodi:rx="22.725882"
+         sodipodi:cy="367.66620"
+         sodipodi:cx="77.274117"
+         id="path2078"
+         style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.3622541;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+         sodipodi:type="arc" />
+    </g>
   </g>
 </svg>
