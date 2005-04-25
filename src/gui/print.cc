@@ -8,6 +8,7 @@
 #include "options.h"
 #include "version.h"
 #include "osutils.h"
+#include "stock.h"
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
@@ -107,12 +108,28 @@ static void printsize(long long value, const hwNode & node, const string & name,
     }
 }
 
-void printmarkup(const hwNode & node, GtkTextBuffer *buffer)
+static  void inserticon(const string & icon, const string & comment, GtkTextBuffer *buffer, GtkTextIter &iter, GtkTextView * textview)
+{
+  GdkPixbuf *pixbuf;
+
+  pixbuf = gtk_widget_render_icon(GTK_WIDGET(textview),
+                                  icon.c_str(),
+                                  gtk_icon_size_from_name(LSHW_ICON_SIZE_LOGO), /* size */
+                                  NULL);
+  gtk_text_buffer_insert_pixbuf(buffer, &iter, pixbuf);
+  gtk_text_buffer_insert(buffer, &iter, comment.c_str(), -1);
+  //gtk_text_buffer_insert(buffer, &iter, "\n", -1);
+}
+
+void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath)
 {
   vector < string > config;
   vector < string > resources;
   ostringstream out;
   GtkTextIter iter;
+  GtkTextBuffer *buffer;
+
+  buffer = gtk_text_view_get_buffer(textview);
 
   gtk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
 
@@ -135,7 +152,27 @@ void printmarkup(const hwNode & node, GtkTextBuffer *buffer)
     out << " UNCLAIMED";
   if(!node.claimed() || node.disabled())
     out << "</span>";
-  gtk_text_buffer_insert (buffer, &iter, "\n\n\n", -1);
+
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, hwpath.c_str(), -1, "monospace", NULL);
+
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
+  if(node.getHint("icon").defined())
+    inserticon(string("lshw-") + node.getHint("icon").asString(), "", buffer, iter, textview);
+
+  if(node.getHint("bus.icon").defined())
+    inserticon(string("lshw-") + node.getHint("bus.icon").asString(), "", buffer, iter, textview);
+
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
+  if(!node.claimed())
+    inserticon(LSHW_STOCK_DISABLED, "this device hasn't been claimed\n", buffer, iter, textview);
+
+  if(!node.enabled())
+    inserticon(LSHW_STOCK_DISABLED, "this device has been disabled\n", buffer, iter, textview);
+
+  gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
 
   //out << printattr("description", node.getDescription());
   printattr("product", node.getProduct(), buffer, iter);

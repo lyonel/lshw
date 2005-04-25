@@ -17,7 +17,7 @@ CXX=c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
-LDFLAGS=-L./core/
+LDFLAGS=-L./core/ -Wl,--as-needed -Os -s
 LDSTATIC=-static
 LIBS=-llshw
 
@@ -81,6 +81,8 @@ install-gui: gui
 	-mkdir -p $(DESTDIR)
 	-mkdir -p $(DESTDIR)/$(SBINDIR)
 	cp gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
+	-mkdir -p $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
+	cp gui/artwork/{*.svg,*.png} $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
 	
 clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed

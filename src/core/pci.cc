@@ -865,7 +865,7 @@ bool scan_pci(hwNode & n)
 	  device->describeCapability("vga", "VGA graphical framebuffer");
 	  device->describeCapability("pcmcia", "PC-Card (PCMCIA)");
 	  device->describeCapability("generic", "Generic interface");
-	  device->describeCapability("ohci", "Open Host Controller Interface (USB1)");
+	  device->describeCapability("ohci", "Open Host Controller Interface");
 	  device->describeCapability("uhci",
 				  "Universal Host Controller Interface (USB1)");
 	  device->describeCapability("ehci",

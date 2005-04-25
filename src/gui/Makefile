@@ -10,9 +10,9 @@ CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
 CFLAGS=$(CXXFLAGS) $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
 LIBS=-L../core -llshw $(GTKLIBS)
-LDFLAGS=
+LDFLAGS= -Os -s -Wl,--as-needed
 
-OBJS = gtk-lshw.o interface.o support.o callbacks.o engine.o print.o
+OBJS = gtk-lshw.o interface.o support.o callbacks.o engine.o print.o stock.o
 SRCS = $(OBJS:.o=.c)
 
 all: gtk-$(PACKAGENAME)

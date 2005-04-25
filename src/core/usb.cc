@@ -108,6 +108,8 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
 {
   hwNode * parent = NULL;
 
+  device.addHint("bus.icon", string("usb"));
+
   if(prnt>0) parent = n.findChildByHandle(usbhandle(bus, lev-1, prnt));
   if(parent)
   {
@@ -249,6 +251,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
       {
         device.setDescription("Bluetooth wireless interface");
         device.addCapability("bluetooth", "Bluetooth wireless radio");
+	device.addHint("icon", string("bluetooth"));
       }
       break;
     default:
