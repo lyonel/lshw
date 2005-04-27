@@ -82,7 +82,7 @@ install-gui: gui
 	-mkdir -p $(DESTDIR)/$(SBINDIR)
 	cp gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
 	-mkdir -p $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
-	cp gui/artwork/{*.svg,*.png} $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
+	cp gui/artwork/*.svg $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
 	
 clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
