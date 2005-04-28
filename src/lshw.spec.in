@@ -29,7 +29,7 @@ http://www.ezix.org/software/lshw.html
 %package gui
 Summary: HardWare LiSter (GUI version)
 Group: Applications/System
-Requires: %{name}
+Requires: %{name} >= %{version}
 Requires: gtk2 >= 2.4
 BuildRequires: gtk2-devel >= 2.4
 
