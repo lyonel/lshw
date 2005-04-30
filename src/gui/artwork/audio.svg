@@ -8,48 +8,48 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="600.00000pt"
-   height="600.00000pt"
-   id="svg2"
-   sodipodi:version="0.32"
-   inkscape:version="0.41"
+   sodipodi:docname="audio.svg"
    sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
-   sodipodi:docname="audio.svg">
+   inkscape:version="0.41"
+   sodipodi:version="0.32"
+   id="svg2"
+   height="600.00000pt"
+   width="600.00000pt">
   <defs
      id="defs3" />
   <sodipodi:namedview
-     gridtolerance="4.0000000px"
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="-186.58610"
-     inkscape:cy="270.18473"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     inkscape:grid-points="true"
-     showgrid="true"
-     gridspacingx="10.000000px"
-     gridspacingy="10.000000px"
-     inkscape:window-width="842"
-     inkscape:window-height="676"
+     inkscape:window-y="26"
      inkscape:window-x="0"
-     inkscape:window-y="26" />
+     inkscape:window-height="676"
+     inkscape:window-width="842"
+     gridspacingy="10.000000px"
+     gridspacingx="10.000000px"
+     showgrid="true"
+     inkscape:grid-points="true"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="px"
+     inkscape:cy="327.32759"
+     inkscape:cx="461.33575"
+     inkscape:zoom="0.49497475"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     gridtolerance="4.0000000px" />
   <metadata
      id="metadata4">
     <rdf:RDF
        id="RDF5">
       <cc:Work
-         rdf:about=""
-         id="Work6">
+         id="Work6"
+         rdf:about="">
         <dc:format
            id="format7">image/svg+xml</dc:format>
         <dc:type
-           id="type9"
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+           id="type9" />
         <dc:title
            id="title2866">Audio</dc:title>
         <dc:date
@@ -83,85 +83,70 @@
           </rdf:Bag>
         </dc:subject>
         <cc:license
-           id="license2918"
-           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"
+           id="license2918" />
         <dc:source
            id="source1314">$Id$</dc:source>
       </cc:Work>
       <cc:License
-         rdf:about="http://creativecommons.org/licenses/GPL/2.0/"
-         id="License2920">
+         id="License2920"
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/Reproduction"
-           id="permits2922" />
+           id="permits2922"
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/Distribution"
-           id="permits2924" />
+           id="permits2924"
+           rdf:resource="http://web.resource.org/cc/Distribution" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/Notice"
-           id="requires2926" />
+           id="requires2926"
+           rdf:resource="http://web.resource.org/cc/Notice" />
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/DerivativeWorks"
-           id="permits2928" />
+           id="permits2928"
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/ShareAlike"
-           id="requires2930" />
+           id="requires2930"
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/SourceCode"
-           id="requires2932" />
+           id="requires2932"
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
       </cc:License>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
+     id="layer1"
      inkscape:groupmode="layer"
-     id="layer1">
+     inkscape:label="Layer 1">
     <path
-       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 584.75000,149.46875 L 584.75000,408.12500 C 568.45586,401.32746 543.87034,405.92431 522.37500,421.43750 C 494.23978,441.74268 482.06653,473.02604 495.21875,491.25000 C 508.37097,509.47395 541.86479,507.77392 570.00000,487.46875 C 589.83838,473.15140 601.69485,453.39669 602.37500,436.59375 L 603.34375,436.59375 L 603.34375,226.90625 C 643.16390,224.31924 665.88463,233.15019 712.15625,289.78125 L 712.15625,238.75000 C 707.08751,186.44525 666.57303,168.15481 603.34375,150.00000 L 603.34375,149.46875 L 584.75000,149.46875 z "
-       id="path1323" />
+       id="path1323"
+       d="M 602.37500,32.000000 L 602.37500,290.65625 C 586.08086,283.85871 561.49534,288.45556 540.00000,303.96875 C 511.86478,324.27393 499.69153,355.55729 512.84375,373.78125 C 525.99597,392.00520 559.48979,390.30517 587.62500,370.00000 C 607.46340,355.68265 619.31980,335.92794 620.00000,319.12500 L 620.96880,319.12500 L 620.96880,109.43750 C 660.78890,106.85049 683.50960,115.68144 729.78120,172.31250 L 729.78120,121.28125 C 724.71250,68.976500 684.19800,50.686060 620.96880,32.531250 L 620.96880,32.000000 L 602.37500,32.000000 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
     <path
-       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000003pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 406.78500,295.93365 L 406.78500,479.76660 C 395.20438,474.93543 377.73088,478.20252 362.45365,489.22810 C 342.45730,503.65946 333.80549,525.89326 343.15308,538.84545 C 352.50066,551.79763 376.30549,550.58938 396.30183,536.15803 C 410.40142,525.98236 418.82809,511.94223 419.31149,500.00000 L 420.00000,500.00000 L 420.00000,350.97027 C 448.30110,349.13162 464.44924,355.40798 497.33555,395.65698 L 497.33555,359.38789 C 493.73308,322.21370 464.93851,309.21427 420.00000,296.31123 L 420.00000,295.93365 L 406.78500,295.93365 z "
-       id="path2092" />
-    <g
-       transform="matrix(3.154894,0.000000,0.000000,3.154894,-34.27897,-687.6653)"
-       id="g2844">
-      <path
-         sodipodi:nodetypes="ccccc"
-         id="path2842"
-         d="M 30.000000,350.00000 L 74.142136,320.00000 L 74.899750,430.00000 L 30.000000,400.00000 L 30.000000,350.00000 z "
-         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:0.25000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
-      <path
-         transform="matrix(0.337150,0.000000,0.000000,0.454547,-0.950000,204.5448)"
-         d="M 145.46196 375.00000 A 47.730984 55.000000 0 1 1  49.999996,375.00000 A 47.730984 55.000000 0 1 1  145.46196 375.00000 z"
-         sodipodi:ry="55.000000"
-         sodipodi:rx="47.730984"
-         sodipodi:cy="375.00000"
-         sodipodi:cx="97.730980"
-         id="path2840"
-         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:1.8491486pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-         sodipodi:type="arc" />
-      <path
-         transform="matrix(0.723799,0.000000,0.000000,0.988764,4.435053,4.213484)"
-         d="M 145.46196 375.00000 A 47.730984 55.000000 0 1 1  49.999996,375.00000 A 47.730984 55.000000 0 1 1  145.46196 375.00000 z"
-         sodipodi:ry="55.000000"
-         sodipodi:rx="47.730984"
-         sodipodi:cy="375.00000"
-         sodipodi:cx="97.730980"
-         id="path2080"
-         style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.1240386;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
-         sodipodi:type="arc" />
-      <path
-         transform="matrix(0.642374,0.000000,0.000000,0.758523,15.36111,96.11690)"
-         d="M 99.999998 367.66620 A 22.725882 32.333809 0 1 1  54.548235,367.66620 A 22.725882 32.333809 0 1 1  99.999998 367.66620 z"
-         sodipodi:ry="32.333809"
-         sodipodi:rx="22.725882"
-         sodipodi:cy="367.66620"
-         sodipodi:cx="77.274117"
-         id="path2078"
-         style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.3622541;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
-         sodipodi:type="arc" />
-    </g>
+       id="path2092"
+       d="M 350.48317,240.62500 L 350.48317,424.45795 C 338.90255,419.62678 321.42905,422.89387 306.15182,433.91945 C 286.15547,448.35081 277.50366,470.58461 286.85125,483.53680 C 296.19883,496.48898 320.00366,495.28073 340.00000,480.84938 C 354.09959,470.67371 362.52626,456.63358 363.00966,444.69135 L 363.69817,444.69135 L 363.69817,295.66162 C 391.99927,293.82297 408.14741,300.09933 441.03372,340.34833 L 441.03372,304.07924 C 437.43125,266.90505 408.63668,253.90562 363.69817,241.00258 L 363.69817,240.62500 L 350.48317,240.62500 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000003pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+    <path
+       id="path1319"
+       d="M 150.00000,295.18666 L 150.00000,450.18711 C 140.23570,446.11367 125.50275,448.86835 112.62161,458.16468 C 95.761500,470.33261 88.466660,489.07924 96.348160,500.00000 C 104.22966,510.92074 124.30092,509.90200 141.16102,497.73408 C 153.04923,489.15437 160.15424,477.31630 160.56183,467.24710 L 161.14235,467.24710 L 161.14235,341.59130 C 185.00469,340.04102 198.62014,345.33300 226.34854,379.26931 L 226.34854,348.68870 C 223.31107,317.34493 199.03267,306.38434 161.14235,295.50502 L 161.14235,295.18666 L 150.00000,295.18666 z "
+       style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000006pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000" />
+    <path
+       sodipodi:nodetypes="czz"
+       id="path1346"
+       d="M 30.000000,560.00000 C 206.14204,470.81220 182.27858,305.40935 330.00000,240.00000 C 475.71429,175.47938 525.97993,270.00000 740.00000,130.00000"
+       style="stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:5.0000000;stroke:#000000;fill-rule:evenodd;fill-opacity:0.75000000;fill:none" />
+    <path
+       sodipodi:nodetypes="czz"
+       id="path2108"
+       d="M 30.000000,610.00000 C 206.14204,520.81220 190.31250,366.89838 330.15625,308.44919 C 470.00000,250.00000 560.00000,310.00000 720.00000,220.00000"
+       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:5.0000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+    <path
+       sodipodi:nodetypes="czz"
+       id="path2110"
+       d="M 30.000000,644.90209 C 206.14204,555.71429 204.78564,450.00000 336.29829,375.94919 C 463.87129,304.11668 544.55136,394.28571 724.28571,300.00000"
+       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:5.0000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+    <path
+       sodipodi:nodetypes="czz"
+       id="path2112"
+       d="M 35.286532,680.00000 C 211.42857,590.81220 222.02473,519.02049 360.15625,440.00000 C 500.00000,360.00000 617.40851,443.36159 725.71429,384.28571"
+       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:5.0000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
   </g>
 </svg>
