@@ -1136,6 +1136,7 @@ static void dmi_table(int fd,
 	  clock = 1000000000 / data[6];	// convert value from ns to Hz
 	newnode.setClock(clock);
 	newnode.setDescription(dmi_decode_ram(data[8] << 8 | data[7]));
+	newnode.addHint("icon", string("memory"));
 	// installed size
 	switch (data[9] & 0x7F)
 	{
@@ -1290,6 +1291,7 @@ static void dmi_table(int fd,
 	case 0x03:
 	  description = "System Memory";
           newnode.claim();
+	  newnode.addHint("icon", string("memory"));
 	  break;
 	case 0x04:
 	  description = "Video Memory";
@@ -1302,9 +1304,11 @@ static void dmi_table(int fd,
 	  break;
 	case 0x07:
 	  description = "Cache Memory";
+	  newnode.addHint("icon", string("memory"));
 	  break;
 	default:
 	  description = "Generic Memory";
+	  newnode.addHint("icon", string("memory"));
 	}
 
 	newnode.setHandle(handle);
@@ -1332,6 +1336,7 @@ static void dmi_table(int fd,
 	char bits[10];
 	string arrayhandle;
         newnode.setDescription("empty memory bank");
+	newnode.addHint("icon", string("memory"));
 	arrayhandle = dmi_handle(data[5] << 8 | data[4]);
 	strcpy(bits, "");
 	// total width
@@ -1409,6 +1414,7 @@ static void dmi_table(int fd,
 	  hwNode ramnode("memory",
 			 hw::memory);
 	  ramnode.addChild(newnode);
+          ramnode.addHint("icon", string("memory"));
 	  hardwarenode->addChild(ramnode);
 	}
       }

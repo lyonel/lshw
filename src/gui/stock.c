@@ -18,6 +18,7 @@ static struct StockIcon
 	{ LSHW_STOCK_DISC, ".",   "disc.svg" },
 	{ LSHW_STOCK_FIREWIRE, ".",   "firewire.svg" },
 	{ LSHW_STOCK_LAPTOP, ".",   "laptop.svg" },
+	{ LSHW_STOCK_MEMORY, ".",   "memory.svg" },
 	{ LSHW_STOCK_MODEM, ".",   "modem.svg" },
 	{ LSHW_STOCK_NETWORK, ".",   "network.svg" },
 	{ LSHW_STOCK_PRINTER, ".",   "printer.svg" },
@@ -113,7 +114,7 @@ lshw_gtk_stock_init(void)
 	gtk_widget_destroy(win);
 
 	/* register logo icon size */
-	gtk_icon_size_register(LSHW_ICON_SIZE_LOGO, 32, 32);
+	gtk_icon_size_register(LSHW_ICON_SIZE_LOGO, 40, 40);
 
 	g_object_unref(G_OBJECT(icon_factory));
 

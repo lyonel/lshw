@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600.00000pt"
+   height="600.00000pt"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.41"
+   sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
+   sodipodi:docname="cd.svg">
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient2095">
+      <stop
+         id="stop2097"
+         offset="0.0000000"
+         style="stop-color:#e9dd1b;stop-opacity:1.0000000;" />
+      <stop
+         id="stop2099"
+         offset="1.0000000"
+         style="stop-color:#ff0f00;stop-opacity:0.0000000;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3954"
+       inkscape:collect="always">
+      <stop
+         id="stop3956"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop3958"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2410">
+      <stop
+         id="stop2412"
+         offset="0.0000000"
+         style="stop-color:#e9dd1b;stop-opacity:1.0000000;" />
+      <stop
+         id="stop2414"
+         offset="1.0000000"
+         style="stop-color:#008c00;stop-opacity:0.0000000;" />
+    </linearGradient>
+    <radialGradient
+       gradientUnits="userSpaceOnUse"
+       r="486.73831"
+       fy="542.36206"
+       fx="61.320698"
+       cy="546.70172"
+       cx="52.641380"
+       id="radialGradient3960"
+       xlink:href="#linearGradient3954"
+       inkscape:collect="always" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2410"
+       id="radialGradient2096"
+       cx="264.76785"
+       cy="196.87874"
+       fx="264.76785"
+       fy="196.87874"
+       r="778.97961"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       r="515.40753"
+       fy="573.67511"
+       fx="564.41071"
+       cy="581.21106"
+       cx="564.41071"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient2101"
+       xlink:href="#linearGradient2095"
+       inkscape:collect="always" />
+  </defs>
+  <sodipodi:namedview
+     inkscape:guide-bbox="true"
+     showguides="true"
+     inkscape:grid-points="true"
+     showgrid="true"
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.50000000"
+     inkscape:cx="337.90198"
+     inkscape:cy="377.49310"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="818"
+     inkscape:window-height="714"
+     inkscape:window-x="77"
+     inkscape:window-y="26" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF
+       id="RDF5">
+      <cc:Work
+         rdf:about=""
+         id="Work6">
+        <dc:format
+           id="format7">image/svg+xml</dc:format>
+        <dc:type
+           id="type9"
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:date
+           id="date2068">2005/05/10</dc:date>
+        <dc:creator
+           id="creator2070">
+          <cc:Agent
+             id="Agent2072">
+            <dc:title
+               id="title2074">Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher
+           id="publisher2076">
+          <cc:Agent
+             id="Agent2078">
+            <dc:title
+               id="title2080">ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier
+           id="identifier2082">cd</dc:identifier>
+        <dc:source
+           id="source2084">$Id$</dc:source>
+        <dc:language
+           id="language2086">C</dc:language>
+        <dc:subject
+           id="subject2088">
+          <rdf:Bag
+             id="Bag2090">
+            <rdf:li
+               id="li4022">CD DVD CD-ROM</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           id="license2122"
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+        <dc:title
+           id="title2138">CD-ROM</dc:title>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/"
+         id="License2124">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction"
+           id="permits2126" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution"
+           id="permits2128" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice"
+           id="requires2130" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks"
+           id="permits2132" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike"
+           id="requires2134" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/SourceCode"
+           id="requires2136" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path2091"
+       d="M 384.62500 65.625000 C 211.29700 65.625000 70.625000 206.29700 70.625000 379.62500 C 70.625000 552.95300 211.29700 693.62500 384.62500 693.62500 C 557.95300 693.62500 698.62500 552.95300 698.62500 379.62500 C 698.62500 206.29700 557.95300 65.625000 384.62500 65.625000 z M 384.62500 301.40625 C 427.80205 301.40625 462.84375 336.44796 462.84375 379.62500 C 462.84374 422.80206 427.80204 457.84375 384.62500 457.84375 C 341.44796 457.84375 306.40625 422.80204 306.40625 379.62500 C 306.40624 336.44797 341.44796 301.40625 384.62500 301.40625 z "
+       style="opacity:0.52881356;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:1.0000000pt;stroke:#000000;fill-rule:evenodd;fill-opacity:1.0;fill:url(#radialGradient2096)" />
+    <path
+       id="path2428"
+       d="M 384.62500 65.625000 C 211.29700 65.625000 70.625000 206.29700 70.625000 379.62500 C 70.625000 552.95300 211.29700 693.62500 384.62500 693.62500 C 557.95300 693.62500 698.62500 552.95300 698.62500 379.62500 C 698.62500 206.29700 557.95300 65.625000 384.62500 65.625000 z M 384.62500 301.40625 C 427.80205 301.40625 462.84375 336.44796 462.84375 379.62500 C 462.84374 422.80206 427.80204 457.84375 384.62500 457.84375 C 341.44796 457.84375 306.40625 422.80204 306.40625 379.62500 C 306.40624 336.44797 341.44796 301.40625 384.62500 301.40625 z "
+       style="opacity:0.46938776;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:5.0000000;stroke:#000000;fill-rule:evenodd;fill-opacity:1.0;fill:url(#radialGradient3960);stroke-dasharray:none;stroke-miterlimit:4.0000000" />
+    <path
+       id="path1636"
+       d="M 384.62500 65.625000 C 211.29700 65.625000 70.625000 206.29700 70.625000 379.62500 C 70.625000 552.95300 211.29700 693.62500 384.62500 693.62500 C 557.95300 693.62500 698.62500 552.95300 698.62500 379.62500 C 698.62500 206.29700 557.95300 65.625000 384.62500 65.625000 z M 384.62500 301.40625 C 427.80205 301.40625 462.84375 336.44796 462.84375 379.62500 C 462.84374 422.80206 427.80204 457.84375 384.62500 457.84375 C 341.44796 457.84375 306.40625 422.80204 306.40625 379.62500 C 306.40624 336.44797 341.44796 301.40625 384.62500 301.40625 z "
+       style="fill:url(#radialGradient2101);fill-opacity:1.0;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;opacity:0.37627119" />
+  </g>
+</svg>
