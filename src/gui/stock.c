@@ -12,17 +12,22 @@ static struct StockIcon
 
 } const stock_icons[] =
 {
+	{ LSHW_STOCK_AUDIO, ".",   "audio.svg" },
 	{ LSHW_STOCK_BATTERY, ".",   "battery.svg" },
 	{ LSHW_STOCK_BLUETOOTH, ".",   "bluetooth.svg" },
 	{ LSHW_STOCK_DISABLED, ".",   "disabled.svg" },
+	{ LSHW_STOCK_DISPLAY, ".",   "display.svg" },
+	{ LSHW_STOCK_CD, ".",   "cd.svg" },
 	{ LSHW_STOCK_DISC, ".",   "disc.svg" },
 	{ LSHW_STOCK_FIREWIRE, ".",   "firewire.svg" },
 	{ LSHW_STOCK_LAPTOP, ".",   "laptop.svg" },
 	{ LSHW_STOCK_MEMORY, ".",   "memory.svg" },
 	{ LSHW_STOCK_MODEM, ".",   "modem.svg" },
 	{ LSHW_STOCK_NETWORK, ".",   "network.svg" },
+	{ LSHW_STOCK_PARALLEL, ".",   "parallel.svg" },
 	{ LSHW_STOCK_PRINTER, ".",   "printer.svg" },
 	{ LSHW_STOCK_RADIO, ".",   "radio.svg" },
+	{ LSHW_STOCK_RAID, ".",   "raid.svg" },
 	{ LSHW_STOCK_SCSI, ".",   "scsi.svg" },
 	{ LSHW_STOCK_SERIAL, ".",   "serial.svg" },
 	{ LSHW_STOCK_USB, ".",   "usb.svg" },

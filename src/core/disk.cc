@@ -30,6 +30,8 @@ bool scan_disk(hwNode & n)
   if (n.getLogicalName() == "")
     return false;
 
+  n.addHint("icon", string("disc"));
+
   int fd = open(n.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
 
   if (fd < 0)

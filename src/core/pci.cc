@@ -97,6 +97,7 @@ static char *id = "@(#) $Id$";
 #define PCI_BASE_CLASS_COMMUNICATION	0x07
 #define PCI_CLASS_COMMUNICATION_SERIAL	0x0700
 #define PCI_CLASS_COMMUNICATION_PARALLEL 0x0701
+#define PCI_CLASS_COMMUNICATION_MODEM 0x0703
 #define PCI_CLASS_COMMUNICATION_OTHER	0x0780
 
 #define PCI_BASE_CLASS_SYSTEM		0x08
@@ -754,29 +755,46 @@ bool scan_pci(hwNode & n)
       {
 	hw::hwClass deviceclass = hw::generic;
 	string devicename = "generic";
+        string deviceicon = "";
 
 	switch (dclass >> 8)
 	{
 	case PCI_BASE_CLASS_STORAGE:
 	  deviceclass = hw::storage;
+          deviceicon = "disc";
+          if(dclass == PCI_CLASS_STORAGE_SCSI)
+            deviceicon = "scsi";
+          if(dclass == PCI_CLASS_STORAGE_RAID)
+            deviceicon = "raid";
 	  break;
 	case PCI_BASE_CLASS_NETWORK:
 	  deviceclass = hw::network;
+          deviceicon = "network";
 	  break;
 	case PCI_BASE_CLASS_MEMORY:
 	  deviceclass = hw::memory;
+          deviceicon = "memory";
 	  break;
 	case PCI_BASE_CLASS_BRIDGE:
 	  deviceclass = hw::bridge;
 	  break;
 	case PCI_BASE_CLASS_MULTIMEDIA:
 	  deviceclass = hw::multimedia;
+          if(dclass == PCI_CLASS_MULTIMEDIA_AUDIO)
+            deviceicon = "audio";
 	  break;
 	case PCI_BASE_CLASS_DISPLAY:
 	  deviceclass = hw::display;
+          deviceicon = "display";
 	  break;
 	case PCI_BASE_CLASS_COMMUNICATION:
 	  deviceclass = hw::communication;
+          if(dclass == PCI_CLASS_COMMUNICATION_SERIAL)
+            deviceicon = "serial";
+          if(dclass == PCI_CLASS_COMMUNICATION_PARALLEL)
+            deviceicon = "parallel";
+          if(dclass == PCI_CLASS_COMMUNICATION_MODEM)
+            deviceicon = "modem";
 	  break;
 	case PCI_BASE_CLASS_SYSTEM:
 	  deviceclass = hw::system;
@@ -789,6 +807,10 @@ bool scan_pci(hwNode & n)
 	  break;
 	case PCI_BASE_CLASS_SERIAL:
 	  deviceclass = hw::bus;
+          if(dclass == PCI_CLASS_SERIAL_USB)
+            deviceicon = "usb";
+          if(dclass == PCI_CLASS_SERIAL_FIREWIRE)
+            deviceicon = "firewire";
 	  break;
 	}
 
@@ -797,6 +819,7 @@ bool scan_pci(hwNode & n)
 
 	if (device)
 	{
+	  if(deviceicon != "") device->addHint("icon", deviceicon);
 	  device->setBusInfo(businfo);
 	  device->setPhysId(PCI_SLOT(dfn & 0xff), PCI_FUNC(dfn & 0xff));
           addHints(*device, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);

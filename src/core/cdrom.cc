@@ -29,6 +29,8 @@ bool scan_cdrom(hwNode & n)
   if (n.getLogicalName() == "")
     return false;
 
+  n.addHint("icon", string("cd"));
+
   int fd = open(n.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
 
   if (fd < 0)
