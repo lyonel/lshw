@@ -346,6 +346,8 @@ static void scan_devtree_memory(hwNode & core)
 	    }
 	  }
 
+          if(size>0)
+            bank.addHint("icon", string("memory"));
 	  bank.setDescription("Memory bank");
 	  bank.setSlot(slotnames[i]);
 	  //bank.setPhysId(base);
