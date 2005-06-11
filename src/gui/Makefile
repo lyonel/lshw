@@ -11,7 +11,9 @@ CFLAGS=$(CXXFLAGS) $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
 LIBS=-L../core -llshw $(GTKLIBS)
 LDFLAGS= -Os -s
-LDOPTIMIZE=-Wl,--as-needed
+ifeq (`ld --help 2| grep as-needed`, 0)
+	LDOPTIMIZE=-Wl,--as-needed
+endif
 
 OBJS = gtk-lshw.o interface.o support.o callbacks.o engine.o print.o stock.o
 SRCS = $(OBJS:.o=.c)
@@ -28,7 +30,7 @@ interface.c: gtk-lshw.glade gtk-lshw.gladep
 	glade-2 -w gtk-lshw.glade
 
 gtk-$(PACKAGENAME): $(OBJS) ../core/liblshw.a
-	$(CXX) $(LDFLAGS) $(LDOPTIMIZE) -o $@ $^ $(LIBS) || $(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(LDFLAGS) $(LDOPTIMIZE) -o $@ $^ $(LIBS)
 
 install: all
 	strip gtk-$(PACKAGENAME)

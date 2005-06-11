@@ -18,7 +18,9 @@ INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
 LDFLAGS=-L./core/ -Os -s
-LDOPTIMIZE=-Wl,--as-needed
+ifeq (`ld --help 2| grep as-needed`, 0)
+	LDOPTIMIZE=-Wl,--as-needed
+endif
 LDSTATIC=-static
 LIBS=-llshw
 
@@ -34,7 +36,7 @@ core:
 	+make -C core all
 
 $(PACKAGENAME): core $(PACKAGENAME).o
-	$(CXX) $(LDFLAGS) $(LDOPTIMIZE) -o $@ $(PACKAGENAME).o $(LIBS) || $(CXX) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS) 
+	$(CXX) $(LDFLAGS) $(LDOPTIMIZE) -o $@ $(PACKAGENAME).o $(LIBS)
 
 .PHONY: gui
 gui: core
