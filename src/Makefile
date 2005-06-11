@@ -18,7 +18,7 @@ INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
 LDFLAGS=-L./core/ -Os -s
-ifeq (`ld --help 2| grep as-needed`, 0)
+ifneq (`ld --help 2| grep -- --as-needed`, '')
 	LDOPTIMIZE=-Wl,--as-needed
 endif
 LDSTATIC=-static
