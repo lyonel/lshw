@@ -191,6 +191,7 @@ static const char *devices[] = {
   "/dev/cdrom", "/dev/cdrom0", "/dev/cdrom1", "/dev/cdrom2",
   "/dev/cdwriter", "/dev/cdwriter0", "/dev/cdwriter1", "/dev/cdwriter2",
   "/dev/dvd", "/dev/dvd0", "/dev/dvd1", "/dev/dvd2",
+  "/dev/dvdwriter", "/dev/dvdwriter0", "/dev/dvdwriter1", "/dev/dvdwriter2",
   "/dev/st0", "/dev/st1", "/dev/st2", "/dev/st3", "/dev/st4", "/dev/st5",
   "/dev/nst0", "/dev/nst1", "/dev/nst2", "/dev/nst3", "/dev/nst4",
   "/dev/nst5",
