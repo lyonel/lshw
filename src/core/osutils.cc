@@ -165,6 +165,9 @@ int selectlink(const struct dirent *d)
   if (d->d_name[0] == '.')
     return 0;
 
+  if (lstat(d->d_name, &buf) != 0)
+    return 0;
+
   return S_ISLNK(buf.st_mode);
 }
 
