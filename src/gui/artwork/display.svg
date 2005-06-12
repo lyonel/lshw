@@ -60,9 +60,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.12374369"
-     inkscape:cx="-242.39246"
-     inkscape:cy="264.44171"
+     inkscape:zoom="0.49497476"
+     inkscape:cx="454.64370"
+     inkscape:cy="376.46647"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:window-width="946"
@@ -147,21 +147,17 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <g
-       transform="matrix(1.499144,0.000000,0.000000,1.499144,1204.211,-270.7779)"
-       id="g13575">
-      <path
-         id="rect12038"
-         d="M -625.25000,272.37472 C -673.32588,273.54823 -720.93705,276.07188 -767.00000,279.99972 C -772.50000,329.28544 -775.25000,379.03990 -775.25000,429.09347 C -775.25000,479.14704 -772.50000,529.49971 -767.00000,579.99972 C -717.84922,583.51049 -671.20146,585.60200 -625.25000,586.53097 L -625.25000,272.37472 z "
-         style="fill:#ff0000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:2.0000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000" />
-      <path
-         id="path12799"
-         d="M -476.50000,272.42160 L -476.50000,586.48410 C -430.30763,585.43273 -383.41696,583.31715 -334.00000,580.14035 C -329.00000,529.42607 -326.50000,479.07785 -326.50000,429.07785 C -326.50000,379.07785 -329.00000,329.42606 -334.00000,280.14035 C -380.43723,276.05796 -428.30393,273.53669 -476.50000,272.42160 z "
-         style="fill:#0000ff;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:2.0000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000" />
-      <path
-         id="path12801"
-         d="M -550.87500,271.73373 C -575.95623,271.75360 -600.97484,272.29451 -625.87500,273.07748 L -625.87500,586.23373 C -575.54948,587.57924 -526.18938,587.45394 -475.87500,586.01498 L -475.87500,272.98373 C -500.80874,272.22630 -525.82950,271.71389 -550.87500,271.73373 z "
-         style="fill:#00ff00;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:2.0000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000" />
-    </g>
+    <path
+       id="rect12038"
+       d="M 266.87121,137.55103 C 194.79855,139.31029 123.42255,143.09360 54.367552,148.98200 C 46.122260,222.86839 41.999614,297.45749 41.999614,372.49500 C 41.999614,447.53251 46.122260,523.01841 54.367552,598.72520 C 128.05165,603.98835 197.98336,607.12382 266.87121,608.51648 L 266.87121,137.55103 z "
+       style="stroke-opacity:1.0000000;stroke-dashoffset:0.0000000;stroke-miterlimit:4.0000000;stroke-linejoin:round;stroke-linecap:round;stroke-width:16.000000;stroke:#000000;fill-rule:nonzero;fill-opacity:1.0000000;fill:#ff0000;stroke-dasharray:none" />
+    <path
+       id="path12799"
+       d="M 489.86888,137.62131 L 489.86888,608.44622 C 559.11790,606.87006 629.41376,603.69851 703.49690,598.93602 C 710.99262,522.90802 714.74048,447.42878 714.74048,372.47158 C 714.74048,297.51438 710.99262,223.07920 703.49690,149.19282 C 633.88081,143.07273 562.12173,139.29299 489.86888,137.62131 z "
+       style="stroke-opacity:1.0000000;stroke-dashoffset:0.0000000;stroke-miterlimit:4.0000000;stroke-linejoin:round;stroke-linecap:round;stroke-width:16.000000;stroke:#000000;fill-rule:nonzero;fill-opacity:1.0000000;fill:#0000ff;stroke-dasharray:none" />
+    <path
+       id="path12801"
+       d="M 378.37005,136.59009 C 340.76967,136.61988 303.26317,137.43078 265.93425,138.60457 L 265.93425,608.07088 C 341.37945,610.08799 415.37735,609.90015 490.80585,607.74294 L 490.80585,138.46402 C 453.42658,137.32852 415.91686,136.56035 378.37005,136.59009 z "
+       style="stroke-opacity:1.0000000;stroke-dashoffset:0.0000000;stroke-miterlimit:4.0000000;stroke-linejoin:round;stroke-linecap:round;stroke-width:16.000000;stroke:#000000;fill-rule:nonzero;fill-opacity:1.0000000;fill:#00ff00;stroke-dasharray:none" />
   </g>
 </svg>
