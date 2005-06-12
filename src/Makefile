@@ -18,7 +18,7 @@ INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
 LDFLAGS=-L./core/ -Os -s
-ifneq ($(shell ld --help 2| grep -- --as-needed), )
+ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 LDSTATIC=-static

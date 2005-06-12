@@ -11,7 +11,7 @@ CFLAGS=$(CXXFLAGS) $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
 LIBS=-L../core -llshw $(GTKLIBS)
 LDFLAGS= -Os -s
-ifneq ($(shell ld --help 2| grep -- --as-needed), )
+ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 
