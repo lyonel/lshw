@@ -6,7 +6,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.202 2005/03/21 12:50:02 vojtech Exp $
+# $Id: usb.ids,v 1.207 2005/06/20 10:43:35 vojtech Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -403,6 +403,7 @@
 	2036  TUSB2036 Hub
 	2046  TUSB2046 Hub
 	2077  TUSB2077 Hub
+	3410  TUSB3410 Microcontroller
 	6000  AU5 ADSL Modem (pre-reenum)
 	6001  AU5 ADSL Modem
 	e001  GraphLink
@@ -986,7 +987,7 @@
 	8006  Zaurus SL-B500/SL-5600 PDA
 	8007  Zaurus C-700 PDA
 	9014  IM-DR80 Portable NetMD Player
-	9031  Zaurus C-750/C-760 PDA
+	9031  Zaurus C-750/C-760/SL-C3000 PDA
 	9032  Zaurus SL-6000
 	9050  Zaurus C-860 PDA
 04de  MindShare, Inc.
@@ -1131,6 +1132,7 @@
 	a4a4  Linux-USB user-mode bulk source/sink
 	a4a5  Linux-USB File Storage Gadget
 	a4a6  Linux-USB Serial Gadget
+	a4a7  Linux-USB Serial Gadget (CDC ACM mode)
 0526  Temic MHS S.A.
 0527  ALTRA
 0528  ATI Technologies, Inc.
@@ -1219,6 +1221,7 @@
 	0105  Micro Vault Hub
 	0107  VCC-U01 Visual Communication Camera
 	0144  Clie PEG-TH55 PDA
+	014d  Memory Stick Reader/Writer
 	0169  Clie PEG-TJ35 PDA Serial
 	016a  Clie PEG-TJ35 PDA Mass Storage
 054d  Try Corp.
@@ -1436,6 +1439,7 @@
 	0050  Zip CD 650 Writer
 	0053  CDRW55292EXT CD-RW External Drive
 	006d  HipZip MP3 Player
+	015d  Super DVD Writer
 	1052  DVD+RW External Drive
 059c  A-Trend Technology Co., Ltd
 059d  Advanced Input Devices
@@ -2089,6 +2093,7 @@
 	1020  Midisport 4x4
 	1030  Midisport 8x8
 0764  Cyber Power System, Inc.
+	0005  Cyber Power UPS
 0765  X-Rite, Inc.
 0766  Jess-Link Products Co., Ltd
 0767  Tokheim Corp.
@@ -2131,6 +2136,7 @@
 	0810  SDDR-75 ImageMate CF-SM Reader
 	0830  ImageMate CF/MMC/SD Reader
 	5150  SDCZ2 Cruzer Mini Flash Drive (thin)
+	5151  Cruzer Micro 512MB Flash Drive
 	7112  Cruzer Micro 128MB Flash Drive
 	7113  Cruzer Micro 256MB Flash Drive
 	8185  SDCZ2 Cruzer Mini Flash Drive (older, thick)
@@ -2192,6 +2198,7 @@
 07b1  IMP, Inc.
 07b2  Motorola BCS, Inc.
 	4100  SB4100 Cable Modem
+	5120  Surfboard SB5120 USB Cable Modem (RNDIS)
 07b3  Plustek, Inc.
 	0001  OpticPro 1212U Scanner
 	0010  OpticPro U12 Scanner
@@ -2205,7 +2212,7 @@
 07b4  Olympus Optical Co., Ltd
 	0100  Camedia C-2100/C-3000 Ultra Zoom Camera
 	0102  Camedia E-10/C-220/C-50 Camera
-	0105  Camedia C-700/C-750UZ/C-755/C-3040/C-4000 Zoom Camera
+	0105  Camedia C-310Z/C-700/C-750UZ/C-755/C-3040/C-4000 Zoom Camera
 	0114  C-350Z Camera
 	0203  Digital Voice Recorder DW-90
 	0206  Digital Voice Recorder DS-330
@@ -2366,6 +2373,8 @@
 0859  Minolta Systems Laboratory, Inc.
 085a  Xircom
 	0001  Portstation Dual Serial Port
+	0003  Portstation Paraller Port
+	000b  Portstation Dual PS/2 Port
 	0299  Colorvision, Inc. Monitor Spyder
 	8027  PGSDB9 Serial Port
 0862  Teletrol Systems, Inc.
@@ -2471,6 +2480,9 @@
 08f1  CTI Electronics Corp.
 08f5  SysTec Co., Ltd
 08f6  Logic 3 International, Ltd
+08f7  Vernier
+	0001  LabPro
+	0002  EasyTemp
 08f8  Keen Top International Enterprise Co., Ltd
 08f9  Wipro Technologies
 08fa  Caere
@@ -2546,6 +2558,7 @@
 094d  Cable Television Laboratories
 0951  Kingston Technology
 	000a  KNU101TX 100baseTX Ethernet
+	1600  Data Traveler II Pen Drive
 0954  RPM Systems Corp.
 0955  NVidia Corp.
 0956  BSquare Corp.
@@ -2672,6 +2685,7 @@
 0a17  Pentax Corp.
 	0004  Pentax Optio 330
 	0006  Pentax Optio S
+	0007  Pentax Optio 550
 0a18  Heidelberger Druckmaschinen AG
 0a19  Hua Geng Technologies, Inc.
 0a21  Medtronic Physio Control Corp.
@@ -3243,7 +3257,8 @@
 0df6  Sitecom Europe B.V.
 	9071  zd1211 802.11g Adapter
 0df7  Mobile Action Technology, Inc.
-	0620  MA-620 USB Infrared Adapter
+	0620  MA-620 Infrared Adapter
+	0700  MA-700 Bluetooth Adapter
 0dfa  Toyo Communication Equipment Co., Ltd
 0dfc  GeneralTouch Technology Co., Ltd
 	0001  Touchscreen
@@ -3673,6 +3688,8 @@
 1241  Belkin
 	1111  Mouse
 	1177  F8E842-DL Mouse
+124a  AirVast
+	4017  PC-Chips 802.11b Adapter
 1267  Logic3 / SpectraVideo plc
 	0201  A4Tech SWOP-3 Mouse
 	a001  JP260 PC Game Pad
@@ -3881,6 +3898,7 @@
 	1105  iFP-500 series mp3 player (ums firmware)
 413c  Dell Computer Corp.
 	1002  Keyboard Hub
+	2002  SK-8125 Keyboard
 	2100  SK-3106 Keyboard
 	2101  SmartCard Reader Keyboard
 	4001  Axim X5
@@ -3890,6 +3908,8 @@
 4242  USB Design by Example
 	4201  Buttons and Lights HID device
 	4220  Echo 1 Camera
+4146  Iomega (?)
+	9281  Micro Mini 128MB Flash Drive
 4572  Shuttle, Inc.
 	4572  Shuttle PN31 Remote
 4670  EMS Production
@@ -3966,6 +3986,8 @@ C 02  Communications
 	09  Device Management
 	0a  Mobile Direct Line
 	0b  OBEX
+	0c  Ethernet Emulation
+		07  Ethernet Emulation (EEM)
 C 03  Human Interface Devices
 	00  No Subclass
 		00  None
@@ -4033,9 +4055,15 @@ C dc  Diagnostic
 C e0  Wireless
 	01  Radio Frequency
 		01  Bluetooth
+		02  Ultra WideBand Radio Control
+	02  Wireless USB Wire Adapter
+		01  Host Wire Adapter Control/Data Streaming
+		02  Device Wire Adapter Control/Data Streaming
+		03  Device Wire Adapter Isochronous Streaming
 C ef  Miscellaneous Device
 	02  Common Class
 		01  Interface Association
+		02  Wire Adapter Multifunction Peripheral
 C fe  Application Specific Interface
 	01  Device Firmware Update
 	02  IRDA Bridge
