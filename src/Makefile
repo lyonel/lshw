@@ -45,7 +45,7 @@ gui: core
 .PHONY: static
 static: $(PACKAGENAME)-static
 
-$(PACKAGENAME)-static: core/lib$(PACKAGENAME).a $(PACKAGENAME).o
+$(PACKAGENAME)-static: core core/lib$(PACKAGENAME).a $(PACKAGENAME).o
 	$(CXX) $(LDSTATIC) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS)
 	strip $@
 
