@@ -62,3 +62,7 @@ on_treeview3_cursor_changed            (GtkTreeView     *treeview,
 void
 go_up                                  (GtkToolButton   *toolbutton,
                                         gpointer         user_data);
+
+void
+on_lshw_map                            (GtkWidget       *widget,
+                                        gpointer         user_data);

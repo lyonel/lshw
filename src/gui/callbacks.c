@@ -118,3 +118,11 @@ go_up                                  (GtkToolButton   *toolbutton,
 	go_back(mainwindow);
 }
 
+
+void
+on_lshw_map                            (GtkWidget       *widget,
+                                        gpointer         user_data)
+{
+  //refresh(mainwindow);
+}
+
