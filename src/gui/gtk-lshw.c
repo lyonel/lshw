@@ -7,6 +7,7 @@
 #include "interface.h"
 #include "support.h"
 #include "stock.h"
+#include "engine.h"
 
 static char *id = "@(#) $Id$";
 
@@ -33,6 +34,8 @@ main (int argc, char *argv[])
    */
   mainwindow = create_lshw ();
   gtk_widget_show (mainwindow);
+
+  refresh(mainwindow);
 
   gtk_main ();
 
