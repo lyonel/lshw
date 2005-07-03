@@ -35,8 +35,6 @@ main (int argc, char *argv[])
   mainwindow = create_lshw ();
   gtk_widget_show (mainwindow);
 
-  refresh(mainwindow);
-
   gtk_main ();
 
   (void) &id;                 // avoid warning "id defined but not used"

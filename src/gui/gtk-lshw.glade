@@ -20,6 +20,7 @@
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <signal name="delete_event" handler="gtk_main_quit" last_modification_time="Tue, 23 Nov 2004 10:59:43 GMT"/>
+  <signal name="map" handler="on_lshw_map" after="yes" last_modification_time="Sun, 03 Jul 2005 21:15:04 GMT"/>
 
   <child>
     <widget class="GtkVBox" id="vbox1">
@@ -339,7 +340,7 @@
 				      <child>
 					<widget class="GtkTextView" id="description">
 					  <property name="visible">True</property>
-					  <property name="can_focus">True</property>
+					  <property name="tooltip" translatable="yes">This pane displays detailed information about the selected hardware node</property>
 					  <property name="editable">False</property>
 					  <property name="overwrite">False</property>
 					  <property name="accepts_tab">True</property>

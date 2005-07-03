@@ -42,7 +42,7 @@ create_lshw (void)
   GtkWidget *menuitem7_menu;
   GtkWidget *about1;
   GtkWidget *toolbar1;
-  gint tmp_toolbar_icon_size;
+  GtkIconSize tmp_toolbar_icon_size;
   GtkWidget *upbutton;
   GtkWidget *refreshbutton;
   GtkWidget *quitbutton;
@@ -103,6 +103,9 @@ create_lshw (void)
   refresh1 = gtk_image_menu_item_new_from_stock ("gtk-refresh", accel_group);
   gtk_widget_show (refresh1);
   gtk_container_add (GTK_CONTAINER (menuitem6_menu), refresh1);
+  gtk_widget_add_accelerator (refresh1, "activate", accel_group,
+                              GDK_F5, (GdkModifierType) 0,
+                              GTK_ACCEL_VISIBLE);
 
   menuitem7 = gtk_menu_item_new_with_mnemonic ("_Help");
   gtk_widget_show (menuitem7);
@@ -219,12 +222,13 @@ create_lshw (void)
   description = gtk_text_view_new ();
   gtk_widget_show (description);
   gtk_container_add (GTK_CONTAINER (scrolledwindow14), description);
+  GTK_WIDGET_UNSET_FLAGS (description, GTK_CAN_FOCUS);
+  gtk_tooltips_set_tip (tooltips, description, "This pane displays detailed information about the selected hardware node", NULL);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (description), FALSE);
   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (description), FALSE);
   gtk_text_view_set_left_margin (GTK_TEXT_VIEW (description), 10);
   gtk_text_view_set_right_margin (GTK_TEXT_VIEW (description), 10);
-  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (description)),
-	"no information available.\n\nclick on Refresh to query hardware", -1);
+  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (description)), "no information available.\n\nclick on Refresh to query hardware", -1);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
@@ -234,6 +238,9 @@ create_lshw (void)
   g_signal_connect ((gpointer) lshw, "delete_event",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
+  g_signal_connect_after ((gpointer) lshw, "map",
+                          G_CALLBACK (on_lshw_map),
+                          NULL);
   g_signal_connect ((gpointer) quit1, "activate",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
