@@ -21,13 +21,13 @@ static hwNode *getcpu(hwNode & node,
   if (n < 0)
     n = 0;
 
-
   snprintf(cpubusinfo, sizeof(cpubusinfo), "cpu@%d", n);
   cpu = node.findChildByBusInfo(cpubusinfo);
 
   if (cpu)
   {
     cpu->claim(true);		// claim the cpu and all its children
+    cpu->enable();		// enable it
     return cpu;
   }
 
@@ -50,6 +50,9 @@ static void cpuinfo_ppc(hwNode & node,
 			string id,
 			string value)
 {
+  if (id == "processor")
+    currentcpu++;
+
   hwNode *cpu = getcpu(node, currentcpu);
 
   if (cpu)
@@ -388,11 +391,7 @@ bool scan_cpuinfo(hwNode & n)
     vector < string > cpuinfo_lines;
     splitlines(cpuinfo_str, cpuinfo_lines);
     cpuinfo_str = "";		// free memory
-#if defined(__powerpc__)
-    currentcpu = 0;
-#else
     currentcpu = -1;
-#endif
 
     for (unsigned int i = 0; i < cpuinfo_lines.size(); i++)
     {
