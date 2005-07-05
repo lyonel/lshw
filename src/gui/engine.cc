@@ -248,7 +248,7 @@ void refresh(GtkWidget *mainwindow)
   status("Scanning...");
   scan_system(computer);
   status(NULL);
-  container.addChild(computer);
+  displayed = container.addChild(computer);
 
   gtk_widget_set_sensitive(go_up_button, 0);
 
