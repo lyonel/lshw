@@ -418,7 +418,7 @@ static struct pmac_mb_def pmac_mb_defs[] = {
   {"PowerMac6,1", "iMac LCD 17\"", ""},
   {"PowerMac7,2", "PowerMac G5", "powermacg5"},
   {"PowerMac7,3", "PowerMac G5", "powermacg5"},
-  {"PowerMac10,1", "Mac mini", ""},
+  {"PowerMac10,1", "Mac mini", "mini"},
   {"PowerBook1,1", "PowerBook 101 (Lombard)", ""},
   {"PowerBook2,1", "iBook (first generation)", ""},
   {"PowerBook2,2", "iBook FireWire", ""},
