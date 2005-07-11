@@ -18,6 +18,8 @@
 #define LSHW_STOCK_MODEM           "lshw-modem"
 #define LSHW_STOCK_NETWORK         "lshw-network"
 #define LSHW_STOCK_PARALLEL        "lshw-parallel"
+#define LSHW_STOCK_POWERMAC        "lshw-powermac"
+#define LSHW_STOCK_POWERMACG5      "lshw-powermacg5"
 #define LSHW_STOCK_PRINTER         "lshw-printer"
 #define LSHW_STOCK_RADIO           "lshw-radio"
 #define LSHW_STOCK_RAID            "lshw-raid"
