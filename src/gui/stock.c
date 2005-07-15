@@ -21,6 +21,7 @@ static struct StockIcon
 	{ LSHW_STOCK_DISC, ".",   "disc.svg" },
 	{ LSHW_STOCK_FIREWIRE, ".",   "firewire.svg" },
 	{ LSHW_STOCK_LAPTOP, ".",   "laptop.svg" },
+	{ LSHW_STOCK_LOGO, ".",   "logo.svg" },
 	{ LSHW_STOCK_MEMORY, ".",   "memory.svg" },
 	{ LSHW_STOCK_MINI, ".",   "mini.svg" },
 	{ LSHW_STOCK_MODEM, ".",   "modem.svg" },

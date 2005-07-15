@@ -14,6 +14,7 @@
 #define LSHW_STOCK_DISC            "lshw-disc"
 #define LSHW_STOCK_FIREWIRE        "lshw-firewire"
 #define LSHW_STOCK_LAPTOP          "lshw-laptop"
+#define LSHW_STOCK_LOGO            "lshw-logo"
 #define LSHW_STOCK_MEMORY          "lshw-memory"
 #define LSHW_STOCK_MINI            "lshw-mini"
 #define LSHW_STOCK_MODEM           "lshw-modem"
