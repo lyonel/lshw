@@ -464,7 +464,7 @@ click on Refresh to query hardware</property>
 	  <property name="visible">True</property>
 	  <property name="label" translatable="yes">&lt;big&gt;&lt;b&gt;GTK+ front-end for &lt;tt&gt;lshw&lt;/tt&gt;&lt;/b&gt;&lt;/big&gt;
 
-(c) 2004, Lyonel Vincent
+(c) 2004, 2005, Lyonel Vincent
 &lt;tt&gt;lyonel@ezix.org&lt;/tt&gt;
 
 &lt;span foreground=&quot;blue&quot;&gt;&lt;u&gt;http://www.ezix.org/&lt;/u&gt;&lt;/span&gt;</property>
