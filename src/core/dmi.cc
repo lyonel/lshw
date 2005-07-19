@@ -558,11 +558,11 @@ void dmi_chassis(u8 code, hwNode & n)
     "", "", NULL,		/* 0x00 */
     "", "", NULL,
     "", "", NULL,
-    "desktop", "Desktop Computer", "desktop-computer",
-    "low-profile", "Low Profile Desktop Computer", "desktop-computer",
+    "desktop", "Desktop Computer", "desktopcomputer",
+    "low-profile", "Low Profile Desktop Computer", "desktopcomputer",
     "pizzabox", "Pizza Box Computer", "pizzabox",
-    "mini-tower", "Mini Tower Computer", "tower-computer",
-    "tower", "Tower Computer", "tower-computer",
+    "mini-tower", "Mini Tower Computer", "towercomputer",
+    "tower", "Tower Computer", "towercomputer",
     "portable", "Portable Computer", "laptop",
     "laptop", "Laptop", "laptop",
     "notebook", "Notebook", "laptop",
@@ -578,7 +578,7 @@ void dmi_chassis(u8 code, hwNode & n)
     "bus-expansion", "Bus Expansion Chassis", NULL,
     "peripheral", "Peripheral Chassis", NULL,
     "raid", "RAID Chassis", NULL,
-    "rackmount", "Rack Mount Chassis", "rack-mount",
+    "rackmount", "Rack Mount Chassis", "rackmount",
     "sealed", "Sealed-case PC", NULL,
     "multi-system", "Multi-system", "cluster" /* 0x19 */
   };

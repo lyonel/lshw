@@ -8,6 +8,7 @@
 #define LSHW_STOCK_AUDIO           "lshw-audio"
 #define LSHW_STOCK_BATTERY         "lshw-battery"
 #define LSHW_STOCK_BLUETOOTH       "lshw-bluetooth"
+#define LSHW_STOCK_DESKTOPCOMPUTER "lshw-desktopcomputer"
 #define LSHW_STOCK_DISABLED        "lshw-disabled"
 #define LSHW_STOCK_DISPLAY         "lshw-display"
 #define LSHW_STOCK_CD              "lshw-cd"
@@ -27,6 +28,7 @@
 #define LSHW_STOCK_RAID            "lshw-raid"
 #define LSHW_STOCK_SCSI            "lshw-scsi"
 #define LSHW_STOCK_SERIAL          "lshw-serial"
+#define LSHW_STOCK_TOWERCOMPUTER   "lshw-towercomputer"
 #define LSHW_STOCK_USB             "lshw-usb"
 #define LSHW_STOCK_WIFI            "lshw-wifi"
 /*@}*/

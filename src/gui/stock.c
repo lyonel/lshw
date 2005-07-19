@@ -15,6 +15,7 @@ static struct StockIcon
 	{ LSHW_STOCK_AUDIO, ".",   "audio.svg" },
 	{ LSHW_STOCK_BATTERY, ".",   "battery.svg" },
 	{ LSHW_STOCK_BLUETOOTH, ".",   "bluetooth.svg" },
+	{ LSHW_STOCK_DESKTOPCOMPUTER, ".",   "desktopcomputer.svg" },
 	{ LSHW_STOCK_DISABLED, ".",   "disabled.svg" },
 	{ LSHW_STOCK_DISPLAY, ".",   "display.svg" },
 	{ LSHW_STOCK_CD, ".",   "cd.svg" },
@@ -34,6 +35,7 @@ static struct StockIcon
 	{ LSHW_STOCK_RAID, ".",   "raid.svg" },
 	{ LSHW_STOCK_SCSI, ".",   "scsi.svg" },
 	{ LSHW_STOCK_SERIAL, ".",   "serial.svg" },
+	{ LSHW_STOCK_TOWERCOMPUTER, ".",   "towercomputer.svg" },
 	{ LSHW_STOCK_USB, ".",   "usb.svg" },
 	{ LSHW_STOCK_WIFI, ".",   "wifi.svg" },
 };
