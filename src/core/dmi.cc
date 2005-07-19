@@ -951,6 +951,7 @@ static void dmi_table(int fd,
 	//newnode.setPhysId(16 * (data[7] << 8 | data[6]));
 	newnode.setPhysId(dm->handle);
 	newnode.setDescription("BIOS");
+	newnode.addHint("icon", string("chip"));
 	newnode.claim();
 
 	dmi_bios_features(data[13] << 24 | data[12] << 16 | data[11] << 8 |
@@ -991,6 +992,7 @@ static void dmi_table(int fd,
 	  hardwarenode->setSlot(dmi_string(dm, data[0x0A]));
 	  hardwarenode->setHandle(handle);
 	  hardwarenode->setDescription("Motherboard");
+	  hardwarenode->addHint("icon", string("board"));
 	}
 	else
 	{
@@ -1043,6 +1045,7 @@ static void dmi_table(int fd,
         newnode.setBusInfo(cpubusinfo(currentcpu++));
 	newnode.setSlot(dmi_string(dm, data[4]));
 	newnode.setDescription("CPU");
+	newnode.addHint("icon", string("cpu"));
 	newnode.setProduct(dmi_processor_family(data[6]));
 	newnode.setVersion(dmi_string(dm, data[0x10]));
 	newnode.setVendor(dmi_string(dm, data[7]));

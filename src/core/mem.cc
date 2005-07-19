@@ -113,6 +113,7 @@ bool scan_memory(hwNode & n)
   if (memory)
   {
     memory->claim();
+    memory->addHint("icon", string("memory"));
 
     if (memory->getDescription() == "")
       memory->setDescription("System memory");

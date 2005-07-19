@@ -164,14 +164,6 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   if(node.getHint("bus.icon").defined())
     inserticon(string("lshw-") + node.getHint("bus.icon").asString(), "", buffer, iter, textview);
 
-  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
-
-  if(!node.claimed())
-    inserticon(LSHW_STOCK_DISABLED, "this device hasn't been claimed\n", buffer, iter, textview);
-
-  if(!node.enabled())
-    inserticon(LSHW_STOCK_DISABLED, "this device has been disabled\n", buffer, iter, textview);
-
   gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
 
   //out << printattr("description", node.getDescription());
@@ -237,6 +229,15 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
        gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, config[j].c_str(), -1, "italic", NULL);
      }
   }
+
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
+  if(!node.claimed())
+    inserticon(LSHW_STOCK_DISABLED, "this device hasn't been claimed\n", buffer, iter, textview);
+
+  if(!node.enabled())
+    inserticon(LSHW_STOCK_DISABLED, "this device has been disabled\n", buffer, iter, textview);
+
 
   (void) &id;			// avoid "id defined but not used" warning
 }

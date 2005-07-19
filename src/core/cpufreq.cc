@@ -18,7 +18,7 @@
 #include <dirent.h>
 
 static char *id =
-  "@(#) $Id: .cc 939 2005-02-01 16:55:29Z ezix $";
+  "@(#) $Id$";
 
 #define DEVICESCPUFREQ "/sys/devices/system/cpu/cpu%d/cpufreq/"
 

@@ -494,6 +494,7 @@ bool scan_device_tree(hwNode & n)
 
   if (core)
   {
+    core->addHint("icon", string("board"));
     scan_devtree_root(*core);
     scan_devtree_bootrom(*core);
     scan_devtree_memory(*core);
