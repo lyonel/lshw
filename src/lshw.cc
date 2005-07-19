@@ -18,7 +18,7 @@ void usage(const char *progname)
   fprintf(stderr, "usage: %s [-format] [-options ...]\n", progname);
   fprintf(stderr, "       %s -version\n", progname);
   fprintf(stderr, "\n");
-  fprintf(stderr, "\t-version        print program version\n");
+  fprintf(stderr, "\t-version        print program version (%s)\n", getpackageversion());
   fprintf(stderr, "\nformat can be\n");
   fprintf(stderr, "\t-html           output hardware tree as HTML\n");
   fprintf(stderr, "\t-xml            output hardware tree as XML\n");
