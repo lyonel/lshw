@@ -26,6 +26,7 @@ static hwNode *getcpu(hwNode & node,
 
   if (cpu)
   {
+    cpu->addHint("icon", string("cpu"));
     cpu->claim(true);		// claim the cpu and all its children
     cpu->enable();		// enable it
     return cpu;

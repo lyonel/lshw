@@ -58,6 +58,7 @@ static hwNode *getcpu(hwNode & node,
     hwNode cpu("cpu", hw::processor);
 
     cpu.setBusInfo(cpubusinfo);
+    cpu.addHint("icon", string("cpu"));
     cpu.claim();
 
     return core->addChild(cpu);
