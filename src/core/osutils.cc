@@ -362,7 +362,7 @@ string escape(const string & s)
       result += "&gt;";
       break;
     case '&':
-      result += "&ampersand;";
+      result += "&amp;";
       break;
     default:
       result += s[i];
