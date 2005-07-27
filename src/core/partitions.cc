@@ -1,5 +1,48 @@
+/*
+ * partitions.cc
+ *
+ *
+ */
 
-struct fstypes fs_types[] = {
+#include "partitions.h"
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+static char *id = "@(#) $Id$";
+
+struct maptypes
+{
+	const char * id;
+	const char * description;
+	const char * xxx;
+};
+
+static struct maptypes map_types[] = {
+	{"raw", "not partitioned", ""},
+	{"dos", "MS-DOS", ""},
+	{"mac", "Apple Macintosh", ""},
+	{"bsd", "BSD disklabel", ""},
+	{"hp-ux", "HP-UX, no LVM", ""},
+	{"solaris-x86", "Solaris disklabel", ""},
+	{"solaris-sparc", "Solaris disklabel", ""},
+	{"raid", "Linux RAID", ""},
+	{"lvm", "Linux LVM", ""},
+	{"atari", "Atari ST", ""},
+	{"amiga", "Amiga", ""},
+	{ NULL, NULL, NULL }
+};
+
+struct fstypes
+{
+	const char * id;
+	const char * description;
+	const char * capabilities;
+};
+
+static struct fstypes fs_types[] = {
 	{"fat", "MS-DOS FAT derivatives (FAT12, FAT16, FAT32)", ""},
 	{"ntfs", "Windows NTFS", "secure"},
 	{"hpfs", "OS/2 HPFS", "secure"},
@@ -29,8 +72,17 @@ struct fstypes fs_types[] = {
 };
 
 /* DOS partition types (from util-linux's fdisk)*/
+struct systypes
+{
+	const unsigned char type;
+	const char * description;
+	const char * id;
+	const char * capabilities;
+	const char * filesystems;
+};
 
-struct systypes dos_sys_types[] = {
+
+static struct systypes dos_sys_types[] = {
 	{0x00, "Empty", "empty", "nofs", ""},
 	{0x01, "FAT12", "fat12", "", "fat"},
 	{0x02, "XENIX root", "xenix", "", ""},
@@ -130,5 +182,13 @@ struct systypes dos_sys_types[] = {
 					       superblock */
 	{0xfe, "LANstep", "", "", ""},		/* SpeedStor >1024 cyl. or LANstep */
 	{0xff, "BBT", "", "", ""},		/* Xenix Bad Block Table */
-	{ 0, NULL }
+	{ 0, NULL, NULL, NULL }
 };
+
+bool scan_partitions(hwNode & n)
+{
+  (void) &id;			// avoid warning "id defined but not used"
+
+  return false;
+}
+

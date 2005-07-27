@@ -194,6 +194,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
     case USB_CLASS_PRINTER:
       device.setClass(hw::printer);
       device.setDescription("Printer");
+      device.addHint("icon", string("printer"));
       if(sub==USB_SC_PRINTER)
       {
         switch(prot)

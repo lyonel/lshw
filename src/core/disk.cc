@@ -30,8 +30,6 @@ bool scan_disk(hwNode & n)
   if (n.getLogicalName() == "")
     return false;
 
-  n.addHint("icon", string("disc"));
-
   int fd = open(n.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
 
   if (fd < 0)
@@ -56,6 +54,9 @@ bool scan_disk(hwNode & n)
   }
 
   close(fd);
+
+  if(n.getSize()>=0)
+    n.addHint("icon", string("disc"));
 
   (void) &id;			// to avoid warning "id defined but not used"
 
