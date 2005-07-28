@@ -153,7 +153,7 @@ static struct systypes dos_sys_types[] = {
 	{0x80, "Old Minix", "minix", "", ""},	/* Minix 1.4a and earlier */
 	{0x81, "Minix / old Linux", "minix", "", ""},/* Minix 1.4b and later */
 	{0x82, "Linux swap / Solaris", "swap", "nofs", ""},
-	{0x83, "Linux", "linux", "", ""},
+	{0x83, "Linux filesystem", "linux", "", ""},
 	{0x84, "OS/2 hidden C: drive", "", "hidden", ""},
 	{0x85, "Linux extended", "", "nofs", ""},
 	{0x86, "NTFS volume set", "", "", ""},
@@ -226,9 +226,47 @@ static ssize_t readlogicalblocks(source & s,
     return count;
 }
 
+static bool analyse_dospart(unsigned char flags,
+		unsigned char type,
+		unsigned long start,
+		unsigned long size,
+		hwNode & partition)
+{
+  int i = 0;
+
+  if(flags!=0 && flags!=0x80)	// inconstency: partition is either bootable or non-bootable
+    return false;
+
+  if(start==0 || size==0) // unused entry
+    return false;
+
+  partition.setDescription("Primary partition");
+  partition.addCapability("primary", "Primary partition");
+  partition.setCapacity((unsigned long long)size*BLOCKSIZE);
+
+  if(flags == 0x80)
+    partition.addCapability("bootable", "Active partition (bootable)");
+
+  while(dos_sys_types[i].id)
+  {
+    if(dos_sys_types[i].type == type)
+    {
+       partition.setDescription(dos_sys_types[i].description);
+      break;
+    }
+    i++;
+  }
+
+  return true;
+}
+
 static bool detect_dosmap(source & s, hwNode & n)
 {
   static unsigned char buffer[BLOCKSIZE];
+  int i = 0;
+  unsigned char flags;
+  unsigned char type;
+  unsigned long start, size;
 
   if(s.offset!=0)
     return false;	// partition tables must be at the beginning of the disk
@@ -236,8 +274,26 @@ static bool detect_dosmap(source & s, hwNode & n)
   if(readlogicalblocks(s, buffer, 0, 1)!=1)	// read the first sector
     return false;
 
-  if(le_short(buffer+510)!=0xaa55)			// wrong magic number
+  if(le_short(buffer+510)!=0xaa55)		// wrong magic number
     return false;
+
+  for(i=0; i<4; i++)
+  {
+    hwNode partition("volume", hw::disk);
+
+    flags = buffer[446 + i*16];
+    type = buffer[446 + i*16 + 4];
+    start = le_long(buffer + 446 + i*16 + 8);
+    size = le_long(buffer + 446 + i*16 + 12);
+
+    if(flags!=0 && flags!=0x80)	// inconstency: partition is either bootable or non-bootable
+      return false;
+
+    partition.setPhysId(i+1);
+
+    if(analyse_dospart(flags, type, start, size, partition))
+      n.addChild(partition);
+  }
 
   return true;
 }
