@@ -4,6 +4,9 @@
  *
  */
 
+#define _LARGEFILE_SOURCE
+#define _FILE_OFFSET_BITS	64
+
 #include "partitions.h"
 #include "osutils.h"
 #include <stdio.h>
@@ -207,8 +210,6 @@ static ssize_t readlogicalblocks(source & s,
 {
   off_t result = 0;
 
-  fprintf(stderr, "blocksize=%ld offset=%lld size=%lld\n", s.blocksize, s.offset, s.size);
-
   memset(buffer, 0, count*s.blocksize);
 
   if((s.size>0) && ((pos+count)*s.blocksize>s.size)) return 0;	/* attempt to read past the end of the section */
@@ -230,7 +231,7 @@ static bool detect_dosmap(source & s, hwNode & n)
   static unsigned char buffer[BLOCKSIZE];
 
   if(s.offset!=0)
-    return false;	// partition maps must be at the beginning of the disk
+    return false;	// partition tables must be at the beginning of the disk
 
   if(readlogicalblocks(s, buffer, 0, 1)!=1)	// read the first sector
     return false;
@@ -280,9 +281,8 @@ bool scan_partitions(hwNode & n)
   {
     if(map_types[i].detect && map_types[i].detect(s, n))
     {
-      n.addCapability("partitioned", "Partitioned disk");
-      n.setConfig("maptype", map_types[i].id);
-      n.setDescription(n.getDescription() + string(" (") + string(map_types[i].description) + string(")"));
+      n.addCapability(string("partitioned"), "Partitioned disk");
+      n.addCapability(string("partitioned:") + string(map_types[i].id), string(map_types[i].description));
       break;
     }
     i++;
