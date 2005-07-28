@@ -36,16 +36,16 @@ static bool detect_macmap(source & s, hwNode & n);
 static bool detect_nomap(source & s, hwNode & n);
 
 static struct maptypes map_types[] = {
-	{"mac", "Apple Macintosh", detect_macmap},
+	{"mac", "Apple Macintosh partition map", detect_macmap},
 	{"bsd", "BSD disklabel", NULL},
-	{"hp-ux", "HP-UX, no LVM", NULL},
+	{"hp-ux", "HP-UX non-LVM", NULL},
 	{"solaris-x86", "Solaris disklabel", NULL},
 	{"solaris-sparc", "Solaris disklabel", NULL},
 	{"raid", "Linux RAID", NULL},
 	{"lvm", "Linux LVM", NULL},
 	{"atari", "Atari ST", NULL},
 	{"amiga", "Amiga", NULL},
-	{"dos", "MS-DOS", detect_dosmap},
+	{"dos", "MS-DOS partition table", detect_dosmap},
 	{"raw", "not partitioned", detect_nomap},
 	{ NULL, NULL, NULL }
 };
@@ -227,7 +227,18 @@ static ssize_t readlogicalblocks(source & s,
 
 static bool detect_dosmap(source & s, hwNode & n)
 {
-  return false;
+  static unsigned char buffer[BLOCKSIZE];
+
+  if(s.offset!=0)
+    return false;	// partition maps must be at the beginning of the disk
+
+  if(readlogicalblocks(s, buffer, 0, 1)!=1)	// read the first sector
+    return false;
+
+  if(le_short(buffer+510)!=0xaa55)			// wrong magic number
+    return false;
+
+  return true;
 }
 
 static bool detect_macmap(source & s, hwNode & n)
@@ -269,7 +280,9 @@ bool scan_partitions(hwNode & n)
   {
     if(map_types[i].detect && map_types[i].detect(s, n))
     {
+      n.addCapability("partitioned", "Partitioned disk");
       n.setConfig("maptype", map_types[i].id);
+      n.setDescription(n.getDescription() + string(" (") + string(map_types[i].description) + string(")"));
       break;
     }
     i++;
