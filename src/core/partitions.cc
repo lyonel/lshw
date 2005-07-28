@@ -5,6 +5,7 @@
  */
 
 #include "partitions.h"
+#include "osutils.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -13,25 +14,39 @@
 
 static char *id = "@(#) $Id$";
 
+#define BLOCKSIZE 512
+
+struct source
+{
+	int fd;
+	ssize_t blocksize;
+	off_t offset;
+	unsigned long long size;
+};
+
 struct maptypes
 {
 	const char * id;
 	const char * description;
-	const char * xxx;
+	bool (*detect)(source & s, hwNode & n);
 };
 
+static bool detect_dosmap(source & s, hwNode & n);
+static bool detect_macmap(source & s, hwNode & n);
+static bool detect_nomap(source & s, hwNode & n);
+
 static struct maptypes map_types[] = {
-	{"raw", "not partitioned", ""},
-	{"dos", "MS-DOS", ""},
-	{"mac", "Apple Macintosh", ""},
-	{"bsd", "BSD disklabel", ""},
-	{"hp-ux", "HP-UX, no LVM", ""},
-	{"solaris-x86", "Solaris disklabel", ""},
-	{"solaris-sparc", "Solaris disklabel", ""},
-	{"raid", "Linux RAID", ""},
-	{"lvm", "Linux LVM", ""},
-	{"atari", "Atari ST", ""},
-	{"amiga", "Amiga", ""},
+	{"mac", "Apple Macintosh", detect_macmap},
+	{"bsd", "BSD disklabel", NULL},
+	{"hp-ux", "HP-UX, no LVM", NULL},
+	{"solaris-x86", "Solaris disklabel", NULL},
+	{"solaris-sparc", "Solaris disklabel", NULL},
+	{"raid", "Linux RAID", NULL},
+	{"lvm", "Linux LVM", NULL},
+	{"atari", "Atari ST", NULL},
+	{"amiga", "Amiga", NULL},
+	{"dos", "MS-DOS", detect_dosmap},
+	{"raw", "not partitioned", detect_nomap},
 	{ NULL, NULL, NULL }
 };
 
@@ -43,6 +58,7 @@ struct fstypes
 };
 
 static struct fstypes fs_types[] = {
+	{"blank", "Blank", ""},
 	{"fat", "MS-DOS FAT derivatives (FAT12, FAT16, FAT32)", ""},
 	{"ntfs", "Windows NTFS", "secure"},
 	{"hpfs", "OS/2 HPFS", "secure"},
@@ -185,8 +201,82 @@ static struct systypes dos_sys_types[] = {
 	{ 0, NULL, NULL, NULL }
 };
 
+static ssize_t readlogicalblocks(source & s,
+			void * buffer,
+			off_t pos, ssize_t count)
+{
+  off_t result = 0;
+
+  fprintf(stderr, "blocksize=%ld offset=%lld size=%lld\n", s.blocksize, s.offset, s.size);
+
+  memset(buffer, 0, count*s.blocksize);
+
+  if((s.size>0) && ((pos+count)*s.blocksize>s.size)) return 0;	/* attempt to read past the end of the section */
+
+  result = lseek(s.fd, s.offset + pos*s.blocksize, SEEK_SET);
+
+  if(result == -1) return 0;
+
+  result = read(s.fd, buffer, count*s.blocksize);
+
+  if(result!=count*s.blocksize)
+    return 0;
+  else
+    return count;
+}
+
+static bool detect_dosmap(source & s, hwNode & n)
+{
+  return false;
+}
+
+static bool detect_macmap(source & s, hwNode & n)
+{
+  static unsigned char buffer[BLOCKSIZE];
+
+  if(s.offset!=0)
+    return false;	// partition maps must be at the beginning of the disk
+
+  if(readlogicalblocks(s, buffer, 1, 1)!=1)	// read the second sector
+    return false;
+
+  if(be_short(buffer)!=0x504d)			// wrong magic number
+    return false;
+
+  return true;
+}
+
+static bool detect_nomap(source & s, hwNode & n)
+{
+  return true;
+}
+
 bool scan_partitions(hwNode & n)
 {
+  int i = 0;
+  source s;
+  int fd = open(n.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
+
+  if (fd < 0)
+    return false;
+
+  s.fd = fd;
+  s.offset = 0;
+  s.blocksize = BLOCKSIZE;
+  s.size = n.getSize();
+
+  while(map_types[i].id)
+  {
+    if(map_types[i].detect && map_types[i].detect(s, n))
+    {
+      n.setConfig("maptype", map_types[i].id);
+      break;
+    }
+    i++;
+  }
+
+  close(fd);
+
   (void) &id;			// avoid warning "id defined but not used"
 
   return false;

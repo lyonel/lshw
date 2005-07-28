@@ -1,4 +1,5 @@
 #include "disk.h"
+#include "partitions.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -56,7 +57,10 @@ bool scan_disk(hwNode & n)
   close(fd);
 
   if(n.getSize()>=0)
+  {
     n.addHint("icon", string("disc"));
+    scan_partitions(n);
+  }
 
   (void) &id;			// to avoid warning "id defined but not used"
 
