@@ -36,18 +36,19 @@ struct maptypes
 
 static bool detect_dosmap(source & s, hwNode & n);
 static bool detect_macmap(source & s, hwNode & n);
+static bool detect_lif(source & s, hwNode & n);
 
 static struct maptypes map_types[] = {
 	{"mac", "Apple Macintosh partition map", detect_macmap},
 	{"bsd", "BSD disklabel", NULL},
-	{"hp-ux", "HP-UX non-LVM", NULL},
+	{"dos", "MS-DOS partition table", detect_dosmap},
+	{"lif", "HP LIF", detect_lif},
 	{"solaris-x86", "Solaris disklabel", NULL},
 	{"solaris-sparc", "Solaris disklabel", NULL},
 	{"raid", "Linux RAID", NULL},
 	{"lvm", "Linux LVM", NULL},
 	{"atari", "Atari ST", NULL},
 	{"amiga", "Amiga", NULL},
-	{"dos", "MS-DOS partition table", detect_dosmap},
 	{ NULL, NULL, NULL }
 };
 
@@ -227,7 +228,6 @@ static ssize_t readlogicalblocks(source & s,
 static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, hwNode & partition)
 {
   struct stat buf;
-  dev_t device;
   char name[10];
   int dev = 0;
 
@@ -399,6 +399,11 @@ static bool detect_macmap(source & s, hwNode & n)
   }
 
   return true;
+}
+
+static bool detect_lif(source & s, hwNode & n)
+{
+  return false;
 }
 
 bool scan_partitions(hwNode & n)
