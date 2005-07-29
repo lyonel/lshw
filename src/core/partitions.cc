@@ -348,6 +348,9 @@ static bool detect_dosmap(source & s, hwNode & n)
 static bool detect_macmap(source & s, hwNode & n)
 {
   static unsigned char buffer[BLOCKSIZE];
+  unsigned long count = 0, i = 0;
+  unsigned long long start = 0, size = 0;
+  string type = "";
 
   if(s.offset!=0)
     return false;	// partition maps must be at the beginning of the disk
@@ -357,6 +360,43 @@ static bool detect_macmap(source & s, hwNode & n)
 
   if(be_short(buffer)!=0x504d)			// wrong magic number
     return false;
+
+  count = be_long(buffer+4);
+
+  for (i = 1; i <= count; i++)
+  {
+    hwNode partition("volume", hw::disk);
+
+    if((i>1) && readlogicalblocks(s, buffer, i, 1)!=1)
+      return false;
+
+    if(be_short(buffer)!=0x504d) continue;	// invalid map entry
+
+    start = be_long(buffer + 8);
+    size = be_long(buffer + 12);
+    type = hw::strip(string((char*)buffer +  48, 32));
+
+    partition.setPhysId(i);
+    partition.setCapacity(size * s.blocksize);
+    if(lowercase(type) == "apple_bootstrap")
+      partition.addCapability("bootable");
+
+    for(int j=0; j<type.length(); j++)
+      if(type[j] == '_') type[j] = ' ';
+    partition.setDescription(type);
+
+    if(true /*analyse_macpart(flags, type, start, size, partition)*/)
+    {
+      source spart = s;
+
+      spart.blocksize = s.blocksize;
+      spart.offset = s.offset + start*spart.blocksize;
+      spart.size = size*spart.blocksize;
+
+      guess_logicalname(spart, n, i, partition);
+      n.addChild(partition);
+    }
+  }
 
   return true;
 }
