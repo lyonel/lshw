@@ -231,10 +231,12 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   char name[10];
   int dev = 0;
 
+  snprintf(name, sizeof(name), "%d", n);
+  if(disk.getBusInfo()!="")
+    partition.setBusInfo(disk.getBusInfo()+string(",")+string(name));
+
   if(fstat(s.fd, &buf)!=0) return false;
   if(!S_ISBLK(buf.st_mode)) return false;
-
-  snprintf(name, sizeof(name), "%d", n);
 
   if((dev = open_dev(buf.st_rdev + n, disk.getLogicalName()+string(name)))>=0)
   {
@@ -383,7 +385,7 @@ static bool detect_macmap(source & s, hwNode & n)
     partition.setPhysId(i);
     partition.setCapacity(size * s.blocksize);
     if(lowercase(type) == "apple_bootstrap")
-      partition.addCapability("bootable");
+      partition.addCapability("bootable", "Bootstrap partition");
 
     if(lowercase(type) == "linux_lvm")
       partition.addHint("icon", string("md"));
