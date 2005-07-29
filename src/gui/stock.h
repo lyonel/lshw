@@ -28,7 +28,7 @@
 #define LSHW_STOCK_POWERMACG5      "lshw-powermacg5"
 #define LSHW_STOCK_PRINTER         "lshw-printer"
 #define LSHW_STOCK_RADIO           "lshw-radio"
-#define LSHW_STOCK_RAID            "lshw-raid"
+#define LSHW_STOCK_MD              "lshw-md"
 #define LSHW_STOCK_SCSI            "lshw-scsi"
 #define LSHW_STOCK_SERIAL          "lshw-serial"
 #define LSHW_STOCK_TOWERCOMPUTER   "lshw-towercomputer"

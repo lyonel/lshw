@@ -577,7 +577,7 @@ void dmi_chassis(u8 code, hwNode & n)
     "sub", "Sub Chassis", NULL,
     "bus-expansion", "Bus Expansion Chassis", NULL,
     "peripheral", "Peripheral Chassis", NULL,
-    "raid", "RAID Chassis", NULL,
+    "raid", "RAID Chassis", "md",
     "rackmount", "Rack Mount Chassis", "rackmount",
     "sealed", "Sealed-case PC", NULL,
     "multi-system", "Multi-system", "cluster" /* 0x19 */

@@ -35,7 +35,7 @@ static struct StockIcon
 	{ LSHW_STOCK_POWERMACG5, ".",   "powermacg5.svg" },
 	{ LSHW_STOCK_PRINTER, ".",   "printer.svg" },
 	{ LSHW_STOCK_RADIO, ".",   "radio.svg" },
-	{ LSHW_STOCK_RAID, ".",   "raid.svg" },
+	{ LSHW_STOCK_MD, ".",   "md.svg" },
 	{ LSHW_STOCK_SCSI, ".",   "scsi.svg" },
 	{ LSHW_STOCK_SERIAL, ".",   "serial.svg" },
 	{ LSHW_STOCK_TOWERCOMPUTER, ".",   "towercomputer.svg" },
