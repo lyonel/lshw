@@ -778,28 +778,6 @@ static int lookup_dev(char *name)
     return -ENODEV;
 }				/* lookup_dev */
 
-static int open_dev(dev_t dev)
-{
-  static char *paths[] = {
-    "/var/lib/pcmcia", "/var/run", "/dev", "/tmp", NULL
-  };
-  char **p, fn[64];
-  int fd;
-
-  for (p = paths; *p; p++)
-  {
-    sprintf(fn, "%s/ci-%d", *p, getpid());
-    if (mknod(fn, (S_IFCHR | S_IREAD), dev) == 0)
-    {
-      fd = open(fn, O_RDONLY);
-      unlink(fn);
-      if (fd >= 0)
-	return fd;
-    }
-  }
-  return -1;
-}				/* open_dev */
-
 static string pcmcia_handle(int socket)
 {
   char buffer[20];

@@ -36,7 +36,6 @@ struct maptypes
 
 static bool detect_dosmap(source & s, hwNode & n);
 static bool detect_macmap(source & s, hwNode & n);
-static bool detect_nomap(source & s, hwNode & n);
 
 static struct maptypes map_types[] = {
 	{"mac", "Apple Macintosh partition map", detect_macmap},
@@ -49,7 +48,6 @@ static struct maptypes map_types[] = {
 	{"atari", "Atari ST", NULL},
 	{"amiga", "Amiga", NULL},
 	{"dos", "MS-DOS partition table", detect_dosmap},
-	{"raw", "not partitioned", detect_nomap},
 	{ NULL, NULL, NULL }
 };
 
@@ -226,6 +224,46 @@ static ssize_t readlogicalblocks(source & s,
     return count;
 }
 
+static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, hwNode & partition)
+{
+  struct stat buf;
+  dev_t device;
+  char name[10];
+  int dev = 0;
+
+  if(fstat(s.fd, &buf)!=0) return false;
+  if(!S_ISBLK(buf.st_mode)) return false;
+
+  snprintf(name, sizeof(name), "%d", n);
+
+  if((dev = open_dev(buf.st_rdev + n, disk.getLogicalName()+string(name)))>=0)
+  {
+    source spart = s;
+    unsigned char buffer1[BLOCKSIZE], buffer2[BLOCKSIZE];
+
+    spart.offset = 0;
+    spart.fd = dev;
+
+    if((readlogicalblocks(s, buffer1, 0, 1)!=1) ||
+       (readlogicalblocks(spart, buffer2, 0, 1)!=1))     // read the first sector
+    {
+      close(dev);
+      return false;
+    }
+
+    close(dev);
+
+    if(memcmp(buffer1, buffer2, BLOCKSIZE)==0)
+    {
+      partition.claim();
+      partition.setLogicalName(disk.getLogicalName()+string(name));
+      return true;
+    }
+  }
+  
+  return false;
+}
+
 static bool analyse_dospart(unsigned char flags,
 		unsigned char type,
 		unsigned long start,
@@ -266,7 +304,7 @@ static bool detect_dosmap(source & s, hwNode & n)
   int i = 0;
   unsigned char flags;
   unsigned char type;
-  unsigned long start, size;
+  unsigned long long start, size;
 
   if(s.offset!=0)
     return false;	// partition tables must be at the beginning of the disk
@@ -292,7 +330,16 @@ static bool detect_dosmap(source & s, hwNode & n)
     partition.setPhysId(i+1);
 
     if(analyse_dospart(flags, type, start, size, partition))
+    {
+      source spart = s;
+
+      spart.blocksize = s.blocksize;
+      spart.offset = s.offset + start*spart.blocksize;
+      spart.size = size*spart.blocksize;
+
+      guess_logicalname(spart, n, i+1, partition);
       n.addChild(partition);
+    }
   }
 
   return true;
@@ -311,11 +358,6 @@ static bool detect_macmap(source & s, hwNode & n)
   if(be_short(buffer)!=0x504d)			// wrong magic number
     return false;
 
-  return true;
-}
-
-static bool detect_nomap(source & s, hwNode & n)
-{
   return true;
 }
 

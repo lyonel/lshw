@@ -43,4 +43,6 @@ unsigned long le_long(void *);
 unsigned long long be_longlong(void *);
 unsigned long long le_longlong(void *);
 
+int open_dev(dev_t dev, const std::string & name="");
+
 #endif

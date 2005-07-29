@@ -9,6 +9,7 @@
 #include <regex.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <errno.h>
 #ifndef MINOR
 #include <linux/kdev_t.h>
 #endif
@@ -436,4 +437,28 @@ unsigned long long le_longlong(void * from)
 	(unsigned long long)p[0];
 }
 
+int open_dev(dev_t dev, const string & name)
+{
+  static char *paths[] = {
+    "/usr/tmp", "/var/tmp", "/var/run", "/dev", "/tmp", NULL
+  };
+  char **p, fn[64];
+  int fd;
+
+  for (p = paths; *p; p++)
+  {
+    if(name=="")
+      snprintf(fn, sizeof(fn), "%s/lshw-%d", *p, getpid());
+    else
+      snprintf(fn, sizeof(fn), "%s", name.c_str());
+    if ((mknod(fn, (S_IFCHR | S_IREAD), dev) == 0) || (errno = EEXIST))
+    {
+      fd = open(fn, O_RDONLY);
+      if(name=="") unlink(fn);
+      if (fd >= 0)
+	return fd;
+    }
+  }
+  return -1;
+}				/* open_dev */
 
