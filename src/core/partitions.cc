@@ -392,7 +392,7 @@ static bool detect_macmap(source & s, hwNode & n)
     else
       partition.addHint("icon", string("disc"));
 
-    for(int j=0; j<type.length(); j++)
+    for(unsigned int j=0; j<type.length(); j++)
       if(type[j] == '_') type[j] = ' ';
     partition.setDescription(type);
 
