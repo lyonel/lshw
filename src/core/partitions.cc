@@ -23,7 +23,7 @@ struct source
 {
 	int fd;
 	ssize_t blocksize;
-	off_t offset;
+	unsigned long long offset;
 	unsigned long long size;
 };
 
@@ -106,19 +106,19 @@ static struct systypes dos_sys_types[] = {
 	{0x02, "XENIX root", "xenix", "", ""},
 	{0x03, "XENIX usr", "xenix", "", ""},
 	{0x04, "FAT16 <32M", "fat16", "", ""},
-	{0x05, "Extended", "extended", "", ""},		/* DOS 3.3+ extended partition */
+	{0x05, "Extended", "extended", "multi", ""},		/* DOS 3.3+ extended partition */
 	{0x06, "FAT16", "fat16", "", ""},		/* DOS 16-bit >=32M */
 	{0x07, "HPFS/NTFS", "ntfs", "", ""},	/* OS/2 IFS, eg, HPFS or NTFS or QNX */
 	{0x08, "AIX", "", "", ""},		/* AIX boot (AIX -- PS/2 port) or SplitDrive */
-	{0x09, "AIX bootable", "", "", ""},	/* AIX data or Coherent */
-	{0x0a, "OS/2 Boot Manager", "", "nofs", ""},/* OS/2 Boot Manager */
+	{0x09, "AIX bootable", "", "boot", ""},	/* AIX data or Coherent */
+	{0x0a, "OS/2 Boot Manager", "", "boot,nofs", ""},/* OS/2 Boot Manager */
 	{0x0b, "W95 FAT32", "fat32", "", ""},
 	{0x0c, "W95 FAT32 (LBA)", "fat32", "", ""},/* LBA really is `Extended Int 13h' */
 	{0x0e, "W95 FAT16 (LBA)", "fat32", "", ""},
 	{0x0f, "W95 Ext'd (LBA)", "fat32", "", ""},
 	{0x10, "OPUS", "", "", ""},
 	{0x11, "Hidden FAT12", "fat12", "hidden", ""},
-	{0x12, "Compaq diagnostics", "", "", ""},
+	{0x12, "Compaq diagnostics", "", "boot", ""},
 	{0x14, "Hidden FAT16 <32M", "", "hidden", ""},
 	{0x16, "Hidden FAT16", "", "hidden", ""},
 	{0x17, "Hidden HPFS/NTFS", "ntfs", "hidden", ""},
@@ -130,7 +130,7 @@ static struct systypes dos_sys_types[] = {
 	{0x39, "Plan 9", "plan9", "", ""},
 	{0x3c, "PartitionMagic recovery", "", "nofs", ""},
 	{0x40, "Venix 80286", "", "", ""},
-	{0x41, "PPC PReP Boot", "", "", ""},
+	{0x41, "PPC PReP Boot", "", "boot", ""},
 	{0x42, "SFS", "", "", ""},
 	{0x4d, "QNX4.x", "", "", ""},
 	{0x4e, "QNX4.x 2nd part", "", "", ""},
@@ -147,18 +147,18 @@ static struct systypes dos_sys_types[] = {
 	{0x63, "GNU HURD or SysV", "", "", ""},	/* GNU HURD or Mach or Sys V/386 (such as ISC UNIX) */
 	{0x64, "Novell Netware 286", "", "", ""},
 	{0x65, "Novell Netware 386", "", "", ""},
-	{0x70, "DiskSecure Multi-Boot", "", "", ""},
+	{0x70, "DiskSecure Multi-Boot", "", "boot", ""},
 	{0x75, "PC/IX", "", "", ""},
 	{0x80, "Old Minix", "minix", "", ""},	/* Minix 1.4a and earlier */
 	{0x81, "Minix / old Linux", "minix", "", ""},/* Minix 1.4b and later */
 	{0x82, "Linux swap / Solaris", "swap", "nofs", ""},
 	{0x83, "Linux filesystem", "linux", "", ""},
 	{0x84, "OS/2 hidden C: drive", "", "hidden", ""},
-	{0x85, "Linux extended", "", "nofs", ""},
-	{0x86, "NTFS volume set", "", "", "md"},
-	{0x87, "NTFS volume set", "", "", "md"},
+	{0x85, "Linux extended", "", "multi", ""},
+	{0x86, "NTFS volume set", "", "multi", "md"},
+	{0x87, "NTFS volume set", "", "multi", "md"},
 	{0x88, "Linux plaintext", "", "", ""},
-	{0x8e, "Linux LVM", "lvm", "nofs", "md"},
+	{0x8e, "Linux LVM", "lvm", "multi", "md"},
 	{0x93, "Amoeba", "", "", ""},
 	{0x94, "Amoeba BBT", "", "", ""},	/* (bad block table) */
 	{0x9f, "BSD/OS", "bsdos", "", ""},		/* BSDI */
@@ -168,11 +168,11 @@ static struct systypes dos_sys_types[] = {
 	{0xa7, "NeXTSTEP", "nextstep", "", ""},
 	{0xa8, "Darwin UFS", "darwin", "", ""},
 	{0xa9, "NetBSD", "netbsd", "", ""},
-	{0xab, "Darwin boot", "", "nofs", ""},
+	{0xab, "Darwin boot", "", "boot,nofs", ""},
 	{0xb7, "BSDI fs", "", "", ""},
 	{0xb8, "BSDI swap", "", "nofs", ""},
-	{0xbb, "Boot Wizard hidden", "", "nofs", ""},
-	{0xbe, "Solaris boot", "", "nofs", ""},
+	{0xbb, "Boot Wizard hidden", "", "boot,nofs", ""},
+	{0xbe, "Solaris boot", "", "boot,nofs", ""},
 	{0xbf, "Solaris", "", "", ""},
 	{0xc1, "DRDOS/sec (FAT-12)", "", "", ""},
 	{0xc4, "DRDOS/sec (FAT-16 < 32M)", "", "", ""},
@@ -182,7 +182,7 @@ static struct systypes dos_sys_types[] = {
 	{0xdb, "CP/M / CTOS / ...", "", "", ""},/* CP/M or Concurrent CP/M or
 					   Concurrent DOS or CTOS */
 	{0xde, "Dell Utility", "", "", ""},	/* Dell PowerEdge Server utilities */
-	{0xdf, "BootIt", "", "nofs", ""},		/* BootIt EMBRM */
+	{0xdf, "BootIt", "", "boot,nofs", ""},		/* BootIt EMBRM */
 	{0xe1, "DOS access", "", "", ""},	/* DOS access or SpeedStor 12-bit FAT
 					   extended partition */
 	{0xe3, "DOS R/O", "", "", ""},		/* DOS R/O or SpeedStor */
@@ -191,11 +191,11 @@ static struct systypes dos_sys_types[] = {
 	{0xeb, "BeOS fs", "", "", ""},
 	{0xee, "EFI GPT", "", "nofs", ""},		/* Intel EFI GUID Partition Table */
 	{0xef, "EFI (FAT-12/16/32)", "", "", ""},/* Intel EFI System Partition */
-	{0xf0, "Linux/PA-RISC boot", "", "", ""},/* Linux/PA-RISC boot loader */
+	{0xf0, "Linux/PA-RISC boot", "", "boot", ""},/* Linux/PA-RISC boot loader */
 	{0xf1, "SpeedStor", "", "", ""},
 	{0xf4, "SpeedStor", "", "", ""},	/* SpeedStor large partition */
 	{0xf2, "DOS secondary", "", "", ""},	/* DOS 3.3+ secondary */
-	{0xfd, "Linux raid autodetect", "", "", "md"},/* New (2.2.x) raid partition with
+	{0xfd, "Linux raid autodetect", "", "multi", "md"},/* New (2.2.x) raid partition with
 					       autodetect using persistent
 					       superblock */
 	{0xfe, "LANstep", "", "", ""},		/* SpeedStor >1024 cyl. or LANstep */
@@ -266,23 +266,50 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   return false;
 }
 
-static bool analyse_dospart(unsigned char flags,
+static bool analyse_dosextpart(source & s,
+		unsigned char flags,
 		unsigned char type,
-		unsigned long start,
-		unsigned long size,
 		hwNode & partition)
 {
   int i = 0;
 
-  if(flags!=0 && flags!=0x80)	// inconstency: partition is either bootable or non-bootable
+  if(flags!=0 && flags!=0x80)	// inconsistency: partition is either bootable or non-bootable
     return false;
 
-  if(start==0 || size==0) // unused entry
+  if(s.offset==0 || s.size==0) // unused entry
+    return false;
+
+  partition.setDescription("Extended partition");
+  partition.addCapability("extended", "Extended partition");
+  partition.addCapability("partitioned", "Partitioned disk");
+  partition.addCapability("partitioned:extended", "Extended partition");
+  partition.setCapacity(s.size);
+
+  if(flags == 0x80)
+    partition.addCapability("bootable", "Active partition (bootable)");
+
+  return true;
+}
+
+static bool analyse_dospart(source & s,
+		unsigned char flags,
+		unsigned char type,
+		hwNode & partition)
+{
+  int i = 0;
+
+  if(type == 0x5 || type == 0x85)
+    return analyse_dosextpart(s, flags, type, partition);
+
+  if(flags!=0 && flags!=0x80)	// inconsistency: partition is either bootable or non-bootable
+    return false;
+
+  if(s.offset==0 || s.size==0) // unused entry
     return false;
 
   partition.setDescription("Primary partition");
   partition.addCapability("primary", "Primary partition");
-  partition.setCapacity((unsigned long long)size*BLOCKSIZE);
+  partition.setCapacity(s.size);
 
   if(flags == 0x80)
     partition.addCapability("bootable", "Active partition (bootable)");
@@ -292,6 +319,14 @@ static bool analyse_dospart(unsigned char flags,
     if(dos_sys_types[i].type == type)
     {
       partition.setDescription(dos_sys_types[i].description);
+      if(lowercase(dos_sys_types[i].capabilities) != "")
+      {
+        vector<string> capabilities;
+        splitlines(dos_sys_types[i].capabilities, capabilities, ',');
+
+        for(unsigned j=0; j<capabilities.size(); j++)
+           partition.addCapability(capabilities[j]);
+      }
       if(lowercase(dos_sys_types[i].icon) != "")
         partition.addHint("icon", string(dos_sys_types[i].icon));
       else
@@ -323,6 +358,7 @@ static bool detect_dosmap(source & s, hwNode & n)
 
   for(i=0; i<4; i++)
   {
+    source spart = s;
     hwNode partition("volume", hw::disk);
 
     flags = buffer[446 + i*16];
@@ -333,18 +369,17 @@ static bool detect_dosmap(source & s, hwNode & n)
     if(flags!=0 && flags!=0x80)	// inconstency: partition is either bootable or non-bootable
       return false;
 
+    spart.blocksize = s.blocksize;
+    spart.offset = s.offset + start*spart.blocksize;
+    spart.size = size*spart.blocksize;
+ 
     partition.setPhysId(i+1);
+    partition.setCapacity(spart.size);
 
-    if(analyse_dospart(flags, type, start, size, partition))
+    if(analyse_dospart(spart, flags, type, partition))
     {
-      source spart = s;
-
-      spart.blocksize = s.blocksize;
-      spart.offset = s.offset + start*spart.blocksize;
-      spart.size = size*spart.blocksize;
-
       guess_logicalname(spart, n, i+1, partition);
-      n.addChild(partition);
+        n.addChild(partition);
     }
   }
 
