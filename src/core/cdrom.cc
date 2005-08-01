@@ -1,4 +1,5 @@
 #include "cdrom.h"
+#include "partitions.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -78,6 +79,8 @@ bool scan_cdrom(hwNode & n)
     n.addCapability("dvd-ram", "DVD-RAM burning");
     n.setDescription("DVD-RAM writer");
   }
+
+  scan_partitions(n);
 
   (void) &id;			// avoid warning "id defined but not used"
 

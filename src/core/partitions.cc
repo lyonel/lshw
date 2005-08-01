@@ -18,6 +18,7 @@
 static char *id = "@(#) $Id$";
 
 #define BLOCKSIZE 512
+#define LIFBLOCKSIZE 256
 
 struct source
 {
@@ -42,7 +43,7 @@ static struct maptypes map_types[] = {
 	{"mac", "Apple Macintosh partition map", detect_macmap},
 	{"bsd", "BSD disklabel", NULL},
 	{"dos", "MS-DOS partition table", detect_dosmap},
-	{"lif", "HP LIF", detect_lif},
+	{"lif", "HP-UX LIF", detect_lif},
 	{"solaris-x86", "Solaris disklabel", NULL},
 	{"solaris-sparc", "Solaris disklabel", NULL},
 	{"raid", "Linux RAID", NULL},
@@ -449,7 +450,50 @@ static bool detect_macmap(source & s, hwNode & n)
 
 static bool detect_lif(source & s, hwNode & n)
 {
-  return false;
+  static unsigned char buffer[LIFBLOCKSIZE];
+  source lifvolume;
+  unsigned long dir_start = 0, dir_length = 0;
+  unsigned lif_version = 0;
+  unsigned long ipl_addr = 0, ipl_length = 0, ipl_entry = 0;
+
+  if(s.offset!=0)
+    return false;	// LIF boot volumes must be at the beginning of the disk
+
+  lifvolume = s;
+  lifvolume.blocksize = LIFBLOCKSIZE;	// LIF blocks are 256 bytes long
+
+  if(readlogicalblocks(lifvolume, buffer, 0, 1)!=1)	// read the first block
+    return false;
+
+  if(be_short(buffer)!=0x8000)			// wrong magic number
+    return false;
+
+  dir_start = be_long(buffer+8);
+  dir_length = be_long(buffer+16);
+  lif_version = be_short(buffer+20);
+
+  if(dir_start<2) return false;		// blocks 0 and 1 are reserved
+  if(dir_length<1) return false;	// no directory to read from
+  if(lif_version<1) return false;	// weird LIF version
+
+  ipl_addr = be_long(buffer+240);	// byte address of IPL on media
+  ipl_length = be_long(buffer+244);	// size of boot code
+  ipl_entry = be_long(buffer+248);	// boot code entry point
+
+  fprintf(stderr, "system: %x\n", be_short(buffer+12));
+  fprintf(stderr, "start of directory: %ld\n", dir_start);
+  fprintf(stderr, "length of directory: %ld\n", dir_length);
+  fprintf(stderr, "lif version: %x\n", lif_version);
+  fprintf(stderr, "tracks per surface: %ld\n", be_long(buffer+24));
+  fprintf(stderr, "number of surfaces: %ld\n", be_long(buffer+28));
+  fprintf(stderr, "blocks per track: %ld\n", be_long(buffer+32));
+  fprintf(stderr, "ipl addr: %ld\n", ipl_addr);
+  fprintf(stderr, "ipl length: %ld\n", ipl_length);
+  fprintf(stderr, "ipl entry point: %lx\n", ipl_entry);
+
+  if((ipl_addr!=0) && (ipl_length>0)) n.addCapability("bootable", "Bootable disk");
+
+  return true;
 }
 
 bool scan_partitions(hwNode & n)
@@ -457,27 +501,42 @@ bool scan_partitions(hwNode & n)
   int i = 0;
   source s;
   int fd = open(n.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
+  hwNode * medium = NULL;
 
   if (fd < 0)
     return false;
 
+  if(n.isCapable("removable"))
+  {
+    medium = n.addChild(hwNode("disc", hw::disk));
+
+    medium->claim();
+    medium->setSize(n.getSize());
+    medium->setCapacity(n.getCapacity());
+    medium->setLogicalName(n.getLogicalName());
+  }
+  else
+    medium = &n;
+
   s.fd = fd;
   s.offset = 0;
   s.blocksize = BLOCKSIZE;
-  s.size = n.getSize();
+  s.size = medium->getSize();
 
   while(map_types[i].id)
   {
-    if(map_types[i].detect && map_types[i].detect(s, n))
+    if(map_types[i].detect && map_types[i].detect(s, *medium))
     {
-      n.addCapability(string("partitioned"), "Partitioned disk");
-      n.addCapability(string("partitioned:") + string(map_types[i].id), string(map_types[i].description));
+      medium->addCapability(string("partitioned"), "Partitioned disk");
+      medium->addCapability(string("partitioned:") + string(map_types[i].id), string(map_types[i].description));
       break;
     }
     i++;
   }
 
   close(fd);
+
+  //if(medium != &n) free(medium);
 
   (void) &id;			// avoid warning "id defined but not used"
 
