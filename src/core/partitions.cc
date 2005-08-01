@@ -366,7 +366,7 @@ static bool detect_dosmap(source & s, hwNode & n)
     start = le_long(buffer + 446 + i*16 + 8);
     size = le_long(buffer + 446 + i*16 + 12);
 
-    if(flags!=0 && flags!=0x80)	// inconstency: partition is either bootable or non-bootable
+    if(flags!=0 && flags!=0x80)	// inconsistency: partition is either bootable or non-bootable
       return false;
 
     spart.blocksize = s.blocksize;
@@ -379,7 +379,7 @@ static bool detect_dosmap(source & s, hwNode & n)
     if(analyse_dospart(spart, flags, type, partition))
     {
       guess_logicalname(spart, n, i+1, partition);
-        n.addChild(partition);
+      n.addChild(partition);
     }
   }
 
