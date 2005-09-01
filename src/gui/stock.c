@@ -17,7 +17,7 @@ static struct StockIcon
 	{ LSHW_STOCK_BLUETOOTH, ".",   "bluetooth.svg" },
 	{ LSHW_STOCK_BOARD, ".",   "board.svg" },
 	{ LSHW_STOCK_CHIP, ".",   "chip.svg" },
-	{ LSHW_STOCK_CPU, ".",   "chip.svg" },
+	{ LSHW_STOCK_CPU, ".",   "cpu.svg" },
 	{ LSHW_STOCK_DESKTOPCOMPUTER, ".",   "desktopcomputer.svg" },
 	{ LSHW_STOCK_DISABLED, ".",   "disabled.svg" },
 	{ LSHW_STOCK_DISPLAY, ".",   "display.svg" },
