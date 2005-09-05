@@ -10,7 +10,7 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    sodipodi:docname="network.svg"
    sodipodi:docbase="/home/support/Source/ezix-workspace/packages/lshw/development/src/gui/artwork"
-   inkscape:version="0.41"
+   inkscape:version="0.42"
    sodipodi:version="0.32"
    id="svg2"
    height="600.00000pt"
@@ -24,9 +24,9 @@
      inkscape:window-width="899"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="519.99993"
+     inkscape:cy="403.21426"
      inkscape:cx="374.99989"
-     inkscape:zoom="0.12374369"
+     inkscape:zoom="0.70000002"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -35,75 +35,49 @@
      id="base" />
   <metadata
      id="metadata4">
-    <rdf:RDF
-       id="RDF5">
+    <rdf:RDF>
       <cc:Work
-         id="Work6"
          rdf:about="">
-        <dc:format
-           id="format7">image/svg+xml</dc:format>
+        <dc:format>image/svg+xml</dc:format>
         <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
-           id="type9" />
-        <dc:title
-           id="title1291">Network logo</dc:title>
-        <dc:date
-           id="date1293">2005/03/28</dc:date>
-        <dc:creator
-           id="creator1295">
-          <cc:Agent
-             id="Agent1297">
-            <dc:title
-               id="title1299">Lyonel Vincent</dc:title>
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Network logo</dc:title>
+        <dc:date>2005/03/28</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Lyonel Vincent</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:publisher
-           id="publisher1301">
-          <cc:Agent
-             id="Agent1303">
-            <dc:title
-               id="title1305">ezIX.org</dc:title>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>ezIX.org</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier
-           id="identifier1307">network</dc:identifier>
-        <dc:language
-           id="language1309">C</dc:language>
-        <dc:subject
-           id="subject1311">
-          <rdf:Bag
-             id="Bag1313">
-            <rdf:li
-               id="li1353">lan network ethernet</rdf:li>
+        <dc:identifier>network</dc:identifier>
+        <dc:language>C</dc:language>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>lan network ethernet</rdf:li>
           </rdf:Bag>
         </dc:subject>
         <cc:license
-           id="license1355"
            rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
-        <dc:source
-           id="source1555">$Id$</dc:source>
+        <dc:source>$Id$</dc:source>
       </cc:Work>
       <cc:License
-         rdf:about="http://creativecommons.org/licenses/GPL/2.0/"
-         id="License1357">
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/Reproduction"
-           id="permits1359" />
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/Distribution"
-           id="permits1361" />
+           rdf:resource="http://web.resource.org/cc/Distribution" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/Notice"
-           id="requires1363" />
+           rdf:resource="http://web.resource.org/cc/Notice" />
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/DerivativeWorks"
-           id="permits1365" />
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/ShareAlike"
-           id="requires1367" />
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/SourceCode"
-           id="requires1369" />
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
       </cc:License>
     </rdf:RDF>
   </metadata>
@@ -111,9 +85,91 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
-    <path
-       id="rect1291"
-       d="M 362.37179,176.85167 L 362.37179,299.25629 L 399.09318,299.25629 L 399.09318,327.21809 L 139.97791,327.21809 C 131.13844,306.58929 110.66028,292.10325 86.808397,292.10327 C 54.884025,292.10327 28.972216,318.01506 28.972216,349.93945 C 28.972216,381.86382 54.884025,407.77561 86.808397,407.77563 C 110.66001,407.77563 131.13829,393.32748 139.97791,372.69905 L 242.41527,372.69905 L 242.41527,409.42044 L 205.69388,409.42044 L 205.69388,531.82505 L 328.09850,531.82505 L 328.09850,409.42044 L 291.37712,409.42044 L 291.37712,372.69905 L 543.53062,372.69905 L 543.53062,409.42044 L 506.80924,409.42044 L 506.80924,531.82505 L 629.21385,531.82505 L 629.21385,409.42044 L 592.49247,409.42044 L 592.49247,372.69905 L 724.34519,372.69905 L 724.34519,327.21809 L 448.05502,327.21809 L 448.05502,299.25629 L 484.77641,299.25629 L 484.77641,176.85167 L 362.37179,176.85167 z "
-       style="fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:50.500000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000" />
+    <g
+       id="g2085">
+      <g
+         transform="translate(-17.14285,-1.785758)"
+         id="g2061">
+        <rect
+           style="opacity:1.0000000;fill:#000000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:6.5120001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+           id="rect1304"
+           width="584.28571"
+           height="40.000000"
+           x="138.57143"
+           y="330.00000" />
+        <path
+           sodipodi:type="arc"
+           style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
+           id="path1306"
+           sodipodi:cx="92.857140"
+           sodipodi:cy="355.71429"
+           sodipodi:rx="54.285713"
+           sodipodi:ry="54.285713"
+           d="M 147.14285 355.71429 A 54.285713 54.285713 0 1 1  38.571426,355.71429 A 54.285713 54.285713 0 1 1  147.14285 355.71429 z"
+           transform="translate(0.000000,-5.714286)" />
+      </g>
+      <g
+         id="g2073">
+        <g
+           id="g2065">
+          <g
+             id="g2045">
+            <rect
+               transform="matrix(0.000000,-1.000000,1.000000,0.000000,0.000000,0.000000)"
+               style="opacity:1.0000000;fill:#000000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:6.5120001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+               id="rect2037"
+               width="82.857147"
+               height="40.000000"
+               x="-426.42856"
+               y="245.71428" />
+            <rect
+               style="opacity:1.0000000;fill:#000000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:6.5120001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+               id="rect2043"
+               width="120.00000"
+               height="120.00000"
+               x="205.71428"
+               y="410.00003" />
+          </g>
+          <g
+             transform="translate(301.4286,0.000000)"
+             id="g2049">
+            <rect
+               y="245.71428"
+               x="-426.42856"
+               height="40.000000"
+               width="82.857147"
+               id="rect2051"
+               style="opacity:1.0000000;fill:#000000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:6.5120001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+               transform="matrix(0.000000,-1.000000,1.000000,0.000000,0.000000,0.000000)" />
+            <rect
+               y="410.00003"
+               x="205.71428"
+               height="120.00000"
+               width="120.00000"
+               id="rect2053"
+               style="opacity:1.0000000;fill:#000000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:6.5120001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000" />
+          </g>
+        </g>
+        <g
+           id="g2055"
+           transform="matrix(1.000000,0.000000,0.000000,-1.000000,150.7143,696.4285)">
+          <rect
+             transform="matrix(0.000000,-1.000000,1.000000,0.000000,0.000000,0.000000)"
+             style="opacity:1.0000000;fill:#000000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:6.5120001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+             id="rect2057"
+             width="82.857147"
+             height="40.000000"
+             x="-426.42856"
+             y="245.71428" />
+          <rect
+             style="opacity:1.0000000;fill:#000000;fill-opacity:1.0000000;fill-rule:nonzero;stroke:none;stroke-width:6.5120001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+             id="rect2059"
+             width="120.00000"
+             height="120.00000"
+             x="205.71428"
+             y="410.00003" />
+        </g>
+      </g>
+    </g>
   </g>
 </svg>
