@@ -992,7 +992,7 @@ static void dmi_table(int fd,
 	  hardwarenode->setSlot(dmi_string(dm, data[0x0A]));
 	  hardwarenode->setHandle(handle);
 	  hardwarenode->setDescription("Motherboard");
-	  hardwarenode->addHint("icon", string("board"));
+	  hardwarenode->addHint("icon", string("motherboard"));
 	}
 	else
 	{
