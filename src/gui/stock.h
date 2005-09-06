@@ -22,6 +22,7 @@
 #define LSHW_STOCK_MEMORY          "lshw-memory"
 #define LSHW_STOCK_MINI            "lshw-mini"
 #define LSHW_STOCK_MODEM           "lshw-modem"
+#define LSHW_STOCK_MOTHERBOARD     "lshw-motherboard"
 #define LSHW_STOCK_NETWORK         "lshw-network"
 #define LSHW_STOCK_PARALLEL        "lshw-parallel"
 #define LSHW_STOCK_POWERMAC        "lshw-powermac"
