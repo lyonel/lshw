@@ -482,6 +482,7 @@ bool scan_device_tree(hwNode & n)
   }
 
   n.setProduct(get_string(DEVICETREE "/model"));
+  n.addHint("icon", string("motherboard"));
 
   n.setSerial(get_string(DEVICETREE "/serial-number"));
   if (n.getSerial() == "")
