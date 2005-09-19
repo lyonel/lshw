@@ -474,8 +474,8 @@ static bool do_inquiry(int sg_fd,
   if (do_inq(sg_fd, 0, 1, 0x80, rsp_buff, MX_ALLOC_LEN, 0))
   {
     len = rsp_buff[3];
-    if ((len > 0) && (rsp_buff[0] > ' '))
-      node.setSerial(string(rsp_buff + 4, len));
+    if ((len > 0) && (rsp_buff[0] >= ' '))
+      node.setSerial(hw::strip(string(rsp_buff + 4, len)));
   }
 
   memset(rsp_buff, 0, sizeof(rsp_buff));
