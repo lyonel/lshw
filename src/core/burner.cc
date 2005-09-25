@@ -1,4 +1,11 @@
 /*
+ * burner.cc
+ *
+ * This file was originally part of dvd+rw-tools by Andy Polyakov but it went
+ * through severe modifications. Don't blame Andy for any bug.
+ *
+ * Original notice below.
+ *
  * This is part of dvd+rw-tools by Andy Polyakov <appro@fy.chalmers.se>
  *
  * Use-it-on-your-own-risk, GPL bless...
@@ -88,8 +95,7 @@ const int Dir_xlate[4] = {
 	SG_DXFER_NONE		// 3,CGC_DATA_NONE
 };
 
-static ScsiCommand *
-scsi_command_new (void)
+static ScsiCommand * scsi_command_new (void)
 {
 	ScsiCommand *cmd;
 
@@ -102,8 +108,7 @@ scsi_command_new (void)
 	return cmd;
 }
 
-static ScsiCommand *
-scsi_command_new_from_fd (int f)
+static ScsiCommand * scsi_command_new_from_fd (int f)
 {
 	ScsiCommand *cmd;
 
@@ -114,8 +119,7 @@ scsi_command_new_from_fd (int f)
 	return cmd;
 }
 
-static void
-scsi_command_free (ScsiCommand * cmd)
+static void scsi_command_free (ScsiCommand * cmd)
 {
 	if (cmd->fd >= 0 && cmd->autoclose) {
 		close (cmd->fd);
@@ -129,8 +133,7 @@ scsi_command_free (ScsiCommand * cmd)
 	free (cmd);
 }
 
-static int
-scsi_command_transport (ScsiCommand * cmd, Direction dir, void *buf,
+static int scsi_command_transport (ScsiCommand * cmd, Direction dir, void *buf,
 			size_t sz)
 {
 	int ret = 0;
@@ -156,8 +159,7 @@ scsi_command_transport (ScsiCommand * cmd, Direction dir, void *buf,
 	return ret;
 }
 
-static void
-scsi_command_init (ScsiCommand * cmd, size_t i, int arg)
+static void scsi_command_init (ScsiCommand * cmd, size_t i, int arg)
 {
 	if (i == 0) {
 		memset (&cmd->cgc, 0, sizeof (cmd->cgc));
@@ -175,8 +177,7 @@ scsi_command_init (ScsiCommand * cmd, size_t i, int arg)
 	cmd->cgc.cmd[i] = arg;
 }
 
-int
-get_dvd_r_rw_profile (int fd)
+int get_dvd_r_rw_profile (int fd)
 {
 	ScsiCommand *cmd;
 	int retval = -1;
@@ -241,8 +242,7 @@ get_dvd_r_rw_profile (int fd)
 	return retval;
 }
 
-static unsigned char *
-pull_page2a_from_fd (int fd)
+static unsigned char * pull_page2a_from_fd (int fd)
 {
 	ScsiCommand *cmd;
 	unsigned char header[12], *page2A;
@@ -309,8 +309,7 @@ pull_page2a_from_fd (int fd)
 	return page2A;
 }
 
-int
-get_read_write_speed (int fd, int *read_speed, int *write_speed)
+static int get_read_write_speed (int fd, int *read_speed, int *write_speed)
 {
 	unsigned char *page2A;
 	int len, hlen;
@@ -353,8 +352,7 @@ get_read_write_speed (int fd, int *read_speed, int *write_speed)
 	return 0;
 }
 
-int
-get_disc_type (int fd)
+static int get_disc_type (int fd)
 {
 	ScsiCommand *cmd;
 	int retval = -1;
@@ -380,8 +378,7 @@ get_disc_type (int fd)
 }
 
 
-int
-disc_is_appendable (int fd)
+static int disc_is_appendable (int fd)
 {
 	ScsiCommand *cmd;
 	int retval = -1;
@@ -405,8 +402,7 @@ disc_is_appendable (int fd)
 	return retval;
 }
 
-int
-disc_is_rewritable (int fd)
+static int disc_is_rewritable (int fd)
 {
 	ScsiCommand *cmd;
 	int retval = -1;

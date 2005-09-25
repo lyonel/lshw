@@ -1,3 +1,16 @@
+/*
+ *  ide.cc
+ *
+ *  This scan tries to detect all IDE interfaces in the system by scanning
+ *  /proc/ide and looking for /proc/ide/xxx/channel
+ *  It then tries to find the parent device for this interface (on 2.4 kernels,
+ *  /proc/ide/xxx/identify contains useful information for PCI devices), other-
+ *  wise, guessParent() is used.
+ *  Each IDE-connected device is scanned and more information is gathered
+ *  by calling scan_disk() and scan_cdrom(), as appropriate.
+ */
+
+
 #include "cpuinfo.h"
 #include "osutils.h"
 #include "cdrom.h"

@@ -1,3 +1,13 @@
+/*
+ *  isapnp.cc
+ *
+ *  This scan, only available on (older) i386 systems, tries to detect PnP
+ *  (Plug'n Play) ISA devices.
+ *
+ *  This detection is loosely based on the implementation used in the Linux
+ *  kernel itself.
+ */
+
 #include "isapnp.h"
 #include "pnp.h"
 
@@ -1011,11 +1021,6 @@ bool scan_isapnp(hwNode & n)
 {
 #ifdef __i386__
   int cards;
-
-  /*
-   *      Print a message. The existing ISAPnP code is hanging machines
-   *      so let the user know where.
-   */
 
   isapnp_rdp = 0;
   isapnp_detected = 1;

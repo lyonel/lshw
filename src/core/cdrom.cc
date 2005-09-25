@@ -1,3 +1,13 @@
+/*
+ *  cdrom.cc
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
 #include "cdrom.h"
 #include "partitions.h"
 #include <sys/types.h>
