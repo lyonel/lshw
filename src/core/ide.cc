@@ -482,11 +482,12 @@ bool scan_ide(hwNode & n)
 
 	      if (candidate)
               {
+                parent = candidate;
 	        candidate->merge(*ide.getChild(k));
                 break;
               }
 	    }
-	  //n.addChild(ide);
+	  if(!parent) n.addChild(ide);
 	}
       }
 

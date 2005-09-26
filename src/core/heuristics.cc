@@ -56,15 +56,23 @@ static string guessParentBusInfo(const hwNode & child)
 {
   string sysfs_path = sysfs_finddevice(child.getLogicalName());
   vector < string > path;
+  string result = "";
 
   if(sysfs_path == "") return "";
 
   splitlines(sysfs_path, path, '/');
 
-  if(path.size()>2)
-    return guessBusInfo(path[path.size()-2]);
+  if(path.size()>1)
+    path.pop_back();
   else
     return "";
+
+  while((result=="") && (path.size()>1))
+  {
+    result = guessBusInfo(path[path.size()-1]);
+    path.pop_back();
+  }
+  return result;
 }
 
 hwNode * guessParent(const hwNode & child, hwNode & base)
