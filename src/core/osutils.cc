@@ -340,6 +340,17 @@ string readlink(const string & path)
     return path;
 }
 
+string realpath(const string & path)
+{
+  char buffer[PATH_MAX+1];
+
+  memset(buffer, 0, sizeof(buffer));
+  if(realpath(path.c_str(), buffer))
+    return string(buffer);
+  else
+    return path;
+}
+
 string spaces(unsigned int count, const string & space)
 {
   string result = "";
