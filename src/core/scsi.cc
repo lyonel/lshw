@@ -3,6 +3,7 @@
 #include "disk.h"
 #include "osutils.h"
 #include "heuristics.h"
+#include "sysfs.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -622,6 +623,15 @@ static string host_logicalname(int i)
   return string(host);
 }
 
+static string host_kname(int i)		// for sysfs
+{
+  char host[20];
+
+  snprintf(host, sizeof(host), "host%d", i);
+
+  return string(host);
+}
+
 static bool atapi(const hwNode & n)
 {
   return n.isCapable("atapi") && (n.countChildren() == 0);
@@ -796,6 +806,13 @@ static bool scan_hosts(hwNode & node)
 	    node.findChildByLogicalName(host_logicalname(number));
 
 	  if (!controller)
+          {
+            string parentbusinfo = sysfs_getbusinfo(sysfs::entry::byClass("scsi_host", host_kname(number)));
+
+	    controller = node.findChildByBusInfo(parentbusinfo);
+	  }
+
+	  if (!controller)
 	  {
 	    controller = node.addChild(hwNode::hwNode("scsi", hw::storage));
 	    if (controller)
@@ -807,6 +824,7 @@ static bool scan_hosts(hwNode & node)
 
 	  if (controller)
 	  {
+            controller->setLogicalName(host_logicalname(number));
 	    controller->setConfig(string("driver"),
 				  string(namelist[i]->d_name));
             controller->setHandle(scsi_handle(number));
