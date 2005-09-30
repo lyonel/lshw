@@ -140,21 +140,20 @@ static string sysfstobusinfo(const string & path)
 
 static string sysfs_getbusinfo_byclass(const string & devclass, const string & devname)
 {
-  string basename =
-    fs.path + string("/class/") + devclass + string("/") + devname + "/";
-  string device = basename + "/device";
-  char buffer[PATH_MAX + 1];
-  int namelen = 0;
+  string device =
+    fs.path + string("/class/") + devclass + string("/") + devname + "/device";
+  string result = "";
+  int i = 0;
 
-  if ((namelen = readlink(device.c_str(), buffer, sizeof(buffer))) < 0)
-    return "";
+  while((result == "") && (i<2))	// device may point to /businfo or /businfo/devname
+  {
+    if(!exists(device)) return "";
+    result = sysfstobusinfo(realpath(device));
+    device += "/../" + devname + "/..";
+    i++;
+  }
 
-  device = basename + string(buffer, namelen);
-
-  if (!realpath(device.c_str(), buffer))
-    return "";
-
-  return sysfstobusinfo(hw::strip(buffer));
+  return result;
 }
 
 static string sysfs_getbusinfo_bybus(const string & devbus, const string & devname)
