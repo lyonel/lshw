@@ -286,6 +286,8 @@ static bool analyse_dosextpart(source & s,
   partition.addCapability("partitioned:extended", "Extended partition");
   partition.setCapacity(s.size);
 
+  partition.describeCapability("nofs", "No filesystem");
+
   if(flags == 0x80)
     partition.addCapability("bootable", "Active partition (bootable)");
 
@@ -336,6 +338,11 @@ static bool analyse_dospart(source & s,
     }
     i++;
   }
+
+  partition.describeCapability("nofs", "No filesystem");
+  partition.describeCapability("boot", "Contains boot code");
+  partition.describeCapability("multi", "Multi-volumes");
+  partition.describeCapability("hidden", "Hidden partition");
 
   return true;
 }
