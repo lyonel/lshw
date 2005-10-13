@@ -321,7 +321,7 @@ static bool analyse_dospart(source & s,
   {
     if(dos_sys_types[i].type == type)
     {
-      partition.setDescription(dos_sys_types[i].description);
+      partition.setDescription(string(dos_sys_types[i].description)+" partition");
       if(lowercase(dos_sys_types[i].capabilities) != "")
       {
         vector<string> capabilities;
