@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Tue 2005-09-20 01:05:03
+#	Daily snapshot on Thu 2005-10-13 01:05:03
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -10141,6 +10141,7 @@
 		4c53 10e0  PSL09 PrPMC
 	25c0  Workstation Memory Controller Hub
 	25d0  Server Memory Controller Hub
+	25d4  Server Memory Contoller Hub
 	25d8  Server Memory Controller Hub
 	25e2  Server PCI Express x4 Port 2
 	25e3  Server PCI Express x4 Port 3
@@ -10150,6 +10151,8 @@
 	25e7  Server PCI Express x4 Port 7
 	25e8  Server AMB Memory Mapped Registers
 	25f0  Server Error Reporting Registers
+	25f1  Reserved Registers
+	25f3  Reserved Registers
 	25f5  Server FBD Registers
 	25f6  Server FBD Registers
 	25f7  Server PCI Express x8 Port 2-3
@@ -10276,6 +10279,7 @@
 	2778  E7230 Memory Controller Hub
 	2779  E7230 PCI Express Root Port
 	277a  PCI Express Graphics Port
+	277c  Memory Controller Hub
 	277d  PCI Express Graphics Port
 	2782  82915G Express Chipset Family Graphics Controller
 		1734 105b  Scenic W620
