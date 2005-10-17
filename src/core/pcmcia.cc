@@ -1007,7 +1007,7 @@ bool scan_pcmcia(hwNode & n)
     {
       if (stab[i][0] == 'S')
       {
-	unsigned int pos = stab[i].find(':');
+	string::size_type pos = stab[i].find(':');
 
 	socketname = "";
 	carddescription = "";
