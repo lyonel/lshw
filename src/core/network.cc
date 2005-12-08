@@ -436,7 +436,7 @@ bool scan_network(hwNode & n)
           interface.setCapacity(1000000000L);
         }
         if(ecmd.supported & SUPPORTED_Autoneg)
-          interface.addCapability("autonegociation", "Auto-negociation");
+          interface.addCapability("autonegotiation", "Auto-negotiation");
         
         switch(ecmd.speed)
         {
@@ -480,7 +480,7 @@ bool scan_network(hwNode & n)
             interface.setConfig("port", "fibre");
             break;
         }
-        interface.setConfig("autonegociation", (ecmd.autoneg == AUTONEG_DISABLE) ?  "off" : "on");
+        interface.setConfig("autonegotiation", (ecmd.autoneg == AUTONEG_DISABLE) ?  "off" : "on");
       }
 
       drvinfo.cmd = ETHTOOL_GDRVINFO;
