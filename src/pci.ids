@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Wed 2006-02-08 02:05:02
+#	Daily snapshot on Sun 2006-02-19 02:05:03
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -11077,6 +11077,7 @@
 		1993 0def  mGuard-PCI AV#0
 	9000  IXP2000 Family Network Processor
 	9001  IXP2400 Network Processor
+	9002  IXP2300 Network Processor
 	9004  IXP2800 Network Processor
 	9621  Integrated RAID
 	9622  Integrated RAID
