@@ -204,6 +204,8 @@ static struct systypes dos_sys_types[] = {
 	{ 0, NULL, NULL, NULL }
 };
 
+static unsigned int lastlogicalpart = 5;
+
 static ssize_t readlogicalblocks(source & s,
 			void * buffer,
 			off_t pos, ssize_t count)
@@ -267,12 +269,20 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   return false;
 }
 
+static bool analyse_dospart(source & s,
+		unsigned char flags,
+		unsigned char type,
+		hwNode & partition);
+
 static bool analyse_dosextpart(source & s,
 		unsigned char flags,
 		unsigned char type,
-		hwNode & partition)
+		hwNode & extpart)
 {
+  static unsigned char buffer[BLOCKSIZE];
   int i = 0;
+  source spart = s;
+  unsigned long long start, size;
 
   if(flags!=0 && flags!=0x80)	// inconsistency: partition is either bootable or non-bootable
     return false;
@@ -280,17 +290,58 @@ static bool analyse_dosextpart(source & s,
   if(s.offset==0 || s.size==0) // unused entry
     return false;
 
-  partition.setDescription("Extended partition");
-  partition.addCapability("extended", "Extended partition");
-  partition.addCapability("partitioned", "Partitioned disk");
-  partition.addCapability("partitioned:extended", "Extended partition");
-  partition.setCapacity(s.size);
+  extpart.setDescription("Extended partition");
+  extpart.addCapability("extended", "Extended partition");
+  extpart.addCapability("partitioned", "Partitioned disk");
+  extpart.addCapability("partitioned:extended", "Extended partition");
+  extpart.setCapacity(s.size);
+  extpart.setSize(s.size);
 
-  partition.describeCapability("nofs", "No filesystem");
+  extpart.describeCapability("nofs", "No filesystem");
 
   if(flags == 0x80)
-    partition.addCapability("bootable", "Bootable partition (active)");
+    extpart.addCapability("bootable", "Bootable partition (active)");
 
+  while(true)
+  {
+    hwNode partition("logicalvolume", hw::disk);
+
+    if(readlogicalblocks(spart, buffer, 0, 1)!=1)	// read the first sector
+      break;
+
+    if(le_short(buffer+510)!=0xaa55)		// wrong magic number
+      break;
+
+    for(i=0; i<2; i++)
+    {
+      flags = buffer[446 + i*16];
+      type = buffer[446 + i*16 + 4];
+      start = le_long(buffer + 446 + i*16 + 8);
+      size = le_long(buffer + 446 + i*16 + 12);
+
+      if(flags!=0 && flags!=0x80)	// inconsistency: partition is either bootable or non-bootable
+        continue;
+
+      spart.blocksize = s.blocksize;
+      spart.offset = s.offset + start*spart.blocksize;
+      spart.size = size*spart.blocksize;
+ 
+      partition.setPhysId(lastlogicalpart);
+      partition.setCapacity(spart.size);
+
+      if((type==0) || (size==0))
+        goto end;
+
+      if((i==0) && analyse_dospart(spart, flags, type, partition))
+      {
+        //guess_logicalname(spart, disk, i+1, partition);
+        extpart.addChild(partition);
+        lastlogicalpart++;
+      }
+    }
+  }
+
+end:
   return true;
 }
 
@@ -310,8 +361,6 @@ static bool analyse_dospart(source & s,
   if(s.offset==0 || s.size==0) // unused entry
     return false;
 
-  partition.setDescription("Primary partition");
-  partition.addCapability("primary", "Primary partition");
   partition.setCapacity(s.size);
 
   if(flags == 0x80)
@@ -364,6 +413,8 @@ static bool detect_dosmap(source & s, hwNode & n)
   if(le_short(buffer+510)!=0xaa55)		// wrong magic number
     return false;
 
+  lastlogicalpart = 5;
+
   for(i=0; i<4; i++)
   {
     source spart = s;
@@ -381,6 +432,8 @@ static bool detect_dosmap(source & s, hwNode & n)
     spart.offset = s.offset + start*spart.blocksize;
     spart.size = size*spart.blocksize;
  
+    partition.setDescription("Primary partition");
+    partition.addCapability("primary", "Primary partition");
     partition.setPhysId(i+1);
     partition.setCapacity(spart.size);
 
