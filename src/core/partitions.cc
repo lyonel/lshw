@@ -22,6 +22,7 @@ static char *id = "@(#) $Id$";
 
 struct source
 {
+	string diskname;
 	int fd;
 	ssize_t blocksize;
 	unsigned long long offset;
@@ -241,7 +242,12 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   if(fstat(s.fd, &buf)!=0) return false;
   if(!S_ISBLK(buf.st_mode)) return false;
 
-  if((dev = open_dev(buf.st_rdev + n, disk.getLogicalName()+string(name)))>=0)
+  if(s.diskname!="")
+    dev = open_dev(buf.st_rdev + n, s.diskname+string(name));
+  else
+    dev = open_dev(buf.st_rdev + n, disk.getLogicalName()+string(name));
+
+  if(dev>=0)
   {
     source spart = s;
     unsigned char buffer1[BLOCKSIZE], buffer2[BLOCKSIZE];
@@ -261,7 +267,10 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
     if(memcmp(buffer1, buffer2, BLOCKSIZE)==0)
     {
       partition.claim();
-      partition.setLogicalName(disk.getLogicalName()+string(name));
+      if(s.diskname!="")
+        partition.setLogicalName(s.diskname+string(name));
+      else
+        partition.setLogicalName(disk.getLogicalName()+string(name));
       return true;
     }
   }
@@ -334,7 +343,7 @@ static bool analyse_dosextpart(source & s,
 
       if((i==0) && analyse_dospart(spart, flags, type, partition))
       {
-        //guess_logicalname(spart, disk, i+1, partition);
+        guess_logicalname(spart, extpart, lastlogicalpart, partition);
         extpart.addChild(partition);
         lastlogicalpart++;
       }
@@ -578,6 +587,7 @@ bool scan_partitions(hwNode & n)
   else
     medium = &n;
 
+  s.diskname = n.getLogicalName();
   s.fd = fd;
   s.offset = 0;
   s.blocksize = BLOCKSIZE;
