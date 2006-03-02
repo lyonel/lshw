@@ -289,7 +289,7 @@ static bool analyse_dosextpart(source & s,
   partition.describeCapability("nofs", "No filesystem");
 
   if(flags == 0x80)
-    partition.addCapability("bootable", "Active partition (bootable)");
+    partition.addCapability("bootable", "Bootable partition (active)");
 
   return true;
 }
@@ -315,7 +315,7 @@ static bool analyse_dospart(source & s,
   partition.setCapacity(s.size);
 
   if(flags == 0x80)
-    partition.addCapability("bootable", "Active partition (bootable)");
+    partition.addCapability("bootable", "Bootable partition (active)");
 
   while(dos_sys_types[i].id)
   {
