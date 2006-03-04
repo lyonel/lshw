@@ -25,8 +25,8 @@ struct source
 	string diskname;
 	int fd;
 	ssize_t blocksize;
-	unsigned long long offset;
-	unsigned long long size;
+	long long offset;
+	long long size;
 };
 
 struct maptypes
@@ -217,9 +217,9 @@ static unsigned int lastlogicalpart = 5;
 
 static ssize_t readlogicalblocks(source & s,
 			void * buffer,
-			off_t pos, ssize_t count)
+			long long pos, long long count)
 {
-  off_t result = 0;
+  long long result = 0;
 
   memset(buffer, 0, count*s.blocksize);
 
