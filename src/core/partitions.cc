@@ -286,6 +286,11 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   return false;
 }
 
+static bool is_extended(unsigned char type)
+{
+  return (type == 0x5) || (type == 0xf) || (type == 0x85);
+}
+
 static bool read_dospartition(source & s, unsigned short i, dospartition & p)
 {
   static unsigned char buffer[BLOCKSIZE];
@@ -324,7 +329,7 @@ static bool analyse_dosextpart(source & s,
   int i = 0;
   dospartition pte[2];			// we only read entries #0 and #1
 
-  if(type != 0x5 && type != 0x85)	// this is not an extended partition
+  if(!is_extended(type))	// this is not an extended partition
     return false;
 
   extpart.setDescription("Extended partition");
@@ -368,7 +373,7 @@ static bool analyse_dosextpart(source & s,
     {
       extendedpart.offset = s.offset + pte[1].start;
       extendedpart.size = pte[1].size;
-      if(pte[1].type != 0x5 && pte[1].type != 0x85)
+      if(!is_extended(pte[1].type))
         return false;
     }
   } while(true);
@@ -383,7 +388,7 @@ static bool analyse_dospart(source & s,
 {
   int i = 0;
 
-  if(type == 0x5 || type == 0x85)
+  if(is_extended(type))
     return analyse_dosextpart(s, flags, type, partition);
 
   if(flags!=0 && flags!=0x80)	// inconsistency: partition is either bootable or non-bootable
