@@ -5,6 +5,7 @@
 /** @name Stock images                                                    */
 /**************************************************************************/
 /*@{*/
+#define LSHW_STOCK_AMD             "lshw-amd"
 #define LSHW_STOCK_AUDIO           "lshw-audio"
 #define LSHW_STOCK_BATTERY         "lshw-battery"
 #define LSHW_STOCK_BLUETOOTH       "lshw-bluetooth"
@@ -17,6 +18,7 @@
 #define LSHW_STOCK_CD              "lshw-cd"
 #define LSHW_STOCK_DISC            "lshw-disc"
 #define LSHW_STOCK_FIREWIRE        "lshw-firewire"
+#define LSHW_STOCK_INTEL           "lshw-intel"
 #define LSHW_STOCK_LAPTOP          "lshw-laptop"
 #define LSHW_STOCK_LOGO            "lshw-logo"
 #define LSHW_STOCK_MEMORY          "lshw-memory"
@@ -27,6 +29,7 @@
 #define LSHW_STOCK_PARALLEL        "lshw-parallel"
 #define LSHW_STOCK_POWERMAC        "lshw-powermac"
 #define LSHW_STOCK_POWERMACG5      "lshw-powermacg5"
+#define LSHW_STOCK_POWERPC         "lshw-powerpc"
 #define LSHW_STOCK_PRINTER         "lshw-printer"
 #define LSHW_STOCK_RADIO           "lshw-radio"
 #define LSHW_STOCK_MD              "lshw-md"

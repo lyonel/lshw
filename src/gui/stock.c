@@ -13,6 +13,7 @@ static struct StockIcon
 } const stock_icons[] =
 {
 	{ LSHW_STOCK_AUDIO, ".",   "audio.svg" },
+	{ LSHW_STOCK_AMD, ".",   "amd.svg" },
 	{ LSHW_STOCK_BATTERY, ".",   "battery.svg" },
 	{ LSHW_STOCK_BLUETOOTH, ".",   "bluetooth.svg" },
 	{ LSHW_STOCK_BOARD, ".",   "board.svg" },
@@ -24,6 +25,7 @@ static struct StockIcon
 	{ LSHW_STOCK_CD, ".",   "cd.svg" },
 	{ LSHW_STOCK_DISC, ".",   "disc.svg" },
 	{ LSHW_STOCK_FIREWIRE, ".",   "firewire.svg" },
+	{ LSHW_STOCK_INTEL, ".",   "intel.svg" },
 	{ LSHW_STOCK_LAPTOP, ".",   "laptop.svg" },
 	{ LSHW_STOCK_LOGO, ".",   "logo.svg" },
 	{ LSHW_STOCK_MEMORY, ".",   "memory.svg" },
@@ -34,6 +36,7 @@ static struct StockIcon
 	{ LSHW_STOCK_PARALLEL, ".",   "parallel.svg" },
 	{ LSHW_STOCK_POWERMAC, ".",   "powermac.svg" },
 	{ LSHW_STOCK_POWERMACG5, ".",   "powermacg5.svg" },
+	{ LSHW_STOCK_POWERPC, ".",   "powerpc.svg" },
 	{ LSHW_STOCK_PRINTER, ".",   "printer.svg" },
 	{ LSHW_STOCK_RADIO, ".",   "radio.svg" },
 	{ LSHW_STOCK_MD, ".",   "md.svg" },
