@@ -58,7 +58,7 @@ static void cpuinfo_ppc(hwNode & node,
 
   if (cpu)
   {
-    cpu->addHint("logo", "powerpc");
+    cpu->addHint("logo", string("powerpc"));
     cpu->claim(true);
     if (id == "revision")
       cpu->setVersion(value);
