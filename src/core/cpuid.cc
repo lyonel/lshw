@@ -250,6 +250,8 @@ static bool dointel(unsigned long maxi,
   if (!cpu)
     return false;
 
+  cpu->addHint("logo", string("intel"));
+
   if (maxi >= 1)
   {
     cpuid(cpunumber, 1, eax, ebx, ecx, edx);
@@ -410,6 +412,8 @@ static bool doamd(unsigned long maxi,
 
   if (maxi < 1)
     return false;
+
+  cpu->addHint("logo", string("amd"));
 
   cpuid(cpunumber, 1, eax, ebx, ecx, edx);
   stepping = eax & 0xf;
