@@ -164,6 +164,9 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   if(node.getHint("bus.icon").defined())
     inserticon(string("lshw-") + node.getHint("bus.icon").asString(), "", buffer, iter, textview);
 
+  if(node.getHint("logo").defined())
+    inserticon(string("lshw-") + node.getHint("logo").asString(), "", buffer, iter, textview);
+
   gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
 
   //out << printattr("description", node.getDescription());
