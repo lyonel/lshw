@@ -348,7 +348,7 @@ static bool analyse_dosextpart(source & s,
       hwNode partition("logicalvolume", hw::disk);
       source spart = extendedpart;
 
-      spart.offset = s.offset + pte[0].start;
+      spart.offset = extendedpart.offset + pte[0].start;
       spart.size = pte[0].size;
  
       partition.setPhysId(lastlogicalpart);
