@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=LSHW
+Comment=HardWare LiSter
+Categories=Application;System;X-Red-Hat-Base;X-Fedora;
+Icon=/usr/share/lshw/artwork/logo.svg
+Exec=/usr/bin/gtk-lshw
+Type=Application
+Terminal=false
+Encoding=UTF-8
+X-Desktop-File-Install-Version=0.10
