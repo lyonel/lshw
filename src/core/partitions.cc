@@ -168,7 +168,7 @@ static struct systypes dos_sys_types[] = {
 	{0x86, "NTFS volume set", "", "multi", "md"},
 	{0x87, "NTFS volume set", "", "multi", "md"},
 	{0x88, "Linux plaintext", "", "", ""},
-	{0x8e, "Linux LVM", "lvm", "multi", "md"},
+	{0x8e, "Linux LVM Physical Volume", "lvm", "multi", "md"},
 	{0x93, "Amoeba", "", "", ""},
 	{0x94, "Amoeba BBT", "", "", ""},	/* (bad block table) */
 	{0x9f, "BSD/OS", "bsdos", "", ""},		/* BSDI */
