@@ -42,7 +42,7 @@ create_lshw (void)
   GtkWidget *menuitem7_menu;
   GtkWidget *about1;
   GtkWidget *toolbar1;
-  gint tmp_toolbar_icon_size;
+  GtkIconSize tmp_toolbar_icon_size;
   GtkWidget *upbutton;
   GtkWidget *refreshbutton;
   GtkWidget *quitbutton;
@@ -104,7 +104,7 @@ create_lshw (void)
   gtk_widget_show (refresh1);
   gtk_container_add (GTK_CONTAINER (menuitem6_menu), refresh1);
   gtk_widget_add_accelerator (refresh1, "activate", accel_group,
-                              GDK_F5, 0,
+                              GDK_F5, (GdkModifierType) 0,
                               GTK_ACCEL_VISIBLE);
 
   menuitem7 = gtk_menu_item_new_with_mnemonic ("_Help");
@@ -228,8 +228,7 @@ create_lshw (void)
   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (description), FALSE);
   gtk_text_view_set_left_margin (GTK_TEXT_VIEW (description), 10);
   gtk_text_view_set_right_margin (GTK_TEXT_VIEW (description), 10);
-  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (description)),
-	"no information available.\n\nclick on Refresh to query hardware", -1);
+  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (description)), "no information available.\n\nclick on Refresh to query hardware", -1);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
@@ -342,7 +341,7 @@ create_aboutlshw (void)
   dialog_vbox1 = GTK_DIALOG (aboutlshw)->vbox;
   gtk_widget_show (dialog_vbox1);
 
-  aboutext = gtk_label_new ("<big><b>GTK+ front-end for <tt>lshw</tt></b></big>\n\n(c) 2004, 2005, Lyonel Vincent\n<tt>lyonel@ezix.org</tt>\n\n<span foreground=\"blue\"><u>http://www.ezix.org/</u></span>");
+  aboutext = gtk_label_new ("<big><b>GTK+ front-end for <tt>lshw</tt></b></big>\n\n\302\251 2004, 2005, 2006 Lyonel Vincent\n<tt>lyonel@ezix.org</tt>\n\n<span foreground=\"blue\"><u>http://www.ezix.org/</u></span>");
   gtk_widget_show (aboutext);
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), aboutext, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (aboutext), TRUE);
