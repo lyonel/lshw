@@ -7,6 +7,7 @@ PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share
+INSTALL=install
 export DESTDIR
 export PREFIX
 export SBINDIR
@@ -16,8 +17,8 @@ export DATADIR
 CXX=c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
-CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
-LDFLAGS=-L./core/ -Os -s
+CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES)
+LDFLAGS=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
@@ -71,21 +72,18 @@ manuf.txt:
 	wget http://www.ethereal.com/distribution/manuf.txt
 
 install: all
-	-mkdir -p $(DESTDIR)
-	-mkdir -p $(DESTDIR)/$(SBINDIR)
-	cp $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
-	strip $(DESTDIR)/$(SBINDIR)/$(PACKAGENAME)
-	-mkdir -p $(DESTDIR)/$(MANDIR)/man1
-	cp $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
-	-mkdir -p $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
-	cp $(DATAFILES) $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
+	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
+	$(INSTALL) -m 0755 -s $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
+	$(INSTALL) -d -m 0755 $(DESTDIR)/$(MANDIR)/man1
+	$(INSTALL) -m 0644 $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
+	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
+	$(INSTALL) -m 0644 $(DATAFILES) $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
 
 install-gui: gui
-	-mkdir -p $(DESTDIR)
-	-mkdir -p $(DESTDIR)/$(SBINDIR)
-	cp gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
-	-mkdir -p $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
-	cp gui/artwork/*.svg $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
+	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
+	$(INSTALL) -m 0755 -s gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
+	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
+	$(INSTALL) -m 0644 gui/artwork/*.svg $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
 	
 clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
