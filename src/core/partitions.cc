@@ -39,10 +39,12 @@ struct maptypes
 static bool detect_dosmap(source & s, hwNode & n);
 static bool detect_macmap(source & s, hwNode & n);
 static bool detect_lif(source & s, hwNode & n);
+static bool detect_gpt(source & s, hwNode & n);
 
 static struct maptypes map_types[] = {
 	{"mac", "Apple Macintosh partition map", detect_macmap},
 	{"bsd", "BSD disklabel", NULL},
+	{"gpt", "GUID partition table", detect_gpt},
 	{"dos", "MS-DOS partition table", detect_dosmap},
 	{"lif", "HP-UX LIF", detect_lif},
 	{"solaris-x86", "Solaris disklabel", NULL},
@@ -90,6 +92,33 @@ static struct fstypes fs_types[] = {
 	{"hfsplus", "MacOS HFS+", "secure,journaled"},
 	{ NULL, NULL, NULL }
 };
+
+typedef struct {
+        uint32_t time_low;
+        uint16_t time_mid;
+        uint16_t time_hi_and_version;
+        uint8_t  clock_seq_hi_and_reserved;
+        uint8_t  clock_seq_low;
+        uint8_t  node[6];
+} __attribute__ ((packed)) efi_guid_t;
+
+typedef struct _gpth {
+        uint64_t Signature;
+        uint32_t Revision;
+        uint32_t HeaderSize;
+        uint32_t HeaderCRC32;
+        uint32_t Reserved1;
+        uint64_t MyLBA;
+        uint64_t AlternateLBA;
+        uint64_t FirstUsableLBA;
+        uint64_t LastUsableLBA;
+        efi_guid_t DiskGUID;
+        uint64_t PartitionEntryLBA;
+        uint32_t NumberOfPartitionEntries;
+        uint32_t SizeOfPartitionEntry;
+        uint32_t PartitionEntryArrayCRC32;
+        uint8_t Reserved2[512 - 92];
+} __attribute__ ((packed)) gpth;
 
 struct dospartition
 {
@@ -432,6 +461,80 @@ static bool analyse_dospart(source & s,
   return true;
 }
 
+#define UNUSED_ENTRY_GUID    \
+    ((efi_guid_t) { 0x00000000, 0x0000, 0x0000, 0x00, 0x00, \
+                    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }})
+#define PARTITION_SYSTEM_GUID \
+    ((efi_guid_t) {  (0xC12A7328),  (0xF81F), \
+                     (0x11d2), 0xBA, 0x4B, \
+                    { 0x00, 0xA0, 0xC9, 0x3E, 0xC9, 0x3B }})
+#define LEGACY_MBR_PARTITION_GUID \
+    ((efi_guid_t) {  (0x024DEE41),  (0x33E7), \
+                     (0x11d3, 0x9D, 0x69, \
+                    { 0x00, 0x08, 0xC7, 0x81, 0xF3, 0x9F }})
+#define PARTITION_MSFT_RESERVED_GUID \
+    ((efi_guid_t) {  (0xE3C9E316),  (0x0B5C), \
+                     (0x4DB8), 0x81, 0x7D, \
+                    { 0xF9, 0x2D, 0xF0, 0x02, 0x15, 0xAE }})
+#define PARTITION_BASIC_DATA_GUID \
+    ((efi_guid_t) {  (0xEBD0A0A2),  (0xB9E5), \
+                     (0x4433), 0x87, 0xC0, \
+                    { 0x68, 0xB6, 0xB7, 0x26, 0x99, 0xC7 }})
+#define PARTITION_RAID_GUID \
+    ((efi_guid_t) {  (0xa19d880f),  (0x05fc), \
+                     (0x4d3b), 0xa0, 0x06, \
+                    { 0x74, 0x3f, 0x0f, 0x84, 0x91, 0x1e }})
+#define PARTITION_SWAP_GUID \
+    ((efi_guid_t) {  (0x0657fd6d),  (0xa4ab), \
+                     (0x43c4), 0x84, 0xe5, \
+                    { 0x09, 0x33, 0xc8, 0x4b, 0x4f, 0x4f }})
+#define PARTITION_LVM_GUID \
+    ((efi_guid_t) {  (0xe6d6d379),  (0xf507), \
+                     (0x44c2), 0xa2, 0x3c, \
+                    { 0x23, 0x8f, 0x2a, 0x3d, 0xf9, 0x28 }})
+#define PARTITION_RESERVED_GUID \
+    ((efi_guid_t) {  (0x8da63339),  (0x0007), \
+                     (0x60c0), 0xc4, 0x36, \
+                    { 0x08, 0x3a, 0xc8, 0x23, 0x09, 0x08 }})
+#define PARTITION_HPSERVICE_GUID \
+    ((efi_guid_t) {  (0xe2a1e728),  (0x32e3), \
+                     (0x11d6), 0xa6, 0x82, \
+                    { 0x7b, 0x03, 0xa0, 0x00, 0x00, 0x00 }})
+
+/* returns the EFI-style CRC32 value for buf
+ *      This function uses the crc32 function by Gary S. Brown,
+ * but seeds the function with ~0, and xor's with ~0 at the end.
+ */
+static inline uint32_t
+efi_crc32(const void *buf, unsigned long len)
+{
+        return (__efi_crc32(buf, len, ~0L) ^ ~0L);
+}
+
+
+static bool detect_gpt(source & s, hwNode & n)
+{
+  static unsigned char buffer[BLOCKSIZE];
+  int i = 0;
+  unsigned char flags;
+  unsigned char type;
+  unsigned long long start, size;
+
+  if(s.offset!=0)
+    return false;	// partition tables must be at the beginning of the disk
+
+  if(readlogicalblocks(s, buffer, 0, 1)!=1)	// read the first sector
+    return false;
+
+  if(le_short(buffer+510)!=0xaa55)		// wrong magic number
+    return false;
+
+  if(readlogicalblocks(s, buffer, 1, 1)!=1)	// read the second sector
+    return false;				// (partition table header)
+
+  return false;
+  return true;
+}
 static bool detect_dosmap(source & s, hwNode & n)
 {
   static unsigned char buffer[BLOCKSIZE];
