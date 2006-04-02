@@ -102,7 +102,7 @@ typedef struct {
         uint8_t  node[6];
 } __attribute__ ((packed)) efi_guid_t;
 
-typedef struct _gpth {
+typedef struct {
         uint64_t Signature;
         uint32_t Revision;
         uint32_t HeaderSize;
@@ -119,6 +119,14 @@ typedef struct _gpth {
         uint32_t PartitionEntryArrayCRC32;
         uint8_t Reserved2[512 - 92];
 } __attribute__ ((packed)) gpth;
+
+#define GPT_PMBR_LBA 0
+#define GPT_PMBR_SECTORS 1
+#define GPT_PRIMARY_HEADER_LBA 1
+#define GPT_HEADER_SECTORS 1
+#define GPT_PRIMARY_PART_TABLE_LBA 2
+
+#define GPT_HEADER_SIGNATURE 0x5452415020494645LL
 
 struct dospartition
 {
@@ -500,6 +508,11 @@ static bool analyse_dospart(source & s,
     ((efi_guid_t) {  (0xe2a1e728),  (0x32e3), \
                      (0x11d6), 0xa6, 0x82, \
                     { 0x7b, 0x03, 0xa0, 0x00, 0x00, 0x00 }})
+#define PARTITION_APPLE_HFS_GUID \
+    ((efi_guid_t) {  (0x48465300),  (0x0000), \
+                     (0x11aa), 0xaa, 0x11, \
+                    { 0x00, 0x30, 0x65, 0x43, 0xec, 0xac }})
+
 
 /* returns the EFI-style CRC32 value for buf
  * Dec 5, 2000 Matt Domsch <Matt_Domsch@dell.com>
@@ -639,6 +652,7 @@ efi_crc32(const void *buf, unsigned long len)
 static bool detect_gpt(source & s, hwNode & n)
 {
   static unsigned char buffer[BLOCKSIZE];
+  static gpth gpt_header;
   int i = 0;
   unsigned char flags;
   unsigned char type;
@@ -647,14 +661,20 @@ static bool detect_gpt(source & s, hwNode & n)
   if(s.offset!=0)
     return false;	// partition tables must be at the beginning of the disk
 
-  if(readlogicalblocks(s, buffer, 0, 1)!=1)	// read the first sector
+  if(readlogicalblocks(s, buffer, GPT_PMBR_LBA, 1)!=1)	// read the first sector
     return false;
 
   if(le_short(buffer+510)!=0xaa55)		// wrong magic number
     return false;
 
-  if(readlogicalblocks(s, buffer, 1, 1)!=1)	// read the second sector
+  if(readlogicalblocks(s, &gpt_header, GPT_PRIMARY_HEADER_LBA, 1)!=1)	// read the second sector
     return false;				// (partition table header)
+
+  if(le_longlong(&gpt_header.Signature) != GPT_HEADER_SIGNATURE)
+    return false;
+
+  if(efi_crc32(&gpt_header, sizeof(gpt_header) - sizeof (uint8_t*)) != le_long(&gpt_header.HeaderCRC32))
+    return false;		// check CRC32
 
   return false;
   return true;
