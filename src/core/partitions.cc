@@ -126,7 +126,8 @@ typedef struct {
 #define GPT_HEADER_SECTORS 1
 #define GPT_PRIMARY_PART_TABLE_LBA 2
 
-#define GPT_HEADER_SIGNATURE 0x5452415020494645LL
+#define EFI_PMBR_OSTYPE_EFI 0xee
+#define GPT_HEADER_SIGNATURE 0x5452415020494645LL	/* "EFI PART" */
 
 struct dospartition
 {
@@ -667,14 +668,42 @@ static bool detect_gpt(source & s, hwNode & n)
   if(le_short(buffer+510)!=0xaa55)		// wrong magic number
     return false;
 
-  if(readlogicalblocks(s, &gpt_header, GPT_PRIMARY_HEADER_LBA, 1)!=1)	// read the second sector
+  for(i=0; i<4; i++)
+  {
+    type = buffer[446 + i*16 + 4];
+
+    if((type != 0) && (type != EFI_PMBR_OSTYPE_EFI))
+      return false;	// the EFI pseudo-partition must be the only partition
+  }
+
+  if(readlogicalblocks(s, buffer, GPT_PRIMARY_HEADER_LBA, 1)!=1)	// read the second sector
     return false;				// (partition table header)
 
-  if(le_longlong(&gpt_header.Signature) != GPT_HEADER_SIGNATURE)
+  gpt_header.Signature = le_longlong(buffer);
+  gpt_header.Revision = be_long(buffer + 0x8); // big endian so that 1.0 -> 0x100
+  gpt_header.HeaderSize = le_long(buffer + 0xc);
+  gpt_header.HeaderCRC32 = le_long(buffer + 0x10);
+  gpt_header.MyLBA = le_longlong(buffer + 0x18);
+  gpt_header.AlternateLBA = le_longlong(buffer + 0x20);
+  gpt_header.FirstUsableLBA = le_longlong(buffer + 0x28);
+  gpt_header.LastUsableLBA = le_longlong(buffer + 0x30);
+  memcpy(&gpt_header.DiskGUID, buffer + 0x38, sizeof(gpt_header.DiskGUID));
+  gpt_header.PartitionEntryLBA = le_longlong(buffer + 0x48);
+  gpt_header.NumberOfPartitionEntries = le_long(buffer + 0x50);
+  gpt_header.SizeOfPartitionEntry = le_long(buffer + 0x54);
+  gpt_header.PartitionEntryArrayCRC32 = le_long(buffer + 0x58);
+
+  fprintf(stderr, "\n GPTH revision=%lx signature=%llx CRC32=%x partitions=%d parition size=%d\n", gpt_header.Revision, gpt_header.Signature, gpt_header.HeaderCRC32, gpt_header.NumberOfPartitionEntries, gpt_header.SizeOfPartitionEntry);
+
+  if(gpt_header.Signature != GPT_HEADER_SIGNATURE)
     return false;
 
-  if(efi_crc32(&gpt_header, sizeof(gpt_header) - sizeof (uint8_t*)) != le_long(&gpt_header.HeaderCRC32))
+  fprintf(stderr, "CRC32 = %lx\n", efi_crc32(buffer, 512));
+
+  if(efi_crc32(buffer, gpt_header.HeaderSize) != gpt_header.HeaderCRC32)
     return false;		// check CRC32
+
+  fprintf(stderr, "GPT detected.\n");
 
   return false;
   return true;
