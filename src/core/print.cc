@@ -12,11 +12,46 @@
 #include "version.h"
 #include "osutils.h"
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/ioctl.h>
+#include <termios.h>
 
 static char *id = "@(#) $Id$";
+
+static unsigned int columns = 0, rows = 0;
+
+static void init_wsize()
+{
+  struct winsize ws;
+  char *env;
+ 
+  if (!ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws))
+  {
+    rows = ws.ws_row;
+    columns = ws.ws_col;
+  }
+ 
+  if (!rows)
+  {
+    env = getenv("LINES");
+    if (env)
+      rows = atoi(env);
+    if (!rows)
+      rows = 24;
+  }
+
+  if (!columns)
+  {
+    env = getenv("COLUMNS");
+    if (env)
+    columns = atoi(env);
+    if (!columns)
+    columns = 80;
+  }
+}
 
 static void tab(int level,
 		bool connect = true)
@@ -556,12 +591,23 @@ static void printbusinfo(hwNode & node,
   }
 }
 
+static void printline(ostringstream & out)
+{
+  string s = out.str();
+
+  if(isatty(STDOUT_FILENO) && (s.length()>columns))
+    s.erase(columns);
+  cout << s << endl;
+  out.str("");
+}
+
 static void printincolumns( vector < hwpath > &l, const char *cols[])
 {
   unsigned int l1 = strlen(cols[0]),
     l2 = strlen(cols[1]),
     l3 = strlen(cols[2]);
   unsigned int i = 0;
+  ostringstream out;
 
   for (i = 0; i < l.size(); i++)
   {
@@ -573,28 +619,29 @@ static void printincolumns( vector < hwpath > &l, const char *cols[])
       l3 = l[i].classname.length();
   }
 
-  cout << cols[0];
-  cout << spaces(2 + l1 - strlen(cols[0]));
-  cout << cols[1];
-  cout << spaces(2 + l2 - strlen(cols[1]));
-  cout << cols[2];
-  cout << spaces(2 + l3 - strlen(cols[2]));
-  cout << cols[3];
-  cout << endl;
+  out << cols[0];
+  out << spaces(2 + l1 - strlen(cols[0]));
+  out << cols[1];
+  out << spaces(2 + l2 - strlen(cols[1]));
+  out << cols[2];
+  out << spaces(2 + l3 - strlen(cols[2]));
+  out << cols[3];
+  printline(out);
 
-  cout << spaces(l1 + l2 + l3 + strlen(cols[3]) + 6, "=");
-  cout << endl;
+  out << spaces(l1 + l2 + l3 + strlen(cols[3]) + 6, "=");
+  printline(out);
 
   for (i = 0; i < l.size(); i++)
     if (visible(l[i].classname.c_str()))
     {
-      cout << l[i].path;
-      cout << spaces(2 + l1 - l[i].path.length());
-      cout << l[i].devname;
-      cout << spaces(2 + l2 - l[i].devname.length());
-      cout << l[i].classname;
-      cout << spaces(2 + l3 - l[i].classname.length());
-      cout << l[i].description << endl;
+      out << l[i].path;
+      out << spaces(2 + l1 - l[i].path.length());
+      out << l[i].devname;
+      out << spaces(2 + l2 - l[i].devname.length());
+      out << l[i].classname;
+      out << spaces(2 + l3 - l[i].classname.length());
+      out << l[i].description;
+      printline(out);
     }
 }
 
@@ -608,6 +655,7 @@ void printhwpath(hwNode & node)
 {
   vector < hwpath > l;
   printhwnode(node, l);
+  init_wsize();
   printincolumns(l, hwpathcols);
 }
 
@@ -621,5 +669,6 @@ void printbusinfo(hwNode & node)
 {
   vector < hwpath > l;
   printbusinfo(node, l);
+  init_wsize();
   printincolumns(l, businfocols);
 }
