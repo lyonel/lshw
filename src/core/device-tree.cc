@@ -352,10 +352,9 @@ static void scan_devtree_memory(hwNode & core)
 	  bank.setSlot(slotnames[i]);
 	  //bank.setPhysId(base);
 	  if (i < dimmtypes.size())
-	    bank.setProduct(dimmtypes[i]);
+	    bank.setDescription(dimmtypes[i]);
 	  if (i < dimmspeeds.size())
-	    bank.
-	      setProduct(hw::strip(bank.getProduct() + " " + dimmspeeds[i]));
+	    bank.setProduct(hw::strip(dimmspeeds[i]));
 	  bank.setSize(size);
 	  memory->addChild(bank);
 	}
