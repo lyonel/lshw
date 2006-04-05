@@ -67,7 +67,7 @@ static void tab(int level,
     cout << "  ";
 }
 
-static void decimalkilos(unsigned long long value)
+static void decimalkilos(ostream & out, unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
   unsigned int i = 0;
@@ -78,12 +78,12 @@ static void decimalkilos(unsigned long long value)
     i++;
   }
 
-  cout << value;
+  out << value;
   if ((i > 0) && (i <= strlen(prefixes)))
-    cout << prefixes[i - 1];
+    out << prefixes[i - 1];
 }
 
-static void kilobytes(unsigned long long value)
+static void kilobytes(ostream & out, unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
   unsigned int i = 0;
@@ -94,10 +94,10 @@ static void kilobytes(unsigned long long value)
     i++;
   }
 
-  cout << value;
+  out << value;
   if ((i > 0) && (i <= strlen(prefixes)))
-    cout << prefixes[i - 1];
-  cout << "B";
+    out << prefixes[i - 1];
+  out << "B";
 }
 
 void print(hwNode & node,
@@ -320,7 +320,7 @@ void print(hwNode & node,
       case hw::address:
       case hw::storage:
       case hw::disk:
-	kilobytes(node.getSize());
+	kilobytes(cout, node.getSize());
 	if (html)
 	  cout << "</td></tr>";
 	break;
@@ -328,14 +328,14 @@ void print(hwNode & node,
       case hw::processor:
       case hw::bus:
       case hw::system:
-	decimalkilos(node.getSize());
+	decimalkilos(cout, node.getSize());
 	cout << "Hz";
 	if (html)
 	  cout << "</td></tr>";
 	break;
 
       case hw::network:
-	decimalkilos(node.getSize());
+	decimalkilos(cout, node.getSize());
 	cout << "B/s";
 	if (html)
 	  cout << "</td></tr>";
@@ -370,7 +370,7 @@ void print(hwNode & node,
       case hw::address:
       case hw::storage:
       case hw::disk:
-	kilobytes(node.getCapacity());
+	kilobytes(cout, node.getCapacity());
 	if (html)
 	  cout << "</td></tr>";
 	break;
@@ -378,14 +378,14 @@ void print(hwNode & node,
       case hw::processor:
       case hw::bus:
       case hw::system:
-	decimalkilos(node.getCapacity());
+	decimalkilos(cout, node.getCapacity());
 	cout << "Hz";
 	if (html)
 	  cout << "</td></tr>";
 	break;
 
       case hw::network:
-	decimalkilos(node.getCapacity());
+	decimalkilos(cout, node.getCapacity());
 	cout << "B/s";
 	if (html)
 	  cout << "</td></tr>";
@@ -443,7 +443,7 @@ void print(hwNode & node,
       cout << "clock: ";
       if (html)
 	cout << "</td><td>";
-      decimalkilos(node.getClock());
+      decimalkilos(cout, node.getClock());
       cout << "Hz";
       if (node.getClass() == hw::memory)
 	cout << " (" << 1.0e9 / node.getClock() << "ns)";
@@ -557,9 +557,16 @@ static void printhwnode(hwNode & node,
   entry.path = "";
   if (node.getPhysId() != "")
     entry.path = prefix + "/" + node.getPhysId();
-  entry.description = node.getProduct();
+  if(node.getClass() != hw::memory)
+    entry.description = node.getProduct(); // memory devices tend to have obscure product names
   if (entry.description == "")
     entry.description = node.getDescription();
+  if(node.getSize() && ((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage)))
+  {
+    ostringstream size;
+    kilobytes(size, node.getSize());
+    entry.description = size.str() + " " + entry.description;
+  }
   entry.devname = node.getLogicalName();
   entry.classname = node.getClassName();
 
