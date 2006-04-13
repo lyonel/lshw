@@ -25,6 +25,7 @@ std::string get_devid(const std::string &);
 
 std::string uppercase(const std::string &);
 std::string lowercase(const std::string &);
+std::string tostring(unsigned long long);
 
 std::string spaces(unsigned int count, const std::string & space = " ");
 

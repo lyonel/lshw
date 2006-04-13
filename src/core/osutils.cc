@@ -306,6 +306,15 @@ string lowercase(const string & s)
   return result;
 }
 
+string tostring(unsigned long long n)
+{
+  char buffer[80];
+
+  snprintf(buffer, sizeof(buffer), "%lld", n);
+
+  return string(buffer);
+}
+
 string join(const string & j, const string & s1, const string & s2)
 {
   if(s1 == "") return s2;
