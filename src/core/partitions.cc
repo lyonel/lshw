@@ -93,31 +93,23 @@ static struct fstypes fs_types[] = {
 	{ NULL, NULL, NULL }
 };
 
-typedef struct {
-        uint32_t time_low;
-        uint16_t time_mid;
-        uint16_t time_hi_and_version;
-        uint8_t  clock_seq_hi_and_reserved;
-        uint8_t  clock_seq_low;
-        uint8_t  node[6];
-} __attribute__ ((packed)) efi_guid_t;
+typedef uint8_t efi_guid_t[16];
 
 typedef struct {
-        uint64_t Signature;
-        uint32_t Revision;
-        uint32_t HeaderSize;
-        uint32_t HeaderCRC32;
-        uint32_t Reserved1;
-        uint64_t MyLBA;
-        uint64_t AlternateLBA;
-        uint64_t FirstUsableLBA;
-        uint64_t LastUsableLBA;
-        efi_guid_t DiskGUID;
-        uint64_t PartitionEntryLBA;
-        uint32_t NumberOfPartitionEntries;
-        uint32_t SizeOfPartitionEntry;
-        uint32_t PartitionEntryArrayCRC32;
-        uint8_t Reserved2[512 - 92];
+        uint64_t Signature;			/* offset: 0 */
+        uint32_t Revision;			/* 8 */
+        uint32_t HeaderSize;			/* 12 */
+        uint32_t HeaderCRC32;			/* 16 */
+        uint32_t Reserved1;			/* 20 */
+        uint64_t MyLBA;				/* 24 */
+        uint64_t AlternateLBA;			/* 32 */
+        uint64_t FirstUsableLBA;		/* 40 */
+        uint64_t LastUsableLBA;			/* 48 */
+        efi_guid_t DiskGUID;			/* 56 */
+        uint64_t PartitionEntryLBA;		/* 72 */
+        uint32_t NumberOfPartitionEntries;	/* 80 */
+        uint32_t SizeOfPartitionEntry;		/* 84 */
+        uint32_t PartitionEntryArrayCRC32;	/* 88 */
 } __attribute__ ((packed)) gpth;
 
 #define GPT_PMBR_LBA 0
@@ -652,12 +644,13 @@ efi_crc32(const void *buf, unsigned long len)
 
 static bool detect_gpt(source & s, hwNode & n)
 {
-  static unsigned char buffer[BLOCKSIZE];
+  static uint8_t buffer[BLOCKSIZE];
   static gpth gpt_header;
   int i = 0;
   unsigned char flags;
   unsigned char type;
   unsigned long long start, size;
+  char gpt_version[8];
 
   if(s.offset!=0)
     return false;	// partition tables must be at the beginning of the disk
@@ -693,19 +686,18 @@ static bool detect_gpt(source & s, hwNode & n)
   gpt_header.SizeOfPartitionEntry = le_long(buffer + 0x54);
   gpt_header.PartitionEntryArrayCRC32 = le_long(buffer + 0x58);
 
-  fprintf(stderr, "\n GPTH revision=%lx signature=%llx CRC32=%x partitions=%d parition size=%d\n", gpt_header.Revision, gpt_header.Signature, gpt_header.HeaderCRC32, gpt_header.NumberOfPartitionEntries, gpt_header.SizeOfPartitionEntry);
-
+  memset(buffer + 0x10, 0, sizeof(gpt_header.HeaderCRC32)); // zero-out the CRC32 before re-calculating it
   if(gpt_header.Signature != GPT_HEADER_SIGNATURE)
     return false;
 
-  fprintf(stderr, "CRC32 = %lx\n", efi_crc32(buffer, 512));
-
-  if(efi_crc32(buffer, gpt_header.HeaderSize) != gpt_header.HeaderCRC32)
+  if(efi_crc32(buffer, 92) != gpt_header.HeaderCRC32)
     return false;		// check CRC32
 
-  fprintf(stderr, "GPT detected.\n");
+  snprintf(gpt_version, sizeof(gpt_version), "%d.%02d", (gpt_header.Revision >> 8), (gpt_header.Revision & 0xff));
+  
+  n.addCapability(string("gpt-")+string(gpt_version));
+  n.setConfig("partitions", tostring(gpt_header.NumberOfPartitionEntries));
 
-  return false;
   return true;
 }
 static bool detect_dosmap(source & s, hwNode & n)
