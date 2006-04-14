@@ -834,6 +834,15 @@ void hwNode::setConfig(const string & key,
     This->config.erase(This->config.find(key));
 }
 
+void hwNode::setConfig(const string & key,
+		       unsigned long long value)
+{
+  if (!This)
+    return;
+
+  This->config[key] = tostring(value);
+}
+
 string hwNode::getConfig(const string & key) const
 {
   if (!This)
