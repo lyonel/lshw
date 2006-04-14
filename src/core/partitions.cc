@@ -93,7 +93,14 @@ static struct fstypes fs_types[] = {
 	{ NULL, NULL, NULL }
 };
 
-typedef uint8_t efi_guid_t[16];
+typedef struct {
+        uint32_t time_low;
+        uint16_t time_mid;
+        uint16_t time_hi_and_version;
+        uint8_t  clock_seq_hi_and_reserved;
+        uint8_t  clock_seq_low;
+        uint8_t  node[6];
+} __attribute__ ((packed)) efi_guid_t;
 
 typedef struct {
         uint64_t Signature;			/* offset: 0 */
@@ -641,6 +648,29 @@ efi_crc32(const void *buf, unsigned long len)
         return (__efi_crc32(buf, len, ~0L) ^ ~0L);
 }
 
+static efi_guid_t read_efi_guid(uint8_t *buffer)
+{
+  efi_guid_t result;
+
+  memset(&result, 0, sizeof(result));
+
+  result.time_low = be_long(buffer);
+  result.time_mid = be_short(buffer+4);
+  result.time_hi_and_version = be_short(buffer+4+2);
+  result.clock_seq_hi_and_reserved = *(buffer+4+2+2);
+  result.clock_seq_low = *(buffer +4+2+2+1);
+  memcpy(result.node, buffer + 4+2+2+1+1, sizeof(result.node));
+
+  return result;
+}
+
+static string tostring(const efi_guid_t & guid)
+{
+  char buffer[50];
+
+  snprintf(buffer, sizeof(buffer), "%08lx-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x", guid.time_low, guid.time_mid,guid.time_hi_and_version,guid.clock_seq_hi_and_reserved,guid.clock_seq_low,guid.node[0],guid.node[1],guid.node[2],guid.node[3],guid.node[4],guid.node[5]);
+  return string(buffer);
+}
 
 static bool detect_gpt(source & s, hwNode & n)
 {
@@ -680,11 +710,12 @@ static bool detect_gpt(source & s, hwNode & n)
   gpt_header.AlternateLBA = le_longlong(buffer + 0x20);
   gpt_header.FirstUsableLBA = le_longlong(buffer + 0x28);
   gpt_header.LastUsableLBA = le_longlong(buffer + 0x30);
-  memcpy(&gpt_header.DiskGUID, buffer + 0x38, sizeof(gpt_header.DiskGUID));
+  gpt_header.DiskGUID = read_efi_guid(buffer + 0x38);
   gpt_header.PartitionEntryLBA = le_longlong(buffer + 0x48);
   gpt_header.NumberOfPartitionEntries = le_long(buffer + 0x50);
   gpt_header.SizeOfPartitionEntry = le_long(buffer + 0x54);
   gpt_header.PartitionEntryArrayCRC32 = le_long(buffer + 0x58);
+
 
   memset(buffer + 0x10, 0, sizeof(gpt_header.HeaderCRC32)); // zero-out the CRC32 before re-calculating it
   if(gpt_header.Signature != GPT_HEADER_SIGNATURE)
@@ -696,7 +727,8 @@ static bool detect_gpt(source & s, hwNode & n)
   snprintf(gpt_version, sizeof(gpt_version), "%d.%02d", (gpt_header.Revision >> 8), (gpt_header.Revision & 0xff));
   
   n.addCapability(string("gpt-")+string(gpt_version));
-  n.setConfig("partitions", tostring(gpt_header.NumberOfPartitionEntries));
+  n.setConfig("partitions", gpt_header.NumberOfPartitionEntries);
+  n.setConfig("guid", tostring(gpt_header.DiskGUID));
 
   return true;
 }
