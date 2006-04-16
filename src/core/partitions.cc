@@ -525,6 +525,11 @@ static bool analyse_dospart(source & s,
                      (0x11aa), 0xaa, 0x11, \
                     { 0x00, 0x30, 0x65, 0x43, 0xec, 0xac }})
 
+#define PARTITION_PRECIOUS 1
+#define PARTITION_READONLY (1LL << 60)
+#define PARTITION_HIDDEN   (1LL << 62)
+#define PARTITION_NOMOUNT  (1LL << 63)
+
 
 /* returns the EFI-style CRC32 value for buf
  * Dec 5, 2000 Matt Domsch <Matt_Domsch@dell.com>
@@ -749,8 +754,9 @@ static bool detect_gpt(source & s, hwNode & n)
   snprintf(gpt_version, sizeof(gpt_version), "%d.%02d", (gpt_header.Revision >> 8), (gpt_header.Revision & 0xff));
   
   n.addCapability(string("gpt-")+string(gpt_version));
-  n.setConfig("partitions", gpt_header.NumberOfPartitionEntries);
+  n.addHint("partitions", gpt_header.NumberOfPartitionEntries);
   n.setConfig("guid", tostring(gpt_header.DiskGUID));
+  n.addHint("guid", tostring(gpt_header.DiskGUID));
 
   partitions = (uint8_t*)malloc(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + BLOCKSIZE);
   if(!partitions)
@@ -767,6 +773,7 @@ static bool detect_gpt(source & s, hwNode & n)
     p.PartitionGUID = read_efi_guid(partitions + gpt_header.SizeOfPartitionEntry * i + 0x10);
     p.StartingLBA = le_longlong(partitions + gpt_header.SizeOfPartitionEntry * i + 0x20);
     p.EndingLBA = le_longlong(partitions + gpt_header.SizeOfPartitionEntry * i + 0x28);
+    p.Attributes = le_longlong(partitions + gpt_header.SizeOfPartitionEntry * i + 0x30);
     for(int j=0; j<36; j++)
     {
       wchar_t c = le_short(partitions + gpt_header.SizeOfPartitionEntry * i + 0x38 + 2*j);
@@ -782,9 +789,18 @@ static bool detect_gpt(source & s, hwNode & n)
       partition.setDescription("EFI partition");
       partition.setPhysId(i+1);
       partition.setCapacity(BLOCKSIZE * (p.EndingLBA - p.StartingLBA));
-      partition.setConfig("type", tostring(p.PartitionTypeGUID));
+      partition.addHint("type", tostring(p.PartitionGUID));
+      partition.addHint("guid", tostring(p.PartitionGUID));
       partition.setConfig("guid", tostring(p.PartitionGUID));
       partition.setConfig("name", p.PartitionName);
+      if(p.Attributes && PARTITION_PRECIOUS)
+        partition.addCapability("precious", "This partition is required for the platform to function");
+      if(p.Attributes && PARTITION_READONLY)
+        partition.addCapability("readonly", "Read-only partition");
+      if(p.Attributes && PARTITION_HIDDEN)
+        partition.addCapability("hidden", "Hidden partition");
+      if(p.Attributes && PARTITION_NOMOUNT)
+        partition.addCapability("nomount", "No automatic mount");
 
       spart.blocksize = s.blocksize;
       spart.offset = s.offset + p.StartingLBA*spart.blocksize;
