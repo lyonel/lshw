@@ -767,6 +767,14 @@ static bool detect_gpt(source & s, hwNode & n)
     p.PartitionGUID = read_efi_guid(partitions + gpt_header.SizeOfPartitionEntry * i + 0x10);
     p.StartingLBA = le_longlong(partitions + gpt_header.SizeOfPartitionEntry * i + 0x20);
     p.EndingLBA = le_longlong(partitions + gpt_header.SizeOfPartitionEntry * i + 0x28);
+    for(int j=0; j<36; j++)
+    {
+      wchar_t c = le_short(partitions + gpt_header.SizeOfPartitionEntry * i + 0x38 + 2*j);
+      if(!c)
+        break;
+      else
+        p.PartitionName += utf8(c);
+    }
 
     if(!(p.PartitionTypeGUID == UNUSED_ENTRY_GUID))
     {
