@@ -93,16 +93,18 @@ static struct fstypes fs_types[] = {
 	{ NULL, NULL, NULL }
 };
 
-typedef struct {
+struct efi_guid_t
+{
         uint32_t time_low;
         uint16_t time_mid;
         uint16_t time_hi_and_version;
         uint8_t  clock_seq_hi_and_reserved;
         uint8_t  clock_seq_low;
         uint8_t  node[6];
-} __attribute__ ((packed)) efi_guid_t;
+};
 
-typedef struct {
+struct gpth
+{
         uint64_t Signature;			/* offset: 0 */
         uint32_t Revision;			/* 8 */
         uint32_t HeaderSize;			/* 12 */
@@ -117,7 +119,17 @@ typedef struct {
         uint32_t NumberOfPartitionEntries;	/* 80 */
         uint32_t SizeOfPartitionEntry;		/* 84 */
         uint32_t PartitionEntryArrayCRC32;	/* 88 */
-} __attribute__ ((packed)) gpth;
+};
+
+struct efipartition
+{
+	efi_guid_t PartitionTypeGUID;
+	efi_guid_t PartitionGUID;
+	uint64_t StartingLBA;
+	uint64_t EndingLBA;
+	uint64_t Attributes;
+	string PartitionName;
+};
 
 #define GPT_PMBR_LBA 0
 #define GPT_PMBR_SECTORS 1
@@ -470,7 +482,7 @@ static bool analyse_dospart(source & s,
 }
 
 #define UNUSED_ENTRY_GUID    \
-    ((efi_guid_t) { 0x00000000, 0x0000, 0x0000, 0x00, 0x00, \
+    ((efi_guid_t) { 0x00000000, 0x0000, 0x0000, 0x00, 00, \
                     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }})
 #define PARTITION_SYSTEM_GUID \
     ((efi_guid_t) {  (0xC12A7328),  (0xF81F), \
@@ -658,10 +670,20 @@ static efi_guid_t read_efi_guid(uint8_t *buffer)
   result.time_mid = be_short(buffer+4);
   result.time_hi_and_version = be_short(buffer+4+2);
   result.clock_seq_hi_and_reserved = *(buffer+4+2+2);
-  result.clock_seq_low = *(buffer +4+2+2+1);
-  memcpy(result.node, buffer + 4+2+2+1+1, sizeof(result.node));
+  result.clock_seq_low = *(buffer+4+2+2+1);
+  memcpy(result.node, buffer+4+2+2+1+1, sizeof(result.node));
 
   return result;
+}
+
+bool operator ==(const efi_guid_t & guid1, const efi_guid_t & guid2)
+{
+  return (guid1.time_low == guid2.time_low) &&
+	(guid1.time_mid == guid2.time_mid) && 
+	(guid1.time_hi_and_version == guid2.time_hi_and_version) && 
+	(guid1.clock_seq_hi_and_reserved == guid2.clock_seq_hi_and_reserved) &&
+	(guid1.clock_seq_low == guid2.clock_seq_low) &&
+	(memcmp(guid1.node, guid2.node, sizeof(guid1.node))==0);
 }
 
 static string tostring(const efi_guid_t & guid)
@@ -676,11 +698,11 @@ static bool detect_gpt(source & s, hwNode & n)
 {
   static uint8_t buffer[BLOCKSIZE];
   static gpth gpt_header;
-  int i = 0;
-  unsigned char flags;
-  unsigned char type;
-  unsigned long long start, size;
+  uint32_t i = 0;
+  unsigned long long start, end;
   char gpt_version[8];
+  uint8_t *partitions = NULL;
+  uint8_t type;
 
   if(s.offset!=0)
     return false;	// partition tables must be at the beginning of the disk
@@ -729,6 +751,42 @@ static bool detect_gpt(source & s, hwNode & n)
   n.addCapability(string("gpt-")+string(gpt_version));
   n.setConfig("partitions", gpt_header.NumberOfPartitionEntries);
   n.setConfig("guid", tostring(gpt_header.DiskGUID));
+
+  partitions = (uint8_t*)malloc(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + BLOCKSIZE);
+  if(!partitions)
+    return false;
+  if(readlogicalblocks(s, partitions, gpt_header.PartitionEntryLBA, (gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry)/BLOCKSIZE + 1)!=(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry)/BLOCKSIZE + 1)	// read the partition table
+    return false;
+
+  for(i=0; i<gpt_header.NumberOfPartitionEntries; i++)
+  {
+    hwNode partition("volume", hw::disk);
+    efipartition p;
+
+    p.PartitionTypeGUID = read_efi_guid(partitions + gpt_header.SizeOfPartitionEntry * i);
+    p.PartitionGUID = read_efi_guid(partitions + gpt_header.SizeOfPartitionEntry * i + 0x10);
+    p.StartingLBA = le_longlong(partitions + gpt_header.SizeOfPartitionEntry * i + 0x20);
+    p.EndingLBA = le_longlong(partitions + gpt_header.SizeOfPartitionEntry * i + 0x28);
+
+    if(!(p.PartitionTypeGUID == UNUSED_ENTRY_GUID))
+    {
+      source spart = s;
+      partition.setDescription("EFI partition");
+      partition.setPhysId(i+1);
+      partition.setCapacity(BLOCKSIZE * (p.EndingLBA - p.StartingLBA));
+      partition.setConfig("type", tostring(p.PartitionTypeGUID));
+      partition.setConfig("guid", tostring(p.PartitionGUID));
+      partition.setConfig("name", p.PartitionName);
+
+      spart.blocksize = s.blocksize;
+      spart.offset = s.offset + p.StartingLBA*spart.blocksize;
+      spart.size = (p.EndingLBA - p.StartingLBA)*spart.blocksize;
+      guess_logicalname(spart, n, i+1, partition);
+      n.addChild(partition);
+    }
+  }
+  
+  free(partitions);
 
   return true;
 }

@@ -482,3 +482,32 @@ int open_dev(dev_t dev, const string & name)
   return -1;
 }				/* open_dev */
 
+#define putchar(c) ((char)(c & 0xff))
+
+string utf8(wchar_t c)
+{
+  string result = "";
+
+  if (c < 0x80) {
+    result += putchar (c);
+  }
+  else if (c < 0x800) {
+    result += putchar (0xC0 | c>>6);
+    result += putchar (0x80 | c & 0x3F);
+  }
+  else if (c < 0x10000) {
+    result += putchar (0xE0 | c>>12);
+    result += putchar (0x80 | c>>6 & 0x3F);
+    result += putchar (0x80 | c & 0x3F);
+  }
+  else if (c < 0x200000) {
+    result += putchar (0xF0 | c>>18);
+    result += putchar (0x80 | c>>12 & 0x3F);
+    result += putchar (0x80 | c>>6 & 0x3F);
+    result += putchar (0x80 | c & 0x3F);
+  }
+
+  return result;
+}
+
+
