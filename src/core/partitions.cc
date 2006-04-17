@@ -711,7 +711,7 @@ static string tostring(const efi_guid_t & guid)
 {
   char buffer[50];
 
-  snprintf(buffer, sizeof(buffer), "%08lx-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x", guid.time_low, guid.time_mid,guid.time_hi_and_version,guid.clock_seq_hi_and_reserved,guid.clock_seq_low,guid.node[0],guid.node[1],guid.node[2],guid.node[3],guid.node[4],guid.node[5]);
+  snprintf(buffer, sizeof(buffer), "%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x", guid.time_low, guid.time_mid,guid.time_hi_and_version,guid.clock_seq_hi_and_reserved,guid.clock_seq_low,guid.node[0],guid.node[1],guid.node[2],guid.node[3],guid.node[4],guid.node[5]);
   return string(buffer);
 }
 
@@ -720,7 +720,6 @@ static bool detect_gpt(source & s, hwNode & n)
   static uint8_t buffer[BLOCKSIZE];
   static gpth gpt_header;
   uint32_t i = 0;
-  unsigned long long start, end;
   char gpt_version[8];
   uint8_t *partitions = NULL;
   uint8_t type;
@@ -903,7 +902,7 @@ static bool detect_gpt(source & s, hwNode & n)
       if(p.Attributes && PARTITION_READONLY)
         partition.addCapability("readonly", "Read-only partition");
       if(p.Attributes && PARTITION_HIDDEN)
-        partition.addCapability("hidden", "Hidden partition");
+        partition.addCapability("hidden");
       if(p.Attributes && PARTITION_NOMOUNT)
         partition.addCapability("nomount", "No automatic mount");
 
