@@ -249,7 +249,7 @@ static struct systypes dos_sys_types[] = {
 					   partition < 1024 cyl. */
 	{0xeb, "BeOS fs", "", "", ""},
 	{0xee, "EFI GPT", "", "nofs", ""},		/* Intel EFI GUID Partition Table */
-	{0xef, "EFI (FAT-12/16/32)", "", "", ""},/* Intel EFI System Partition */
+	{0xef, "EFI (FAT-12/16/32)", "", "boot", ""},/* Intel EFI System Partition */
 	{0xf0, "Linux/PA-RISC boot", "", "boot", ""},/* Linux/PA-RISC boot loader */
 	{0xf1, "SpeedStor", "", "", ""},
 	{0xf4, "SpeedStor", "", "", ""},	/* SpeedStor large partition */
@@ -490,12 +490,20 @@ static bool analyse_dospart(source & s,
                     { 0x00, 0xA0, 0xC9, 0x3E, 0xC9, 0x3B }})
 #define LEGACY_MBR_PARTITION_GUID \
     ((efi_guid_t) {  (0x024DEE41),  (0x33E7), \
-                     (0x11d3, 0x9D, 0x69, \
+                     (0x11d3), 0x9D, 0x69, \
                     { 0x00, 0x08, 0xC7, 0x81, 0xF3, 0x9F }})
 #define PARTITION_MSFT_RESERVED_GUID \
-    ((efi_guid_t) {  (0xE3C9E316),  (0x0B5C), \
-                     (0x4DB8), 0x81, 0x7D, \
-                    { 0xF9, 0x2D, 0xF0, 0x02, 0x15, 0xAE }})
+    ((efi_guid_t) {  (0xe3c9e316),  (0x0b5c), \
+                     (0x4db8), 0x81, 0x7d, \
+                    { 0xf9, 0x2d, 0xf0, 0x02, 0x15, 0xae }})
+#define PARTITION_LDM_DATA_GUID \
+    ((efi_guid_t) {  (0xAF9B60A0),  (0x1431), \
+                     (0x4f62), 0xbc, 0x68, \
+                    { 0x33, 0x11, 0x71, 0x4a, 0x69, 0xad }})
+#define PARTITION_LDM_METADATA_GUID \
+    ((efi_guid_t) {  (0x5808C8AA),  (0x7E8F), \
+                     (0x42E0), 0x85, 0xd2, \
+                    { 0xe1, 0xe9, 0x04, 0x34, 0xcf, 0xb3 }})
 #define PARTITION_BASIC_DATA_GUID \
     ((efi_guid_t) {  (0xEBD0A0A2),  (0xB9E5), \
                      (0x4433), 0x87, 0xC0, \
@@ -516,6 +524,10 @@ static bool analyse_dospart(source & s,
     ((efi_guid_t) {  (0x8da63339),  (0x0007), \
                      (0x60c0), 0xc4, 0x36, \
                     { 0x08, 0x3a, 0xc8, 0x23, 0x09, 0x08 }})
+#define PARTITION_HPUX_DATA_GUID \
+    ((efi_guid_t) {  (0x75894c1e),  (0x3aeb), \
+                     (0x11d3), 0xb7, 0xc1, \
+                    { 0x7b, 0x03, 0xa0, 0x00, 0x00, 0x00 }})
 #define PARTITION_HPSERVICE_GUID \
     ((efi_guid_t) {  (0xe2a1e728),  (0x32e3), \
                      (0x11d6), 0xa6, 0x82, \
@@ -524,6 +536,10 @@ static bool analyse_dospart(source & s,
     ((efi_guid_t) {  (0x48465300),  (0x0000), \
                      (0x11aa), 0xaa, 0x11, \
                     { 0x00, 0x30, 0x65, 0x43, 0xec, 0xac }})
+#define PARTITION_FREEBSD_GUID \
+    ((efi_guid_t) {  (0x516E7CB4),  (0x6ECF), \
+                     (0x11d6), 0x8f, 0xf8, \
+                    { 0x00, 0x02, 0x2d, 0x09, 0x71, 0x2b }})
 
 #define PARTITION_PRECIOUS 1
 #define PARTITION_READONLY (1LL << 60)
@@ -671,9 +687,9 @@ static efi_guid_t read_efi_guid(uint8_t *buffer)
 
   memset(&result, 0, sizeof(result));
 
-  result.time_low = be_long(buffer);
-  result.time_mid = be_short(buffer+4);
-  result.time_hi_and_version = be_short(buffer+4+2);
+  result.time_low = le_long(buffer);
+  result.time_mid = le_short(buffer+4);
+  result.time_hi_and_version = le_short(buffer+4+2);
   result.clock_seq_hi_and_reserved = *(buffer+4+2+2);
   result.clock_seq_low = *(buffer+4+2+2+1);
   memcpy(result.node, buffer+4+2+2+1+1, sizeof(result.node));
@@ -756,13 +772,16 @@ static bool detect_gpt(source & s, hwNode & n)
   n.addCapability(string("gpt-")+string(gpt_version));
   n.addHint("partitions", gpt_header.NumberOfPartitionEntries);
   n.setConfig("guid", tostring(gpt_header.DiskGUID));
+  n.setHandle("GUID:" + tostring(gpt_header.DiskGUID));
   n.addHint("guid", tostring(gpt_header.DiskGUID));
 
   partitions = (uint8_t*)malloc(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + BLOCKSIZE);
   if(!partitions)
     return false;
-  if(readlogicalblocks(s, partitions, gpt_header.PartitionEntryLBA, (gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry)/BLOCKSIZE + 1)!=(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry)/BLOCKSIZE + 1)	// read the partition table
-    return false;
+  memset(partitions, 0, gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + BLOCKSIZE);
+  readlogicalblocks(s, partitions,
+	gpt_header.PartitionEntryLBA,
+	(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry)/BLOCKSIZE + 1);
 
   for(i=0; i<gpt_header.NumberOfPartitionEntries; i++)
   {
@@ -786,12 +805,98 @@ static bool detect_gpt(source & s, hwNode & n)
     if(!(p.PartitionTypeGUID == UNUSED_ENTRY_GUID))
     {
       source spart = s;
-      partition.setDescription("EFI partition");
+      if(p.PartitionTypeGUID == LEGACY_MBR_PARTITION_GUID)
+      {
+        partition.setDescription("MBR partition scheme");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_BASIC_DATA_GUID)
+        partition.setDescription("Data partition");
+      else
+      if(p.PartitionTypeGUID == PARTITION_SWAP_GUID)
+      {
+        partition.setDescription("Linux Swap partition");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_RAID_GUID)
+      {
+        partition.setDescription("Linux RAID partition");
+        partition.addCapability("multi");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_LVM_GUID)
+      {
+        partition.setDescription("Linux LVM physical volume");
+        partition.addCapability("multi");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_LDM_METADATA_GUID)
+      {
+        partition.setDescription("Windows LDM configuration");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_LDM_DATA_GUID)
+      {
+        partition.setDescription("Windows LDM data partition");
+        partition.addCapability("multi");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_MSFT_RESERVED_GUID)
+      {
+        partition.setDescription("Windows reserved partition");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == LEGACY_MBR_PARTITION_GUID)
+      {
+        partition.setDescription("MBR partition scheme");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_SYSTEM_GUID)
+      {
+        partition.setDescription("System partition");
+        partition.addCapability("boot");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_HPUX_DATA_GUID)
+      {
+        partition.setDescription("HP-UX data partition");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_HPSERVICE_GUID)
+      {
+        partition.setDescription("HP-UX service partition");
+        partition.addCapability("nofs");
+        partition.addCapability("boot");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_RESERVED_GUID)
+      {
+        partition.setDescription("Reserved partition");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_APPLE_HFS_GUID)
+      {
+        partition.setDescription("Apple HFS partition");
+      }
+      else
+      if(p.PartitionTypeGUID == PARTITION_FREEBSD_GUID)
+      {
+        partition.setDescription("FreeBSD partition");
+      }
+      else
+          partition.setDescription("EFI partition");
       partition.setPhysId(i+1);
       partition.setCapacity(BLOCKSIZE * (p.EndingLBA - p.StartingLBA));
-      partition.addHint("type", tostring(p.PartitionGUID));
+      partition.addHint("type", tostring(p.PartitionTypeGUID));
       partition.addHint("guid", tostring(p.PartitionGUID));
       partition.setConfig("guid", tostring(p.PartitionGUID));
+      partition.setHandle("GUID:" + tostring(p.PartitionGUID));
       partition.setConfig("name", p.PartitionName);
       if(p.Attributes && PARTITION_PRECIOUS)
         partition.addCapability("precious", "This partition is required for the platform to function");
@@ -801,6 +906,11 @@ static bool detect_gpt(source & s, hwNode & n)
         partition.addCapability("hidden", "Hidden partition");
       if(p.Attributes && PARTITION_NOMOUNT)
         partition.addCapability("nomount", "No automatic mount");
+
+      partition.describeCapability("nofs", "No filesystem");
+      partition.describeCapability("boot", "Contains boot code");
+      partition.describeCapability("multi", "Multi-volumes");
+      partition.describeCapability("hidden", "Hidden partition");
 
       spart.blocksize = s.blocksize;
       spart.offset = s.offset + p.StartingLBA*spart.blocksize;
