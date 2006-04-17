@@ -768,7 +768,7 @@ static bool detect_gpt(source & s, hwNode & n)
 
   snprintf(gpt_version, sizeof(gpt_version), "%d.%02d", (gpt_header.Revision >> 8), (gpt_header.Revision & 0xff));
   
-  n.addCapability(string("gpt-")+string(gpt_version));
+  n.addCapability("gpt-"+string(gpt_version), "GUID Partition Table version "+string(gpt_version));
   n.addHint("partitions", gpt_header.NumberOfPartitionEntries);
   n.setConfig("guid", tostring(gpt_header.DiskGUID));
   n.setHandle("GUID:" + tostring(gpt_header.DiskGUID));
