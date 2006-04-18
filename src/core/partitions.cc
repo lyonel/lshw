@@ -930,6 +930,7 @@ static bool detect_dosmap(source & s, hwNode & n)
   unsigned char flags;
   unsigned char type;
   unsigned long long start, size;
+  bool partitioned = false;
 
   if(s.offset!=0)
     return false;	// partition tables must be at the beginning of the disk
@@ -968,10 +969,11 @@ static bool detect_dosmap(source & s, hwNode & n)
     {
       guess_logicalname(spart, n, i+1, partition);
       n.addChild(partition);
+      partitioned = true;
     }
   }
 
-  return true;
+  return partitioned;
 }
 
 static bool detect_macmap(source & s, hwNode & n)
