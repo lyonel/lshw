@@ -678,6 +678,7 @@ static bool scan_sg(int sg,
   switch (m_id.scsi_type)
   {
   case 0:
+  case 14:
     device = hwNode("disk", hw::disk);
     break;
   case 1:
@@ -715,7 +716,7 @@ static bool scan_sg(int sg,
   do_inquiry(fd, device);
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
     scan_cdrom(device);
-  if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7))
+  if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7) || (m_id.scsi_type == 14))
     scan_disk(device);
 
   memset(slot_name, 0, sizeof(slot_name));
