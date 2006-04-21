@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Sun 2006-02-19 02:05:03
+#	Daily snapshot on Fri 2006-04-21 01:05:03
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -9813,6 +9813,7 @@
 	1053  PRO/100 VM Network Connection
 	1059  82551QM Ethernet Controller
 	105e  82571EB Gigabit Ethernet Controller
+		1775 6003  Telum GE-QT
 	105f  82571EB Gigabit Ethernet Controller
 	1060  82571EB Gigabit Ethernet Controller
 	1064  82562ET/EZ/GT/GZ - PRO/100 VE (LOM) Ethernet Controller
@@ -9874,9 +9875,13 @@
 	108a  82546EB Gigabit Ethernet Controller
 	108b  82573V Gigabit Ethernet Controller (Copper)
 	108c  82573E Gigabit Ethernet Controller (Copper)
-	1096  Enterprise Southbridge DPT LAN Copper
+# Intel(R) Active Management Technology - KCS
+	108e  82573E KCS
+	108f  Intel(R) Active Management Technology - SOL
+	1092  Intel(R) PRO/100 VE Network Connection
+	1096  PRO/1000 EB Network Connection with I/O Acceleration
 	1097  Enterprise Southbridge DPT LAN fiber
-	1098  Enterprise Southbridge DPT LAN SERDES
+	1098  PRO/1000 EB Backplane Connection with I/O Acceleration
 	1099  82546GB Quad Port Server Adapter
 	109a  82573L Gigabit Ethernet Controller
 	109b  82546GB PRO/1000 GF Quad Port Server Adapter
@@ -10279,7 +10284,6 @@
 		1014 051a  ThinkPad A/T/X Series
 		101f 1025  Acer 620 Series
 		104d 80e7  VAIO PCG-GR214EP/GR214MP/GR215MP/GR314MP/GR315MP
-		1179 0001  Toshiba Satellite 1110 Z15 internal Modem
 		134d 4c21  Dell Inspiron 2100 internal modem
 		144d 2115  vpr Matrix 170B4 internal modem
 		14f1 5421  MD56ORD V.92 MDC Modem
@@ -10354,6 +10358,7 @@
 		1462 5800  845PE Max (MS-6580)
 		1734 1055  Amilo M1420
 	24c6  82801DB/DBL/DBM (ICH4/ICH4-L/ICH4-M) AC'97 Modem Controller
+		003c 1025  Acer Aspire 2001WLCi (Compal CL50 motherboard) implementation
 		1025 005a  TravelMate 290
 		1028 0196  Inspiron 5160
 		103c 088c  nc8000 laptop
@@ -10433,6 +10438,7 @@
 		8086 524c  D865PERL mainboard
 	24d3  82801EB/ER (ICH5/ICH5R) SMBus Controller
 		1014 02ed  xSeries server mainboard
+		1028 0156  Precision 360
 		1028 0169  Precision 470
 		1043 80a6  P4P800 Mainboard
 		1458 24d2  GA-8IPE1000 Pro2 motherboard (865PE)
@@ -10440,6 +10446,7 @@
 		15d9 4580  P4SCE Mainboard
 		1734 101c  Primergy RX300 S2
 		8086 3427  S875WP1-E mainboard
+		8086 4246  Desktop Board D865GBF
 		8086 524c  D865PERL mainboard
 	24d4  82801EB/ER (ICH5/ICH5R) USB UHCI Controller #2
 		1014 02ed  xSeries server mainboard
@@ -10459,7 +10466,6 @@
 	24d5  82801EB/ER (ICH5/ICH5R) AC'97 Audio Controller
 		1028 0169  Precision 470
 		103c 006a  nx9500
-		103c 12bc  Analog Devices codec [SoundMAX Integrated Digital Audio]
 		1043 80f3  P4P800 Mainboard
 		1043 810f  P5P800-MX Mainboard
 		1458 a002  GA-8IPE1000/8KNXP motherboard
@@ -10578,6 +10584,7 @@
 	2572  82865G Integrated Graphics Controller
 		1028 019d  Dimension 3000
 		1043 80a5  P5P800-MX Mainboard
+		8086 4246  Desktop Board D865GBF
 	2573  82865G/PE/P PCI to CSA Bridge
 	2576  82865G/PE/P Processor to I/O Memory Interface
 	2578  82875P/E7210 Memory Controller Hub
@@ -10603,6 +10610,7 @@
 	2589  E7220/E7221 PCI Express Root Port
 	258a  E7221 Integrated Graphics Controller
 	2590  Mobile 915GM/PM/GMS/910GML Express Processor to DRAM Controller
+		1028 0182  Dell Latidude C610
 		103c 099c  nx6110/nc6120
 		a304 81b7  Vaio VGN-S3XP
 	2591  Mobile 915GM/PM Express PCI Express Root Port
@@ -10884,7 +10892,7 @@
 	283f  PCI Express Port 1
 	2841  PCI Express Port 2
 	2843  PCI Express Port 3
-	2844  PCI Express Port 4
+	2845  PCI Express Port 4
 	2847  PCI Express Port 5
 	2849  PCI Express Port 6
 	284b  HD Audio Controller
@@ -10901,10 +10909,18 @@
 	2991  PCI Express Root Port
 	2992  Integrated Graphics Controller
 	2993  Integrated Graphics Controller
+	2994  HECI Controller
+	2995  HECI Controller
+	2996  PT IDER Controller
+	2997  KT Controller
 	29a0  Memory Controller Hub
 	29a1  PCI Express Root Port
 	29a2  Integrated Graphics Controller
 	29a3  Integrated Graphics Controller
+	29a4  HECI Controller
+	29a5  HECI Controller
+	29a6  PT IDER Controller
+	29a7  KT Controller
 	3092  Integrated RAID
 	3200  GD31244 PCI-X SATA HBA
 	3340  82855PM Processor to I/O Controller
@@ -10980,9 +10996,15 @@
 	359b  E7525/E7520/E7320 Extended Configuration Registers
 	359e  E7525 Memory Controller Hub
 		1028 0169  Precision 470
-	4220  PRO/Wireless 2200BG
-	4223  PRO/Wireless 2915ABG MiniPCI Adapter
-	4224  PRO/Wireless 2915ABG MiniPCI Adapter
+	4220  PRO/Wireless 2200BG Network Connection
+	4222  PRO/Wireless 3945ABG Network Connection
+		8086 1005  PRO/Wireless 3945BG Network Connection
+		8086 1034  PRO/Wireless 3945BG Network Connection
+		8086 1044  PRO/Wireless 3945BG Network Connection
+	4223  PRO/Wireless 2915ABG Network Connection
+	4224  PRO/Wireless 2915ABG Network Connection
+	4227  PRO/Wireless 3945ABG Network Connection
+		8086 1014  PRO/Wireless 3945BG Network Connection
 	5200  EtherExpress PRO/100 Intelligent Server
 	5201  EtherExpress PRO/100 Intelligent Server
 		8086 0001  EtherExpress PRO/100 Server Ethernet Adapter
