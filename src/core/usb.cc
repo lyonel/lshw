@@ -246,7 +246,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
       device.setDescription("Video");
       break;
     case USB_CLASS_WIRELESS:
-      device.setClass(hw::network);
+      device.setClass(hw::communication);
       device.setDescription("Wireless interface");
       if((sub==USB_SC_WIRELESSRADIO) && (prot==USB_PROT_BLUETOOTH))
       {
