@@ -23,6 +23,9 @@ static char *id = "@(#) $Id$";
 #define PCI_PRIMARY_BUS         0x18	/* Primary bus number */
 #define PCI_SECONDARY_BUS       0x19	/* Secondary bus number */
 #define PCI_STATUS              0x06	/* 16 bits */
+#define PCI_LATENCY_TIMER	0x0d    /* 8 bits */
+#define PCI_SEC_LATENCY_TIMER	0x1b    /* Latency timer for secondary interface */
+#define PCI_CB_LATENCY_TIMER	0x1b    /* CardBus latency timer */
 #define PCI_STATUS_66MHZ       0x20	/* Support 66 Mhz PCI 2.1 bus */
 #define PCI_STATUS_CAP_LIST    0x10	/* Support Capability List */
 #define PCI_COMMAND_IO         0x1	/* Enable response in I/O space */
@@ -691,6 +694,7 @@ bool scan_pci(hwNode & n)
       u_int16_t dclass = get_conf_word(d, PCI_CLASS_DEVICE);
       u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
       u_int16_t status = get_conf_word(d, PCI_STATUS);
+      u_int8_t latency = get_conf_byte(d, PCI_LATENCY_TIMER);
       u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
       u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
       u_int8_t htype = get_conf_byte(d, PCI_HEADER_TYPE) & 0x7f;
@@ -709,10 +713,12 @@ bool scan_pci(hwNode & n)
           break;
         case PCI_HEADER_TYPE_BRIDGE:
           subsys_v = subsys_d = 0;
+          latency = get_conf_byte(d, PCI_SEC_LATENCY_TIMER);
           break;
         case PCI_HEADER_TYPE_CARDBUS:
           subsys_v = get_conf_word(d, PCI_CB_SUBSYSTEM_VENDOR_ID);
           subsys_d = get_conf_word(d, PCI_CB_SUBSYSTEM_ID);
+          latency = get_conf_byte(d, PCI_CB_LATENCY_TIMER);
           break;
       }
 
@@ -729,6 +735,8 @@ bool scan_pci(hwNode & n)
         addHints(host, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
 	host.claim();
 	host.setBusInfo(businfo);
+        if(latency)
+          host.setConfig("latency", latency);
 	if (d.size[0] > 0)
 	  host.setPhysId(d.base_addr[0] & PCI_ADDR_MEM_MASK);
 
@@ -847,6 +855,8 @@ bool scan_pci(hwNode & n)
 
 	    snprintf(irq, sizeof(irq), "%d", d.irq);
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
+            if(latency)
+              device->setConfig("latency", latency);
 	    if (d.irq != 0)
 	    {
 	      //device->setConfig("irq", irq);
