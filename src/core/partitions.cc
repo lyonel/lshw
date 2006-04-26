@@ -895,7 +895,7 @@ static bool detect_gpt(source & s, hwNode & n)
       partition.setCapacity(BLOCKSIZE * (p.EndingLBA - p.StartingLBA));
       partition.addHint("type", tostring(p.PartitionTypeGUID));
       partition.addHint("guid", tostring(p.PartitionGUID));
-      partition.setConfig("guid", tostring(p.PartitionGUID));
+      partition.setSerial(tostring(p.PartitionGUID));
       partition.setHandle("GUID:" + tostring(p.PartitionGUID));
       partition.setConfig("name", p.PartitionName);
       if(p.Attributes && PARTITION_PRECIOUS)
