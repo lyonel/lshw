@@ -446,7 +446,7 @@ void print(hwNode & node,
       decimalkilos(cout, node.getClock());
       cout << "Hz";
       if (node.getClass() == hw::memory)
-	cout << " (" << 1.0e9 / node.getClock() << "ns)";
+	cout << " (" << setiosflags(ios::fixed) << setprecision(1) << 1.0e9 / node.getClock() << "ns)";
       if (html)
 	cout << "</td></tr>";
       cout << endl;
