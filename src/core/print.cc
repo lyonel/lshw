@@ -124,6 +124,14 @@ void print(hwNode & node,
     cout << "<head>" << endl;
     cout << "<meta name=\"generator\" " <<
       " content=\"lshw-" << getpackageversion() << "\">" << endl;
+    cout << "<style type=\"text/css\">" << endl;
+    cout << ".first {font-weight: bold; margin-left: none; padding-right: 1em;}" << endl;
+    cout << ".second {padding-left: 1em }" << endl;
+    cout << ".id {font-family: monospace;}" << endl;
+    cout << ".indented {margin-left: 2em;}" << endl;
+    cout << ".node {border: solid 1px #ffcc66; padding: 1em; background: #ffffcc; }" << endl;
+    cout << "</style>" << endl;
+
     cout << "<title>";
     cout << node.getId();
     cout << "</title>" << endl;
@@ -136,10 +144,21 @@ void print(hwNode & node,
     tab(level, !html);
 
     if (html)
-      cout << "<b>";
+    {
+      tab(level, false);
+      cout << "<div class=\"indented\">" << endl;
+      tab(level, false);
+      cout << "<table class=\"node\"";
+      cout << " summary=\"attributes of " << node.getId() << "\">" << endl;
+    }
+
+    if (html)
+      cout << "<thead><tr><td class=\"first\">id:</td><td class=\"second\"><div class=\"id\">";
     if (html && (!node.claimed() || node.disabled()))
       cout << "<font color=\"gray\">";
     cout << node.getId();
+    if (html)
+      cout << "</div>";
     if (node.disabled())
       cout << " DISABLED";
     if (!node.claimed())
@@ -147,26 +166,18 @@ void print(hwNode & node,
     if (html && (!node.claimed() || node.disabled()))
       cout << "</font>";
     if (html)
-      cout << "</b><br>";
+      cout << "</td></tr></thead>";
     cout << endl;
 
-    if (html)
-    {
-      tab(level, false);
-      cout << "<div style=\"margin-left: 2em\">" << endl;
-      tab(level, false);
-      cout << "<table bgcolor=\"#e8e0e0\"";
-      cout << " summary=\"attributes of " << node.getId() << "\">" << endl;
-    }
 #if 0
     if (node.getHandle() != "")
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "handle: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getHandle();
       if (html)
 	cout << "</td></tr>";
@@ -174,14 +185,17 @@ void print(hwNode & node,
     }
 #endif
 
+    if (html)
+      cout << "<tbody>";
+
     if (node.getDescription() != "")
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "description: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getDescription();
       if (html)
 	cout << "</td></tr>";
@@ -192,10 +206,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "product: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getProduct();
       if (html)
 	cout << "</td></tr>";
@@ -206,10 +220,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "vendor: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getVendor();
       if (html)
 	cout << "</td></tr>";
@@ -220,13 +234,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "physical id: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\"><div class=\"id\">";
       cout << node.getPhysId();
       if (html)
-	cout << "</td></tr>";
+	cout << "</div></td></tr>";
       cout << endl;
     }
 
@@ -234,13 +248,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "bus info: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\"><div class=\"id\">";
       cout << node.getBusInfo();
       if (html)
-	cout << "</td></tr>";
+	cout << "</div></td></tr>";
       cout << endl;
     }
 
@@ -252,13 +266,13 @@ void print(hwNode & node,
       {
       	tab(level + 1, false);
       	if (html)
-		cout << "<tr><td>";
+		cout << "<tr><td class=\"first\">";
       	cout << "logical name: ";
       	if (html)
-		cout << "</td><td>";
+		cout << "</td><td class=\"second\"><div class=\"id\">";
       	cout << logicalnames[i];
       	if (html)
-		cout << "</td></tr>";
+		cout << "</div></td></tr>";
       	cout << endl;
       }
     }
@@ -267,10 +281,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "version: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getVersion();
       if (html)
 	cout << "</td></tr>";
@@ -281,10 +295,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "serial: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getSerial();
       if (html)
 	cout << "</td></tr>";
@@ -295,10 +309,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "slot: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getSlot();
       if (html)
 	cout << "</td></tr>";
@@ -309,10 +323,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "size: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       switch (node.getClass())
       {
       case hw::display:
@@ -360,10 +374,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "capacity: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       switch (node.getClass())
       {
       case hw::memory:
@@ -410,7 +424,7 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       if (node.getSize() == 0)
 	cout << "address: " << hex << setfill('0') << setw(8) << node.
 	  getStart() << dec;
@@ -425,10 +439,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "width: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getWidth() << " bits";
       if (html)
 	cout << "</td></tr>";
@@ -439,10 +453,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "clock: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       decimalkilos(cout, node.getClock());
       cout << "Hz";
       if (node.getClass() == hw::memory)
@@ -456,10 +470,10 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "capabilities: ";
       if (html)
-	cout << "</td><td>";
+	cout << "</td><td class=\"second\">";
       cout << node.getCapabilities();
       if (html)
 	cout << "</td></tr>";
@@ -470,15 +484,15 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "configuration:";
       if (html)
-	cout << "</td><td><table summary=\"configuration of " << node.
+	cout << "</td><td class=\"second\"><table summary=\"configuration of " << node.
 	  getId() << "\">";
       for (unsigned int i = 0; i < config.size(); i++)
       {
 	if (html)
-	  cout << "<tr><td>";
+	  cout << "<tr><td class=\"sub-first\">";
 	cout << " " << config[i];
 	if (html)
 	  cout << "</td></tr>";
@@ -492,15 +506,15 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td>";
+	cout << "<tr><td class=\"first\">";
       cout << "resources:";
       if (html)
-	cout << "</td><td><table summary=\"resources of " << node.
+	cout << "</td><td class=\"second\"><table summary=\"resources of " << node.
 	  getId() << "\">";
       for (unsigned int i = 0; i < resources.size(); i++)
       {
 	if (html)
-	  cout << "<tr><td>";
+	  cout << "<tr><td class=\"sub-first\">";
 	cout << " " << resources[i];
 	if (html)
 	  cout << "</td></tr>";
@@ -509,6 +523,9 @@ void print(hwNode & node,
 	cout << "</table></td></tr>";
       cout << endl;
     }
+
+    if (html)
+      cout << "</tbody>";
 
     if (html)
     {
