@@ -128,7 +128,7 @@ void print(hwNode & node,
     cout << ".first {font-weight: bold; margin-left: none; padding-right: 1em;}" << endl;
     cout << ".second {padding-left: 1em; width: 100%; }" << endl;
     cout << ".id {font-family: monospace;}" << endl;
-    cout << ".indented {margin-left: 2em;}" << endl;
+    cout << ".indented {margin-left: 2em; border-left: dotted 1px #dde; padding-bottom: 1em; }" << endl;
     cout << ".node {border: solid 1px #ffcc66; padding: 1em; background: #ffffcc; }" << endl;
     cout << ".node-unclaimed {border: dotted 1px #c3c3c3; padding: 1em; background: #fafafa; }" << endl;
     cout << ".node-disabled {border: solid 1px #f55; padding: 1em; background: #fee; }" << endl;
@@ -542,14 +542,18 @@ void print(hwNode & node,
     if (html)
     {
       tab(level, false);
-      cout << "</table><br>" << endl;
+      cout << "</table></div>" << endl;
     }
 
   }				// if visible
 
   for (unsigned int i = 0; i < node.countChildren(); i++)
   {
+    if(html)
+      cout << "<div class=\"indented\">" << endl;
     print(*node.getChild(i), html, visible(node.getClassName()) ? level + 1 : 1);
+    if(html)
+      cout << "</div>" << endl;
   }
 
   if (html)
@@ -557,7 +561,6 @@ void print(hwNode & node,
     if (visible(node.getClassName()))
     {
       tab(level, false);
-      cout << "</div>" << endl;
     }
     if (level == 0)
     {
