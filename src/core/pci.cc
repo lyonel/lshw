@@ -835,6 +835,11 @@ bool scan_pci(hwNode & n)
 	  if (deviceclass == hw::bridge || deviceclass == hw::storage)
 	    device->addCapability(devicename);
 
+          if(device->isCapable("isa") ||
+             device->isCapable("pci") ||
+             device->isCapable("agp"))
+            device->claim();
+
 	  scan_resources(*device, d);
 
 	  if (deviceclass == hw::display)
