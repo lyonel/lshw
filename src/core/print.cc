@@ -126,10 +126,12 @@ void print(hwNode & node,
       " content=\"lshw-" << getpackageversion() << "\">" << endl;
     cout << "<style type=\"text/css\">" << endl;
     cout << ".first {font-weight: bold; margin-left: none; padding-right: 1em;}" << endl;
-    cout << ".second {padding-left: 1em }" << endl;
+    cout << ".second {padding-left: 1em; width: 100%; }" << endl;
     cout << ".id {font-family: monospace;}" << endl;
     cout << ".indented {margin-left: 2em;}" << endl;
     cout << ".node {border: solid 1px #ffcc66; padding: 1em; background: #ffffcc; }" << endl;
+    cout << ".node-unclaimed {border: dotted 1px #c3c3c3; padding: 1em; background: #fafafa; }" << endl;
+    cout << ".node-disabled {border: solid 1px #f55; padding: 1em; background: #fee; }" << endl;
     cout << "</style>" << endl;
 
     cout << "<title>";
@@ -148,8 +150,15 @@ void print(hwNode & node,
       tab(level, false);
       cout << "<div class=\"indented\">" << endl;
       tab(level, false);
-      cout << "<table class=\"node\"";
-      cout << " summary=\"attributes of " << node.getId() << "\">" << endl;
+      cout << "<table width=\"100%\" class=\"node";
+      if(!node.claimed())
+        cout << "-unclaimed";
+      else
+      {
+        if(node.disabled())
+          cout << "-disabled";
+      }
+      cout << "\" summary=\"attributes of " << node.getId() << "\">" << endl;
     }
 
     if (html)
@@ -159,10 +168,13 @@ void print(hwNode & node,
     cout << node.getId();
     if (html)
       cout << "</div>";
-    if (node.disabled())
-      cout << " DISABLED";
-    if (!node.claimed())
-      cout << " UNCLAIMED";
+    else
+    {
+      if (node.disabled())
+        cout << " DISABLED";
+      if (!node.claimed())
+        cout << " UNCLAIMED";
+    }
     if (html && (!node.claimed() || node.disabled()))
       cout << "</font>";
     if (html)
@@ -186,7 +198,7 @@ void print(hwNode & node,
 #endif
 
     if (html)
-      cout << "<tbody>";
+      cout << " <tbody>" << endl;
 
     if (node.getDescription() != "")
     {
@@ -525,12 +537,12 @@ void print(hwNode & node,
     }
 
     if (html)
-      cout << "</tbody>";
+      cout << " </tbody>";
 
     if (html)
     {
       tab(level, false);
-      cout << "</table>" << endl;
+      cout << "</table><br>" << endl;
     }
 
   }				// if visible
