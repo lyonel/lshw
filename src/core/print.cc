@@ -125,13 +125,13 @@ void print(hwNode & node,
     cout << "<meta name=\"generator\" " <<
       " content=\"lshw-" << getpackageversion() << "\">" << endl;
     cout << "<style type=\"text/css\">" << endl;
-    cout << ".first {font-weight: bold; margin-left: none; padding-right: 1em;}" << endl;
-    cout << ".second {padding-left: 1em; width: 100%; }" << endl;
-    cout << ".id {font-family: monospace;}" << endl;
-    cout << ".indented {margin-left: 2em; border-left: dotted 1px #dde; padding-bottom: 1em; }" << endl;
-    cout << ".node {border: solid 1px #ffcc66; padding: 1em; background: #ffffcc; }" << endl;
-    cout << ".node-unclaimed {border: dotted 1px #c3c3c3; padding: 1em; background: #fafafa; }" << endl;
-    cout << ".node-disabled {border: solid 1px #f55; padding: 1em; background: #fee; }" << endl;
+    cout << "  .first {font-weight: bold; margin-left: none; padding-right: 1em;}" << endl;
+    cout << "  .second {padding-left: 1em; width: 100%; }" << endl;
+    cout << "  .id {font-family: monospace;}" << endl;
+    cout << "  .indented {margin-left: 2em; border-left: dotted 1px #dde; padding-bottom: 1em; }" << endl;
+    cout << "  .node {border: solid 1px #ffcc66; padding: 1em; background: #ffffcc; }" << endl;
+    cout << "  .node-unclaimed {border: dotted 1px #c3c3c3; padding: 1em; background: #fafafa; }" << endl;
+    cout << "  .node-disabled {border: solid 1px #f55; padding: 1em; background: #fee; }" << endl;
     cout << "</style>" << endl;
 
     cout << "<title>";
@@ -162,7 +162,7 @@ void print(hwNode & node,
     }
 
     if (html)
-      cout << "<thead><tr><td class=\"first\">id:</td><td class=\"second\"><div class=\"id\">";
+      cout << " <thead><tr><td class=\"first\">id:</td><td class=\"second\"><div class=\"id\">";
     if (html && (!node.claimed() || node.disabled()))
       cout << "<font color=\"gray\">";
     cout << node.getId();
