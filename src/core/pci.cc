@@ -865,8 +865,10 @@ bool scan_pci(hwNode & n)
 	    snprintf(irq, sizeof(irq), "%d", d.irq);
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
             device->setConfig("latency", latency);
-            device->setConfig("maxlatency", max_lat);
-            device->setConfig("mingnt", min_gnt);
+            if(max_lat)
+              device->setConfig("maxlatency", max_lat);
+            if(min_gnt)
+              device->setConfig("mingnt", min_gnt);
 	    if (d.irq != 0)
 	    {
 	      //device->setConfig("irq", irq);
