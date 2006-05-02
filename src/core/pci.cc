@@ -39,6 +39,9 @@ static char *id = "@(#) $Id$";
 #define PCI_COMMAND_SERR       0x100	/* Enable SERR */
 #define PCI_COMMAND_FAST_BACK  0x200	/* Enable back-to-back writes */
 
+#define PCI_MIN_GNT		0x3e    /* 8 bits */
+#define PCI_MAX_LAT		0x3f    /* 8 bits */
+
 /*
  * The PCI interface treats multi-function devices as independent
  * devices.  The slot/function address of each device is encoded
@@ -695,6 +698,8 @@ bool scan_pci(hwNode & n)
       u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
       u_int16_t status = get_conf_word(d, PCI_STATUS);
       u_int8_t latency = get_conf_byte(d, PCI_LATENCY_TIMER);
+      u_int8_t min_gnt = get_conf_byte(d, PCI_MIN_GNT);
+      u_int8_t max_lat = get_conf_byte(d, PCI_MAX_LAT);
       u_int8_t progif = get_conf_byte(d, PCI_CLASS_PROG);
       u_int8_t rev = get_conf_byte(d, PCI_REVISION_ID);
       u_int8_t htype = get_conf_byte(d, PCI_HEADER_TYPE) & 0x7f;
@@ -850,8 +855,7 @@ bool scan_pci(hwNode & n)
 
 	  if (dclass == PCI_CLASS_BRIDGE_PCI)
 	  {
-	    device->
-	      setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
+	    device->setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
 	    device->claim();
 	  }
 	  else
@@ -860,8 +864,9 @@ bool scan_pci(hwNode & n)
 
 	    snprintf(irq, sizeof(irq), "%d", d.irq);
 	    device->setHandle(pci_handle(d.bus, d.dev, d.func));
-            if(latency)
-              device->setConfig("latency", latency);
+            device->setConfig("latency", latency);
+            device->setConfig("maxlatency", max_lat);
+            device->setConfig("mingnt", min_gnt);
 	    if (d.irq != 0)
 	    {
 	      //device->setConfig("irq", irq);
