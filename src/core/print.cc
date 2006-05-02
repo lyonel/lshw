@@ -166,6 +166,8 @@ void print(hwNode & node,
     if (html && (!node.claimed() || node.disabled()))
       cout << "<font color=\"gray\">";
     cout << node.getId();
+    if (html && (!node.claimed() || node.disabled()))
+      cout << "</font>";
     if (html)
       cout << "</div>";
     else
@@ -175,8 +177,6 @@ void print(hwNode & node,
       if (!node.claimed())
         cout << " UNCLAIMED";
     }
-    if (html && (!node.claimed() || node.disabled()))
-      cout << "</font>";
     if (html)
       cout << "</td></tr></thead>";
     cout << endl;
