@@ -125,8 +125,8 @@ void print(hwNode & node,
     cout << "<meta name=\"generator\" " <<
       " content=\"lshw-" << getpackageversion() << "\">" << endl;
     cout << "<style type=\"text/css\">" << endl;
-    cout << "  .first {font-weight: bold; margin-left: none; padding-right: 1em;}" << endl;
-    cout << "  .second {padding-left: 1em; width: 100%; }" << endl;
+    cout << "  .first {font-weight: bold; margin-left: none; padding-right: 1em;vertical-align: top; }" << endl;
+    cout << "  .second {padding-left: 1em; width: 100%; vertical-align: top; }" << endl;
     cout << "  .id {font-family: monospace;}" << endl;
     cout << "  .indented {margin-left: 2em; border-left: dotted 1px #dde; padding-bottom: 1em; }" << endl;
     cout << "  .node {border: solid 1px #ffcc66; padding: 1em; background: #ffffcc; }" << endl;
