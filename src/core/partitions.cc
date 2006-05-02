@@ -8,6 +8,7 @@
 #define _FILE_OFFSET_BITS	64
 
 #include "partitions.h"
+#include "blockio.h"
 #include "osutils.h"
 #include <stdio.h>
 #include <sys/types.h>
@@ -18,17 +19,7 @@
 
 static char *id = "@(#) $Id$";
 
-#define BLOCKSIZE 512
 #define LIFBLOCKSIZE 256
-
-struct source
-{
-	string diskname;
-	int fd;
-	ssize_t blocksize;
-	long long offset;
-	long long size;
-};
 
 struct maptypes
 {
@@ -264,28 +255,6 @@ static struct systypes dos_sys_types[] = {
 };
 
 static unsigned int lastlogicalpart = 5;
-
-static ssize_t readlogicalblocks(source & s,
-			void * buffer,
-			long long pos, long long count)
-{
-  long long result = 0;
-
-  memset(buffer, 0, count*s.blocksize);
-
-  if((s.size>0) && ((pos+count)*s.blocksize>s.size)) return 0;	/* attempt to read past the end of the section */
-
-  result = lseek(s.fd, s.offset + pos*s.blocksize, SEEK_SET);
-
-  if(result == -1) return 0;
-
-  result = read(s.fd, buffer, count*s.blocksize);
-
-  if(result!=count*s.blocksize)
-    return 0;
-  else
-    return count;
-}
 
 static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, hwNode & partition)
 {
