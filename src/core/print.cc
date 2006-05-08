@@ -19,7 +19,7 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 static unsigned int columns = 0, rows = 0;
 
@@ -568,8 +568,6 @@ void print(hwNode & node,
       cout << "</html>" << endl;
     }
   }
-
-  (void) &id;			// avoid "id defined but not used" warning
 }
 
 struct hwpath

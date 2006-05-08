@@ -7,6 +7,8 @@
 #include "lvm.h"
 #include "osutils.h"
 
+static const char rcsid[] = "@(#) $Id: $";
+
 #define LABEL_ID "LABELONE"
 #define LABEL_SIZE BLOCKSIZE  /* Think very carefully before changing this */
 #define LABEL_SCAN_SECTORS 4L

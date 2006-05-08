@@ -41,7 +41,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 bool scan_system(hwNode & system)
 {
@@ -117,8 +117,6 @@ bool scan_system(hwNode & system)
   }
   else
     return false;
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return true;
 }

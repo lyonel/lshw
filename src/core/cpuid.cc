@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #if defined(__i386__) || defined(__alpha__)
 
@@ -630,8 +630,6 @@ bool scan_cpuid(hwNode & n)
 
     currentcpu++;
   }
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return true;
 }

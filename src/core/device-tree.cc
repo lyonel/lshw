@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include <dirent.h>
 
-static char *id =
+static const char rcsid[] =
   "@(#) $Id$";
 
 #define DIMMINFOSIZE 0x80
@@ -501,8 +501,6 @@ bool scan_device_tree(hwNode & n)
     scan_devtree_cpu(*core);
     core->addCapability(get_string(DEVICETREE "/compatible"));
   }
-
-  (void) &id;			// avoid warning "id declared but not used"
 
   return true;
 }

@@ -20,7 +20,7 @@
 #include <string>
 #include <map>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #define SG_X "/dev/sg%d"
 #define SG_MAJOR 21
@@ -869,8 +869,6 @@ bool scan_scsi(hwNode & n)
     i++;
 
   scan_hosts(n);
-
-  (void) &id;
 
   return false;
 }

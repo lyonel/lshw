@@ -63,7 +63,7 @@ static map<u_int32_t,string> usbproducts;
 
 #define PRODID(x, y) ((x << 16) + y)
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 static string usbhost(unsigned bus)
 {
@@ -474,8 +474,6 @@ bool scan_usb(hwNode & n)
     addUSBChild(n, device, bus, lev, prnt);
 
   if(usbdevices) fclose(usbdevices);
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return true;
 }

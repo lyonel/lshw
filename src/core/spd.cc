@@ -8,7 +8,7 @@
 #include <dirent.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 /* SPD is 2048-bit long */
 #define SPD_MAXSIZE (2048/8)
@@ -222,6 +222,4 @@ bool scan_spd(hwNode & n)
   }
 
   return false;
-
-  (void) &id;			// avoid warning "id defined but not used"
 }

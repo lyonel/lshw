@@ -7,7 +7,7 @@
 #include <unistd.h>
 //#include <linux/fs.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #ifndef BLKROGET
 #define BLKROGET   _IO(0x12,94)	/* get read-only status (0 = read_write) */
@@ -61,8 +61,6 @@ bool scan_disk(hwNode & n)
     n.addHint("icon", string("disc"));
     scan_partitions(n);
   }
-
-  (void) &id;			// to avoid warning "id defined but not used"
 
   return true;
 }

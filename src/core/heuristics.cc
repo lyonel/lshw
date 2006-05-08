@@ -7,7 +7,7 @@
 #include "sysfs.h"
 #include "osutils.h"
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 string guessBusInfo(const string & info)
 {
@@ -77,7 +77,5 @@ static string guessParentBusInfo(const hwNode & child)
 
 hwNode * guessParent(const hwNode & child, hwNode & base)
 {
-  (void)&id;	// to avoid warning "defined but not used"
-
   return base.findChildByBusInfo(guessParentBusInfo(child));
 }

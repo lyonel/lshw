@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #define LIFBLOCKSIZE 256
 
@@ -1111,8 +1111,6 @@ bool scan_partitions(hwNode & n)
   close(fd);
 
   //if(medium != &n) free(medium);
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return false;
 }

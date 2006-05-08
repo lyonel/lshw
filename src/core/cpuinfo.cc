@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <vector>
 
-static char *id =
+static const char rcsid[] =
   "@(#) $Id$";
 
 static int currentcpu = 0;
@@ -435,8 +435,6 @@ bool scan_cpuinfo(hwNode & n)
   hwNode *cpu = getcpu(n, 0);
   if(cpu && (n.getWidth()==0))
     n.setWidth(cpu->getWidth());
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return true;
 }

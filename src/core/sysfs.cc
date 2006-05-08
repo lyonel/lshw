@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include <sys/mount.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 using namespace sysfs;
 
@@ -279,7 +279,5 @@ entry::~entry()
 
 bool scan_sysfs(hwNode & n)
 {
-  (void) &id;			// avoid warning "id defined but not used"
-
   return false;
 }

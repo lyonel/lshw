@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 static unsigned long long get_kcore_size()
 {
@@ -129,8 +129,6 @@ bool scan_memory(hwNode & n)
 
     return true;
   }
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return false;
 }

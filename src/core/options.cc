@@ -15,7 +15,7 @@
 
 using namespace std;
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 static set < string > disabled_tests;
 static set < string > visible_classes;
@@ -114,8 +114,6 @@ void enable(const char *option)
 void disable(const char *option)
 {
   disabled_tests.insert(lowercase(option));
-
-  (void) &id;			// avoid warning "id defined but not used"
 }
 
 bool visible(const char *c)
