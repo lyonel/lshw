@@ -10,7 +10,7 @@
 
 #include <string.h>
 
-static const char rcsid[] = "@(#) $Id: $";
+static const char rcsid[] = "@(#) $Id$";
 
 static const char *pnp_vendors[] = {
   "ABP", "Advansys",
