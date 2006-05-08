@@ -10,6 +10,7 @@
 #define LABEL_ID "LABELONE"
 #define LABEL_SIZE BLOCKSIZE  /* Think very carefully before changing this */
 #define LABEL_SCAN_SECTORS 4L
+#define INITIAL_CRC 0xf597a6cf
 
 /* On disk - 32 bytes */
 struct label_header {
@@ -94,7 +95,7 @@ bool scan_lvm(hwNode & n, source & s)
   if(s.blocksize != BLOCKSIZE)
     return false;
 
-  for(int i=0; i<4; i++)
+  for(uint32_t i=0; i<4; i++)
   {
     if(readlogicalblocks(s, sector, i, 1) != 1)
       return false;
@@ -105,10 +106,19 @@ bool scan_lvm(hwNode & n, source & s)
 
     if((strncmp((char*)lh.id, LABEL_ID, sizeof(lh.id))==0) &&
        (lh.sector_xl==i) &&
-       (lh.offset_xl < BLOCKSIZE))
+       (lh.offset_xl < BLOCKSIZE) &&
+       (calc_crc(INITIAL_CRC, sector+0x14, LABEL_SIZE-0x14)==lh.crc_xl))
     {
+      pv_header pvh;
+
+      memcpy(&pvh, sector+lh.offset_xl, sizeof(pvh));
+      if(n.getDescription()=="")
+        n.setDescription("Linux LVM Physical Volume");
       n.addCapability("lvm2");
-      n.setSerial(uuid(sector+lh.offset_xl));
+      n.setSerial(uuid(pvh.pv_uuid));
+      if(n.getCapacity()==0)
+        n.setCapacity(n.getSize());
+      n.setSize(le_longlong(&pvh.device_size_xl));
       return true;
     }
   }
