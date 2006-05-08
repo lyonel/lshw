@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-static char *id = "@(#) $Id: partitions.cc 1292 2006-04-26 22:04:19Z ezix $";
+static const char rcsid[] = "@(#) $Id$";
 
 ssize_t readlogicalblocks(source & s,
 			void * buffer,
