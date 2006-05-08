@@ -9,6 +9,7 @@
 
 #include "partitions.h"
 #include "blockio.h"
+#include "lvm.h"
 #include "osutils.h"
 #include <stdio.h>
 #include <sys/types.h>
@@ -17,7 +18,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #define LIFBLOCKSIZE 256
 
@@ -447,6 +448,8 @@ static bool analyse_dospart(source & s,
   partition.describeCapability("boot", "Contains boot code");
   partition.describeCapability("multi", "Multi-volumes");
   partition.describeCapability("hidden", "Hidden partition");
+
+  scan_lvm(partition, s);
 
   return true;
 }
@@ -885,6 +888,7 @@ static bool detect_gpt(source & s, hwNode & n)
       spart.offset = s.offset + p.StartingLBA*spart.blocksize;
       spart.size = (p.EndingLBA - p.StartingLBA)*spart.blocksize;
       guess_logicalname(spart, n, i+1, partition);
+      scan_lvm(partition, spart);
       n.addChild(partition);
     }
   }
@@ -983,7 +987,10 @@ static bool detect_macmap(source & s, hwNode & n)
       partition.addCapability("bootable", "Bootstrap partition");
 
     if(lowercase(type) == "linux_lvm")
+    {
       partition.addHint("icon", string("md"));
+      partition.addCapability("multi");
+    }
     else
       partition.addHint("icon", string("disc"));
 
@@ -1000,6 +1007,8 @@ static bool detect_macmap(source & s, hwNode & n)
       spart.size = size*spart.blocksize;
 
       guess_logicalname(spart, n, i, partition);
+
+      scan_lvm(partition, spart);
       n.addChild(partition);
     }
   }
@@ -1094,11 +1103,14 @@ bool scan_partitions(hwNode & n)
     i++;
   }
 
+  if(!medium->isCapable("partitioned"))
+  {
+    scan_lvm(*medium, s);
+  }
+
   close(fd);
 
   //if(medium != &n) free(medium);
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return false;
 }

@@ -87,7 +87,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 static int currentcpu = 0;
 
@@ -1210,6 +1210,9 @@ static void dmi_table(int fd,
 
 	newnode.setHandle(handle);
 	newnode.setPhysId(dm->handle);
+        newnode.claim();
+        if(newnode.getSize()==0)
+          newnode.disable();
 	hardwarenode->addChild(newnode);
       }
       break;
@@ -1688,8 +1691,6 @@ bool scan_dmi(hwNode & n)
     snprintf(buffer, sizeof(buffer), "%d.%d", dmimaj, dmimin);
     n.addCapability("dmi-"+string(buffer), "DMI version "+string(buffer));
   }
-
-  (void) &id;			// avoid "id defined but not used" warning
 
   return true;
 }

@@ -33,8 +33,7 @@
 #include <sys/types.h>
 using namespace std;
 
-static char *id =
-  "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24
@@ -524,6 +523,4 @@ bool scan_network(hwNode & n)
   }
   else
     return false;
-
-  (void) &id;			// avoid warning "id defined but not used"
 }

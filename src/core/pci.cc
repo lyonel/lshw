@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/share/lshw/pci.ids:/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
@@ -931,8 +931,6 @@ bool scan_pci(hwNode & n)
     }
     fclose(f);
   }
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return false;
 }

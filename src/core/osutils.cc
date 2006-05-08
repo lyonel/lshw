@@ -14,8 +14,7 @@
 #include <linux/kdev_t.h>
 #endif
 
-static char *id =
-  "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 using namespace std;
 
@@ -252,7 +251,6 @@ static string find_deventry(string basepath,
 string find_deventry(mode_t mode,
 		     dev_t device)
 {
-  (void) &id;			// avoid warning "id defined but not used"
   return find_deventry("/dev", mode, device);
 }
 

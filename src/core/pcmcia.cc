@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 /* parts of this code come from the excellent pcmcia-cs package written by
  * David A. Hinds <dahinds@users.sourceforge.net>.
@@ -1092,8 +1092,6 @@ bool scan_pcmcia(hwNode & n)
       }
     }
   }
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return true;
 }

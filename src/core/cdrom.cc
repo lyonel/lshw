@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include <linux/cdrom.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #ifndef CDC_CD_R
 #define CDC_CD_R 0x2000
@@ -91,8 +91,6 @@ bool scan_cdrom(hwNode & n)
   }
 
   scan_partitions(n);
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return true;
 }

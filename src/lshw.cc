@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <iostream>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 void usage(const char *progname)
 {
@@ -144,8 +144,6 @@ int main(int argc,
 	print(computer, htmloutput);
     }
   }
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return 0;
 }

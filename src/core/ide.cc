@@ -29,7 +29,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #define PROC_IDE "/proc/ide"
 
@@ -496,8 +496,6 @@ bool scan_ide(hwNode & n)
     free(namelist[i]);
   }
   free(namelist);
-
-  (void) &id;			// avoir "id defined but not used" warning
 
   return false;
 }

@@ -19,8 +19,7 @@
 #include <unistd.h>
 #include <dirent.h>
 
-static char *id =
-  "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #define DEVICESPARISC "/sys/devices/parisc"
 
@@ -428,8 +427,6 @@ bool scan_parisc(hwNode & node)
   pushd(DEVICESPARISC);
   scan_device(*core);
   popd();
-
-  (void) &id;			// avoid warning "id declared but not used"
 
   return true;
 }

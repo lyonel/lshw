@@ -11,6 +11,8 @@
 #include "isapnp.h"
 #include "pnp.h"
 
+static const char rcsid[] = "@(#) $Id$";
+
 #ifdef __i386__
 
 #include <stdio.h>

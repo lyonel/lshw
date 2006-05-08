@@ -11,7 +11,7 @@
 
 using namespace hw;
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 struct hwNode_i
 {
@@ -95,8 +95,6 @@ hwNode::hwNode(const string & id,
   This->businfo = string("");
   This->physid = string("");
   This->dev = string("");
-
-  (void) &::id;			// avoid warning "id defined but not used"
 }
 
 hwNode::hwNode(const hwNode & o)

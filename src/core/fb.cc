@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static char *id = "@(#) $Id$";
+static const char rcsid[] = "@(#) $Id$";
 
 #define FB_MODES_SHIFT	5	/* 32 modes per framebuffer */
 #define FB_NUM_MINORS	256	/* 256 Minors               */
@@ -330,8 +330,6 @@ bool scan_fb(hwNode & n)
   {
     close(fd[j]);
   }
-
-  (void) &id;			// avoid warning "id defined but not used"
 
   return false;
 }
