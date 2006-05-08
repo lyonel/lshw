@@ -1211,6 +1211,8 @@ static void dmi_table(int fd,
 	newnode.setHandle(handle);
 	newnode.setPhysId(dm->handle);
         newnode.claim();
+        if(newnode.getSize()==0)
+          newnode.disable();
 	hardwarenode->addChild(newnode);
       }
       break;
