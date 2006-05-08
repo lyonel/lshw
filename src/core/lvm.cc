@@ -7,7 +7,7 @@
 #include "lvm.h"
 #include "osutils.h"
 
-static const char rcsid[] = "@(#) $Id: $";
+static const char rcsid[] = "@(#) $Id$";
 
 #define LABEL_ID "LABELONE"
 #define LABEL_SIZE BLOCKSIZE  /* Think very carefully before changing this */
@@ -74,7 +74,7 @@ uint32_t calc_crc(uint32_t initial, void *buf, uint32_t size)
 }
 
 
-static char *id = "@(#) $Id: $";
+static char *id = "@(#) $Id$";
 
 static string uuid(void * s)
 {
