@@ -725,8 +725,6 @@ bool scan_cpuid(hwNode & n)
     currentcpu++;
   }
 
-  (void) &id;			// avoid warning "id defined but not used"
-
   return true;
 }
 
@@ -734,7 +732,6 @@ bool scan_cpuid(hwNode & n)
 
 bool scan_cpuid(hwNode & n)
 {
-  (void) &id;			// avoid warning "id defined but not used"
   return true;
 }
 #endif /* __alpha__ */
