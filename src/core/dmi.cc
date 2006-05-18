@@ -74,6 +74,7 @@
  *
  */
 
+#include "version.h"
 #include "dmi.h"
 #include "osutils.h"
 
@@ -87,7 +88,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 static int currentcpu = 0;
 

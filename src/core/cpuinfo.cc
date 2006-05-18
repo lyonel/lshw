@@ -1,3 +1,4 @@
+#include "version.h"
 #include "cpuinfo.h"
 #include "osutils.h"
 #include <sys/types.h>
@@ -7,8 +8,7 @@
 #include <stdio.h>
 #include <vector>
 
-static const char rcsid[] =
-  "@(#) $Id$";
+__ID("@(#) $Id$");
 
 static int currentcpu = 0;
 

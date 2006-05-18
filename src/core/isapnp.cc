@@ -8,10 +8,11 @@
  *  kernel itself.
  */
 
+#include "version.h"
 #include "isapnp.h"
 #include "pnp.h"
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #ifdef __i386__
 

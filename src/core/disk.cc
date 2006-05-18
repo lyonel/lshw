@@ -1,3 +1,4 @@
+#include "version.h"
 #include "disk.h"
 #include "partitions.h"
 #include <sys/types.h>
@@ -7,7 +8,7 @@
 #include <unistd.h>
 //#include <linux/fs.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #ifndef BLKROGET
 #define BLKROGET   _IO(0x12,94)	/* get read-only status (0 = read_write) */

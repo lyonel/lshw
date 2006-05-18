@@ -8,6 +8,7 @@
  *
  */
 
+#include "version.h"
 #include "cdrom.h"
 #include "partitions.h"
 #include <sys/types.h>
@@ -17,7 +18,7 @@
 #include <unistd.h>
 #include <linux/cdrom.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #ifndef CDC_CD_R
 #define CDC_CD_R 0x2000

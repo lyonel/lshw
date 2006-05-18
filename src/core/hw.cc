@@ -11,7 +11,7 @@
 
 using namespace hw;
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 struct hwNode_i
 {

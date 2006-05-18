@@ -7,6 +7,7 @@
 #define _GNU_SOURCE
 #endif
 
+#include "version.h"
 #include "usb.h"
 #include "osutils.h"
 #include "heuristics.h"
@@ -63,7 +64,7 @@ static map<u_int32_t,string> usbproducts;
 
 #define PRODID(x, y) ((x << 16) + y)
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 static string usbhost(unsigned bus)
 {

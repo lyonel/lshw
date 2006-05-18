@@ -1,3 +1,4 @@
+#include "version.h"
 #include "mem.h"
 #include "cdrom.h"
 #include "disk.h"
@@ -20,7 +21,7 @@
 #include <string>
 #include <map>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define SG_X "/dev/sg%d"
 #define SG_MAJOR 21

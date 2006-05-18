@@ -7,6 +7,7 @@
  *
  */
 
+#include "version.h"
 #include "hw.h"
 #include "osutils.h"
 #include <string.h>
@@ -17,8 +18,7 @@
 #include <unistd.h>
 #include <dirent.h>
 
-static const char rcsid[] =
-  "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define DEVICESCPUFREQ "/sys/devices/system/cpu/cpu%d/cpufreq/"
 

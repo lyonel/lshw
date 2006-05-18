@@ -1,3 +1,4 @@
+#include "version.h"
 #include "spd.h"
 #include "osutils.h"
 #include <sys/types.h>
@@ -8,7 +9,7 @@
 #include <dirent.h>
 #include <stdio.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 /* SPD is 2048-bit long */
 #define SPD_MAXSIZE (2048/8)

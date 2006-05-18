@@ -4,10 +4,11 @@
  *
  */
 
+#include "version.h"
 #include "lvm.h"
 #include "osutils.h"
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define LABEL_ID "LABELONE"
 #define LABEL_SIZE BLOCKSIZE  /* Think very carefully before changing this */

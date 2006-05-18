@@ -60,6 +60,7 @@
 #include <poll.h>
 #include <sys/time.h>
 
+#include "version.h"
 #include "burner.h"
 
 typedef enum {

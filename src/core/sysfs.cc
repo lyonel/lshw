@@ -4,6 +4,7 @@
  *
  */
 
+#include "version.h"
 #include "sysfs.h"
 #include "osutils.h"
 #include <limits.h>
@@ -16,7 +17,7 @@
 #include <sys/types.h>
 #include <sys/mount.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 using namespace sysfs;
 

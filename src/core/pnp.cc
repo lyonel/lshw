@@ -6,11 +6,12 @@
  *
  *
  */
+#include "version.h"
 #include "pnp.h"
 
 #include <string.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 static const char *pnp_vendors[] = {
   "ABP", "Advansys",

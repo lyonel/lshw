@@ -9,6 +9,7 @@
  *
  */
 
+#include "version.h"
 #include "device-tree.h"
 #include "osutils.h"
 #include "heuristics.h"
@@ -19,7 +20,7 @@
 #include <unistd.h>
 #include <dirent.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define DEVICESPARISC "/sys/devices/parisc"
 

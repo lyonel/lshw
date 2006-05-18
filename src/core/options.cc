@@ -5,6 +5,7 @@
  *
  */
 
+#include "version.h"
 #include "options.h"
 #include "osutils.h"
 
@@ -15,7 +16,7 @@
 
 using namespace std;
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 static set < string > disabled_tests;
 static set < string > visible_classes;

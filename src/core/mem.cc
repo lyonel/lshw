@@ -15,13 +15,14 @@
  *
  */
 
+#include "version.h"
 #include "mem.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 static unsigned long long get_kcore_size()
 {

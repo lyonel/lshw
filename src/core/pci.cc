@@ -1,3 +1,4 @@
+#include "version.h"
 #include "pci.h"
 #include "osutils.h"
 #include <sys/types.h>
@@ -6,7 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define PROC_BUS_PCI "/proc/bus/pci"
 #define PCIID_PATH "/usr/share/lshw/pci.ids:/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"

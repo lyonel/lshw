@@ -41,7 +41,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 bool scan_system(hwNode & system)
 {

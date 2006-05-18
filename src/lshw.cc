@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <iostream>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 void usage(const char *progname)
 {

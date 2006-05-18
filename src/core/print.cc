@@ -19,7 +19,7 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 static unsigned int columns = 0, rows = 0;
 

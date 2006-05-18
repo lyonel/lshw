@@ -14,6 +14,7 @@
  *
  */
 
+#include "version.h"
 #include "network.h"
 #include "osutils.h"
 #include "sysfs.h"
@@ -33,7 +34,7 @@
 #include <sys/types.h>
 using namespace std;
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #ifndef ARPHRD_IEEE1394
 #define ARPHRD_IEEE1394	24

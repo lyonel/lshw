@@ -4,10 +4,11 @@
  *
  */
 
+#include "version.h"
 #include "sysfs.h"
 #include "osutils.h"
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 string guessBusInfo(const string & info)
 {

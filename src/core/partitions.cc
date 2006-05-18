@@ -7,6 +7,7 @@
 #define _LARGEFILE_SOURCE
 #define _FILE_OFFSET_BITS	64
 
+#include "version.h"
 #include "partitions.h"
 #include "blockio.h"
 #include "lvm.h"
@@ -18,7 +19,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define LIFBLOCKSIZE 256
 

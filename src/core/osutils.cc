@@ -1,3 +1,4 @@
+#include "version.h"
 #include "osutils.h"
 #include <stack>
 #include <fcntl.h>
@@ -14,7 +15,7 @@
 #include <linux/kdev_t.h>
 #endif
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 using namespace std;
 

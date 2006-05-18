@@ -1,3 +1,4 @@
+#include "version.h"
 #include "pcmcia.h"
 #include "osutils.h"
 #include <sys/types.h>
@@ -8,7 +9,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 /* parts of this code come from the excellent pcmcia-cs package written by
  * David A. Hinds <dahinds@users.sourceforge.net>.

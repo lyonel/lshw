@@ -11,6 +11,7 @@
  */
 
 
+#include "version.h"
 #include "cpuinfo.h"
 #include "osutils.h"
 #include "cdrom.h"
@@ -29,7 +30,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define PROC_IDE "/proc/ide"
 

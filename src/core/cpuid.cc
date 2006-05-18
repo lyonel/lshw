@@ -1,3 +1,4 @@
+#include "version.h"
 #include "cpuid.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -5,7 +6,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #if defined(__i386__) || defined(__alpha__)
 

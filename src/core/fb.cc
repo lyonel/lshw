@@ -4,6 +4,7 @@
  *
  */
 
+#include "version.h"
 #include "fb.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -13,7 +14,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-static const char rcsid[] = "@(#) $Id$";
+__ID("@(#) $Id$");
 
 #define FB_MODES_SHIFT	5	/* 32 modes per framebuffer */
 #define FB_NUM_MINORS	256	/* 256 Minors               */
