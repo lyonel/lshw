@@ -16,5 +16,4 @@
 #ifndef MANDIR
 #define MANDIR PREFIX"/share/man"
 #endif
-
 #endif

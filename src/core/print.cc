@@ -27,13 +27,13 @@ static void init_wsize()
 {
   struct winsize ws;
   char *env;
- 
+
   if (!ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws))
   {
     rows = ws.ws_row;
     columns = ws.ws_col;
   }
- 
+
   if (!rows)
   {
     env = getenv("LINES");
@@ -47,14 +47,15 @@ static void init_wsize()
   {
     env = getenv("COLUMNS");
     if (env)
-    columns = atoi(env);
+      columns = atoi(env);
     if (!columns)
-    columns = 80;
+      columns = 80;
   }
 }
 
+
 static void tab(int level,
-		bool connect = true)
+bool connect = true)
 {
   if (level <= 0)
     return;
@@ -66,6 +67,7 @@ static void tab(int level,
   else
     cout << "  ";
 }
+
 
 static void decimalkilos(ostream & out, unsigned long long value)
 {
@@ -82,6 +84,7 @@ static void decimalkilos(ostream & out, unsigned long long value)
   if ((i > 0) && (i <= strlen(prefixes)))
     out << prefixes[i - 1];
 }
+
 
 static void kilobytes(ostream & out, unsigned long long value)
 {
@@ -100,9 +103,10 @@ static void kilobytes(ostream & out, unsigned long long value)
   out << "B";
 }
 
+
 void print(hwNode & node,
-	   bool html,
-	   int level)
+bool html,
+int level)
 {
   vector < string > config;
   vector < string > resources;
@@ -186,13 +190,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "handle: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getHandle();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 #endif
@@ -204,13 +208,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "description: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getDescription();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -218,13 +222,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "product: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getProduct();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -232,13 +236,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "vendor: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getVendor();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -246,13 +250,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "physical id: ";
       if (html)
-	cout << "</td><td class=\"second\"><div class=\"id\">";
+        cout << "</td><td class=\"second\"><div class=\"id\">";
       cout << node.getPhysId();
       if (html)
-	cout << "</div></td></tr>";
+        cout << "</div></td></tr>";
       cout << endl;
     }
 
@@ -260,13 +264,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "bus info: ";
       if (html)
-	cout << "</td><td class=\"second\"><div class=\"id\">";
+        cout << "</td><td class=\"second\"><div class=\"id\">";
       cout << node.getBusInfo();
       if (html)
-	cout << "</div></td></tr>";
+        cout << "</div></td></tr>";
       cout << endl;
     }
 
@@ -276,16 +280,16 @@ void print(hwNode & node,
 
       for(unsigned int i = 0; i<logicalnames.size(); i++)
       {
-      	tab(level + 1, false);
-      	if (html)
-		cout << "<tr><td class=\"first\">";
-      	cout << "logical name: ";
-      	if (html)
-		cout << "</td><td class=\"second\"><div class=\"id\">";
-      	cout << logicalnames[i];
-      	if (html)
-		cout << "</div></td></tr>";
-      	cout << endl;
+        tab(level + 1, false);
+        if (html)
+          cout << "<tr><td class=\"first\">";
+        cout << "logical name: ";
+        if (html)
+          cout << "</td><td class=\"second\"><div class=\"id\">";
+        cout << logicalnames[i];
+        if (html)
+          cout << "</div></td></tr>";
+        cout << endl;
       }
     }
 
@@ -293,13 +297,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "version: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getVersion();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -307,13 +311,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "serial: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getSerial();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -321,13 +325,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "slot: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getSlot();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -335,49 +339,49 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "size: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       switch (node.getClass())
       {
-      case hw::display:
-      case hw::memory:
-      case hw::address:
-      case hw::storage:
-      case hw::disk:
-	kilobytes(cout, node.getSize());
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::display:
+        case hw::memory:
+        case hw::address:
+        case hw::storage:
+        case hw::disk:
+          kilobytes(cout, node.getSize());
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      case hw::processor:
-      case hw::bus:
-      case hw::system:
-	decimalkilos(cout, node.getSize());
-	cout << "Hz";
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::processor:
+        case hw::bus:
+        case hw::system:
+          decimalkilos(cout, node.getSize());
+          cout << "Hz";
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      case hw::network:
-	decimalkilos(cout, node.getSize());
-	cout << "B/s";
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::network:
+          decimalkilos(cout, node.getSize());
+          cout << "B/s";
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      case hw::power:
-	cout << node.getSize();
-	cout << "mWh";
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::power:
+          cout << node.getSize();
+          cout << "mWh";
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      default:
-	cout << node.getSize();
-	if (html)
-	  cout << "</td></tr>";
+        default:
+          cout << node.getSize();
+          if (html)
+            cout << "</td></tr>";
       }
       cout << endl;
     }
@@ -386,48 +390,48 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "capacity: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       switch (node.getClass())
       {
-      case hw::memory:
-      case hw::address:
-      case hw::storage:
-      case hw::disk:
-	kilobytes(cout, node.getCapacity());
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::memory:
+        case hw::address:
+        case hw::storage:
+        case hw::disk:
+          kilobytes(cout, node.getCapacity());
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      case hw::processor:
-      case hw::bus:
-      case hw::system:
-	decimalkilos(cout, node.getCapacity());
-	cout << "Hz";
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::processor:
+        case hw::bus:
+        case hw::system:
+          decimalkilos(cout, node.getCapacity());
+          cout << "Hz";
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      case hw::network:
-	decimalkilos(cout, node.getCapacity());
-	cout << "B/s";
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::network:
+          decimalkilos(cout, node.getCapacity());
+          cout << "B/s";
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      case hw::power:
-	cout << node.getCapacity();
-	cout << "mWh";
-	if (html)
-	  cout << "</td></tr>";
-	break;
+        case hw::power:
+          cout << node.getCapacity();
+          cout << "mWh";
+          if (html)
+            cout << "</td></tr>";
+          break;
 
-      default:
-	cout << node.getCapacity();
-	if (html)
-	  cout << "</td></tr>";
+        default:
+          cout << node.getCapacity();
+          if (html)
+            cout << "</td></tr>";
       }
       cout << endl;
     }
@@ -436,14 +440,14 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       if (node.getSize() == 0)
-	cout << "address: " << hex << setfill('0') << setw(8) << node.
-	  getStart() << dec;
+        cout << "address: " << hex << setfill('0') << setw(8) << node.
+          getStart() << dec;
       else
-	cout << "range: " << hex << setfill('0') << setw(8) << node.
-	  getStart() << " - " << hex << setfill('0') << setw(8) << node.
-	  getStart() + node.getSize() - 1 << dec;
+        cout << "range: " << hex << setfill('0') << setw(8) << node.
+          getStart() << " - " << hex << setfill('0') << setw(8) << node.
+          getStart() + node.getSize() - 1 << dec;
       cout << endl;
     }
 
@@ -451,13 +455,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "width: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getWidth() << " bits";
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -465,16 +469,16 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "clock: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       decimalkilos(cout, node.getClock());
       cout << "Hz";
       if (node.getClass() == hw::memory)
-	cout << " (" << setiosflags(ios::fixed) << setprecision(1) << 1.0e9 / node.getClock() << "ns)";
+        cout << " (" << setiosflags(ios::fixed) << setprecision(1) << 1.0e9 / node.getClock() << "ns)";
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -482,13 +486,13 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "capabilities: ";
       if (html)
-	cout << "</td><td class=\"second\">";
+        cout << "</td><td class=\"second\">";
       cout << node.getCapabilities();
       if (html)
-	cout << "</td></tr>";
+        cout << "</td></tr>";
       cout << endl;
     }
 
@@ -496,21 +500,21 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "configuration:";
       if (html)
-	cout << "</td><td class=\"second\"><table summary=\"configuration of " << node.
-	  getId() << "\">";
+        cout << "</td><td class=\"second\"><table summary=\"configuration of " << node.
+          getId() << "\">";
       for (unsigned int i = 0; i < config.size(); i++)
       {
-	if (html)
-	  cout << "<tr><td class=\"sub-first\">";
-	cout << " " << config[i];
-	if (html)
-	  cout << "</td></tr>";
+        if (html)
+          cout << "<tr><td class=\"sub-first\">";
+        cout << " " << config[i];
+        if (html)
+          cout << "</td></tr>";
       }
       if (html)
-	cout << "</table></td></tr>";
+        cout << "</table></td></tr>";
       cout << endl;
     }
 
@@ -518,21 +522,21 @@ void print(hwNode & node,
     {
       tab(level + 1, false);
       if (html)
-	cout << "<tr><td class=\"first\">";
+        cout << "<tr><td class=\"first\">";
       cout << "resources:";
       if (html)
-	cout << "</td><td class=\"second\"><table summary=\"resources of " << node.
-	  getId() << "\">";
+        cout << "</td><td class=\"second\"><table summary=\"resources of " << node.
+          getId() << "\">";
       for (unsigned int i = 0; i < resources.size(); i++)
       {
-	if (html)
-	  cout << "<tr><td class=\"sub-first\">";
-	cout << " " << resources[i];
-	if (html)
-	  cout << "</td></tr>";
+        if (html)
+          cout << "<tr><td class=\"sub-first\">";
+        cout << " " << resources[i];
+        if (html)
+          cout << "</td></tr>";
       }
       if (html)
-	cout << "</table></td></tr>";
+        cout << "</table></td></tr>";
       cout << endl;
     }
 
@@ -545,7 +549,7 @@ void print(hwNode & node,
       cout << "</table></div>" << endl;
     }
 
-  }				// if visible
+  }                                               // if visible
 
   for (unsigned int i = 0; i < node.countChildren(); i++)
   {
@@ -570,6 +574,7 @@ void print(hwNode & node,
   }
 }
 
+
 struct hwpath
 {
   string path;
@@ -579,8 +584,8 @@ struct hwpath
 };
 
 static void printhwnode(hwNode & node,
-			vector < hwpath > &l,
-			string prefix = "")
+vector < hwpath > &l,
+string prefix = "")
 {
   hwpath entry;
 
@@ -588,7 +593,7 @@ static void printhwnode(hwNode & node,
   if (node.getPhysId() != "")
     entry.path = prefix + "/" + node.getPhysId();
   if(node.getClass() != hw::memory)
-    entry.description = node.getProduct(); // memory devices tend to have obscure product names
+    entry.description = node.getProduct();        // memory devices tend to have obscure product names
   if (entry.description == "")
     entry.description = node.getDescription();
   if(node.getSize() && ((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage)))
@@ -607,8 +612,9 @@ static void printhwnode(hwNode & node,
   }
 }
 
+
 static void printbusinfo(hwNode & node,
-			vector < hwpath > &l)
+vector < hwpath > &l)
 {
   hwpath entry;
 
@@ -628,6 +634,7 @@ static void printbusinfo(hwNode & node,
   }
 }
 
+
 static void printline(ostringstream & out)
 {
   string s = out.str();
@@ -637,6 +644,7 @@ static void printline(ostringstream & out)
   cout << s << endl;
   out.str("");
 }
+
 
 static void printincolumns( vector < hwpath > &l, const char *cols[])
 {
@@ -670,19 +678,22 @@ static void printincolumns( vector < hwpath > &l, const char *cols[])
 
   for (i = 0; i < l.size(); i++)
     if (visible(l[i].classname.c_str()))
-    {
-      out << l[i].path;
-      out << spaces(2 + l1 - l[i].path.length());
-      out << l[i].devname;
-      out << spaces(2 + l2 - l[i].devname.length());
-      out << l[i].classname;
-      out << spaces(2 + l3 - l[i].classname.length());
-      out << l[i].description;
-      printline(out);
-    }
+  {
+    out << l[i].path;
+    out << spaces(2 + l1 - l[i].path.length());
+    out << l[i].devname;
+    out << spaces(2 + l2 - l[i].devname.length());
+    out << l[i].classname;
+    out << spaces(2 + l3 - l[i].classname.length());
+    out << l[i].description;
+    printline(out);
+  }
 }
 
-static const char *hwpathcols[] = { "H/W path",
+
+static const char *hwpathcols[] =
+{
+  "H/W path",
   "Device",
   "Class",
   "Description"
@@ -696,7 +707,10 @@ void printhwpath(hwNode & node)
   printincolumns(l, hwpathcols);
 }
 
-static const char *businfocols[] = { "Bus info",
+
+static const char *businfocols[] =
+{
+  "Bus info",
   "Device",
   "Class",
   "Description"

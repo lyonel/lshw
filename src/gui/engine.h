@@ -4,19 +4,19 @@
 #include <gtk/gtk.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void refresh(GtkWidget *);
+  void refresh(GtkWidget *);
 
-void change_selection(unsigned list, GtkTreeView *treeview);
+  void change_selection(unsigned list, GtkTreeView *treeview);
 
-void browse(unsigned list, GtkTreeView *treeview);
+  void browse(unsigned list, GtkTreeView *treeview);
 
-void go_back(GtkWidget *);
+  void go_back(GtkWidget *);
 
 #ifdef __cplusplus
 };
 #endif
-
 #endif

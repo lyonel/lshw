@@ -9,15 +9,14 @@
 
 struct source
 {
-	std::string diskname;
-	int fd;
-	ssize_t blocksize;
-	long long offset;
-	long long size;
+  std::string diskname;
+  int fd;
+  ssize_t blocksize;
+  long long offset;
+  long long size;
 };
 
 ssize_t readlogicalblocks(source & s,
-			void * buffer,
-			long long pos, long long count);
-
+void * buffer,
+long long pos, long long count);
 #endif

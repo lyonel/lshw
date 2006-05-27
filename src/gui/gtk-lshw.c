@@ -26,20 +26,19 @@ main (int argc, char *argv[])
   gtk_set_locale ();
   gtk_init (&argc, &argv);
 
-  lshw_gtk_stock_init(); 
+  lshw_gtk_stock_init();
 
-
-  /*
-   * The following code was added by Glade to create one of each component
-   * (except popup menus), just so that you see something after building
-   * the project. Delete any components that you don't want shown initially.
-   */
+/*
+ * The following code was added by Glade to create one of each component
+ * (except popup menus), just so that you see something after building
+ * the project. Delete any components that you don't want shown initially.
+ */
   mainwindow = create_lshw ();
 
   icon = gtk_widget_render_icon(GTK_WIDGET(mainwindow),
-                                  "lshw-logo",
-                                  GTK_ICON_SIZE_DIALOG,
-                                  NULL);
+    "lshw-logo",
+    GTK_ICON_SIZE_DIALOG,
+    NULL);
   gtk_window_set_icon(mainwindow, icon);
   gtk_window_set_default_icon(icon);
 
@@ -47,8 +46,7 @@ main (int argc, char *argv[])
 
   gtk_main ();
 
-  (void) &id;                 // avoid warning "id defined but not used"
+  (void) &id;                                     // avoid warning "id defined but not used"
 
   return 0;
 }
-

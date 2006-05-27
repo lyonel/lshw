@@ -12,46 +12,50 @@ __ID("@(#) $Id$");
 
 string guessBusInfo(const string & info)
 {
-  if(matches(info,"^[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$")) // 2.6-style PCI
+                                                  // 2.6-style PCI
+  if(matches(info,"^[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
   {
     return "pci@" + info.substr(5);
   }
-  if(matches(info,"^[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$")) // 2.4-style PCI
+                                                  // 2.4-style PCI
+  if(matches(info,"^[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
   {
     return "pci@" + info;
   }
 
-  if(matches(info, "^[0-9]+-[0-9]+(\\.[0-9]+)*:[0-9]+\\.[0-9]+$")) // USB: host-port[.port]:config.interface
+                                                  // USB: host-port[.port]:config.interface
+  if(matches(info, "^[0-9]+-[0-9]+(\\.[0-9]+)*:[0-9]+\\.[0-9]+$"))
   {
     size_t colon = info.rfind(":");
     size_t dash = info.find("-");
-    
+
     return "usb@" + info.substr(0, dash) + ":" + info.substr(dash+1, colon-dash-1);
   }
 
-  if(matches(info, "^[[:xdigit:]]+-[0-9]+$")) // Firewire: guid-function
+  if(matches(info, "^[[:xdigit:]]+-[0-9]+$"))     // Firewire: guid-function
   {
     size_t dash = info.find("-");
-    
+
     return "firewire@" + info.substr(0, dash);
   }
 
 #if 1
 //#ifdef __hppa__
-  if(matches(info, "^[0-9]+(:[0-9]+)*$")) // PA-RISC: x:y:z:t corresponds to /x/y/z/t
+  if(matches(info, "^[0-9]+(:[0-9]+)*$"))         // PA-RISC: x:y:z:t corresponds to /x/y/z/t
   {
     string result = "parisc@";
 
     for(unsigned i=0; i<info.length(); i++)
       if(info[i] == ':')
         result += '/';
-      else
-        result += info[i];
+    else
+      result += info[i];
     return result;
   }
 #endif
   return "";
 }
+
 
 static string guessParentBusInfo(const hwNode & child)
 {
@@ -75,6 +79,7 @@ static string guessParentBusInfo(const hwNode & child)
   }
   return result;
 }
+
 
 hwNode * guessParent(const hwNode & child, hwNode & base)
 {

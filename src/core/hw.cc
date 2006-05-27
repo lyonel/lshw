@@ -25,14 +25,14 @@ struct hwNode_i
   unsigned long long capacity;
   unsigned long long clock;
   unsigned int width;
-    vector < hwNode > children;
-    vector < string > attracted;
-    vector < string > features;
-    vector < string > logicalnames;
-    map < string, string > features_descriptions;
-    vector < resource > resources;
-    map < string, string > config;
-    map < string, value > hints;
+  vector < hwNode > children;
+  vector < string > attracted;
+  vector < string > features;
+  vector < string > logicalnames;
+  map < string, string > features_descriptions;
+  vector < resource > resources;
+  map < string, string > config;
+  map < string, value > hints;
 };
 
 string hw::strip(const string & s)
@@ -45,13 +45,14 @@ string hw::strip(const string & s)
     result.erase(result.length() - 1, 1);
   for (unsigned int i = 0; i < result.length(); i++)
     if (result[0] <= ' ')
-    {
-      result.erase(i, 1);
-      i--;
-    }
+  {
+    result.erase(i, 1);
+    i--;
+  }
 
   return result;
 }
+
 
 static string cleanupId(const string & id)
 {
@@ -67,10 +68,11 @@ static string cleanupId(const string & id)
   return result;
 }
 
+
 hwNode::hwNode(const string & id,
-	       hwClass c,
-	       const string & vendor,
-	       const string & product, const string & version)
+hwClass c,
+const string & vendor,
+const string & product, const string & version)
 {
   This = NULL;
   This = new hwNode_i;
@@ -97,6 +99,7 @@ hwNode::hwNode(const string & id,
   This->dev = string("");
 }
 
+
 hwNode::hwNode(const hwNode & o)
 {
   This = NULL;
@@ -109,16 +112,18 @@ hwNode::hwNode(const hwNode & o)
     (*This) = (*o.This);
 }
 
+
 hwNode::~hwNode()
 {
   if (This)
     delete This;
 }
 
+
 hwNode & hwNode::operator = (const hwNode & o)
 {
   if (this == &o)
-    return *this;		// self-affectation
+    return *this;                                 // self-affectation
 
   if (This)
     delete This;
@@ -134,6 +139,7 @@ hwNode & hwNode::operator = (const hwNode & o)
   return *this;
 }
 
+
 hwClass hwNode::getClass() const
 {
   if (This)
@@ -142,67 +148,69 @@ hwClass hwNode::getClass() const
     return hw::generic;
 }
 
+
 const char *hwNode::getClassName() const
 {
   if (This)
   {
     switch (This->deviceclass)
     {
-    case processor:
-      return "processor";
+      case processor:
+        return "processor";
 
-    case memory:
-      return "memory";
+      case memory:
+        return "memory";
 
-    case address:
-      return "address";
+      case address:
+        return "address";
 
-    case storage:
-      return "storage";
+      case storage:
+        return "storage";
 
-    case disk:
-      return "disk";
+      case disk:
+        return "disk";
 
-    case tape:
-      return "tape";
+      case tape:
+        return "tape";
 
-    case hw::system:
-      return "system";
+      case hw::system:
+        return "system";
 
-    case bridge:
-      return "bridge";
+      case bridge:
+        return "bridge";
 
-    case bus:
-      return "bus";
+      case bus:
+        return "bus";
 
-    case network:
-      return "network";
+      case network:
+        return "network";
 
-    case display:
-      return "display";
+      case display:
+        return "display";
 
-    case input:
-      return "input";
+      case input:
+        return "input";
 
-    case printer:
-      return "printer";
+      case printer:
+        return "printer";
 
-    case multimedia:
-      return "multimedia";
+      case multimedia:
+        return "multimedia";
 
-    case communication:
-      return "communication";
+      case communication:
+        return "communication";
 
-    case power:
-      return "power";
+      case power:
+        return "power";
 
-    default:
-      return "generic";
+      default:
+        return "generic";
     }
   }
   else
     return "generic";
 }
+
 
 void hwNode::setClass(hwClass c)
 {
@@ -212,6 +220,7 @@ void hwNode::setClass(hwClass c)
   This->deviceclass = c;
 }
 
+
 bool hwNode::enabled() const
 {
   if (!This)
@@ -219,6 +228,7 @@ bool hwNode::enabled() const
 
   return (This->enabled);
 }
+
 
 bool hwNode::disabled() const
 {
@@ -228,6 +238,7 @@ bool hwNode::disabled() const
   return !(This->enabled);
 }
 
+
 void hwNode::enable()
 {
   if (!This)
@@ -236,6 +247,7 @@ void hwNode::enable()
   This->enabled = true;
 }
 
+
 void hwNode::disable()
 {
   if (!This)
@@ -243,6 +255,7 @@ void hwNode::disable()
 
   This->enabled = false;
 }
+
 
 bool hwNode::claimed() const
 {
@@ -254,13 +267,14 @@ bool hwNode::claimed() const
 
   for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].claimed())
-    {
-      This->claimed = true;
-      return true;
-    }
+  {
+    This->claimed = true;
+    return true;
+  }
 
   return false;
 }
+
 
 void hwNode::claim(bool claimchildren)
 {
@@ -276,6 +290,7 @@ void hwNode::claim(bool claimchildren)
     This->children[i].claim(claimchildren);
 }
 
+
 void hwNode::unclaim()
 {
   if (!This)
@@ -283,6 +298,7 @@ void hwNode::unclaim()
 
   This->claimed = false;
 }
+
 
 string hwNode::getId() const
 {
@@ -292,6 +308,7 @@ string hwNode::getId() const
     return "";
 }
 
+
 void hwNode::setId(const string & id)
 {
   if (!This)
@@ -299,6 +316,7 @@ void hwNode::setId(const string & id)
 
   This->id = cleanupId(id);
 }
+
 
 void hwNode::setHandle(const string & handle)
 {
@@ -308,6 +326,7 @@ void hwNode::setHandle(const string & handle)
   This->handle = handle;
 }
 
+
 string hwNode::getHandle() const
 {
   if (This)
@@ -315,6 +334,7 @@ string hwNode::getHandle() const
   else
     return "";
 }
+
 
 string hwNode::getDescription() const
 {
@@ -324,11 +344,13 @@ string hwNode::getDescription() const
     return "";
 }
 
+
 void hwNode::setDescription(const string & description)
 {
   if (This)
     This->description = strip(description);
 }
+
 
 string hwNode::getVendor() const
 {
@@ -338,11 +360,13 @@ string hwNode::getVendor() const
     return "";
 }
 
+
 void hwNode::setVendor(const string & vendor)
 {
   if (This)
     This->vendor = strip(vendor);
 }
+
 
 string hwNode::getProduct() const
 {
@@ -352,11 +376,13 @@ string hwNode::getProduct() const
     return "";
 }
 
+
 void hwNode::setProduct(const string & product)
 {
   if (This)
     This->product = strip(product);
 }
+
 
 string hwNode::getVersion() const
 {
@@ -366,11 +392,13 @@ string hwNode::getVersion() const
     return "";
 }
 
+
 void hwNode::setVersion(const string & version)
 {
   if (This)
     This->version = strip(version);
 }
+
 
 string hwNode::getSerial() const
 {
@@ -380,11 +408,13 @@ string hwNode::getSerial() const
     return "";
 }
 
+
 void hwNode::setSerial(const string & serial)
 {
   if (This)
     This->serial = strip(serial);
 }
+
 
 string hwNode::getSlot() const
 {
@@ -394,11 +424,13 @@ string hwNode::getSlot() const
     return "";
 }
 
+
 void hwNode::setSlot(const string & slot)
 {
   if (This)
     This->slot = strip(slot);
 }
+
 
 unsigned long long hwNode::getStart() const
 {
@@ -408,11 +440,13 @@ unsigned long long hwNode::getStart() const
     return 0;
 }
 
+
 void hwNode::setStart(unsigned long long start)
 {
   if (This)
     This->start = start;
 }
+
 
 unsigned long long hwNode::getSize() const
 {
@@ -422,11 +456,13 @@ unsigned long long hwNode::getSize() const
     return 0;
 }
 
+
 void hwNode::setSize(unsigned long long size)
 {
   if (This)
     This->size = size;
 }
+
 
 unsigned long long hwNode::getCapacity() const
 {
@@ -436,11 +472,13 @@ unsigned long long hwNode::getCapacity() const
     return 0;
 }
 
+
 void hwNode::setCapacity(unsigned long long capacity)
 {
   if (This)
     This->capacity = capacity;
 }
+
 
 unsigned long long hwNode::getClock() const
 {
@@ -450,11 +488,13 @@ unsigned long long hwNode::getClock() const
     return 0;
 }
 
+
 void hwNode::setClock(unsigned long long clock)
 {
   if (This)
     This->clock = clock;
 }
+
 
 unsigned int hwNode::countChildren(hw::hwClass c) const
 {
@@ -473,6 +513,7 @@ unsigned int hwNode::countChildren(hw::hwClass c) const
   return count;
 }
 
+
 hwNode *hwNode::getChild(unsigned int i)
 {
   if (!This)
@@ -483,6 +524,7 @@ hwNode *hwNode::getChild(unsigned int i)
   else
     return &(This->children[i]);
 }
+
 
 hwNode *hwNode::getChildByPhysId(const string & physid)
 {
@@ -497,6 +539,7 @@ hwNode *hwNode::getChildByPhysId(const string & physid)
 
   return NULL;
 }
+
 
 hwNode *hwNode::getChildByPhysId(long physid)
 {
@@ -514,6 +557,7 @@ hwNode *hwNode::getChildByPhysId(long physid)
 
   return NULL;
 }
+
 
 hwNode *hwNode::getChild(const string & id)
 {
@@ -533,14 +577,15 @@ hwNode *hwNode::getChild(const string & id)
 
   for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].getId() == baseid)
-    {
-      if (path == "")
-	return &(This->children[i]);
-      else
-	return This->children[i].getChild(path);
-    }
+  {
+    if (path == "")
+      return &(This->children[i]);
+    else
+      return This->children[i].getChild(path);
+  }
   return NULL;
 }
+
 
 hwNode *hwNode::findChild(bool(*matchfunction) (const hwNode &))
 {
@@ -561,6 +606,7 @@ hwNode *hwNode::findChild(bool(*matchfunction) (const hwNode &))
   return NULL;
 }
 
+
 hwNode *hwNode::findChildByHandle(const string & handle)
 {
   if (!This)
@@ -579,6 +625,7 @@ hwNode *hwNode::findChildByHandle(const string & handle)
 
   return NULL;
 }
+
 
 hwNode *hwNode::findChildByLogicalName(const string & name)
 {
@@ -602,6 +649,7 @@ hwNode *hwNode::findChildByLogicalName(const string & name)
   return NULL;
 }
 
+
 hwNode *hwNode::findChildByBusInfo(const string & businfo)
 {
   if (!This)
@@ -624,6 +672,7 @@ hwNode *hwNode::findChildByBusInfo(const string & businfo)
   return NULL;
 }
 
+
 hwNode *hwNode::findChildByResource(const hw::resource & r)
 {
   if (!This)
@@ -643,8 +692,9 @@ hwNode *hwNode::findChildByResource(const hw::resource & r)
   return NULL;
 }
 
+
 static string generateId(const string & radical,
-			 int count)
+int count)
 {
   char buffer[10];
 
@@ -652,6 +702,7 @@ static string generateId(const string & radical,
 
   return radical + ":" + string(buffer);
 }
+
 
 hwNode *hwNode::addChild(const hwNode & node)
 {
@@ -663,13 +714,13 @@ hwNode *hwNode::addChild(const hwNode & node)
   if (!This)
     return NULL;
 
-  // first see if the new node is attracted by one of our children
+// first see if the new node is attracted by one of our children
   for (unsigned int i = 0; i < This->children.size(); i++)
     if (This->children[i].attractsNode(node))
       return This->children[i].addChild(node);
 
-  // find if another child already has the same physical id
-  // in that case, we remove BOTH physical ids and let auto-allocation proceed
+// find if another child already has the same physical id
+// in that case, we remove BOTH physical ids and let auto-allocation proceed
   if (node.getPhysId() != "")
     samephysid = getChildByPhysId(node.getPhysId());
   if (samephysid)
@@ -678,12 +729,12 @@ hwNode *hwNode::addChild(const hwNode & node)
   }
 
   existing = getChild(id);
-  if (existing)			// first rename existing instance
+  if (existing)                                   // first rename existing instance
   {
-    while (getChild(generateId(id, count)))	// find a usable name
+    while (getChild(generateId(id, count)))       // find a usable name
       count++;
 
-    existing->setId(generateId(id, count));	// rename
+    existing->setId(generateId(id, count));       // rename
   }
 
   while (getChild(generateId(id, count)))
@@ -697,8 +748,9 @@ hwNode *hwNode::addChild(const hwNode & node)
     This->children.back().setPhysId("");
 
   return &(This->children.back());
-  //return getChild(This->children.back().getId());
+//return getChild(This->children.back().getId());
 }
+
 
 void hwNode::attractHandle(const string & handle)
 {
@@ -707,6 +759,7 @@ void hwNode::attractHandle(const string & handle)
 
   This->attracted.push_back(handle);
 }
+
 
 bool hwNode::attractsHandle(const string & handle) const
 {
@@ -725,6 +778,7 @@ bool hwNode::attractsHandle(const string & handle) const
   return false;
 }
 
+
 bool hwNode::attractsNode(const hwNode & node) const
 {
   if (!This || !node.This)
@@ -732,6 +786,7 @@ bool hwNode::attractsNode(const hwNode & node) const
 
   return attractsHandle(node.This->handle);
 }
+
 
 bool hwNode::isCapable(const string & feature) const
 {
@@ -747,8 +802,9 @@ bool hwNode::isCapable(const string & feature) const
   return false;
 }
 
+
 void hwNode::addCapability(const string & feature,
-			   const string & description)
+const string & description)
 {
   string features = feature;
 
@@ -765,21 +821,22 @@ void hwNode::addCapability(const string & feature,
     if (pos == string::npos)
     {
       if (!isCapable(cleanupId(features)))
-	This->features.push_back(cleanupId(features));
+        This->features.push_back(cleanupId(features));
       features = "";
     }
     else
     {
       string featureid = cleanupId(features.substr(0, pos));
       if (!isCapable(featureid))
-	This->features.push_back(featureid);
+        This->features.push_back(featureid);
       features = features.substr(pos + 1);
     }
   }
 }
 
+
 void hwNode::describeCapability(const string & feature,
-				const string & description)
+const string & description)
 {
   if (!This)
     return;
@@ -787,9 +844,9 @@ void hwNode::describeCapability(const string & feature,
   if (!isCapable(feature))
     return;
 
-
   This->features_descriptions[cleanupId(feature)] = strip(description);
 }
+
 
 string hwNode::getCapabilities() const
 {
@@ -804,6 +861,7 @@ string hwNode::getCapabilities() const
   return strip(result);
 }
 
+
 string hwNode::getCapabilityDescription(const string & feature) const
 {
   string featureid = cleanupId(feature);
@@ -815,14 +873,15 @@ string hwNode::getCapabilityDescription(const string & feature) const
     return "";
 
   if (This->features_descriptions.find(featureid) ==
-      This->features_descriptions.end())
+    This->features_descriptions.end())
     return "";
 
   return This->features_descriptions[featureid];
 }
 
+
 void hwNode::setConfig(const string & key,
-		       const string & value)
+const string & value)
 {
   if (!This)
     return;
@@ -832,14 +891,16 @@ void hwNode::setConfig(const string & key,
     This->config.erase(This->config.find(key));
 }
 
+
 void hwNode::setConfig(const string & key,
-		       unsigned long long value)
+unsigned long long value)
 {
   if (!This)
     return;
 
   This->config[key] = tostring(value);
 }
+
 
 string hwNode::getConfig(const string & key) const
 {
@@ -852,6 +913,7 @@ string hwNode::getConfig(const string & key) const
   return This->config[key];
 }
 
+
 vector < string > hwNode::getConfigValues(const string & separator) const
 {
   vector < string > result;
@@ -860,11 +922,12 @@ vector < string > hwNode::getConfigValues(const string & separator) const
     return result;
 
   for (map < string, string >::iterator i = This->config.begin();
-       i != This->config.end(); i++)
-    result.push_back(i->first + separator + i->second);
+    i != This->config.end(); i++)
+  result.push_back(i->first + separator + i->second);
 
   return result;
 }
+
 
 string hwNode::getLogicalName() const
 {
@@ -874,6 +937,7 @@ string hwNode::getLogicalName() const
     return "";
 }
 
+
 vector<string> hwNode::getLogicalNames() const
 {
   if (This)
@@ -882,13 +946,14 @@ vector<string> hwNode::getLogicalNames() const
     return vector<string>();
 }
 
+
 void hwNode::setLogicalName(const string & name)
 {
   if (This)
   {
     for (unsigned i = 0; i < This->logicalnames.size(); i++)
       if (This->logicalnames[i] == strip(name) || This->logicalnames[i] == "/dev/" + strip(name))
-        return;	// nothing to add, this logical name already exists
+        return;                                   // nothing to add, this logical name already exists
     if (exists("/dev/" + strip(name)))
     {
       This->logicalnames.push_back("/dev/" + strip(name));
@@ -900,6 +965,7 @@ void hwNode::setLogicalName(const string & name)
   }
 }
 
+
 string hwNode::getDev() const
 {
   if (This)
@@ -907,6 +973,7 @@ string hwNode::getDev() const
   else
     return "";
 }
+
 
 void hwNode::setDev(const string & s)
 {
@@ -926,6 +993,7 @@ void hwNode::setDev(const string & s)
   }
 }
 
+
 string hwNode::getBusInfo() const
 {
   if (This)
@@ -933,6 +1001,7 @@ string hwNode::getBusInfo() const
   else
     return "";
 }
+
 
 void hwNode::setBusInfo(const string & businfo)
 {
@@ -945,10 +1014,11 @@ void hwNode::setBusInfo(const string & businfo)
       string info = strip(businfo);
 
       if(matches(info, "^[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
-	This->businfo = string("pci@") + info;
+        This->businfo = string("pci@") + info;
     }
   }
 }
+
 
 string hwNode::getPhysId() const
 {
@@ -957,6 +1027,7 @@ string hwNode::getPhysId() const
   else
     return "";
 }
+
 
 void hwNode::setPhysId(long physid)
 {
@@ -969,8 +1040,9 @@ void hwNode::setPhysId(long physid)
   }
 }
 
+
 void hwNode::setPhysId(unsigned physid1,
-		       unsigned physid2)
+unsigned physid2)
 {
   if (This)
   {
@@ -984,9 +1056,10 @@ void hwNode::setPhysId(unsigned physid1,
   }
 }
 
+
 void hwNode::setPhysId(unsigned physid1,
-		       unsigned physid2,
-		       unsigned physid3)
+unsigned physid2,
+unsigned physid3)
 {
   if (This)
   {
@@ -996,6 +1069,7 @@ void hwNode::setPhysId(unsigned physid1,
     This->physid = string(buffer);
   }
 }
+
 
 void hwNode::setPhysId(const string & physid)
 {
@@ -1007,6 +1081,7 @@ void hwNode::setPhysId(const string & physid)
       This->physid.erase(0, 1);
   }
 }
+
 
 void hwNode::assignPhysIds()
 {
@@ -1023,7 +1098,7 @@ void hwNode::assignPhysIds()
     if (This->children[i].getPhysId() == "")
     {
       while (getChildByPhysId(curid))
-	curid++;
+        curid++;
 
       This->children[i].setPhysId(curid);
     }
@@ -1031,6 +1106,7 @@ void hwNode::assignPhysIds()
     This->children[i].assignPhysIds();
   }
 }
+
 
 void hwNode::fixInconsistencies()
 {
@@ -1043,6 +1119,7 @@ void hwNode::fixInconsistencies()
   for (unsigned int i = 0; i < This->children.size(); i++)
     This->children[i].fixInconsistencies();
 }
+
 
 void hwNode::merge(const hwNode & node)
 {
@@ -1091,17 +1168,18 @@ void hwNode::merge(const hwNode & node)
   for (unsigned int i = 0; i < node.This->features.size(); i++)
     addCapability(node.This->features[i]);
   for (map < string, string >::iterator i = node.This->features_descriptions.begin();
-       i != node.This->features_descriptions.end(); i++)
-    describeCapability(i->first, i->second);
+    i != node.This->features_descriptions.end(); i++)
+  describeCapability(i->first, i->second);
 
   for (map < string, string >::iterator i = node.This->config.begin();
-       i != node.This->config.end(); i++)
-    setConfig(i->first, i->second);
+    i != node.This->config.end(); i++)
+  setConfig(i->first, i->second);
 
   for (map < string, value >::iterator i = node.This->hints.begin();
-       i != node.This->hints.end(); i++)
-    addHint(i->first, i->second);
+    i != node.This->hints.end(); i++)
+  addHint(i->first, i->second);
 }
+
 
 void hwNode::addResource(const resource & r)
 {
@@ -1110,6 +1188,7 @@ void hwNode::addResource(const resource & r)
 
   This->resources.push_back(r);
 }
+
 
 bool hwNode::usesResource(const resource & r) const
 {
@@ -1123,6 +1202,7 @@ bool hwNode::usesResource(const resource & r) const
   return false;
 }
 
+
 vector < string > hwNode::getResources(const string & separator) const
 {
   vector < string > result;
@@ -1131,17 +1211,19 @@ vector < string > hwNode::getResources(const string & separator) const
     return result;
 
   for (vector < resource >::iterator i = This->resources.begin();
-       i != This->resources.end(); i++)
-    result.push_back(i->asString(separator));
+    i != This->resources.end(); i++)
+  result.push_back(i->asString(separator));
 
   return result;
 }
+
 
 void hwNode::setWidth(unsigned int width)
 {
   if(This)
     This->width = width;
 }
+
 
 unsigned int hwNode::getWidth() const
 {
@@ -1151,11 +1233,13 @@ unsigned int hwNode::getWidth() const
     return 0;
 }
 
+
 void hwNode::addHint(const string & id, const value & v)
 {
   if(This)
     This->hints[id] = v;
 }
+
 
 value hwNode::getHint(const string & id) const
 {
@@ -1164,6 +1248,7 @@ value hwNode::getHint(const string & id) const
 
   return This->hints[id];
 }
+
 
 string hwNode::asXML(unsigned level)
 {
@@ -1180,9 +1265,9 @@ string hwNode::asXML(unsigned level)
   {
     out << "<?xml version=\"1.0\" standalone=\"yes\" ?>" << endl;
     out << "<!-- generated by lshw-" << getpackageversion() << " -->" <<
-#if defined(__GNUC__) && defined(__VERSION__)
-    endl << "<!-- GCC " << __VERSION__ << " -->" <<
-#endif
+  #if defined(__GNUC__) && defined(__VERSION__)
+      endl << "<!-- GCC " << __VERSION__ << " -->" <<
+  #endif
       endl;
     if (geteuid() != 0)
       out << "<!-- WARNING: not running as root -->" << endl;
@@ -1252,11 +1337,11 @@ string hwNode::asXML(unsigned level)
 
       for(unsigned int i = 0; i<logicalnames.size(); i++)
       {
-      	out << spaces(2*level+1);
+        out << spaces(2*level+1);
         out << "<logicalname>";
-      	out << logicalnames[i];
+        out << logicalnames[i];
         out << "</logicalname>";
-      	out << endl;
+        out << endl;
       }
     }
 
@@ -1286,7 +1371,7 @@ string hwNode::asXML(unsigned level)
       out << "</serial>";
       out << endl;
     }
-  
+
     if (getSlot() != "")
     {
       out << spaces(2*level+1);
@@ -1295,65 +1380,65 @@ string hwNode::asXML(unsigned level)
       out << "</slot>";
       out << endl;
     }
-  
+
     if (getSize() > 0)
     {
       out << spaces(2*level+1);
       out << "<size";
       switch (getClass())
       {
-      case hw::memory:
-      case hw::address:
-      case hw::storage:
-      case hw::disk:
-      case hw::display:
-        out << " units=\"bytes\"";
-        break;
-  
-      case hw::processor:
-      case hw::bus:
-      case hw::system:
-        out << " units=\"Hz\"";
-        break;
-  
-      case hw::power:
-        out << " units=\"mWh\"";
-        break;
-  
-      default:
-        out << "";
+        case hw::memory:
+        case hw::address:
+        case hw::storage:
+        case hw::disk:
+        case hw::display:
+          out << " units=\"bytes\"";
+          break;
+
+        case hw::processor:
+        case hw::bus:
+        case hw::system:
+          out << " units=\"Hz\"";
+          break;
+
+        case hw::power:
+          out << " units=\"mWh\"";
+          break;
+
+        default:
+          out << "";
       }
       out << ">";
       out << getSize();
       out << "</size>";
       out << endl;
     }
-  
+
     if (getCapacity() > 0)
     {
       out << spaces(2*level+1);
       out << "<capacity";
       switch (getClass())
       {
-      case hw::memory:
-      case hw::address:
-      case hw::storage:
-      case hw::disk:
-        out << " units=\"bytes\"";
-        break;
-  
-      case hw::processor:
-      case hw::bus:
-      case hw::system:
-        out << " units=\"Hz\"";
-        break;
-  
-      case hw::power:
-        out << " units=\"mWh\"";
-        break;
-  
-      default:
-        out << "";
+        case hw::memory:
+        case hw::address:
+        case hw::storage:
+        case hw::disk:
+          out << " units=\"bytes\"";
+          break;
+
+        case hw::processor:
+        case hw::bus:
+        case hw::system:
+          out << " units=\"Hz\"";
+          break;
+
+        case hw::power:
+          out << " units=\"mWh\"";
+          break;
+
+        default:
+          out << "";
       }
       out << ">";
       out << getCapacity();
@@ -1393,7 +1478,7 @@ string hwNode::asXML(unsigned level)
       out << "</configuration>" << endl;
     }
     config.clear();
-  
+
     splitlines(getCapabilities(), config, ' ');
     if (config.size() > 0)
     {
@@ -1405,13 +1490,13 @@ string hwNode::asXML(unsigned level)
         out << "<capability id=\"" << escape(config[j]);
         if (getCapabilityDescription(config[j]) == "")
         {
-	  out << "\" />";
+          out << "\" />";
         }
         else
         {
-	  out << "\" >";
-	  out << escape(getCapabilityDescription(config[j]));
-	  out << "</capability>";
+          out << "\" >";
+          out << escape(getCapabilityDescription(config[j]));
+          out << "</capability>";
         }
         out << endl;
       }
@@ -1447,9 +1532,9 @@ string hwNode::asXML(unsigned level)
     out << "</node>" << endl;
   }
 
-
   return out.str();
 }
+
 
 struct hw::resource_i
 {
@@ -1474,6 +1559,7 @@ resource::resource()
   }
 }
 
+
 resource::~resource()
 {
   if (This)
@@ -1488,6 +1574,7 @@ resource::~resource()
   }
 }
 
+
 resource::resource(const resource & r)
 {
   This = r.This;
@@ -1496,13 +1583,14 @@ resource::resource(const resource & r)
     This->refcount++;
 }
 
+
 resource & resource::operator = (const resource & r)
 {
   if (this == &r)
-    return *this;		// ignore self-affectation
+    return *this;                                 // ignore self-affectation
 
   if (This == r.This)
-    return *this;		// both objects reference the same data
+    return *this;                                 // both objects reference the same data
 
   if (This)
   {
@@ -1522,8 +1610,9 @@ resource & resource::operator = (const resource & r)
   return *this;
 }
 
+
 resource resource::iomem(unsigned long long start,
-			 unsigned long long end)
+unsigned long long end)
 {
   resource r;
 
@@ -1537,8 +1626,9 @@ resource resource::iomem(unsigned long long start,
   return r;
 }
 
+
 resource resource::ioport(unsigned long start,
-			  unsigned long end)
+unsigned long end)
 {
   resource r;
 
@@ -1552,8 +1642,9 @@ resource resource::ioport(unsigned long start,
   return r;
 }
 
+
 resource resource::mem(unsigned long long start,
-		       unsigned long long end)
+unsigned long long end)
 {
   resource r;
 
@@ -1566,6 +1657,7 @@ resource resource::mem(unsigned long long start,
 
   return r;
 }
+
 
 resource resource::irq(unsigned int value)
 {
@@ -1580,6 +1672,7 @@ resource resource::irq(unsigned int value)
   return r;
 }
 
+
 resource resource::dma(unsigned int value)
 {
   resource r;
@@ -1593,6 +1686,7 @@ resource resource::dma(unsigned int value)
   return r;
 }
 
+
 string resource::asString(const string & separator) const
 {
   char buffer[80];
@@ -1605,75 +1699,78 @@ string resource::asString(const string & separator) const
 
   switch (This->type)
   {
-  case hw::none:
-    result = "(none)";
-    break;
-  case hw::dma:
-    result = "dma" + separator;
-    snprintf(buffer, sizeof(buffer), "%d", This->ui1);
-    break;
-  case hw::irq:
-    result = "irq" + separator;
-    snprintf(buffer, sizeof(buffer), "%d", This->ui1);
-    break;
-  case hw::iomem:
-    result = "iomemory" + separator;
-    snprintf(buffer, sizeof(buffer), "%llx-%llx", This->ull1, This->ull2);
-    break;
-  case hw::mem:
-    result = "memory" + separator;
-    snprintf(buffer, sizeof(buffer), "%llx-%llx", This->ull1, This->ull2);
-    break;
-  case hw::ioport:
-    result = "ioport" + separator;
-    snprintf(buffer, sizeof(buffer), "%lx-%lx", This->ul1, This->ul2);
-    break;
-  default:
-    result = "(unknown)";
+    case hw::none:
+      result = "(none)";
+      break;
+    case hw::dma:
+      result = "dma" + separator;
+      snprintf(buffer, sizeof(buffer), "%d", This->ui1);
+      break;
+    case hw::irq:
+      result = "irq" + separator;
+      snprintf(buffer, sizeof(buffer), "%d", This->ui1);
+      break;
+    case hw::iomem:
+      result = "iomemory" + separator;
+      snprintf(buffer, sizeof(buffer), "%llx-%llx", This->ull1, This->ull2);
+      break;
+    case hw::mem:
+      result = "memory" + separator;
+      snprintf(buffer, sizeof(buffer), "%llx-%llx", This->ull1, This->ull2);
+      break;
+    case hw::ioport:
+      result = "ioport" + separator;
+      snprintf(buffer, sizeof(buffer), "%lx-%lx", This->ul1, This->ul2);
+      break;
+    default:
+      result = "(unknown)";
   }
 
   return result + string(buffer);
 }
 
+
 bool resource::operator == (const resource & r)
-     const {
-       if (This == r.This)
-	 return true;
+const
+{
+  if (This == r.This)
+    return true;
 
-       if (!This || !r.This)
-	 return false;
+  if (!This || !r.This)
+    return false;
 
-       if (This->type != r.This->type)
-	 return false;
+  if (This->type != r.This->type)
+    return false;
 
-       switch (This->type)
-       {
-       case hw::dma:
-       case hw::irq:
-	 return This->ui1 == r.This->ui1;
-	 break;
+  switch (This->type)
+  {
+    case hw::dma:
+    case hw::irq:
+      return This->ui1 == r.This->ui1;
+      break;
 
-	 case hw::iomem:case hw::mem:return (This->ull1 >= r.This->ull1)
-	   && (This->ull2 <= r.This->ull2) || (r.This->ull1 >= This->ull1)
-	   && (r.This->ull2 <= This->ull2);
-	 break;
+    case hw::iomem:case hw::mem:return (This->ull1 >= r.This->ull1)
+      && (This->ull2 <= r.This->ull2) || (r.This->ull1 >= This->ull1)
+      && (r.This->ull2 <= This->ull2);
+    break;
 
-	 case hw::ioport:return (This->ul1 >= r.This->ul1)
-	   && (This->ul1 <= r.This->ul2) || (r.This->ul1 >= This->ul1)
-	   && (r.This->ul1 <= This->ul2);
-	 break;
+    case hw::ioport:return (This->ul1 >= r.This->ul1)
+      && (This->ul1 <= r.This->ul2) || (r.This->ul1 >= This->ul1)
+      && (r.This->ul1 <= This->ul2);
+    break;
 
-	 default:return false;
-       }
-     }
+    default:return false;
+  }
+}
+
 
 struct hw::value_i
 {
   hw::hwValueType type;
 
-    long long ll;
-    string s;
-    bool b;
+  long long ll;
+  string s;
+  bool b;
 
   int refcount;
 };
@@ -1689,6 +1786,7 @@ value::value()
   }
 }
 
+
 value::~value()
 {
   if(This)
@@ -1699,6 +1797,7 @@ value::~value()
     This = NULL;
   }
 }
+
 
 value::value(long long ll)
 {
@@ -1712,6 +1811,7 @@ value::value(long long ll)
   }
 }
 
+
 value::value(const string & s)
 {
   This = new hw::value_i;
@@ -1724,6 +1824,7 @@ value::value(const string & s)
   }
 }
 
+
 value::value(const value & v)
 {
   This = v.This;
@@ -1733,6 +1834,7 @@ value::value(const value & v)
     This->refcount++;
   }
 }
+
 
 value & value::operator=(const value & v)
 {
@@ -1751,6 +1853,7 @@ value & value::operator=(const value & v)
 
   return *this;
 }
+
 
 bool value::operator==(const value & v) const
 {
@@ -1795,6 +1898,7 @@ string value::asString() const
   return "";
 }
 
+
 bool value::defined() const
 {
   if(!This) return false;
@@ -1802,4 +1906,3 @@ bool value::defined() const
 
   return true;
 }
-

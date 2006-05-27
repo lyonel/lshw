@@ -34,6 +34,7 @@ static unsigned long long get_kcore_size()
     return buf.st_size;
 }
 
+
 static unsigned long long get_sysconf_size()
 {
   long pagesize = 0;
@@ -49,6 +50,7 @@ static unsigned long long get_sysconf_size()
   return logicalmem;
 }
 
+
 static unsigned long long count_memorybanks_size(hwNode & n)
 {
   hwNode *memory = n.getChild("core/memory");
@@ -57,11 +59,11 @@ static unsigned long long count_memorybanks_size(hwNode & n)
   {
     unsigned long long size = 0;
 
-    memory->claim(true);	// claim memory and all its children
+    memory->claim(true);                          // claim memory and all its children
 
     for (unsigned int i = 0; i < memory->countChildren(); i++)
       if (memory->getChild(i)->getClass() == hw::memory)
-	size += memory->getChild(i)->getSize();
+        size += memory->getChild(i)->getSize();
 
     memory->setSize(size);
     return size;
@@ -69,6 +71,7 @@ static unsigned long long count_memorybanks_size(hwNode & n)
   else
     return 0;
 }
+
 
 static void claim_memory(hwNode & n)
 {
@@ -78,10 +81,11 @@ static void claim_memory(hwNode & n)
   {
     for (unsigned int i = 0; i < core->countChildren(); i++)
       if (core->getChild(i)->getClass() == hw::memory)
-	if(core->getChild(i)->claimed())
-          core->getChild(i)->claim(true);	// claim memory and all its children
+        if(core->getChild(i)->claimed())
+          core->getChild(i)->claim(true);         // claim memory and all its children
   }
 }
+
 
 bool scan_memory(hwNode & n)
 {
@@ -119,11 +123,11 @@ bool scan_memory(hwNode & n)
     if (memory->getDescription() == "")
       memory->setDescription("System memory");
 
-    if (memory->getSize() > logicalmem)	// we already have a value
+    if (memory->getSize() > logicalmem)           // we already have a value
       return true;
 
     if ((logicalmem == 0)
-	|| ((kcore > logicalmem) && (kcore < 2 * logicalmem)))
+      || ((kcore > logicalmem) && (kcore < 2 * logicalmem)))
       memory->setSize(kcore);
     else
       memory->setSize(logicalmem);

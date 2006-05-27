@@ -11,16 +11,16 @@
 __ID("@(#) $Id$");
 
 #ifndef BLKROGET
-#define BLKROGET   _IO(0x12,94)	/* get read-only status (0 = read_write) */
+#define BLKROGET   _IO(0x12,94)                   /* get read-only status (0 = read_write) */
 #endif
 #ifndef BLKGETSIZE
-#define BLKGETSIZE _IO(0x12,96)	/* return device size */
+#define BLKGETSIZE _IO(0x12,96)                   /* return device size */
 #endif
 #ifndef BLKGETSIZE64
-#define BLKGETSIZE64 _IOR(0x12,114,size_t)     /* size in bytes */
+#define BLKGETSIZE64 _IOR(0x12,114,size_t)        /* size in bytes */
 #endif
 #ifndef BLKSSZGET
-#define BLKSSZGET  _IO(0x12,104)	/* get block device sector size */
+#define BLKSSZGET  _IO(0x12,104)                  /* get block device sector size */
 #endif
 
 bool scan_disk(hwNode & n)

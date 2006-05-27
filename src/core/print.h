@@ -9,5 +9,4 @@ void printhwpath(hwNode & node);
 void printbusinfo(hwNode & node);
 
 void status(const char *);
-
 #endif

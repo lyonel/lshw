@@ -4,5 +4,4 @@
 #include "hw.h"
 
 bool scan_usb(hwNode & n);
-
 #endif

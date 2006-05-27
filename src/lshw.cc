@@ -28,19 +28,20 @@ void usage(const char *progname)
     fprintf(stderr, "\t-X              use graphical interface\n");
   fprintf(stderr, "\noptions can be\n");
   fprintf(stderr,
-	  "\t-class CLASS    only show a certain class of hardware\n");
+    "\t-class CLASS    only show a certain class of hardware\n");
   fprintf(stderr, "\t-C CLASS        same as '-class CLASS'\n");
   fprintf(stderr,
-	  "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n");
+    "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr,
-	  "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n");
+    "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr, "\n");
 }
+
 
 void status(const char *message)
 {
   static size_t lastlen = 0;
-                                                                                
+
   if (isatty(2))
   {
     fprintf(stderr, "\r");
@@ -52,8 +53,9 @@ void status(const char *message)
   }
 }
 
+
 int main(int argc,
-	 char **argv)
+char **argv)
 {
   bool htmloutput = false;
   bool xmloutput = false;
@@ -63,7 +65,7 @@ int main(int argc,
 
   disable("isapnp");
 
-  // define some aliases for nodes classes
+// define some aliases for nodes classes
   alias("disc", "disk");
   alias("cpu", "processor");
   alias("lan", "network");
@@ -127,7 +129,7 @@ int main(int argc,
 
   {
     hwNode computer("computer",
-		    hw::system);
+      hw::system);
 
     scan_system(computer);
 
@@ -139,9 +141,9 @@ int main(int argc,
     else
     {
       if (xmloutput)
-	cout << computer.asXML();
+        cout << computer.asXML();
       else
-	print(computer, htmloutput);
+        print(computer, htmloutput);
     }
   }
 

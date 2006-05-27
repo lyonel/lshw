@@ -5,7 +5,8 @@
 
 static char *id = "@(#) $Id$";
 
-extern "C" {
+extern "C"
+{
 #include "support.h"
 };
 
@@ -21,13 +22,13 @@ static GtkWidget *statusbar = NULL;
 extern GtkWidget *mainwindow;
 
 enum
-  {
-    COL_NAME = 0,
-    COL_NODE,
-    COL_WEIGHT,
-    COL_CONTINUATION,
-    NUM_COLS
-  };
+{
+  COL_NAME = 0,
+  COL_NODE,
+  COL_WEIGHT,
+  COL_CONTINUATION,
+  NUM_COLS
+};
 
 static void clear_list(GtkWidget * list1)
 {
@@ -36,6 +37,7 @@ static void clear_list(GtkWidget * list1)
   while((col = gtk_tree_view_get_column(GTK_TREE_VIEW(list1), 0)))
     gtk_tree_view_remove_column(GTK_TREE_VIEW(list1), col);
 }
+
 
 static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=NULL)
 {
@@ -66,11 +68,11 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
       text = root->getChild(i)->getId();
 
     gtk_list_store_set (list_store, &iter,
-                      COL_NAME, text.c_str(),
-                      COL_NODE, root->getChild(i),
-                      COL_WEIGHT, (root->getChild(i)->countChildren()>0)?PANGO_WEIGHT_BOLD:PANGO_WEIGHT_NORMAL,
-                      COL_CONTINUATION, (root->getChild(i)->countChildren()>0)?">":"",
-                      -1);
+      COL_NAME, text.c_str(),
+      COL_NODE, root->getChild(i),
+      COL_WEIGHT, (root->getChild(i)->countChildren()>0)?PANGO_WEIGHT_BOLD:PANGO_WEIGHT_NORMAL,
+      COL_CONTINUATION, (root->getChild(i)->countChildren()>0)?">":"",
+      -1);
   }
 
   col = gtk_tree_view_column_new();
@@ -98,6 +100,7 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
     gtk_tree_selection_select_iter(GTK_TREE_SELECTION(gtk_tree_view_get_selection(GTK_TREE_VIEW(list1))), &current_iter);
 }
 
+
 static void create_tags (GtkTextBuffer *buffer)
 {
   static bool initialized = false;
@@ -107,85 +110,86 @@ static void create_tags (GtkTextBuffer *buffer)
   initialized = true;
 
   gtk_text_buffer_create_tag (buffer, "heading",
-			      "weight", PANGO_WEIGHT_BOLD,
-			      "size", 15 * PANGO_SCALE,
-			      NULL);
-  
+    "weight", PANGO_WEIGHT_BOLD,
+    "size", 15 * PANGO_SCALE,
+    NULL);
+
   gtk_text_buffer_create_tag (buffer, "italic",
-			      "style", PANGO_STYLE_ITALIC, NULL);
+    "style", PANGO_STYLE_ITALIC, NULL);
 
   gtk_text_buffer_create_tag (buffer, "bold",
-			      "weight", PANGO_WEIGHT_BOLD, NULL);  
-  
+    "weight", PANGO_WEIGHT_BOLD, NULL);
+
   gtk_text_buffer_create_tag (buffer, "big",
-			      /* points times the PANGO_SCALE factor */
-			      "size", 20 * PANGO_SCALE, NULL);
+/* points times the PANGO_SCALE factor */
+    "size", 20 * PANGO_SCALE, NULL);
 
   gtk_text_buffer_create_tag (buffer, "xx-small",
-			      "scale", PANGO_SCALE_XX_SMALL, NULL);
+    "scale", PANGO_SCALE_XX_SMALL, NULL);
 
   gtk_text_buffer_create_tag (buffer, "x-large",
-			      "scale", PANGO_SCALE_X_LARGE, NULL);
-  
+    "scale", PANGO_SCALE_X_LARGE, NULL);
+
   gtk_text_buffer_create_tag (buffer, "monospace",
-			      "family", "monospace", NULL);
-  
+    "family", "monospace", NULL);
+
   gtk_text_buffer_create_tag (buffer, "blue_foreground",
-			      "foreground", "blue", NULL);  
+    "foreground", "blue", NULL);
 
   gtk_text_buffer_create_tag (buffer, "red_background",
-			      "background", "red", NULL);
+    "background", "red", NULL);
 
   gtk_text_buffer_create_tag (buffer, "big_gap_before_line",
-			      "pixels_above_lines", 30, NULL);
+    "pixels_above_lines", 30, NULL);
 
   gtk_text_buffer_create_tag (buffer, "big_gap_after_line",
-			      "pixels_below_lines", 30, NULL);
+    "pixels_below_lines", 30, NULL);
 
   gtk_text_buffer_create_tag (buffer, "double_spaced_line",
-			      "pixels_inside_wrap", 10, NULL);
+    "pixels_inside_wrap", 10, NULL);
 
   gtk_text_buffer_create_tag (buffer, "not_editable",
-			      "editable", FALSE, NULL);
-  
+    "editable", FALSE, NULL);
+
   gtk_text_buffer_create_tag (buffer, "word_wrap",
-			      "wrap_mode", GTK_WRAP_WORD, NULL);
+    "wrap_mode", GTK_WRAP_WORD, NULL);
 
   gtk_text_buffer_create_tag (buffer, "char_wrap",
-			      "wrap_mode", GTK_WRAP_CHAR, NULL);
+    "wrap_mode", GTK_WRAP_CHAR, NULL);
 
   gtk_text_buffer_create_tag (buffer, "no_wrap",
-			      "wrap_mode", GTK_WRAP_NONE, NULL);
-  
+    "wrap_mode", GTK_WRAP_NONE, NULL);
+
   gtk_text_buffer_create_tag (buffer, "center",
-			      "justification", GTK_JUSTIFY_CENTER, NULL);
+    "justification", GTK_JUSTIFY_CENTER, NULL);
 
   gtk_text_buffer_create_tag (buffer, "right_justify",
-			      "justification", GTK_JUSTIFY_RIGHT, NULL);
+    "justification", GTK_JUSTIFY_RIGHT, NULL);
 
   gtk_text_buffer_create_tag (buffer, "wide_margins",
-			      "left_margin", 50, "right_margin", 50,
-			      NULL);
-  
+    "left_margin", 50, "right_margin", 50,
+    NULL);
+
   gtk_text_buffer_create_tag (buffer, "strikethrough",
-			      "strikethrough", TRUE, NULL);
-  
+    "strikethrough", TRUE, NULL);
+
   gtk_text_buffer_create_tag (buffer, "underline",
-			      "underline", PANGO_UNDERLINE_SINGLE, NULL);
+    "underline", PANGO_UNDERLINE_SINGLE, NULL);
 
   gtk_text_buffer_create_tag (buffer, "double_underline",
-			      "underline", PANGO_UNDERLINE_DOUBLE, NULL);
+    "underline", PANGO_UNDERLINE_DOUBLE, NULL);
 
   gtk_text_buffer_create_tag (buffer, "superscript",
-			      "rise", 10 * PANGO_SCALE,	  /* 10 pixels */
-			      "size", 8 * PANGO_SCALE,	  /* 8 points */
-			      NULL);
-  
+    "rise", 10 * PANGO_SCALE,                     /* 10 pixels */
+    "size", 8 * PANGO_SCALE,                      /* 8 points */
+    NULL);
+
   gtk_text_buffer_create_tag (buffer, "subscript",
-			      "rise", -10 * PANGO_SCALE,   /* 10 pixels */
-			      "size", 8 * PANGO_SCALE,	   /* 8 points */
-			      NULL);
+    "rise", -10 * PANGO_SCALE,                    /* 10 pixels */
+    "size", 8 * PANGO_SCALE,                      /* 8 points */
+    NULL);
 }
+
 
 static void display(GtkWidget * mainwindow)
 {
@@ -205,12 +209,13 @@ static void display(GtkWidget * mainwindow)
   }
 }
 
+
 void status(const char *message)
 {
   static guint context_id = 0;
 
   if(!GTK_IS_WIDGET(statusbar)) return;
-  
+
   if(!context_id)
     context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), "scanning");
   else
@@ -264,6 +269,7 @@ void refresh(GtkWidget *mainwindow)
   lock = false;
 }
 
+
 void change_selection(unsigned list, GtkTreeView *treeview)
 {
   GtkTreeSelection *selection;
@@ -286,6 +292,7 @@ void change_selection(unsigned list, GtkTreeView *treeview)
   display(mainwindow);
 }
 
+
 static hwNode * find_parent(hwNode * n, hwNode *sub)
 {
   if(!n) return NULL;
@@ -303,6 +310,7 @@ static hwNode * find_parent(hwNode * n, hwNode *sub)
   return NULL;
 }
 
+
 void browse(unsigned list, GtkTreeView *treeview)
 {
   GtkTreeSelection *selection;
@@ -319,20 +327,20 @@ void browse(unsigned list, GtkTreeView *treeview)
     gtk_tree_model_get (model, &iter, COL_NODE, &n, -1);
 
   if(n)
-  switch(list)
-  {
-    case 1:
-      //if(n!=selected1)
-      {
-        selected1 = n;
-        selected2 = NULL;
-        selected3 = NULL;
-        populate_sublist(list2, selected1, selected2);
-        populate_sublist(list3, selected2, selected3);
-      }
+    switch(list)
+    {
+      case 1:
+//if(n!=selected1)
+        {
+          selected1 = n;
+          selected2 = NULL;
+          selected3 = NULL;
+          populate_sublist(list2, selected1, selected2);
+          populate_sublist(list3, selected2, selected3);
+        }
       break;
     case 2:
-      //if(n!=selected2)
+//if(n!=selected2)
       {
         selected2 = n;
         selected3 = NULL;
@@ -340,7 +348,7 @@ void browse(unsigned list, GtkTreeView *treeview)
       }
       break;
     case 3:
-      //if(n!=selected3)
+//if(n!=selected3)
       {
         selected3 = n;
         if(n->countChildren()>0)
@@ -362,8 +370,9 @@ void browse(unsigned list, GtkTreeView *treeview)
   else
     gtk_widget_set_sensitive(go_up_button, 0);
 
-  (void) &::id;                 // avoid warning "id defined but not used"
+  (void) &::id;                                   // avoid warning "id defined but not used"
 }
+
 
 void go_back(GtkWidget *mainwindow)
 {

@@ -7,5 +7,4 @@
 const char * vendorname(const char * id);
 
 hw::hwClass pnp_class(const string & pnpid);
-
 #endif

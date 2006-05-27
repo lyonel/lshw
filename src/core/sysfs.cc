@@ -31,33 +31,33 @@ struct sysfs::entry_i
 struct sysfs_t
 {
   sysfs_t():path("/sys"),
-  temporary(false),
-  has_sysfs(false)
+    temporary(false),
+    has_sysfs(false)
   {
     has_sysfs = exists(path + "/class/.");
 
-    if (!has_sysfs)		// sysfs doesn't seem to be mounted
-      // try to mount it in a temporary directory
+    if (!has_sysfs)                               // sysfs doesn't seem to be mounted
+// try to mount it in a temporary directory
     {
       char buffer[50];
       char *tmpdir = NULL;
 
-        strncpy(buffer,
-		"/var/tmp/sys-XXXXXX",
-		sizeof(buffer));
-        tmpdir = mkdtemp(buffer);
+      strncpy(buffer,
+        "/var/tmp/sys-XXXXXX",
+        sizeof(buffer));
+      tmpdir = mkdtemp(buffer);
 
       if (tmpdir)
       {
-	temporary = true;
-	path = string(tmpdir);
-	chmod(tmpdir,
-	      0000);		// to make clear it is a mount point
-	mount("none",
-	      path.c_str(),
-	      "sysfs",
-	      0,
-	      NULL);
+        temporary = true;
+        path = string(tmpdir);
+        chmod(tmpdir,
+          0000);                                  // to make clear it is a mount point
+        mount("none",
+          path.c_str(),
+          "sysfs",
+          0,
+          NULL);
       }
 
       has_sysfs = exists(path + "/classes/.");
@@ -110,6 +110,7 @@ static string sysfs_getbustype(const string & path)
   return "";
 }
 
+
 static string sysfstopci(const string & path)
 {
   if (path.length() > 7)
@@ -118,6 +119,7 @@ static string sysfstopci(const string & path)
     return "";
 }
 
+
 static string sysfstoide(const string & path)
 {
   if (path.substr(0, 3) == "ide")
@@ -125,6 +127,7 @@ static string sysfstoide(const string & path)
   else
     return "ide@" + path;
 }
+
 
 static string sysfstobusinfo(const string & path)
 {
@@ -139,6 +142,7 @@ static string sysfstobusinfo(const string & path)
   return "";
 }
 
+
 static string sysfs_getbusinfo_byclass(const string & devclass, const string & devname)
 {
   string device =
@@ -146,7 +150,7 @@ static string sysfs_getbusinfo_byclass(const string & devclass, const string & d
   string result = "";
   int i = 0;
 
-  while((result == "") && (i<2))	// device may point to /businfo or /businfo/devname
+  while((result == "") && (i<2))                  // device may point to /businfo or /businfo/devname
   {
     if(!exists(device)) return "";
     result = sysfstobusinfo(realpath(device));
@@ -156,6 +160,7 @@ static string sysfs_getbusinfo_byclass(const string & devclass, const string & d
 
   return result;
 }
+
 
 static string sysfs_getbusinfo_bybus(const string & devbus, const string & devname)
 {
@@ -169,6 +174,7 @@ static string sysfs_getbusinfo_bybus(const string & devbus, const string & devna
   return sysfstobusinfo(hw::strip(buffer));
 }
 
+
 string sysfs_getbusinfo(const entry & e)
 {
   if(e.This->devclass != "")
@@ -177,6 +183,7 @@ string sysfs_getbusinfo(const entry & e)
     return sysfs_getbusinfo_bybus(e.This->devbus, e.This->devname);
   return "";
 }
+
 
 static string finddevice(const string & name, const string & root = "")
 {
@@ -206,6 +213,7 @@ static string finddevice(const string & name, const string & root = "")
   return result;
 }
 
+
 string sysfs_finddevice(const string & name)
 {
   string devices = fs.path + string("/devices/");
@@ -219,8 +227,9 @@ string sysfs_finddevice(const string & name)
   return result;
 }
 
+
 string sysfs_getdriver(const string & devclass,
-		       const string & devname)
+const string & devname)
 {
   string driverpath =
     fs.path + string("/class/") + devclass + string("/") + devname + "/";
@@ -234,6 +243,7 @@ string sysfs_getdriver(const string & devclass,
   return string(basename(buffer));
 }
 
+
 entry entry::byBus(string devbus, string devname)
 {
   entry e;
@@ -243,6 +253,7 @@ entry entry::byBus(string devbus, string devname)
 
   return e;
 }
+
 
 entry entry::byClass(string devclass, string devname)
 {
@@ -254,17 +265,20 @@ entry entry::byClass(string devclass, string devname)
   return e;
 }
 
+
 entry::entry()
 {
   This = new entry_i;
 }
 
+
 entry & entry::operator =(const entry & e)
 {
-  
+
   *This = *(e.This);
   return *this;
 }
+
 
 entry::entry(const entry & e)
 {
@@ -273,10 +287,12 @@ entry::entry(const entry & e)
   *This = *(e.This);
 }
 
+
 entry::~entry()
 {
   delete This;
 }
+
 
 bool scan_sysfs(hwNode & n)
 {

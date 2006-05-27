@@ -7,5 +7,4 @@ hwNode * guessParent(const hwNode & child, hwNode & base);
 
 string guessBusInfo(const string &);
 string guessParentBusInfo(const string &);
-
 #endif

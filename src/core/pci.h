@@ -4,5 +4,4 @@
 #include "hw.h"
 
 bool scan_pci(hwNode & n);
-
 #endif

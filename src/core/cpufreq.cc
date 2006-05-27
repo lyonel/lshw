@@ -37,6 +37,7 @@ static long get_long(const string & path)
   return result;
 }
 
+
 static string cpubusinfo(int cpu)
 {
   char buffer[10];
@@ -45,6 +46,7 @@ static string cpubusinfo(int cpu)
 
   return string(buffer);
 }
+
 
 bool scan_cpufreq(hwNode & node)
 {
@@ -58,10 +60,13 @@ bool scan_cpufreq(hwNode & node)
     {
       unsigned long long max, min, cur;
       pushd(buffer);
-      
-      min = 1000*(unsigned long long)get_long("cpuinfo_min_freq");	// in Hz
-      max = 1000*(unsigned long long)get_long("cpuinfo_max_freq");	// in Hz
-      cur = 1000*(unsigned long long)get_long("scaling_cur_freq");	// in Hz
+
+                                                  // in Hz
+      min = 1000*(unsigned long long)get_long("cpuinfo_min_freq");
+                                                  // in Hz
+      max = 1000*(unsigned long long)get_long("cpuinfo_max_freq");
+                                                  // in Hz
+      cur = 1000*(unsigned long long)get_long("scaling_cur_freq");
       cpu->addCapability("cpufreq", "CPU Frequency scaling");
       if(cur) cpu->setSize(cur);
       if(max>cpu->getCapacity()) cpu->setCapacity(cur);

@@ -13,7 +13,8 @@
 
 __ID("@(#) $Id$");
 
-static const char *pnp_vendors[] = {
+static const char *pnp_vendors[] =
+{
   "ABP", "Advansys",
   "ACC", "Accton",
   "ACE", "Accton",
@@ -103,6 +104,7 @@ const char *vendorname(const char *id)
   return "";
 }
 
+
 hw::hwClass pnp_class(const string & pnpid)
 {
   long numericid = 0;
@@ -115,34 +117,34 @@ hw::hwClass pnp_class(const string & pnpid)
   if (numericid < 0x0300)
     return hw::system;
   if (numericid >= 0x300 && numericid < 0x0400)
-    return hw::input;		// keyboards
+    return hw::input;                             // keyboards
   if (numericid >= 0x400 && numericid < 0x0500)
-    return hw::printer;		// parallel
+    return hw::printer;                           // parallel
   if (numericid >= 0x500 && numericid < 0x0600)
-    return hw::communication;	// serial
+    return hw::communication;                     // serial
   if (numericid >= 0x600 && numericid < 0x0800)
-    return hw::storage;		// ide
+    return hw::storage;                           // ide
   if (numericid >= 0x900 && numericid < 0x0A00)
-    return hw::display;		// vga
+    return hw::display;                           // vga
   if (numericid == 0x802)
-    return hw::multimedia;	// Microsoft Sound System compatible device
+    return hw::multimedia;                        // Microsoft Sound System compatible device
   if (numericid >= 0xA00 && numericid < 0x0B00)
-    return hw::bridge;		// isa,pci...
+    return hw::bridge;                            // isa,pci...
   if (numericid >= 0xE00 && numericid < 0x0F00)
-    return hw::bridge;		// pcmcia
+    return hw::bridge;                            // pcmcia
   if (numericid >= 0xF00 && numericid < 0x1000)
-    return hw::input;		// mice
+    return hw::input;                             // mice
   if (numericid < 0x8000)
     return hw::system;
 
   if (numericid >= 0x8000 && numericid < 0x9000)
-    return hw::network;		// network
+    return hw::network;                           // network
   if (numericid >= 0xA000 && numericid < 0xB000)
-    return hw::storage;		// scsi&cd
+    return hw::storage;                           // scsi&cd
   if (numericid >= 0xB000 && numericid < 0xC000)
-    return hw::multimedia;	// multimedia
+    return hw::multimedia;                        // multimedia
   if (numericid >= 0xC000 && numericid < 0xD000)
-    return hw::communication;	// modems
+    return hw::communication;                     // modems
 
   return hw::generic;
 }

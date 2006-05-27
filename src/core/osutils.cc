@@ -49,6 +49,7 @@ bool pushd(const string & dir)
     return false;
 }
 
+
 string popd()
 {
   string curdir = pwd();
@@ -62,6 +63,7 @@ string popd()
   return curdir;
 }
 
+
 string pwd()
 {
   char curdir[PATH_MAX + 1];
@@ -72,9 +74,10 @@ string pwd()
     return "";
 }
 
+
 size_t splitlines(const string & s,
-	       vector < string > &lines,
-	       char separator)
+vector < string > &lines,
+char separator)
 {
   size_t i = 0, j = 0;
   size_t count = 0;
@@ -97,13 +100,15 @@ size_t splitlines(const string & s,
   return count;
 }
 
+
 bool exists(const string & path)
 {
   return access(path.c_str(), F_OK) == 0;
 }
 
+
 bool loadfile(const string & file,
-	      vector < string > &list)
+vector < string > &list)
 {
   char buffer[1024];
   string buffer_str = "";
@@ -123,8 +128,9 @@ bool loadfile(const string & file,
   return true;
 }
 
+
 string get_string(const string & path,
-		  const string & def)
+const string & def)
 {
   int fd = open(path.c_str(), O_RDONLY);
   string result = def;
@@ -146,6 +152,7 @@ string get_string(const string & path,
   return result;
 }
 
+
 int selectdir(const struct dirent *d)
 {
   struct stat buf;
@@ -158,6 +165,7 @@ int selectdir(const struct dirent *d)
 
   return S_ISDIR(buf.st_mode);
 }
+
 
 int selectlink(const struct dirent *d)
 {
@@ -172,6 +180,7 @@ int selectlink(const struct dirent *d)
   return S_ISLNK(buf.st_mode);
 }
 
+
 static int selectdevice(const struct dirent *d)
 {
   struct stat buf;
@@ -185,9 +194,10 @@ static int selectdevice(const struct dirent *d)
   return S_ISCHR(buf.st_mode) || S_ISBLK(buf.st_mode);
 }
 
+
 static bool matches(string name,
-		    mode_t mode,
-		    dev_t device)
+mode_t mode,
+dev_t device)
 {
   struct stat buf;
 
@@ -195,12 +205,13 @@ static bool matches(string name,
     return false;
 
   return ((S_ISCHR(buf.st_mode) && S_ISCHR(mode)) ||
-	  (S_ISBLK(buf.st_mode) && S_ISBLK(mode))) && (buf.st_dev == device);
+    (S_ISBLK(buf.st_mode) && S_ISBLK(mode))) && (buf.st_dev == device);
 }
 
+
 static string find_deventry(string basepath,
-			    mode_t mode,
-			    dev_t device)
+mode_t mode,
+dev_t device)
 {
   struct dirent **namelist;
   int n, i;
@@ -240,8 +251,8 @@ static string find_deventry(string basepath,
   {
     if (result == "")
       result =
-	find_deventry(basepath + "/" + string(namelist[i]->d_name), mode,
-		      device);
+        find_deventry(basepath + "/" + string(namelist[i]->d_name), mode,
+        device);
     free(namelist[i]);
   }
   free(namelist);
@@ -249,8 +260,9 @@ static string find_deventry(string basepath,
   return result;
 }
 
+
 string find_deventry(mode_t mode,
-		     dev_t device)
+dev_t device)
 {
   return find_deventry("/dev", mode, device);
 }
@@ -263,7 +275,7 @@ string get_devid(const string & name)
   if((stat(name.c_str(), &buf)==0) && (S_ISBLK(buf.st_mode) || S_ISCHR(buf.st_mode)))
   {
     char devid[80];
-                                                                                
+
     snprintf(devid, sizeof(devid), "%ud:%ud", (unsigned int)MAJOR(buf.st_rdev), (unsigned int)MINOR(buf.st_rdev));
     return string(devid);
   }
@@ -271,8 +283,9 @@ string get_devid(const string & name)
     return "";
 }
 
+
 bool samefile(const string & path1,
-	      const string & path2)
+const string & path2)
 {
   struct stat stat1;
   struct stat stat2;
@@ -285,6 +298,7 @@ bool samefile(const string & path1,
   return (stat1.st_dev == stat2.st_dev) && (stat1.st_ino == stat2.st_ino);
 }
 
+
 string uppercase(const string & s)
 {
   string result;
@@ -294,6 +308,7 @@ string uppercase(const string & s)
 
   return result;
 }
+
 
 string lowercase(const string & s)
 {
@@ -305,6 +320,7 @@ string lowercase(const string & s)
   return result;
 }
 
+
 string tostring(unsigned long long n)
 {
   char buffer[80];
@@ -314,6 +330,7 @@ string tostring(unsigned long long n)
   return string(buffer);
 }
 
+
 string join(const string & j, const string & s1, const string & s2)
 {
   if(s1 == "") return s2;
@@ -321,6 +338,7 @@ string join(const string & j, const string & s1, const string & s2)
 
   return s1 + j + s2;
 }
+
 
 bool matches(const string & s, const string & pattern, int cflags)
 {
@@ -337,6 +355,7 @@ bool matches(const string & s, const string & pattern, int cflags)
   return result;
 }
 
+
 string readlink(const string & path)
 {
   char buffer[PATH_MAX+1];
@@ -347,6 +366,7 @@ string readlink(const string & path)
   else
     return path;
 }
+
 
 string realpath(const string & path)
 {
@@ -359,6 +379,7 @@ string realpath(const string & path)
     return path;
 }
 
+
 string spaces(unsigned int count, const string & space)
 {
   string result = "";
@@ -368,6 +389,7 @@ string spaces(unsigned int count, const string & space)
   return result;
 }
 
+
 string escape(const string & s)
 {
   string result = "";
@@ -375,90 +397,98 @@ string escape(const string & s)
   for (unsigned int i = 0; i < s.length(); i++)
     switch (s[i])
     {
-    case '<':
-      result += "&lt;";
-      break;
-    case '>':
-      result += "&gt;";
-      break;
-    case '&':
-      result += "&amp;";
-      break;
+      case '<':
+        result += "&lt;";
+        break;
+      case '>':
+        result += "&gt;";
+        break;
+      case '&':
+        result += "&amp;";
+        break;
     default:
       result += s[i];
-    }
+  }
 
   return result;
 }
+
 
 unsigned short be_short(void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
   return ((__uint16_t)(p[0]) << 8) +
-	(__uint16_t)p[1];
+    (__uint16_t)p[1];
 }
+
 
 unsigned short le_short(void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
   return ((__uint16_t)(p[1]) << 8) +
-	(__uint16_t)p[0];
+    (__uint16_t)p[0];
 }
+
 
 unsigned long be_long(void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
   return ((__uint32_t)(p[0]) << 24) +
-	((__uint32_t)(p[1]) << 16) +
-	((__uint32_t)(p[2]) << 8) +
-	(__uint32_t)p[3];
+    ((__uint32_t)(p[1]) << 16) +
+    ((__uint32_t)(p[2]) << 8) +
+    (__uint32_t)p[3];
 }
+
 
 unsigned long le_long(void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
   return ((__uint32_t)(p[3]) << 24) +
-	((__uint32_t)(p[2]) << 16) +
-	((__uint32_t)(p[1]) << 8) +
-	(__uint32_t)p[0];
+    ((__uint32_t)(p[2]) << 16) +
+    ((__uint32_t)(p[1]) << 8) +
+    (__uint32_t)p[0];
 
 }
+
 
 unsigned long long be_longlong(void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
   return ((unsigned long long)(p[0]) << 56) +
-	((unsigned long long)(p[1]) << 48) +
-	((unsigned long long)(p[2]) << 40) +
-	((unsigned long long)(p[3]) << 32) +
-	((unsigned long long)(p[4]) << 24) +
-	((unsigned long long)(p[5]) << 16) +
-	((unsigned long long)(p[6]) << 8) +
-	(unsigned long long)p[7];
+    ((unsigned long long)(p[1]) << 48) +
+    ((unsigned long long)(p[2]) << 40) +
+    ((unsigned long long)(p[3]) << 32) +
+    ((unsigned long long)(p[4]) << 24) +
+    ((unsigned long long)(p[5]) << 16) +
+    ((unsigned long long)(p[6]) << 8) +
+    (unsigned long long)p[7];
 }
+
 
 unsigned long long le_longlong(void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
   return ((unsigned long long)(p[7]) << 56) +
-	((unsigned long long)(p[6]) << 48) +
-	((unsigned long long)(p[5]) << 40) +
-	((unsigned long long)(p[4]) << 32) +
-	((unsigned long long)(p[3]) << 24) +
-	((unsigned long long)(p[2]) << 16) +
-	((unsigned long long)(p[1]) << 8) +
-	(unsigned long long)p[0];
+    ((unsigned long long)(p[6]) << 48) +
+    ((unsigned long long)(p[5]) << 40) +
+    ((unsigned long long)(p[4]) << 32) +
+    ((unsigned long long)(p[3]) << 24) +
+    ((unsigned long long)(p[2]) << 16) +
+    ((unsigned long long)(p[1]) << 8) +
+    (unsigned long long)p[0];
 }
+
 
 int open_dev(dev_t dev, const string & name)
 {
-  static char *paths[] = {
+  static char *paths[] =
+  {
     "/usr/tmp", "/var/tmp", "/var/run", "/dev", "/tmp", NULL
   };
   char **p, fn[64];
@@ -475,11 +505,12 @@ int open_dev(dev_t dev, const string & name)
       fd = open(fn, O_RDONLY);
       if(name=="") unlink(fn);
       if (fd >= 0)
-	return fd;
+        return fd;
     }
   }
   return -1;
-}				/* open_dev */
+}                                                 /* open_dev */
+
 
 #define putchar(c) ((char)(c & 0xff))
 
@@ -487,19 +518,23 @@ string utf8(wchar_t c)
 {
   string result = "";
 
-  if (c < 0x80) {
+  if (c < 0x80)
+  {
     result += putchar (c);
   }
-  else if (c < 0x800) {
+  else if (c < 0x800)
+  {
     result += putchar (0xC0 | c>>6);
     result += putchar (0x80 | c & 0x3F);
   }
-  else if (c < 0x10000) {
+  else if (c < 0x10000)
+  {
     result += putchar (0xE0 | c>>12);
     result += putchar (0x80 | c>>6 & 0x3F);
     result += putchar (0x80 | c & 0x3F);
   }
-  else if (c < 0x200000) {
+  else if (c < 0x200000)
+  {
     result += putchar (0xF0 | c>>18);
     result += putchar (0x80 | c>>12 & 0x3F);
     result += putchar (0x80 | c>>6 & 0x3F);
@@ -508,5 +543,3 @@ string utf8(wchar_t c)
 
   return result;
 }
-
-

@@ -5,5 +5,4 @@
 #include "blockio.h"
 
 bool scan_lvm(hwNode & n, source & s);
-
 #endif

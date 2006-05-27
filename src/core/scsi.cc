@@ -73,17 +73,17 @@ __ID("@(#) $Id$");
 #define DID_OK 0x00
 #endif
 #ifndef DID_NO_CONNECT
-#define DID_NO_CONNECT 0x01	/* Unable to connect before timeout */
-#define DID_BUS_BUSY 0x02	/* Bus remain busy until timeout */
-#define DID_TIME_OUT 0x03	/* Timed out for some other reason */
-#define DID_BAD_TARGET 0x04	/* Bad target (id?) */
-#define DID_ABORT 0x05		/* Told to abort for some other reason */
-#define DID_PARITY 0x06		/* Parity error (on SCSI bus) */
-#define DID_ERROR 0x07		/* Internal error */
-#define DID_RESET 0x08		/* Reset by somebody */
-#define DID_BAD_INTR 0x09	/* Received an unexpected interrupt */
-#define DID_PASSTHROUGH 0x0a	/* Force command past mid-level */
-#define DID_SOFT_ERROR 0x0b	/* The low-level driver wants a retry */
+#define DID_NO_CONNECT 0x01                       /* Unable to connect before timeout */
+#define DID_BUS_BUSY 0x02                         /* Bus remain busy until timeout */
+#define DID_TIME_OUT 0x03                         /* Timed out for some other reason */
+#define DID_BAD_TARGET 0x04                       /* Bad target (id?) */
+#define DID_ABORT 0x05                            /* Told to abort for some other reason */
+#define DID_PARITY 0x06                           /* Parity error (on SCSI bus) */
+#define DID_ERROR 0x07                            /* Internal error */
+#define DID_RESET 0x08                            /* Reset by somebody */
+#define DID_BAD_INTR 0x09                         /* Received an unexpected interrupt */
+#define DID_PASSTHROUGH 0x0a                      /* Force command past mid-level */
+#define DID_SOFT_ERROR 0x0b                       /* The low-level driver wants a retry */
 #endif
 
 /* These defines are to isolate applictaions from kernel define changes */
@@ -112,7 +112,7 @@ __ID("@(#) $Id$");
 #define DRIVER_INVALID 0x05
 #define DRIVER_TIMEOUT 0x06
 #define DRIVER_HARD 0x07
-#define DRIVER_SENSE 0x08	/* Sense_buffer has been set */
+#define DRIVER_SENSE 0x08                         /* Sense_buffer has been set */
 
 /* Following "suggests" are "or-ed" with one of previous 8 entries */
 #define SUGGEST_RETRY 0x10
@@ -149,26 +149,28 @@ __ID("@(#) $Id$");
 #define SG_ERR_SUGGEST_MASK     SUGGEST_MASK
 
 /* The following "category" function returns one of the following */
-#define SG_ERR_CAT_CLEAN 0	/* No errors or other information */
-#define SG_ERR_CAT_MEDIA_CHANGED 1	/* interpreted from sense buffer */
-#define SG_ERR_CAT_RESET 2	/* interpreted from sense buffer */
+#define SG_ERR_CAT_CLEAN 0                        /* No errors or other information */
+#define SG_ERR_CAT_MEDIA_CHANGED 1                /* interpreted from sense buffer */
+#define SG_ERR_CAT_RESET 2                        /* interpreted from sense buffer */
 #define SG_ERR_CAT_TIMEOUT 3
-#define SG_ERR_CAT_RECOVERED 4	/* Successful command after recovered err */
-#define SG_ERR_CAT_SENSE 98	/* Something else is in the sense buffer */
-#define SG_ERR_CAT_OTHER 99	/* Some other error/warning has occurred */
+#define SG_ERR_CAT_RECOVERED 4                    /* Successful command after recovered err */
+#define SG_ERR_CAT_SENSE 98                       /* Something else is in the sense buffer */
+#define SG_ERR_CAT_OTHER 99                       /* Some other error/warning has occurred */
 
 typedef struct my_sg_scsi_id
 {
-  int host_no;			/* as in "scsi<n>" where 'n' is one of 0, 1, 2 etc */
+  int host_no;                                    /* as in "scsi<n>" where 'n' is one of 0, 1, 2 etc */
   int channel;
-  int scsi_id;			/* scsi id of target device */
+  int scsi_id;                                    /* scsi id of target device */
   int lun;
-  int scsi_type;		/* TYPE_... defined in scsi/scsi.h */
-  short h_cmd_per_lun;		/* host (adapter) maximum commands per lun */
-  short d_queue_depth;		/* device (or adapter) maximum queue length */
-  int unused1;			/* probably find a good use, set 0 for now */
-  int unused2;			/* ditto */
+  int scsi_type;                                  /* TYPE_... defined in scsi/scsi.h */
+  short h_cmd_per_lun;                            /* host (adapter) maximum commands per lun */
+  short d_queue_depth;                            /* device (or adapter) maximum queue length */
+  int unused1;                                    /* probably find a good use, set 0 for now */
+  int unused2;                                    /* ditto */
 }
+
+
 My_sg_scsi_id;
 
 typedef struct my_scsi_idlun
@@ -176,9 +178,12 @@ typedef struct my_scsi_idlun
   int mux4;
   int host_unique_id;
 }
+
+
 My_scsi_idlun;
 
-static const char *devices[] = {
+static const char *devices[] =
+{
   "/dev/sda", "/dev/sdb", "/dev/sdc", "/dev/sdd", "/dev/sde", "/dev/sdf",
   "/dev/sdg", "/dev/sdh", "/dev/sdi", "/dev/sdj", "/dev/sdk", "/dev/sdl",
   "/dev/sdm", "/dev/sdn", "/dev/sdo", "/dev/sdp", "/dev/sdq", "/dev/sdr",
@@ -206,9 +211,9 @@ static const char *devices[] = {
 static map < string, string > sg_map;
 
 static string scsi_handle(unsigned int host,
-			  int channel = -1,
-			  int id = -1,
-			  int lun = -1)
+int channel = -1,
+int id = -1,
+int lun = -1)
 {
   char buffer[10];
   string result = "SCSI:";
@@ -237,45 +242,47 @@ static string scsi_handle(unsigned int host,
   return result;
 }
 
+
 static const char *scsi_type(int type)
 {
   switch (type)
   {
-  case 0:
-    return "Disk";
-  case 1:
-    return "Tape";
-  case 3:
-    return "Processor";
-  case 4:
-    return "Write-Once Read-Only Memory";
-  case 5:
-    return "CD-ROM";
-  case 6:
-    return "Scanner";
-  case 7:
-    return "Magneto-optical Disk";
-  case 8:
-    return "Medium Changer";
-  case 0xd:
-    return "Enclosure";
-  default:
-    return "";
+    case 0:
+      return "Disk";
+    case 1:
+      return "Tape";
+    case 3:
+      return "Processor";
+    case 4:
+      return "Write-Once Read-Only Memory";
+    case 5:
+      return "CD-ROM";
+    case 6:
+      return "Scanner";
+    case 7:
+      return "Magneto-optical Disk";
+    case 8:
+      return "Medium Changer";
+    case 0xd:
+      return "Enclosure";
+    default:
+      return "";
   }
 }
 
+
 static int sg_err_category(int scsi_status,
-			   int host_status,
-			   int driver_status,
-			   const unsigned char *sense_buffer,
-			   int sb_len)
+int host_status,
+int driver_status,
+const unsigned char *sense_buffer,
+int sb_len)
 {
   scsi_status &= 0x7e;
   if ((0 == scsi_status) && (0 == host_status) && (0 == driver_status))
     return SG_ERR_CAT_CLEAN;
   if ((SCSI_CHECK_CONDITION == scsi_status) ||
-      (SCSI_COMMAND_TERMINATED == scsi_status) ||
-      (SG_ERR_DRIVER_SENSE == (0xf & driver_status)))
+    (SCSI_COMMAND_TERMINATED == scsi_status) ||
+    (SG_ERR_DRIVER_SENSE == (0xf & driver_status)))
   {
     if (sense_buffer && (sb_len > 2))
     {
@@ -284,23 +291,23 @@ static int sg_err_category(int scsi_status,
 
       if (sense_buffer[0] & 0x2)
       {
-	sense_key = sense_buffer[1] & 0xf;
-	asc = sense_buffer[2];
+        sense_key = sense_buffer[1] & 0xf;
+        asc = sense_buffer[2];
       }
       else
       {
-	sense_key = sense_buffer[2] & 0xf;
-	asc = (sb_len > 12) ? sense_buffer[12] : 0;
+        sense_key = sense_buffer[2] & 0xf;
+        asc = (sb_len > 12) ? sense_buffer[12] : 0;
       }
 
       if (RECOVERED_ERROR == sense_key)
-	return SG_ERR_CAT_RECOVERED;
+        return SG_ERR_CAT_RECOVERED;
       else if (UNIT_ATTENTION == sense_key)
       {
-	if (0x28 == asc)
-	  return SG_ERR_CAT_MEDIA_CHANGED;
-	if (0x29 == asc)
-	  return SG_ERR_CAT_RESET;
+        if (0x28 == asc)
+          return SG_ERR_CAT_MEDIA_CHANGED;
+        if (0x29 == asc)
+          return SG_ERR_CAT_RESET;
       }
     }
     return SG_ERR_CAT_SENSE;
@@ -308,8 +315,8 @@ static int sg_err_category(int scsi_status,
   if (0 != host_status)
   {
     if ((SG_ERR_DID_NO_CONNECT == host_status) ||
-	(SG_ERR_DID_BUS_BUSY == host_status) ||
-	(SG_ERR_DID_TIME_OUT == host_status))
+      (SG_ERR_DID_BUS_BUSY == host_status) ||
+      (SG_ERR_DID_TIME_OUT == host_status))
       return SG_ERR_CAT_TIMEOUT;
   }
   if (0 != driver_status)
@@ -320,11 +327,12 @@ static int sg_err_category(int scsi_status,
   return SG_ERR_CAT_OTHER;
 }
 
+
 static bool do_modesense(int sg_fd,
-			 int page,
-			 int page_code,
-			 void *resp,
-			 int mx_resp_len)
+int page,
+int page_code,
+void *resp,
+int mx_resp_len)
 {
   int res;
   unsigned char senseCmdBlk[SENSE_CMD_LEN] =
@@ -347,33 +355,34 @@ static bool do_modesense(int sg_fd,
   io_hdr.dxferp = resp;
   io_hdr.cmdp = senseCmdBlk;
   io_hdr.sbp = sense_b;
-  io_hdr.timeout = 20000;	/* 20 seconds */
+  io_hdr.timeout = 20000;                         /* 20 seconds */
 
   if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
     return false;
 
   res =
     sg_err_category(io_hdr.status, io_hdr.host_status, io_hdr.driver_status,
-		    (unsigned char*)io_hdr.sbp, io_hdr.sb_len_wr);
+    (unsigned char*)io_hdr.sbp, io_hdr.sb_len_wr);
   switch (res)
   {
-  case SG_ERR_CAT_CLEAN:
-  case SG_ERR_CAT_RECOVERED:
-    return true;
-  default:
-    return false;
+    case SG_ERR_CAT_CLEAN:
+    case SG_ERR_CAT_RECOVERED:
+      return true;
+    default:
+      return false;
   }
 
   return true;
 }
 
+
 static bool do_inq(int sg_fd,
-		   int cmddt,
-		   int evpd,
-		   unsigned int pg_op,
-		   void *resp,
-		   int mx_resp_len,
-		   int noisy)
+int cmddt,
+int evpd,
+unsigned int pg_op,
+void *resp,
+int mx_resp_len,
+int noisy)
 {
   int res;
   unsigned char inqCmdBlk[INQ_CMD_LEN] = { INQ_CMD_CODE, 0, 0, 0, 0, 0 };
@@ -396,25 +405,26 @@ static bool do_inq(int sg_fd,
   io_hdr.dxferp = resp;
   io_hdr.cmdp = inqCmdBlk;
   io_hdr.sbp = sense_b;
-  io_hdr.timeout = 20000;	/* 20 seconds */
+  io_hdr.timeout = 20000;                         /* 20 seconds */
 
   if (ioctl(sg_fd, SG_IO, &io_hdr) < 0)
     return false;
 
   res =
     sg_err_category(io_hdr.status, io_hdr.host_status, io_hdr.driver_status,
-		    (unsigned char*)io_hdr.sbp, io_hdr.sb_len_wr);
+    (unsigned char*)io_hdr.sbp, io_hdr.sb_len_wr);
   switch (res)
   {
-  case SG_ERR_CAT_CLEAN:
-  case SG_ERR_CAT_RECOVERED:
-    return true;
-  default:
-    return false;
+    case SG_ERR_CAT_CLEAN:
+    case SG_ERR_CAT_RECOVERED:
+      return true;
+    default:
+      return false;
   }
 
   return true;
 }
+
 
 static unsigned long decode_3_bytes(void *ptr)
 {
@@ -423,6 +433,7 @@ static unsigned long decode_3_bytes(void *ptr)
   return (p[0] << 16) + (p[1] << 8) + p[2];
 }
 
+
 static u_int16_t decode_word(void *ptr)
 {
   unsigned char *p = (unsigned char *) ptr;
@@ -430,8 +441,9 @@ static u_int16_t decode_word(void *ptr)
   return (p[0] << 8) + p[1];
 }
 
+
 static bool do_inquiry(int sg_fd,
-		       hwNode & node)
+hwNode & node)
 {
   char rsp_buff[MX_ALLOC_LEN + 1];
   char version[5];
@@ -455,7 +467,7 @@ static bool do_inquiry(int sg_fd,
   }
 
   if (len != ((unsigned int) rsp_buff[4] + 5))
-    return false;		// twin INQUIRYs yield different lengths
+    return false;                                 // twin INQUIRYs yield different lengths
 
   unsigned ansiversion = rsp_buff[2] & 0x7;
 
@@ -502,14 +514,14 @@ static bool do_inquiry(int sg_fd,
 
       if (page == 3)
       {
-	sectors = decode_word(p + 10);
-	sectsize = decode_word(p + 12);
+        sectors = decode_word(p + 10);
+        sectsize = decode_word(p + 12);
       }
       if (page == 4)
       {
-	cyl = decode_3_bytes(p + 2);
-	rpm = decode_word(p + 20);
-	heads = p[5];
+        cyl = decode_3_bytes(p + 2);
+        rpm = decode_word(p + 20);
+        heads = p[5];
       }
 
       p += p[1] + 2;
@@ -522,17 +534,18 @@ static bool do_inquiry(int sg_fd,
     else
     {
       if (rpm / 7200 == 1)
-	node.addCapability("7200rpm", "7200 rotations per minute");
+        node.addCapability("7200rpm", "7200 rotations per minute");
       else
       {
-	if (rpm / 5400 == 1)
-	  node.addCapability("5400rpm", "5400 rotations per minute");
+        if (rpm / 5400 == 1)
+          node.addCapability("5400rpm", "5400 rotations per minute");
       }
     }
   }
 
   return true;
 }
+
 
 static void scan_devices()
 {
@@ -554,19 +567,20 @@ static void scan_devices()
       {
         if (ioctl(fd, SCSI_IOCTL_GET_BUS_NUMBER, &bus) >= 0)
         {
-	  memset(&m_idlun, 0, sizeof(m_idlun));
-	  if (ioctl(fd, SCSI_IOCTL_GET_IDLUN, &m_idlun) >= 0)
-	  {
-	    sg_map[string(devices[i])] = scsi_handle(bus, (m_idlun.mux4 >> 16) & 0xff,
-			     m_idlun.mux4 & 0xff,
-			     (m_idlun.mux4 >> 8) & 0xff);
-	  }
+          memset(&m_idlun, 0, sizeof(m_idlun));
+          if (ioctl(fd, SCSI_IOCTL_GET_IDLUN, &m_idlun) >= 0)
+          {
+            sg_map[string(devices[i])] = scsi_handle(bus, (m_idlun.mux4 >> 16) & 0xff,
+              m_idlun.mux4 & 0xff,
+              (m_idlun.mux4 >> 8) & 0xff);
+          }
         }
       }
       close(fd);
     }
   }
 }
+
 
 static void find_logicalname(hwNode & n)
 {
@@ -582,10 +596,11 @@ static void find_logicalname(hwNode & n)
   }
 }
 
+
 static string scsi_businfo(int host,
-			   int channel = -1,
-			   int target = -1,
-			   int lun = -1)
+int channel = -1,
+int target = -1,
+int lun = -1)
 {
   char businfo[20];
   string result;
@@ -606,14 +621,15 @@ static string scsi_businfo(int host,
 
       if (lun >= 0)
       {
-	snprintf(businfo, sizeof(businfo), ".%d", lun);
-	result += string(businfo);
+        snprintf(businfo, sizeof(businfo), ".%d", lun);
+        result += string(businfo);
       }
     }
   }
 
   return result;
 }
+
 
 static string host_logicalname(int i)
 {
@@ -624,7 +640,8 @@ static string host_logicalname(int i)
   return string(host);
 }
 
-static string host_kname(int i)		// for sysfs
+
+static string host_kname(int i)                   // for sysfs
 {
   char host[20];
 
@@ -633,18 +650,20 @@ static string host_kname(int i)		// for sysfs
   return string(host);
 }
 
+
 static bool atapi(const hwNode & n)
 {
   return n.isCapable("atapi") && (n.countChildren() == 0);
 }
 
+
 static bool scan_sg(int sg,
-		    hwNode & n)
+hwNode & n)
 {
   char buffer[20];
   int fd = -1;
   My_sg_scsi_id m_id;
-  char slot_name[64];		// should be 16 but some 2.6 kernels require 32 bytes
+  char slot_name[64];                             // should be 16 but some 2.6 kernels require 32 bytes
   string host = "";
   string businfo = "";
   hwNode *parent = NULL;
@@ -665,7 +684,7 @@ static bool scan_sg(int sg,
   if (ioctl(fd, SG_GET_SCSI_ID, &m_id) < 0)
   {
     close(fd);
-    return true;		// we failed to get info but still hope we can continue
+    return true;                                  // we failed to get info but still hope we can continue
   }
 
   emulated = 0;
@@ -678,39 +697,39 @@ static bool scan_sg(int sg,
 
   switch (m_id.scsi_type)
   {
-  case 0:
-  case 14:
-    device = hwNode("disk", hw::disk);
-    break;
-  case 1:
-    device = hwNode("tape", hw::tape);
-    break;
-  case 3:
-    device = hwNode("processor", hw::processor);
-    break;
-  case 4:
-  case 5:
-    device = hwNode("cdrom", hw::disk);
-    break;
-  case 6:
-    device = hwNode("scanner", hw::generic);
-    break;
-  case 7:
-    device = hwNode("magnetooptical", hw::disk);
-    break;
-  case 8:
-    device = hwNode("changer", hw::generic);
-    break;
-  case 0xd:
-    device = hwNode("enclosure", hw::generic);
-    break;
+    case 0:
+    case 14:
+      device = hwNode("disk", hw::disk);
+      break;
+    case 1:
+      device = hwNode("tape", hw::tape);
+      break;
+    case 3:
+      device = hwNode("processor", hw::processor);
+      break;
+    case 4:
+    case 5:
+      device = hwNode("cdrom", hw::disk);
+      break;
+    case 6:
+      device = hwNode("scanner", hw::generic);
+      break;
+    case 7:
+      device = hwNode("magnetooptical", hw::disk);
+      break;
+    case 8:
+      device = hwNode("changer", hw::generic);
+      break;
+    case 0xd:
+      device = hwNode("enclosure", hw::generic);
+      break;
   }
 
   device.setDescription("SCSI " + string(scsi_type(m_id.scsi_type)));
   device.setHandle(scsi_handle(m_id.host_no,
-			       m_id.channel, m_id.scsi_id, m_id.lun));
+    m_id.channel, m_id.scsi_id, m_id.lun));
   device.setBusInfo(scsi_businfo(m_id.host_no,
-				 m_id.channel, m_id.scsi_id, m_id.lun));
+    m_id.channel, m_id.scsi_id, m_id.lun));
   device.setPhysId(m_id.channel, m_id.scsi_id, m_id.lun);
   device.addHint("bus.icon", string("scsi"));
   find_logicalname(device);
@@ -729,7 +748,8 @@ static bool scan_sg(int sg,
   if (!parent)
     parent = n.findChildByLogicalName(host);
 
-  if (emulated && device.getConfig("driver")=="ide-scsi")	// IDE-SCSI pseudo host controller
+                                                  // IDE-SCSI pseudo host controller
+  if (emulated && device.getConfig("driver")=="ide-scsi")
   {
     hwNode *ideatapi = n.findChild(atapi);
 
@@ -770,6 +790,7 @@ static bool scan_sg(int sg,
   return true;
 }
 
+
 static bool scan_hosts(hwNode & node)
 {
   struct dirent **namelist = NULL;
@@ -797,44 +818,44 @@ static bool scan_hosts(hwNode & node)
     {
       for (int j = 0; j < m; j++)
       {
-	char *end = NULL;
-	int number = -1;
+        char *end = NULL;
+        int number = -1;
 
-	number = strtol(filelist[j]->d_name, &end, 0);
+        number = strtol(filelist[j]->d_name, &end, 0);
 
-	if ((number >= 0) && (end != filelist[j]->d_name))
-	{
-	  hwNode *controller =
-	    node.findChildByLogicalName(host_logicalname(number));
+        if ((number >= 0) && (end != filelist[j]->d_name))
+        {
+          hwNode *controller =
+            node.findChildByLogicalName(host_logicalname(number));
 
-	  if (!controller)
+          if (!controller)
           {
             string parentbusinfo = sysfs_getbusinfo(sysfs::entry::byClass("scsi_host", host_kname(number)));
 
-	    controller = node.findChildByBusInfo(parentbusinfo);
-	  }
+            controller = node.findChildByBusInfo(parentbusinfo);
+          }
 
-	  if (!controller)
-	  {
-	    controller = node.addChild(hwNode::hwNode("scsi", hw::storage));
-	    if (controller)
-	    {
-	      controller->setLogicalName(host_logicalname(number));
-	      controller->setBusInfo(scsi_businfo(number));
-	    }
-	  }
+          if (!controller)
+          {
+            controller = node.addChild(hwNode::hwNode("scsi", hw::storage));
+            if (controller)
+            {
+              controller->setLogicalName(host_logicalname(number));
+              controller->setBusInfo(scsi_businfo(number));
+            }
+          }
 
-	  if (controller)
-	  {
+          if (controller)
+          {
             controller->setLogicalName(host_logicalname(number));
-	    controller->setConfig(string("driver"),
-				  string(namelist[i]->d_name));
+            controller->setConfig(string("driver"),
+              string(namelist[i]->d_name));
             controller->setHandle(scsi_handle(number));
             controller->addCapability("scsi-host", "SCSI host adapter");
-	    controller->claim();
-	  }
-	}
-	free(filelist[j]);
+            controller->claim();
+          }
+        }
+        free(filelist[j]);
       }
       free(filelist);
     }
@@ -853,12 +874,13 @@ static bool scan_hosts(hwNode & node)
     if (host)
     {
       if ((host->getProduct() == "") && (host->getDescription() == ""))
-	host->setDescription("SCSI storage controller");
+        host->setDescription("SCSI storage controller");
     }
   }
 
   return true;
 }
+
 
 bool scan_scsi(hwNode & n)
 {

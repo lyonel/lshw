@@ -4,5 +4,4 @@
 #include "hw.h"
 
 bool scan_scsi(hwNode & n);
-
 #endif

@@ -15,8 +15,8 @@ __ID("@(#) $Id$");
 #define SPD_MAXSIZE (2048/8)
 #define SPD_BLKSIZE 0x10
 
-#define TYPE_EDO	0x02
-#define TYPE_SDRAM	0x04
+#define TYPE_EDO  0x02
+#define TYPE_SDRAM  0x04
 
 #define PROCSENSORS "/proc/sys/dev/sensors"
 #define EEPROMPREFIX "eeprom-"
@@ -38,7 +38,7 @@ static unsigned char get_spd_byte(unsigned int offset)
     FILE *in = NULL;
 
     snprintf(chunkname, sizeof(chunkname), "%02x",
-	     (offset / SPD_BLKSIZE) * SPD_BLKSIZE);
+      (offset / SPD_BLKSIZE) * SPD_BLKSIZE);
 
     name = current_eeprom + "/" + string(chunkname);
 
@@ -46,8 +46,8 @@ static unsigned char get_spd_byte(unsigned int offset)
     if (in)
     {
       for (int i = 0; i < SPD_BLKSIZE; i++)
-	fscanf(in, "%d",
-	       (int *) &spd[i + (offset / SPD_BLKSIZE) * SPD_BLKSIZE]);
+        fscanf(in, "%d",
+          (int *) &spd[i + (offset / SPD_BLKSIZE) * SPD_BLKSIZE]);
       fclose(in);
       spd_page_loaded[offset / SPD_BLKSIZE] = true;
     }
@@ -57,6 +57,7 @@ static unsigned char get_spd_byte(unsigned int offset)
 
   return spd[offset];
 }
+
 
 static int selecteeprom(const struct dirent *d)
 {
@@ -73,6 +74,7 @@ static int selecteeprom(const struct dirent *d)
 
   return (strncmp(d->d_name, EEPROMPREFIX, strlen(EEPROMPREFIX)) == 0);
 }
+
 
 static hwNode *get_current_bank(hwNode & memory)
 {
@@ -91,8 +93,9 @@ static hwNode *get_current_bank(hwNode & memory)
     return result;
 }
 
+
 static bool scan_eeprom(hwNode & memory,
-			string name)
+string name)
 {
   int memory_type = -1;
   char buff[20];
@@ -120,12 +123,12 @@ static bool scan_eeprom(hwNode & memory,
 
   switch (memory_type)
   {
-  case TYPE_SDRAM:
-    bank->setDescription("SDRAM");
-    break;
-  case TYPE_EDO:
-    bank->setDescription("EDO");
-    break;
+    case TYPE_SDRAM:
+      bank->setDescription("SDRAM");
+      break;
+    case TYPE_EDO:
+      bank->setDescription("EDO");
+      break;
   }
 
   rows = get_spd_byte(5);
@@ -137,39 +140,40 @@ static bool scan_eeprom(hwNode & memory,
     density = get_spd_byte(31);
     for (int j = 0; (j < 8) && (rows > 0); j++)
       if (density & (1 << j))
-      {
-	rows--;
-	size += (4 << j) * 1024 * 1024;	// MB
-	density ^= (1 << j);
-	if (density == 0)
-	  size += rows * (4 << j) * 1024 * 1024;
-      }
+    {
+      rows--;
+      size += (4 << j) * 1024 * 1024;             // MB
+      density ^= (1 << j);
+      if (density == 0)
+        size += rows * (4 << j) * 1024 * 1024;
+    }
     bank->setSize(size);
   }
 
-  switch (get_spd_byte(11))	// error detection and correction scheme
+  switch (get_spd_byte(11))                       // error detection and correction scheme
   {
-  case 0x00:
-    bank->setConfig("errordetection", "none");
-    break;
-  case 0x01:
-    bank->addCapability("parity");
-    bank->setConfig("errordetection", "parity");
-    break;
-  case 0x02:
-    bank->addCapability("ecc");
-    bank->setConfig("errordetection", "ecc");
-    break;
+    case 0x00:
+      bank->setConfig("errordetection", "none");
+      break;
+    case 0x01:
+      bank->addCapability("parity");
+      bank->setConfig("errordetection", "parity");
+      break;
+    case 0x02:
+      bank->addCapability("ecc");
+      bank->setConfig("errordetection", "ecc");
+      break;
   }
 
   int version = get_spd_byte(62);
 
   snprintf(buff, sizeof(buff), "spd-%d.%d", (version & 0xF0) >> 4,
-	   version & 0x0F);
+    version & 0x0F);
   bank->addCapability(buff);
 
   return true;
 }
+
 
 static bool scan_eeproms(hwNode & memory)
 {
@@ -191,6 +195,7 @@ static bool scan_eeproms(hwNode & memory)
 
   return true;
 }
+
 
 bool scan_spd(hwNode & n)
 {

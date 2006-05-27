@@ -13,7 +13,7 @@ __ID("@(#) $Id$");
 static int currentcpu = 0;
 
 static hwNode *getcpu(hwNode & node,
-		      int n = 0)
+int n = 0)
 {
   char cpubusinfo[10];
   hwNode *cpu = NULL;
@@ -27,8 +27,8 @@ static hwNode *getcpu(hwNode & node,
   if (cpu)
   {
     cpu->addHint("icon", string("cpu"));
-    cpu->claim(true);		// claim the cpu and all its children
-    cpu->enable();		// enable it
+    cpu->claim(true);                             // claim the cpu and all its children
+    cpu->enable();                                // enable it
     return cpu;
   }
 
@@ -46,10 +46,11 @@ static hwNode *getcpu(hwNode & node,
     return NULL;
 }
 
+
 #ifdef __powerpc__
 static void cpuinfo_ppc(hwNode & node,
-			string id,
-			string value)
+string id,
+string value)
 {
   if (id == "processor")
     currentcpu++;
@@ -70,8 +71,8 @@ static void cpuinfo_ppc(hwNode & node,
 
 #ifdef __ia64__
 static void cpuinfo_ia64(hwNode & node,
-			 string id,
-			 string value)
+string id,
+string value)
 {
   unsigned long long frequency = 0;
   int i;
@@ -93,15 +94,15 @@ static void cpuinfo_ia64(hwNode & node,
 
       if (physicalcpu != currentcpu)
       {
-	cpu->addCapability("emulated");
-	cpu->addCapability("hyperthreading");
+        cpu->addCapability("emulated");
+        cpu->addCapability("hyperthreading");
       }
     }
 
     if (id == "vendor")
     {
       if (value == "GenuineIntel")
-	value = "Intel Corp.";
+        value = "Intel Corp.";
       cpu->setVendor(value);
     }
 
@@ -124,8 +125,8 @@ static void cpuinfo_ia64(hwNode & node,
 
 #ifdef __hppa__
 static void cpuinfo_hppa(hwNode & node,
-			 string id,
-			 string value)
+string id,
+string value)
 {
   if (id == "processor")
     currentcpu++;
@@ -160,8 +161,8 @@ static void cpuinfo_hppa(hwNode & node,
 
 #ifdef __alpha__
 static void cpuinfo_alpha(hwNode & node,
-			  string id,
-			  string value)
+string id,
+string value)
 {
   static int cpusdetected = 0;
   static int cpusactive = 0;
@@ -205,7 +206,7 @@ static void cpuinfo_alpha(hwNode & node,
       mycpu->disable();
 
       if (cpu)
-	mycpu->setSize(cpu->getSize());
+        mycpu->setSize(cpu->getSize());
     }
   }
   for (i = 1; i < cpusactive; i++)
@@ -220,8 +221,8 @@ static void cpuinfo_alpha(hwNode & node,
 
 #if defined(__i386__) || defined(__x86_64__)
 static void cpuinfo_x86(hwNode & node,
-			string id,
-			string value)
+string id,
+string value)
 {
   static int siblings = -1;
 
@@ -248,24 +249,24 @@ static void cpuinfo_x86(hwNode & node,
   if (cpu)
   {
 
-    // x86 CPUs are assumed to be 32 bits per default
+// x86 CPUs are assumed to be 32 bits per default
     if(cpu->getWidth()==0) cpu->setWidth(32);
 
     cpu->claim(true);
     if (id == "vendor_id")
     {
       if (value == "AuthenticAMD")
-	value = "Advanced Micro Devices [AMD]";
+        value = "Advanced Micro Devices [AMD]";
       if (value == "GenuineIntel")
-	value = "Intel Corp.";
+        value = "Intel Corp.";
       cpu->setVendor(value);
     }
     if (id == "model name")
       cpu->setProduct(value);
-    //if ((id == "cpu MHz") && (cpu->getSize() == 0))
-    //{
-    //cpu->setSize((long long) (1000000L * atof(value.c_str())));
-    //}
+//if ((id == "cpu MHz") && (cpu->getSize() == 0))
+//{
+//cpu->setSize((long long) (1000000L * atof(value.c_str())));
+//}
     if (id == "Physical processor ID")
       cpu->setSerial(value);
     if ((id == "fdiv_bug") && (value == "yes"))
@@ -284,19 +285,19 @@ static void cpuinfo_x86(hwNode & node,
       cpu->addCapability("fpu_exception", "FPU exceptions reporting");
     if (id == "flags")
       while (value.length() > 0)
-      {
-	size_t pos = value.find(' ');
-        string capability = (pos==string::npos)?value:value.substr(0, pos);
+    {
+      size_t pos = value.find(' ');
+      string capability = (pos==string::npos)?value:value.substr(0, pos);
 
-        if(capability == "lm") capability = "x86-64";
+      if(capability == "lm") capability = "x86-64";
 
-	cpu->addCapability(capability);
+      cpu->addCapability(capability);
 
-	if (pos == string::npos)
-	  value = "";
-	else
-	  value = hw::strip(value.substr(pos));
-      }
+      if (pos == string::npos)
+        value = "";
+      else
+        value = hw::strip(value.substr(pos));
+    }
 
     cpu->describeCapability("fpu", "mathematical co-processor");
     cpu->describeCapability("vme", "virtual mode extensions");
@@ -316,7 +317,7 @@ static void cpuinfo_x86(hwNode & node,
     cpu->describeCapability("pse36", "36-bit page size extensions");
     cpu->describeCapability("pn", "processor serial number");
     cpu->describeCapability("psn", "processor serial number");
-    //cpu->describeCapability("clflush", "");
+//cpu->describeCapability("clflush", "");
     cpu->describeCapability("dts", "debug trace and EMON store MSRs");
     cpu->describeCapability("acpi", "thermal control (ACPI)");
     cpu->describeCapability("fxsr", "fast floating point save/restore");
@@ -332,20 +333,20 @@ static void cpuinfo_x86(hwNode & node,
     cpu->describeCapability("mmxext", "multimedia extensions (MMXExt)");
     cpu->describeCapability("3dnowext", "multimedia extensions (3DNow!Ext)");
     cpu->describeCapability("3dnow", "multimedia extensions (3DNow!)");
-    //cpu->describeCapability("recovery", "");
+//cpu->describeCapability("recovery", "");
     cpu->describeCapability("longrun", "LongRun Dynamic Power/Thermal Management");
     cpu->describeCapability("lrti", "LongRun Table Interface");
     cpu->describeCapability("cxmmx", "multimedia extensions (Cyrix MMX)");
     cpu->describeCapability("k6_mtrr", "AMD K6 MTRRs");
-    //cpu->describeCapability("cyrix_arr", "");
-    //cpu->describeCapability("centaur_mcr", "");
-    //cpu->describeCapability("pni", "");
-    //cpu->describeCapability("monitor", "");
-    //cpu->describeCapability("ds_cpl", "");
-    //cpu->describeCapability("est", "");
-    //cpu->describeCapability("tm2", "");
-    //cpu->describeCapability("cid", "");
-    //cpu->describeCapability("xtpr", "");
+//cpu->describeCapability("cyrix_arr", "");
+//cpu->describeCapability("centaur_mcr", "");
+//cpu->describeCapability("pni", "");
+//cpu->describeCapability("monitor", "");
+//cpu->describeCapability("ds_cpl", "");
+//cpu->describeCapability("est", "");
+//cpu->describeCapability("tm2", "");
+//cpu->describeCapability("cid", "");
+//cpu->describeCapability("xtpr", "");
     cpu->describeCapability("rng", "random number generator");
     cpu->describeCapability("rng_en", "random number generator (enhanced)");
     cpu->describeCapability("ace", "advanced cryptography engine");
@@ -392,7 +393,7 @@ bool scan_cpuinfo(hwNode & n)
 
     vector < string > cpuinfo_lines;
     splitlines(cpuinfo_str, cpuinfo_lines);
-    cpuinfo_str = "";		// free memory
+    cpuinfo_str = "";                             // free memory
     currentcpu = -1;
 
     for (unsigned int i = 0; i < cpuinfo_lines.size(); i++)
@@ -405,23 +406,23 @@ bool scan_cpuinfo(hwNode & n)
 
       if (pos != string::npos)
       {
-	id = hw::strip(cpuinfo_lines[i].substr(0, pos));
-	value = hw::strip(cpuinfo_lines[i].substr(pos + 1));
+        id = hw::strip(cpuinfo_lines[i].substr(0, pos));
+        value = hw::strip(cpuinfo_lines[i].substr(pos + 1));
 
 #if defined(__i386__) || defined(__x86_64__)
-	cpuinfo_x86(n, id, value);
+        cpuinfo_x86(n, id, value);
 #endif
 #ifdef __powerpc__
-	cpuinfo_ppc(n, id, value);
+        cpuinfo_ppc(n, id, value);
 #endif
 #ifdef __hppa__
-	cpuinfo_hppa(n, id, value);
+        cpuinfo_hppa(n, id, value);
 #endif
 #ifdef __alpha__
-	cpuinfo_alpha(n, id, value);
+        cpuinfo_alpha(n, id, value);
 #endif
 #ifdef __ia64__
-	cpuinfo_ia64(n, id, value);
+        cpuinfo_ia64(n, id, value);
 #endif
       }
     }

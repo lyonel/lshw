@@ -24,7 +24,7 @@
 #define PROCBUSUSBDEVICES "/proc/bus/usb/devices"
 #define USBID_PATH "/usr/share/lshw/usb.ids:/usr/local/share/usb.ids:/usr/share/usb.ids:/etc/usb.ids:/usr/share/hwdata/usb.ids:/usr/share/misc/usb.ids"
 
-#define USB_CLASS_PER_INTERFACE         0	/* for DeviceClass */
+#define USB_CLASS_PER_INTERFACE         0         /* for DeviceClass */
 #define USB_CLASS_AUDIO                 1
 #define USB_CLASS_COMM                  2
 #define USB_CLASS_HID                   3
@@ -38,26 +38,26 @@
 #define USB_CLASS_WIRELESS              0xe0
 #define USB_CLASS_VENDOR_SPEC           0xff
 
-#define USB_SC_AUDIOCONTROL		1
-#define USB_SC_AUDIOSTREAMING		2
-#define USB_SC_AUDIOMIDISTREAMING	3
-#define USB_SC_COMMMODEM		2
-#define USB_SC_COMMETHERNET		6
-#define USB_SC_COMMOBEX			0xb
-#define USB_SC_HIDNONE			0
-#define USB_SC_HIDBOOT			1
-#define USB_PROT_HIDKBD			1
-#define USB_PROT_HIDMOUSE		2
-#define USB_SC_PRINTER			1
-#define USB_PROT_PRINTERUNIDIR		1
-#define USB_PROT_PRINTERBIDIR		2
-#define USB_PROT_PRINTER1284		3
-#define USB_SC_STORAGERBC		1
-#define USB_SC_STORAGEATAPI		2
-#define USB_SC_STORAGEFLOPPY		4
-#define USB_SC_STORAGESCSI		6
-#define USB_SC_WIRELESSRADIO		1
-#define USB_PROT_BLUETOOTH		1
+#define USB_SC_AUDIOCONTROL   1
+#define USB_SC_AUDIOSTREAMING   2
+#define USB_SC_AUDIOMIDISTREAMING 3
+#define USB_SC_COMMMODEM    2
+#define USB_SC_COMMETHERNET   6
+#define USB_SC_COMMOBEX     0xb
+#define USB_SC_HIDNONE      0
+#define USB_SC_HIDBOOT      1
+#define USB_PROT_HIDKBD     1
+#define USB_PROT_HIDMOUSE   2
+#define USB_SC_PRINTER      1
+#define USB_PROT_PRINTERUNIDIR    1
+#define USB_PROT_PRINTERBIDIR   2
+#define USB_PROT_PRINTER1284    3
+#define USB_SC_STORAGERBC   1
+#define USB_SC_STORAGEATAPI   2
+#define USB_SC_STORAGEFLOPPY    4
+#define USB_SC_STORAGESCSI    6
+#define USB_SC_WIRELESSRADIO    1
+#define USB_PROT_BLUETOOTH    1
 
 static map<u_int16_t,string> usbvendors;
 static map<u_int32_t,string> usbproducts;
@@ -75,6 +75,7 @@ static string usbhost(unsigned bus)
   return string(buffer);
 }
 
+
 static string usbhandle(unsigned bus, unsigned level, unsigned dev)
 {
   char buffer[10];
@@ -83,6 +84,7 @@ static string usbhandle(unsigned bus, unsigned level, unsigned dev)
 
   return string(buffer);
 }
+
 
 static string usbbusinfo(unsigned bus, unsigned level, unsigned port)
 {
@@ -96,6 +98,7 @@ static string usbbusinfo(unsigned bus, unsigned level, unsigned port)
   return string(buffer);
 }
 
+
 static string usbspeed(float speed)
 {
   char buffer[10];
@@ -104,6 +107,7 @@ static string usbspeed(float speed)
 
   return string(buffer);
 }
+
 
 static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev, unsigned prnt)
 {
@@ -123,16 +127,16 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
   }
   else
   {
-    // USB host
+// USB host
     {
       string businfo = guessBusInfo(device.getSerial());
       parent = n.findChildByBusInfo(businfo);
-      if(!parent)	// still no luck
+      if(!parent)                                 // still no luck
       {
         unsigned long long ioport = strtoll(device.getSerial().c_str(), NULL, 16);
         parent = n.findChildByResource(hw::resource::ioport(ioport, ioport));
       }
-      device.setSerial("");	// serial# has no meaning for USB hosts
+      device.setSerial("");                       // serial# has no meaning for USB hosts
     }
     if(parent)
     {
@@ -144,6 +148,7 @@ static bool addUSBChild(hwNode & n, hwNode & device, unsigned bus, unsigned lev,
     return false;
   }
 }
+
 
 static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned prot)
 {
@@ -162,7 +167,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
           device.addCapability("midi", "MIDI");
         case USB_SC_AUDIOSTREAMING:
           device.addCapability("audio-streaming", "Audio streaming");
-        break;
+          break;
       }
       break;
     case USB_CLASS_COMM:
@@ -253,7 +258,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
       {
         device.setDescription("Bluetooth wireless interface");
         device.addCapability("bluetooth", "Bluetooth wireless radio");
-	device.addHint("icon", string("bluetooth"));
+        device.addHint("icon", string("bluetooth"));
       }
       break;
     default:
@@ -263,6 +268,7 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
 
   return true;
 }
+
 
 static bool describeUSB(hwNode & device, unsigned vendor, unsigned prodid)
 {
@@ -277,6 +283,7 @@ static bool describeUSB(hwNode & device, unsigned vendor, unsigned prodid)
 
   return true;
 }
+
 
 static bool load_usbids(const string & name)
 {
@@ -296,21 +303,21 @@ static bool load_usbids(const string & name)
     if(getline(&buffer, &linelen, usbids)>0)
     {
       if(buffer[linelen-1]<' ')
-        buffer[linelen-1] = '\0';	// chop \n
+        buffer[linelen-1] = '\0';                 // chop \n
       string line = string(buffer);
       free(buffer);
       memset(description, 0, sizeof(description));
-      
+
       if(line.length()>0)
       {
-        if(line[0] == '\t')	// product id entry
+        if(line[0] == '\t')                       // product id entry
         {
           if(sscanf(line.c_str(), "%x %[ -z]", &t, description)>0)
           {
             usbproducts[PRODID(vendorid,t)] = hw::strip(description);
           }
         }
-        else			// vendor id entry
+        else                                      // vendor id entry
         {
           if(sscanf(line.c_str(), "%x %[ -z]", &t, description)>0)
           {
@@ -326,6 +333,7 @@ static bool load_usbids(const string & name)
 
   return true;
 }
+
 
 bool scan_usb(hwNode & n)
 {
@@ -378,17 +386,17 @@ bool scan_usb(hwNode & n)
       else
       {
         if((line.length()>1) && (line[1] == ':'))
-        switch(line[0])
-        {
-          case 'T':
-            bus = lev = prnt = port = cnt = devnum = mxch = 0;
-            speed = 0.0;
-	    strcpy(ver, "");
-	    strcpy(rev, "");
-            cls = sub = prot = mxps = numcfgs = 0;
-            vendor = prodid = 0;
-            if(sscanf(line.c_str(), "T: Bus=%u Lev=%u Prnt=%u Port=%u Cnt=%u Dev#=%u Spd=%f MxCh=%u", &bus, &lev, &prnt, &port, &cnt, &devnum, &speed, &mxch)>0)
-            {
+          switch(line[0])
+          {
+            case 'T':
+              bus = lev = prnt = port = cnt = devnum = mxch = 0;
+              speed = 0.0;
+              strcpy(ver, "");
+              strcpy(rev, "");
+              cls = sub = prot = mxps = numcfgs = 0;
+              vendor = prodid = 0;
+              if(sscanf(line.c_str(), "T: Bus=%u Lev=%u Prnt=%u Port=%u Cnt=%u Dev#=%u Spd=%f MxCh=%u", &bus, &lev, &prnt, &port, &cnt, &devnum, &speed, &mxch)>0)
+              {
               defined = true;
               if(lev==0)
               {
@@ -407,8 +415,8 @@ bool scan_usb(hwNode & n)
                 snprintf(strval, sizeof(strval), "%u", mxch);
                 device.setConfig("slots", strval);
               }
-            }
-            break;
+          }
+          break;
           case 'D':
             strcpy(ver, "");
             cls = sub = prot = mxps = numcfgs = 0;
@@ -459,12 +467,12 @@ bool scan_usb(hwNode & n)
             memset(driver, 0, sizeof(driver));
             if((sscanf(line.c_str(), "I: If#=%u Alt=%u #EPs=%u Cls=%x(%*5c) Sub=%x Prot=%x Driver=%[ -z]", &ifnum, &alt, &numeps, &cls, &sub, &prot, driver)>0) && (cfgnum>0))
             {
-               setUSBClass(device, cls, sub, prot);
-               if((strlen(driver)!=0) && (strcasecmp("(none)", driver)!=0))
-               {
-                 device.setConfig("driver", hw::strip(driver));
-                 device.claim();
-               }
+              setUSBClass(device, cls, sub, prot);
+              if((strlen(driver)!=0) && (strcasecmp("(none)", driver)!=0))
+              {
+                device.setConfig("driver", hw::strip(driver));
+                device.claim();
+              }
             }
             break;
         }

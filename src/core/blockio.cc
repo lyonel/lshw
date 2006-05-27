@@ -5,7 +5,7 @@
  */
 
 #define _LARGEFILE_SOURCE
-#define _FILE_OFFSET_BITS	64
+#define _FILE_OFFSET_BITS 64
 
 #include "version.h"
 #include "blockio.h"
@@ -20,14 +20,15 @@
 __ID("@(#) $Id$");
 
 ssize_t readlogicalblocks(source & s,
-			void * buffer,
-			long long pos, long long count)
+void * buffer,
+long long pos, long long count)
 {
   long long result = 0;
 
   memset(buffer, 0, count*s.blocksize);
 
-  if((s.size>0) && ((pos+count)*s.blocksize>s.size)) return 0;	/* attempt to read past the end of the section */
+                                                  /* attempt to read past the end of the section */
+  if((s.size>0) && ((pos+count)*s.blocksize>s.size)) return 0;
 
   result = lseek(s.fd, s.offset + pos*s.blocksize, SEEK_SET);
 
@@ -40,5 +41,3 @@ ssize_t readlogicalblocks(source & s,
   else
     return count;
 }
-
-

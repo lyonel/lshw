@@ -10,7 +10,6 @@
  *  by calling scan_disk() and scan_cdrom(), as appropriate.
  */
 
-
 #include "version.h"
 #include "cpuinfo.h"
 #include "osutils.h"
@@ -37,53 +36,54 @@ __ID("@(#) $Id$");
 #define PCI_SLOT(devfn)         (((devfn) >> 3) & 0x1f)
 #define PCI_FUNC(devfn)         ((devfn) & 0x07)
 
-#define IORDY_SUP               0x0800	/* 1=support; 0=may be supported */
-#define IORDY_OFF               0x0400	/* 1=may be disabled */
-#define LBA_SUP                 0x0200	/* 1=Logical Block Address support */
-#define DMA_SUP                 0x0100	/* 1=Direct Memory Access support */
-#define DMA_IL_SUP              0x8000	/* 1=interleaved DMA support (ATAPI) */
-#define CMD_Q_SUP               0x4000	/* 1=command queuing support (ATAPI) */
-#define OVLP_SUP                0x2000	/* 1=overlap operation support (ATAPI) */
+#define IORDY_SUP               0x0800            /* 1=support; 0=may be supported */
+#define IORDY_OFF               0x0400            /* 1=may be disabled */
+#define LBA_SUP                 0x0200            /* 1=Logical Block Address support */
+#define DMA_SUP                 0x0100            /* 1=Direct Memory Access support */
+#define DMA_IL_SUP              0x8000            /* 1=interleaved DMA support (ATAPI) */
+#define CMD_Q_SUP               0x4000            /* 1=command queuing support (ATAPI) */
+#define OVLP_SUP                0x2000            /* 1=overlap operation support (ATAPI) */
 
-#define GEN_CONFIG              0	/* general configuration */
+#define GEN_CONFIG              0                 /* general configuration */
 #define CD_ROM                  5
 #define NOT_ATA                 0x8000
-#define NOT_ATAPI               0x4000	/* (check only if bit 15 == 1) */
+#define NOT_ATAPI               0x4000            /* (check only if bit 15 == 1) */
 #define EQPT_TYPE               0x1f00
 
-static const char *description[] = {
-  "Direct-access device",	/* word 0, bits 12-8 = 00 */
-  "Sequential-access device",	/* word 0, bits 12-8 = 01 */
-  "Printer",			/* word 0, bits 12-8 = 02 */
-  "Processor",			/* word 0, bits 12-8 = 03 */
-  "Write-once device",		/* word 0, bits 12-8 = 04 */
-  "CD-ROM",			/* word 0, bits 12-8 = 05 */
-  "Scanner",			/* word 0, bits 12-8 = 06 */
-  "Optical memory",		/* word 0, bits 12-8 = 07 */
-  "Medium changer",		/* word 0, bits 12-8 = 08 */
-  "Communications device",	/* word 0, bits 12-8 = 09 */
-  "ACS-IT8 device",		/* word 0, bits 12-8 = 0a */
-  "ACS-IT8 device",		/* word 0, bits 12-8 = 0b */
-  "Array controller",		/* word 0, bits 12-8 = 0c */
-  "Enclosure services",		/* word 0, bits 12-8 = 0d */
-  "Reduced block command device",	/* word 0, bits 12-8 = 0e */
-  "Optical card reader/writer",	/* word 0, bits 12-8 = 0f */
-  "",				/* word 0, bits 12-8 = 10 */
-  "",				/* word 0, bits 12-8 = 11 */
-  "",				/* word 0, bits 12-8 = 12 */
-  "",				/* word 0, bits 12-8 = 13 */
-  "",				/* word 0, bits 12-8 = 14 */
-  "",				/* word 0, bits 12-8 = 15 */
-  "",				/* word 0, bits 12-8 = 16 */
-  "",				/* word 0, bits 12-8 = 17 */
-  "",				/* word 0, bits 12-8 = 18 */
-  "",				/* word 0, bits 12-8 = 19 */
-  "",				/* word 0, bits 12-8 = 1a */
-  "",				/* word 0, bits 12-8 = 1b */
-  "",				/* word 0, bits 12-8 = 1c */
-  "",				/* word 0, bits 12-8 = 1d */
-  "",				/* word 0, bits 12-8 = 1e */
-  "Unknown",			/* word 0, bits 12-8 = 1f */
+static const char *description[] =
+{
+  "Direct-access device",                         /* word 0, bits 12-8 = 00 */
+  "Sequential-access device",                     /* word 0, bits 12-8 = 01 */
+  "Printer",                                      /* word 0, bits 12-8 = 02 */
+  "Processor",                                    /* word 0, bits 12-8 = 03 */
+  "Write-once device",                            /* word 0, bits 12-8 = 04 */
+  "CD-ROM",                                       /* word 0, bits 12-8 = 05 */
+  "Scanner",                                      /* word 0, bits 12-8 = 06 */
+  "Optical memory",                               /* word 0, bits 12-8 = 07 */
+  "Medium changer",                               /* word 0, bits 12-8 = 08 */
+  "Communications device",                        /* word 0, bits 12-8 = 09 */
+  "ACS-IT8 device",                               /* word 0, bits 12-8 = 0a */
+  "ACS-IT8 device",                               /* word 0, bits 12-8 = 0b */
+  "Array controller",                             /* word 0, bits 12-8 = 0c */
+  "Enclosure services",                           /* word 0, bits 12-8 = 0d */
+  "Reduced block command device",                 /* word 0, bits 12-8 = 0e */
+  "Optical card reader/writer",                   /* word 0, bits 12-8 = 0f */
+  "",                                             /* word 0, bits 12-8 = 10 */
+  "",                                             /* word 0, bits 12-8 = 11 */
+  "",                                             /* word 0, bits 12-8 = 12 */
+  "",                                             /* word 0, bits 12-8 = 13 */
+  "",                                             /* word 0, bits 12-8 = 14 */
+  "",                                             /* word 0, bits 12-8 = 15 */
+  "",                                             /* word 0, bits 12-8 = 16 */
+  "",                                             /* word 0, bits 12-8 = 17 */
+  "",                                             /* word 0, bits 12-8 = 18 */
+  "",                                             /* word 0, bits 12-8 = 19 */
+  "",                                             /* word 0, bits 12-8 = 1a */
+  "",                                             /* word 0, bits 12-8 = 1b */
+  "",                                             /* word 0, bits 12-8 = 1c */
+  "",                                             /* word 0, bits 12-8 = 1d */
+  "",                                             /* word 0, bits 12-8 = 1e */
+  "Unknown",                                      /* word 0, bits 12-8 = 1f */
 };
 
 /* older kernels (2.2.x) have incomplete id structure for IDE devices */
@@ -107,8 +107,9 @@ static unsigned long long get_longlong(const string & path)
   return l;
 }
 
+
 static string get_pciid(const string & bus,
-			const string & device)
+const string & device)
 {
   char buffer[20];
   int pcibus, pcidevfunc;
@@ -116,13 +117,14 @@ static string get_pciid(const string & bus,
   sscanf(bus.c_str(), "%x", &pcibus);
   sscanf(device.c_str(), "%x", &pcidevfunc);
   snprintf(buffer, sizeof(buffer), "PCI:%02x:%02x.%x", pcibus,
-	   PCI_SLOT(pcidevfunc), PCI_FUNC(pcidevfunc));
+    PCI_SLOT(pcidevfunc), PCI_FUNC(pcidevfunc));
 
   return string(buffer);
 }
 
+
 static bool probe_ide(const string & name,
-		      hwNode & device)
+hwNode & device)
 {
   struct hd_driveid id;
   const u_int8_t *id_regs = (const u_int8_t *) &id;
@@ -140,9 +142,9 @@ static bool probe_ide(const string & name,
 
   u_int8_t args[4 + 512] = { WIN_IDENTIFY, 0, 0, 1, };
 
-  if(id.config & 0x8000)	// we have a packet device
+  if(id.config & 0x8000)                          // we have a packet device
   {
-    args[0] = WIN_PIDENTIFY;	// so use the right command to avoid kernel messages (Aborted Command)
+    args[0] = WIN_PIDENTIFY;                      // so use the right command to avoid kernel messages (Aborted Command)
     device.addCapability("packet", "ATAPI packet device");
   }
 
@@ -166,7 +168,7 @@ static bool probe_ide(const string & name,
   if (id.serial_no[0])
     device.
       setSerial(hw::
-		strip(string((char *) id.serial_no, sizeof(id.serial_no))));
+      strip(string((char *) id.serial_no, sizeof(id.serial_no))));
 
   if (!(pidentity[GEN_CONFIG] & NOT_ATA))
   {
@@ -196,7 +198,7 @@ static bool probe_ide(const string & name,
     device.addCapability("iordy", "I/O ready reporting");
   if (id.command_set_1 & 1)
     device.addCapability("smart",
-			 "S.M.A.R.T. (Self-Monitoring And Reporting Technology)");
+      "S.M.A.R.T. (Self-Monitoring And Reporting Technology)");
   if (id.command_set_1 & 2)
     device.addCapability("security", "ATA security extensions");
   if (id.command_set_1 & 4)
@@ -211,23 +213,23 @@ static bool probe_ide(const string & name,
     if (id.field_valid & 4)
     {
       if (id.dma_ultra & 0x100)
-	device.setConfig("mode", "udma0");
+        device.setConfig("mode", "udma0");
       if (id.dma_ultra & 0x200)
-	device.setConfig("mode", "udma1");
+        device.setConfig("mode", "udma1");
       if (id.dma_ultra & 0x400)
-	device.setConfig("mode", "udma2");
+        device.setConfig("mode", "udma2");
       if (id.hw_config & 0x2000)
       {
-	if (id.dma_ultra & 0x800)
-	  device.setConfig("mode", "udma3");
-	if (id.dma_ultra & 0x1000)
-	  device.setConfig("mode", "udma4");
-	if (id.dma_ultra & 0x2000)
-	  device.setConfig("mode", "udma5");
-	if (id.dma_ultra & 0x4000)
-	  device.setConfig("mode", "udma6");
-	if (id.dma_ultra & 0x8000)
-	  device.setConfig("mode", "udma7");
+        if (id.dma_ultra & 0x800)
+          device.setConfig("mode", "udma3");
+        if (id.dma_ultra & 0x1000)
+          device.setConfig("mode", "udma4");
+        if (id.dma_ultra & 0x2000)
+          device.setConfig("mode", "udma5");
+        if (id.dma_ultra & 0x4000)
+          device.setConfig("mode", "udma6");
+        if (id.dma_ultra & 0x8000)
+          device.setConfig("mode", "udma7");
       }
     }
   }
@@ -235,8 +237,8 @@ static bool probe_ide(const string & name,
   if (id_regs[83] & 8)
     device.addCapability("apm", "Advanced Power Management");
 
-  //if (device.isCapable("iordy") && (id.capability & 4))
-  //device.setConfig("iordy", "yes");
+//if (device.isCapable("iordy") && (id.capability & 4))
+//device.setConfig("iordy", "yes");
 
   if (device.isCapable("smart"))
   {
@@ -257,7 +259,7 @@ static bool probe_ide(const string & name,
   if (device.isCapable("lba"))
     device.setCapacity((unsigned long long) id.lba_capacity * 512);
   if (device.isCapable("removable"))
-    device.setCapacity(0);	// we'll first have to make sure we have a disk
+    device.setCapacity(0);                        // we'll first have to make sure we have a disk
 
   if (device.isCapable("cdrom"))
     scan_cdrom(device);
@@ -280,7 +282,7 @@ static bool probe_ide(const string & name,
 
   if (iddata[START_MODEL])
     device.setProduct(print_ascii((char *) &iddata[START_MODEL],
-				  LENGTH_MODEL));
+      LENGTH_MODEL));
   if (iddata[START_SERIAL])
     device.
       setSerial(print_ascii((char *) &iddata[START_SERIAL], LENGTH_SERIAL));
@@ -311,6 +313,7 @@ static bool probe_ide(const string & name,
   return true;
 }
 
+
 static bool is_master(const string & device)
 {
   if (device == "")
@@ -318,16 +321,18 @@ static bool is_master(const string & device)
 
   switch ((device[device.length() - 1] - 'a') % 2)
   {
-  case 0:
-    return true;
-  case 1:
-    return false;
-  default:
-    return false;
+    case 0:
+      return true;
+    case 1:
+      return false;
+    default:
+      return false;
   }
 }
 
-static const char *manufacturers[] = {
+
+static const char *manufacturers[] =
+{
   "^ST.+", "Seagate",
   "^D...-.+", "IBM",
   "^IBM.+", "IBM",
@@ -354,17 +359,18 @@ static bool guess_manufacturer(hwNode & device)
   bool result = false;
 
   while (manufacturers[i])
+  {
+    if (matches(device.getProduct().c_str(), manufacturers[i], REG_ICASE))
     {
-      if (matches(device.getProduct().c_str(), manufacturers[i], REG_ICASE))
-      {
-	device.setVendor(manufacturers[i + 1]);
-	result = true;
-      }
-      i += 2;
+      device.setVendor(manufacturers[i + 1]);
+      result = true;
     }
+    i += 2;
+  }
 
   return result;
 }
+
 
 bool scan_ide(hwNode & n)
 {
@@ -382,7 +388,7 @@ bool scan_ide(hwNode & n)
   {
     vector < string > config;
     hwNode ide("ide",
-	       hw::bus);
+      hw::bus);
 
     ide.setLogicalName(namelist[i]->d_name);
     ide.setHandle("IDE:" + string(namelist[i]->d_name));
@@ -394,102 +400,102 @@ bool scan_ide(hwNode & n)
       char *id = namelist[i]->d_name;
 
       while ((*id != 0) && (!isdigit(*id)))
-	id++;
+        id++;
       if (*id != 0)
       {
-	ide.setBusInfo("ide@" + string(id));
-	ide.setPhysId(string(id));
+        ide.setBusInfo("ide@" + string(id));
+        ide.setPhysId(string(id));
       }
 
       loadfile(string(PROC_IDE"/") + namelist[i]->d_name + "/config", config);
       if (config.size() > 0)
-	splitlines(config[0], identify, ' ');
+        splitlines(config[0], identify, ' ');
       config.clear();
       loadfile(string(PROC_IDE"/") + namelist[i]->d_name + "/channel", config);
       if (config.size() > 0)
         channel = config[0];
       config.clear();
 
-      //if (identify.size() >= 1)
+//if (identify.size() >= 1)
       {
-	struct dirent **devicelist;
-	int ndevices;
+        struct dirent **devicelist;
+        int ndevices;
 
-	pushd(string(PROC_IDE) + "/" + namelist[i]->d_name);
-	ndevices = scandir(".", &devicelist, selectdir, alphasort);
-	popd();
+        pushd(string(PROC_IDE) + "/" + namelist[i]->d_name);
+        ndevices = scandir(".", &devicelist, selectdir, alphasort);
+        popd();
 
-	for (int j = 0; j < ndevices; j++)
-	{
-	  string basepath =
-	    string(PROC_IDE) + "/" + namelist[i]->d_name + "/" +
-	    devicelist[j]->d_name;
-	  hwNode idedevice("device",
-			   hw::storage);
+        for (int j = 0; j < ndevices; j++)
+        {
+          string basepath =
+            string(PROC_IDE) + "/" + namelist[i]->d_name + "/" +
+            devicelist[j]->d_name;
+          hwNode idedevice("device",
+            hw::storage);
 
-	  idedevice =
-	    hwNode(get_string(basepath + "/media", "disk"), hw::disk);
+          idedevice =
+            hwNode(get_string(basepath + "/media", "disk"), hw::disk);
 
-	  idedevice.setCapacity(512 * get_longlong(basepath + "/capacity"));
-	  idedevice.setLogicalName(string("/dev/") + devicelist[j]->d_name);
-	  idedevice.setProduct(get_string(basepath + "/model"));
-	  idedevice.claim();
-	  idedevice.setHandle(ide.getHandle() + ":" +
-			      string(devicelist[j]->d_name));
-	  if (is_master(devicelist[j]->d_name))
-	    idedevice.setPhysId(0);
-	  else
-	    idedevice.setPhysId(1);
-	  idedevice.setBusInfo(ide.getBusInfo() + "." +
-			       idedevice.getPhysId());
+          idedevice.setCapacity(512 * get_longlong(basepath + "/capacity"));
+          idedevice.setLogicalName(string("/dev/") + devicelist[j]->d_name);
+          idedevice.setProduct(get_string(basepath + "/model"));
+          idedevice.claim();
+          idedevice.setHandle(ide.getHandle() + ":" +
+            string(devicelist[j]->d_name));
+          if (is_master(devicelist[j]->d_name))
+            idedevice.setPhysId(0);
+          else
+            idedevice.setPhysId(1);
+          idedevice.setBusInfo(ide.getBusInfo() + "." +
+            idedevice.getPhysId());
 
-	  probe_ide(devicelist[j]->d_name, idedevice);
+          probe_ide(devicelist[j]->d_name, idedevice);
 
-	  guess_manufacturer(idedevice);
+          guess_manufacturer(idedevice);
 
-	  ide.addChild(idedevice);
-	  free(devicelist[j]);
-	}
-	free(devicelist);
+          ide.addChild(idedevice);
+          free(devicelist[j]);
+        }
+        free(devicelist);
 
-	ide.setDescription(hw::strip("IDE Channel " + hw::strip(channel)));
+        ide.setDescription(hw::strip("IDE Channel " + hw::strip(channel)));
 
-	if ( identify.size() == 11 && identify[0] == "pci")
-	{
-	  string pciid = get_pciid(identify[2], identify[4]);
-	  hwNode *parent = n.findChildByHandle(pciid);
+        if ( identify.size() == 11 && identify[0] == "pci")
+        {
+          string pciid = get_pciid(identify[2], identify[4]);
+          hwNode *parent = n.findChildByHandle(pciid);
 
-	  if (parent)
-	  {
-	    parent->claim();
-	    ide.setClock(parent->getClock());
-	    parent->addChild(ide);
-	  }
-	}
-	else	// we have to guess the parent device
-	{
+          if (parent)
+          {
+            parent->claim();
+            ide.setClock(parent->getClock());
+            parent->addChild(ide);
+          }
+        }
+        else                                      // we have to guess the parent device
+        {
           hwNode * parent = guessParent(ide, n);
           if(parent)
           {
-	    parent->claim();
-	    ide.setClock(parent->getClock());
-	    parent->addChild(ide);
+            parent->claim();
+            ide.setClock(parent->getClock());
+            parent->addChild(ide);
           }
           else
-	    for (unsigned int k = 0; k < ide.countChildren(); k++)
-	    {
-	      hwNode *candidate =
-	        n.findChildByLogicalName(ide.getChild(k)->getLogicalName());
+            for (unsigned int k = 0; k < ide.countChildren(); k++)
+          {
+            hwNode *candidate =
+              n.findChildByLogicalName(ide.getChild(k)->getLogicalName());
 
-	      if (candidate)
-              {
-                parent = candidate;
-	        candidate->merge(*ide.getChild(k));
-                break;
-              }
-	    }
-	  if(!parent) n.addChild(ide);
-	}
+            if (candidate)
+            {
+              parent = candidate;
+              candidate->merge(*ide.getChild(k));
+              break;
+            }
+          }
+          if(!parent) n.addChild(ide);
+        }
       }
 
     }

@@ -7,5 +7,4 @@
 void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath);
 
 string printhwpath(hwNode & node, hwNode & base);
-
 #endif

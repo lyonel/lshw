@@ -27,6 +27,7 @@ void alias(const char * aname, const char * cname)
   aliases[lowercase(aname)] = lowercase(cname);
 }
 
+
 static string getcname(const char * aname)
 {
   if(aliases.find(lowercase(aname)) != aliases.end())
@@ -35,9 +36,10 @@ static string getcname(const char * aname)
     return lowercase(aname);
 }
 
+
 static void remove_option_argument(int i,
-				   int &argc,
-				   char *argv[])
+int &argc,
+char *argv[])
 {
   for (int j = i; j + 2 < argc; j++)
     argv[j] = argv[j + 2];
@@ -45,8 +47,9 @@ static void remove_option_argument(int i,
   argc -= 2;
 }
 
+
 bool parse_options(int &argc,
-		   char *argv[])
+char *argv[])
 {
   int i = 1;
   string option = "";
@@ -58,7 +61,7 @@ bool parse_options(int &argc,
     if (option == "-disable")
     {
       if (i + 1 >= argc)
-	return false;		// -disable requires an argument
+        return false;                             // -disable requires an argument
 
       disable(argv[i + 1]);
 
@@ -67,7 +70,7 @@ bool parse_options(int &argc,
     else if (option == "-enable")
     {
       if (i + 1 >= argc)
-	return false;		// -enable requires an argument
+        return false;                             // -enable requires an argument
 
       enable(argv[i + 1]);
 
@@ -78,12 +81,12 @@ bool parse_options(int &argc,
       vector < string > classes;
 
       if (i + 1 >= argc)
-	return false;		// -class requires an argument
+        return false;                             // -class requires an argument
 
       splitlines(argv[i + 1], classes, ',');
 
       for (unsigned int j = 0; j < classes.size(); j++)
-	visible_classes.insert(getcname(classes[j].c_str()));
+        visible_classes.insert(getcname(classes[j].c_str()));
 
       remove_option_argument(i, argc, argv);
     }
@@ -94,15 +97,18 @@ bool parse_options(int &argc,
   return true;
 }
 
+
 bool enabled(const char *option)
 {
   return !(disabled(lowercase(option).c_str()));
 }
 
+
 bool disabled(const char *option)
 {
   return disabled_tests.find(lowercase(option)) != disabled_tests.end();
 }
+
 
 void enable(const char *option)
 {
@@ -112,10 +118,12 @@ void enable(const char *option)
   disabled_tests.erase(lowercase(option));
 }
 
+
 void disable(const char *option)
 {
   disabled_tests.insert(lowercase(option));
 }
+
 
 bool visible(const char *c)
 {

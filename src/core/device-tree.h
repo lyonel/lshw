@@ -4,5 +4,4 @@
 #include "hw.h"
 
 bool scan_device_tree(hwNode & n);
-
 #endif

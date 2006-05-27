@@ -49,5 +49,4 @@
  * Sets up the lshw stock repository.
  */
 void lshw_gtk_stock_init(void);
-
-#endif /* _STOCK_H_ */
+#endif                                            /* _STOCK_H_ */

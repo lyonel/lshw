@@ -16,8 +16,8 @@ std::string realpath(const std::string & path);
 bool loadfile(const std::string & file, std::vector < std::string > &lines);
 
 size_t splitlines(const std::string & s,
-		std::vector < std::string > &lines,
-		char separator = '\n');
+std::vector < std::string > &lines,
+char separator = '\n');
 std::string get_string(const std::string & path, const std::string & def = "");
 
 std::string find_deventry(mode_t mode, dev_t device);
@@ -47,5 +47,4 @@ unsigned long long be_longlong(void *);
 unsigned long long le_longlong(void *);
 
 int open_dev(dev_t dev, const std::string & name="");
-
 #endif
