@@ -1,9 +1,16 @@
 /*
- *  cdrom.cc
+ * cdrom.cc
  *
+ * This scan reports optical media-specific capabilities:
+ * - audio CD playback
+ * - CD-R burning
+ * - CD-RW burning
+ * - DVD reading
+ * - DVD-R burning
+ * - DVD-RAM burning
  *
- *
- *
+ * NOTE: DVD+R/RW are not covered by the ioctls used in this code and, therefore,
+ * not reported.
  *
  *
  */

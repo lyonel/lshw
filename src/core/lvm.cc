@@ -1,6 +1,11 @@
 /*
  * lvm.cc
  *
+ * This scan reports LVM-related information by looking for LVM2 structures
+ * So far, the following information is reported:
+ * - presence of LVM2 on-disk structures
+ * - size of LVM2 physical volume
+ * - UUID of LVM2 physical volume
  *
  */
 

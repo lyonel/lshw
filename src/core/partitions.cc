@@ -1,6 +1,13 @@
 /*
  * partitions.cc
  *
+ * This scan tries to guess partitioning information by looking at on-disk
+ * structures.
+ * Recognised partitioning schemes:
+ * - MS-DOS (sometimes called MBR or static disks)
+ * - Apple partition map
+ * - EFI
+ * - raw (whole disk)
  *
  */
 
