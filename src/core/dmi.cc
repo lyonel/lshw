@@ -220,7 +220,7 @@ u8 s)
     bp++;
     s--;
   }
-  return string(bp);
+  return hw::strip(bp);
 }
 
 
