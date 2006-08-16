@@ -73,9 +73,12 @@ bool scan_system(hwNode & system)
     status("CPUID");
     if (enabled("cpuid"))
       scan_cpuid(computer);
-    status("PCI");
+    status("PCI (sysfs)");
     if (enabled("pci"))
       scan_pci(computer);
+    status("PCI (legacy)");
+    if (enabled("pcilegacy"))
+      scan_pci_legacy(computer);
     status("ISA PnP");
     if (enabled("isapnp"))
       scan_isapnp(computer);

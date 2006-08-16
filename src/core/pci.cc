@@ -642,7 +642,7 @@ long _class)
 }
 
 
-bool scan_pci(hwNode & n)
+bool scan_pci_legacy(hwNode & n)
 {
   FILE *f;
   hwNode *core = n.getChild("core");
@@ -949,5 +949,10 @@ bool scan_pci(hwNode & n)
     fclose(f);
   }
 
+  return false;
+}
+
+bool scan_pci(hwNode & n)
+{
   return false;
 }
