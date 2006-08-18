@@ -869,6 +869,8 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           else
             device->setClock(33000000UL);         // 33MHz
 
+          device->setPhysId(d.dev, d.func);
+
           hwNode *bus = NULL;
 
           bus = n.findChildByHandle(pci_bushandle(d.bus, d.domain));
@@ -877,10 +879,8 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           device->describeCapability("pcmcia", "PC-Card (PCMCIA)");
           device->describeCapability("generic", "Generic interface");
           device->describeCapability("ohci", "Open Host Controller Interface");
-          device->describeCapability("uhci",
-            "Universal Host Controller Interface (USB1)");
-          device->describeCapability("ehci",
-            "Enhanced Host Controller Interface (USB2)");
+          device->describeCapability("uhci", "Universal Host Controller Interface (USB1)");
+          device->describeCapability("ehci", "Enhanced Host Controller Interface (USB2)");
           if (bus)
             result = bus->addChild(*device);
           else
@@ -971,7 +971,6 @@ bool scan_pci_legacy(hwNode & n)
       if(device)
       {
         device->setBusInfo(businfo);
-        device->setPhysId(PCI_SLOT(dfn & 0xff), PCI_FUNC(dfn & 0xff));
       }
 
     }
