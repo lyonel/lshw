@@ -2,6 +2,7 @@
 #include "osutils.h"
 #include "version.h"
 #include "options.h"
+#include "heuristics.h"
 #include <vector>
 #include <map>
 #include <sstream>
@@ -1010,12 +1011,7 @@ void hwNode::setBusInfo(const string & businfo)
     if (businfo.find('@') != string::npos)
       This->businfo = strip(businfo);
     else
-    {
-      string info = strip(businfo);
-
-      if(matches(info, "^[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
-        This->businfo = string("pci@") + info;
-    }
+      This->businfo = guessBusInfo(strip(businfo));
   }
 }
 

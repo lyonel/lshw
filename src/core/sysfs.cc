@@ -113,8 +113,8 @@ static string sysfs_getbustype(const string & path)
 
 static string sysfstopci(const string & path)
 {
-  if (path.length() > 7)
-    return "pci@" + path.substr(path.length() - 7);
+  if (path.length() > strlen("XXXX:XX:XX.X"))
+    return "pci@" + path.substr(path.length() - strlen("XXXX:XX:XX.X"));
   else
     return "";
 }

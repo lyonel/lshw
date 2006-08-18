@@ -15,12 +15,12 @@ string guessBusInfo(const string & info)
                                                   // 2.6-style PCI
   if(matches(info,"^[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
   {
-    return "pci@" + info.substr(5);
+    return "pci@" + info;
   }
                                                   // 2.4-style PCI
   if(matches(info,"^[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
   {
-    return "pci@" + info;
+    return "pci@0000:" + info;
   }
 
                                                   // USB: host-port[.port]:config.interface

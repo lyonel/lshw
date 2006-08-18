@@ -6,13 +6,17 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <dirent.h>
 
 __ID("@(#) $Id$");
 
 #define PROC_BUS_PCI "/proc/bus/pci"
+#define SYS_BUS_PCI "/sys/bus/pci"
 #define PCIID_PATH "/usr/share/lshw/pci.ids:/usr/local/share/pci.ids:/usr/share/pci.ids:/etc/pci.ids:/usr/share/hwdata/pci.ids:/usr/share/misc/pci.ids"
 
 #define PCI_CLASS_REVISION      0x08              /* High 24 bits are class, low 8 revision */
+#define PCI_VENDOR_ID           0x00    /* 16 bits */
+#define PCI_DEVICE_ID           0x02    /* 16 bits */
 #define PCI_COMMAND             0x04              /* 16 bits */
 #define PCI_REVISION_ID         0x08              /* Revision ID */
 #define PCI_CLASS_PROG          0x09              /* Reg. Level Programming Interface */
@@ -159,6 +163,8 @@ __ID("@(#) $Id$");
 
 #define PCI_CB_SUBSYSTEM_VENDOR_ID 0x40
 #define PCI_CB_SUBSYSTEM_ID     0x42
+
+bool pcidb_loaded = false;
 
 typedef unsigned long long pciaddr_t;
 typedef enum
@@ -547,11 +553,14 @@ unsigned int pos)
 }
 
 
-static string pci_bushandle(u_int8_t bus)
+static string pci_bushandle(u_int8_t bus, u_int16_t domain = 0)
 {
-  char buffer[10];
+  char buffer[20];
 
-  snprintf(buffer, sizeof(buffer), "%02x", bus);
+  if(domain == (u_int16_t)(-1))
+    snprintf(buffer, sizeof(buffer), "%02x", bus);
+  else
+    snprintf(buffer, sizeof(buffer), "%04x:%02x", domain, bus);
 
   return "PCIBUS:" + string(buffer);
 }
@@ -559,11 +568,15 @@ static string pci_bushandle(u_int8_t bus)
 
 static string pci_handle(u_int16_t bus,
 u_int8_t dev,
-u_int8_t fct)
+u_int8_t fct,
+u_int16_t domain = 0)
 {
-  char buffer[20];
+  char buffer[30];
 
-  snprintf(buffer, sizeof(buffer), "PCI:%02x:%02x.%x", bus, dev, fct);
+  if(domain == (u_int16_t)(-1))
+    snprintf(buffer, sizeof(buffer), "PCI:%02x:%02x.%x", bus, dev, fct);
+  else
+    snprintf(buffer, sizeof(buffer), "PCI:%04x:%02x:%02x.%x", domain, bus, dev, fct);
 
   return string(buffer);
 }
@@ -641,10 +654,9 @@ long _class)
   n.addHint("pci.class", _class);
 }
 
-
-bool scan_pci_legacy(hwNode & n)
+static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
 {
-  FILE *f;
+  hwNode *result = NULL;
   hwNode *core = n.getChild("core");
   if (!core)
   {
@@ -652,65 +664,11 @@ bool scan_pci_legacy(hwNode & n)
     core = n.getChild("core");
   }
 
-  load_pcidb();
+  if(!pcidb_loaded)
+    pcidb_loaded = load_pcidb();
 
-  f = fopen(PROC_BUS_PCI "/devices", "r");
-  if (f)
-  {
-    char buf[512];
-
-    while (fgets(buf, sizeof(buf) - 1, f))
-    {
-      unsigned int dfn, vend, cnt;
-      struct pci_dev d;
-      int fd = -1;
-      string devicepath = "";
-      char devicename[20];
-      char businfo[20];
-      char driver[50];
-      hwNode *device = NULL;
-
-      memset(&d, 0, sizeof(d));
-      memset(driver, 0, sizeof(driver));
-      cnt = sscanf(buf,
-        "%x %x %x %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %[ -z]s",
-        &dfn,
-        &vend,
-        &d.irq,
-        &d.base_addr[0],
-        &d.base_addr[1],
-        &d.base_addr[2],
-        &d.base_addr[3],
-        &d.base_addr[4],
-        &d.base_addr[5],
-        &d.rom_base_addr,
-        &d.size[0],
-        &d.size[1],
-        &d.size[2],
-        &d.size[3], &d.size[4], &d.size[5], &d.rom_size, driver);
-
-      if (cnt != 9 && cnt != 10 && cnt != 17 && cnt != 18)
-        break;
-
-      d.bus = dfn >> 8;
-      d.dev = PCI_SLOT(dfn & 0xff);
-      d.func = PCI_FUNC(dfn & 0xff);
-      d.vendor_id = vend >> 16;
-      d.device_id = vend & 0xffff;
-
-      snprintf(devicename, sizeof(devicename), "%02x/%02x.%x", d.bus, d.dev,
-        d.func);
-      devicepath = string(PROC_BUS_PCI) + "/" + string(devicename);
-      snprintf(businfo, sizeof(businfo), "pci@%02x:%02x.%x", d.bus, d.dev,
-        d.func);
-
-      fd = open(devicepath.c_str(), O_RDONLY);
-      if (fd >= 0)
-      {
-        read(fd, d.config, sizeof(d.config));
-        close(fd);
-      }
-
+      d.vendor_id = get_conf_word(d, PCI_VENDOR_ID);
+      d.device_id = get_conf_word(d, PCI_DEVICE_ID);
       u_int16_t dclass = get_conf_word(d, PCI_CLASS_DEVICE);
       u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
       u_int16_t status = get_conf_word(d, PCI_STATUS);
@@ -725,7 +683,6 @@ bool scan_pci_legacy(hwNode & n)
       char revision[10];
       snprintf(revision, sizeof(revision), "%02x", rev);
       string moredescription = get_class_description(dclass, progif);
-      string drivername = hw::strip(driver);
 
       switch (htype)
       {
@@ -756,7 +713,6 @@ bool scan_pci_legacy(hwNode & n)
         host.setVersion(revision);
         addHints(host, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
         host.claim();
-        host.setBusInfo(businfo);
         if(latency)
           host.setConfig("latency", latency);
         if (d.size[0] > 0)
@@ -765,7 +721,7 @@ bool scan_pci_legacy(hwNode & n)
         if (moredescription != "" && moredescription != host.getDescription())
         {
           host.addCapability(moredescription);
-          host.setDescription(device->getDescription() + " (" +
+          host.setDescription(host.getDescription() + " (" +
             moredescription + ")");
         }
 
@@ -777,9 +733,9 @@ bool scan_pci_legacy(hwNode & n)
         scan_resources(host, d);
 
         if (core)
-          core->addChild(host);
+          result = core->addChild(host);
         else
-          n.addChild(host);
+          result = n.addChild(host);
       }
       else
       {
@@ -845,13 +801,11 @@ bool scan_pci_legacy(hwNode & n)
         }
 
         devicename = get_class_name(dclass);
-        device = new hwNode(devicename, deviceclass);
+        hwNode *device = new hwNode(devicename, deviceclass);
 
         if (device)
         {
           if(deviceicon != "") device->addHint("icon", deviceicon);
-          device->setBusInfo(businfo);
-          device->setPhysId(PCI_SLOT(dfn & 0xff), PCI_FUNC(dfn & 0xff));
           addHints(*device, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
 
           if (deviceclass == hw::bridge || deviceclass == hw::storage)
@@ -914,12 +868,6 @@ bool scan_pci_legacy(hwNode & n)
           else
             device->setClock(33000000UL);         // 33MHz
 
-          if (drivername != "")
-          {
-            device->setConfig("driver", drivername);
-            device->claim();
-          }
-
           hwNode *bus = NULL;
 
           bus = n.findChildByHandle(pci_bushandle(d.bus));
@@ -933,16 +881,96 @@ bool scan_pci_legacy(hwNode & n)
           device->describeCapability("ehci",
             "Enhanced Host Controller Interface (USB2)");
           if (bus)
-            bus->addChild(*device);
+            result = bus->addChild(*device);
           else
           {
             if (core)
-              core->addChild(*device);
+              result = core->addChild(*device);
             else
-              n.addChild(*device);
+              result = n.addChild(*device);
           }
           free(device);
+
         }
+      }
+  return result;
+}
+
+bool scan_pci_legacy(hwNode & n)
+{
+  FILE *f;
+  hwNode *core = n.getChild("core");
+  if (!core)
+  {
+    n.addChild(hwNode("core", hw::bus));
+    core = n.getChild("core");
+  }
+
+  if(!pcidb_loaded)
+    pcidb_loaded = load_pcidb();
+
+  f = fopen(PROC_BUS_PCI "/devices", "r");
+  if (f)
+  {
+    char buf[512];
+
+    while (fgets(buf, sizeof(buf) - 1, f))
+    {
+      unsigned int dfn, vend, cnt;
+      struct pci_dev d;
+      int fd = -1;
+      string devicepath = "";
+      char devicename[20];
+      char businfo[20];
+      char driver[50];
+      hwNode *device = NULL;
+
+      memset(&d, 0, sizeof(d));
+      memset(driver, 0, sizeof(driver));
+      cnt = sscanf(buf,
+        "%x %x %x %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %llx %[ -z]s",
+        &dfn,
+        &vend,
+        &d.irq,
+        &d.base_addr[0],
+        &d.base_addr[1],
+        &d.base_addr[2],
+        &d.base_addr[3],
+        &d.base_addr[4],
+        &d.base_addr[5],
+        &d.rom_base_addr,
+        &d.size[0],
+        &d.size[1],
+        &d.size[2],
+        &d.size[3], &d.size[4], &d.size[5], &d.rom_size, driver);
+
+      if (cnt != 9 && cnt != 10 && cnt != 17 && cnt != 18)
+        break;
+
+      d.bus = dfn >> 8;
+      d.dev = PCI_SLOT(dfn & 0xff);
+      d.func = PCI_FUNC(dfn & 0xff);
+      d.vendor_id = vend >> 16;
+      d.device_id = vend & 0xffff;
+
+      snprintf(devicename, sizeof(devicename), "%02x/%02x.%x", d.bus, d.dev,
+        d.func);
+      devicepath = string(PROC_BUS_PCI) + "/" + string(devicename);
+      snprintf(businfo, sizeof(businfo), "%02x:%02x.%x", d.bus, d.dev,
+        d.func);
+
+      fd = open(devicepath.c_str(), O_RDONLY);
+      if (fd >= 0)
+      {
+        read(fd, d.config, sizeof(d.config));
+        close(fd);
+      }
+
+      device = scan_pci_dev(d, n);
+      if(device)
+      {
+        device->setBusInfo(businfo);
+        device->setPhysId(PCI_SLOT(dfn & 0xff), PCI_FUNC(dfn & 0xff));
       }
 
     }
@@ -954,5 +982,49 @@ bool scan_pci_legacy(hwNode & n)
 
 bool scan_pci(hwNode & n)
 {
+  dirent **devices = NULL;
+  int count = 0;
+  hwNode *core = n.getChild("core");
+
+  if (!core)
+  {
+    n.addChild(hwNode("core", hw::bus));
+    core = n.getChild("core");
+  }
+
+  pcidb_loaded = load_pcidb();
+
+  if(!pushd(SYS_BUS_PCI"/devices"))
+    return false;
+  count = scandir(".", &devices, selectlink, alphasort);
+  if(count>=0)
+  {
+    int i = 0;
+    for(i=0; i<count; i++)
+    if(matches(devices[i]->d_name, "^[[:xdigit:]]+:[[:xdigit:]]+:[[:xdigit:]]+\\.[[:xdigit:]]+$"))
+    {
+      string devicepath = string(devices[i]->d_name)+"/config";
+      struct pci_dev d;
+      int fd = open(devicepath.c_str(), O_RDONLY);
+      if (fd >= 0)
+      {
+        memset(&d, 0, sizeof(d));
+        read(fd, d.config, sizeof(d.config));
+        close(fd);
+      }
+
+      hwNode *device = scan_pci_dev(d, n);
+
+      if(device)
+      {
+        device->setBusInfo(devices[i]->d_name);
+      }
+
+      free(devices[i]);
+    }
+
+    free(devices);
+  }
+  popd();
   return false;
 }
