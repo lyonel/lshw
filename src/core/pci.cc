@@ -717,7 +717,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
         if(latency)
           host.setConfig("latency", latency);
         if (d.size[0] > 0)
-          host.setPhysId(d.base_addr[0] & PCI_ADDR_MEM_MASK);
+          host.setPhysId(0x100 + d.domain);
 
         if (moredescription != "" && moredescription != host.getDescription())
         {
