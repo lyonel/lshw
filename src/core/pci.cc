@@ -184,6 +184,7 @@ catalog;
 
 struct pci_dev
 {
+  u_int16_t domain;                               /* PCI domain (host bridge) */
   u_int16_t bus;                                  /* Higher byte can select host bridges */
   u_int8_t dev, func;                             /* Device and function */
 
@@ -709,7 +710,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
         host.setDescription(get_class_description(dclass, progif));
         host.setVendor(get_device_description(d.vendor_id));
         host.setProduct(get_device_description(d.vendor_id, d.device_id));
-        host.setHandle(pci_bushandle(d.bus));
+        host.setHandle(pci_bushandle(d.bus, d.domain));
         host.setVersion(revision);
         addHints(host, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
         host.claim();
@@ -826,7 +827,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
 
           if (dclass == PCI_CLASS_BRIDGE_PCI)
           {
-            device->setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS)));
+            device->setHandle(pci_bushandle(get_conf_byte(d, PCI_SECONDARY_BUS), d.domain));
             device->claim();
           }
           else
@@ -834,7 +835,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
             char irq[10];
 
             snprintf(irq, sizeof(irq), "%d", d.irq);
-            device->setHandle(pci_handle(d.bus, d.dev, d.func));
+            device->setHandle(pci_handle(d.bus, d.dev, d.func, d.domain));
             device->setConfig("latency", latency);
             if(max_lat)
               device->setConfig("maxlatency", max_lat);
@@ -870,7 +871,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
 
           hwNode *bus = NULL;
 
-          bus = n.findChildByHandle(pci_bushandle(d.bus));
+          bus = n.findChildByHandle(pci_bushandle(d.bus, d.domain));
 
           device->describeCapability("vga", "VGA graphical framebuffer");
           device->describeCapability("pcmcia", "PC-Card (PCMCIA)");
@@ -1013,6 +1014,7 @@ bool scan_pci(hwNode & n)
         close(fd);
       }
 
+      sscanf(devices[i]->d_name, "%hx:%hx:%hhx.%hhx", &d.domain, &d.bus, &d.dev, &d.func);
       hwNode *device = scan_pci_dev(d, n);
 
       if(device)
