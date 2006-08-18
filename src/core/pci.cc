@@ -982,6 +982,7 @@ bool scan_pci_legacy(hwNode & n)
 
 bool scan_pci(hwNode & n)
 {
+  bool result = false;
   dirent **devices = NULL;
   int count = 0;
   hwNode *core = n.getChild("core");
@@ -1019,6 +1020,7 @@ bool scan_pci(hwNode & n)
       if(device)
       {
         device->setBusInfo(devices[i]->d_name);
+        result = true;
       }
 
       free(devices[i]);
@@ -1027,5 +1029,5 @@ bool scan_pci(hwNode & n)
     free(devices);
   }
   popd();
-  return false;
+  return result;
 }
