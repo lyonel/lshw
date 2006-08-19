@@ -27,6 +27,7 @@ namespace hw
     multimedia,
     communication,
     power,
+    volume,
     generic
   } hwClass;
 

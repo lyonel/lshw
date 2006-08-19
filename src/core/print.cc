@@ -349,6 +349,7 @@ int level)
         case hw::memory:
         case hw::address:
         case hw::storage:
+        case hw::volume:
         case hw::disk:
           kilobytes(cout, node.getSize());
           if (html)
@@ -399,6 +400,7 @@ int level)
         case hw::memory:
         case hw::address:
         case hw::storage:
+        case hw::volume:
         case hw::disk:
           kilobytes(cout, node.getCapacity());
           if (html)
@@ -596,7 +598,7 @@ string prefix = "")
     entry.description = node.getProduct();        // memory devices tend to have obscure product names
   if (entry.description == "")
     entry.description = node.getDescription();
-  if(node.getSize() && ((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage)))
+  if(node.getSize() && ((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage) || (node.getClass() == hw::volume)))
   {
     ostringstream size;
     kilobytes(size, node.getSize());

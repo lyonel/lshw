@@ -204,6 +204,9 @@ const char *hwNode::getClassName() const
       case power:
         return "power";
 
+      case volume:
+        return "volume";
+
       default:
         return "generic";
     }

@@ -438,7 +438,7 @@ hwNode & extpart)
       return true;
     else
     {
-      hwNode partition("logicalvolume", hw::disk);
+      hwNode partition("logicalvolume", hw::volume);
       source spart = extendedpart;
 
       spart.offset = extendedpart.offset + pte[0].start;
@@ -879,7 +879,7 @@ static bool detect_gpt(source & s, hwNode & n)
 
   for(i=0; i<gpt_header.NumberOfPartitionEntries; i++)
   {
-    hwNode partition("volume", hw::disk);
+    hwNode partition("volume", hw::volume);
     efipartition p;
 
     p.PartitionTypeGUID = read_efi_guid(partitions + gpt_header.SizeOfPartitionEntry * i);
@@ -1044,7 +1044,7 @@ static bool detect_dosmap(source & s, hwNode & n)
   for(i=0; i<4; i++)
   {
     source spart = s;
-    hwNode partition("volume", hw::disk);
+    hwNode partition("volume", hw::volume);
 
     flags = buffer[446 + i*16];
     type = buffer[446 + i*16 + 4];
@@ -1095,7 +1095,7 @@ static bool detect_macmap(source & s, hwNode & n)
 
   for (i = 1; i <= count; i++)
   {
-    hwNode partition("volume", hw::disk);
+    hwNode partition("volume", hw::volume);
 
     if((i>1) && readlogicalblocks(s, buffer, i, 1)!=1)
       return false;
