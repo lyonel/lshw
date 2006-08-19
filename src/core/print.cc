@@ -598,11 +598,25 @@ string prefix = "")
     entry.description = node.getProduct();        // memory devices tend to have obscure product names
   if (entry.description == "")
     entry.description = node.getDescription();
-  if(node.getSize() && ((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage) || (node.getClass() == hw::volume)))
+  if((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage) || (node.getClass() == hw::volume))
   {
     ostringstream size;
-    kilobytes(size, node.getSize());
-    entry.description = size.str() + " " + entry.description;
+    if(node.getClass() != hw::memory)
+    {
+      if(node.getCapacity())
+        kilobytes(size, node.getCapacity());
+      else
+      {
+        if(node.getSize())
+          kilobytes(size, node.getSize());
+      }
+    }
+    else
+    {
+      if(node.getSize())
+        kilobytes(size, node.getSize());
+    }
+    entry.description = join(" ", size.str(), entry.description);
   }
   entry.devname = node.getLogicalName();
   entry.classname = node.getClassName();
@@ -626,6 +640,26 @@ vector < hwpath > &l)
   entry.description = node.getProduct();
   if (entry.description == "")
     entry.description = node.getDescription();
+  if((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage) || (node.getClass() == hw::volume))
+  {
+    ostringstream size;
+    if(node.getClass() != hw::memory)
+    {
+      if(node.getCapacity())
+        kilobytes(size, node.getCapacity());
+      else
+      {
+        if(node.getSize())
+          kilobytes(size, node.getSize());
+      }
+    }
+    else
+    {
+      if(node.getSize())
+        kilobytes(size, node.getSize());
+    }
+    entry.description = join(" ", size.str(), entry.description);
+  }
   entry.devname = node.getLogicalName();
   entry.classname = node.getClassName();
 
