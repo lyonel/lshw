@@ -1020,6 +1020,14 @@ bool scan_pci(hwNode & n)
       if(device)
       {
         device->setBusInfo(devices[i]->d_name);
+        if(exists(string(devices[i]->d_name)+"/driver"))
+        {
+          char *drivername = strdup(readlink(string(devices[i]->d_name)+"/driver").c_str());
+          device->setConfig("driver", basename(drivername));
+          if(drivername)
+            free(drivername);
+          device->claim();
+        }
         result = true;
       }
 
