@@ -67,6 +67,9 @@ __ID("@(#) $Id$");
 #define PCI_CAP_FLAGS           2       /* Capability defined flags (16 bits) */
 #define PCI_CAP_SIZEOF          4
 
+#define PCI_SID_ESR             2       /* Expansion Slot Register */
+#define  PCI_SID_ESR_NSLOTS     0x1f    /* Number of expansion slots available */
+
 
 /*
  * The PCI interface treats multi-function devices as independent
@@ -659,11 +662,12 @@ struct pci_dev &d)
 
 static bool scan_capabilities(hwNode & n, struct pci_dev &d)
 {
-  u_int8_t where = get_conf_byte(d, PCI_CAPABILITY_LIST) & ~3;
+  unsigned int where = get_conf_byte(d, PCI_CAPABILITY_LIST) & ~3;
+  string buffer;
 
   while(where)
   {
-    u_int8_t id, next, cap;
+    unsigned int id, next, cap;
 
     id = get_conf_byte(d, where + PCI_CAP_LIST_ID);
     next = get_conf_byte(d, where + PCI_CAP_LIST_NEXT) & ~3;
@@ -679,12 +683,15 @@ static bool scan_capabilities(hwNode & n, struct pci_dev &d)
         break;
       case PCI_CAP_ID_AGP:
         n.addCapability("agp", "AGP");
+        buffer = hw::asString((cap >> 4) & 0x0f) + "." + hw::asString(cap & 0x0f);
+        n.addCapability("agp-"+buffer, "AGP "+buffer);
         break;
       case PCI_CAP_ID_VPD:
         n.addCapability("vpd", "Vital Product Data");
         break;
       case PCI_CAP_ID_SLOTID:
         n.addCapability("slotid", "Slot Identification");
+        n.setSlot(hw::asString(cap & PCI_SID_ESR_NSLOTS)+", chassis "+hw::asString(cap>>8));
         break;
       case PCI_CAP_ID_MSI:
         n.addCapability("msi", "Message Signalled Interrupts");

@@ -37,6 +37,7 @@ namespace hw
   hwValueType;
 
   string strip(const string &);
+  string asString(long);
 
   class resource
   {

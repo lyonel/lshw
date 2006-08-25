@@ -54,6 +54,13 @@ string hw::strip(const string & s)
   return result;
 }
 
+string hw::asString(long n)
+{
+  char buffer[256];
+
+  snprintf(buffer, sizeof(buffer), "%ld", n);
+  return string(buffer);
+}
 
 static string cleanupId(const string & id)
 {
