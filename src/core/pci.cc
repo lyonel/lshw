@@ -47,6 +47,27 @@ __ID("@(#) $Id$");
 #define PCI_MIN_GNT   0x3e                        /* 8 bits */
 #define PCI_MAX_LAT   0x3f                        /* 8 bits */
 
+#define PCI_CAPABILITY_LIST     0x34    /* Offset of first capability list entry */
+#define PCI_CAP_LIST_ID         0       /* Capability ID */
+#define  PCI_CAP_ID_PM          0x01    /* Power Management */
+#define  PCI_CAP_ID_AGP         0x02    /* Accelerated Graphics Port */
+#define  PCI_CAP_ID_VPD         0x03    /* Vital Product Data */
+#define  PCI_CAP_ID_SLOTID      0x04    /* Slot Identification */
+#define  PCI_CAP_ID_MSI         0x05    /* Message Signalled Interrupts */
+#define  PCI_CAP_ID_CHSWP       0x06    /* CompactPCI HotSwap */
+#define  PCI_CAP_ID_PCIX        0x07    /* PCI-X */
+#define  PCI_CAP_ID_HT          0x08    /* HyperTransport */
+#define  PCI_CAP_ID_VNDR        0x09    /* Vendor specific */
+#define  PCI_CAP_ID_DBG         0x0A    /* Debug port */
+#define  PCI_CAP_ID_CCRC        0x0B    /* CompactPCI Central Resource Control */
+#define  PCI_CAP_ID_AGP3        0x0E    /* AGP 8x */
+#define  PCI_CAP_ID_EXP         0x10    /* PCI Express */
+#define  PCI_CAP_ID_MSIX        0x11    /* MSI-X */
+#define PCI_CAP_LIST_NEXT       1       /* Next capability in the list */
+#define PCI_CAP_FLAGS           2       /* Capability defined flags (16 bits) */
+#define PCI_CAP_SIZEOF          4
+
+
 /*
  * The PCI interface treats multi-function devices as independent
  * devices.  The slot/function address of each device is encoded
@@ -195,8 +216,7 @@ struct pci_dev
   pciaddr_t rom_base_addr;                        /* Expansion ROM base address */
   pciaddr_t rom_size;                             /* Expansion ROM size */
 
-  u_int8_t config[64];                            /* we only use 64 bytes */
-  u_int8_t unusedconfig[256 - 64];                /* of the 256 bytes available */
+  u_int8_t config[256];                           /* non-root users can only use first 64 bytes */
 };
 
 struct pci_entry
@@ -637,6 +657,70 @@ struct pci_dev &d)
   return true;
 }
 
+static bool scan_capabilities(hwNode & n, struct pci_dev &d)
+{
+  u_int8_t where = get_conf_byte(d, PCI_CAPABILITY_LIST) & ~3;
+
+  while(where)
+  {
+    u_int8_t id, next, cap;
+
+    id = get_conf_byte(d, where + PCI_CAP_LIST_ID);
+    next = get_conf_byte(d, where + PCI_CAP_LIST_NEXT) & ~3;
+    cap = get_conf_word(d, where + PCI_CAP_FLAGS);
+
+    if(!id)
+      return false;
+
+    switch(id)
+    {
+      case PCI_CAP_ID_PM:
+        n.addCapability("pm", "Power Management");
+        break;
+      case PCI_CAP_ID_AGP:
+        n.addCapability("agp", "AGP");
+        break;
+      case PCI_CAP_ID_VPD:
+        n.addCapability("vpd", "Vital Product Data");
+        break;
+      case PCI_CAP_ID_SLOTID:
+        n.addCapability("slotid", "Slot Identification");
+        break;
+      case PCI_CAP_ID_MSI:
+        n.addCapability("msi", "Message Signalled Interrupts");
+        break;
+      case PCI_CAP_ID_CHSWP:
+        n.addCapability("hotswap", "Hot-swap");
+        break;
+      case PCI_CAP_ID_PCIX:
+        n.addCapability("pcix", "PCI-X");
+        break;
+      case PCI_CAP_ID_HT:
+        n.addCapability("ht", "HyperTransport");
+        break;
+      case PCI_CAP_ID_DBG:
+        n.addCapability("debug", "Debug port");
+        break;
+      case PCI_CAP_ID_CCRC:
+        n.addCapability("ccrc", "CompactPCI Central Resource Control");
+        break;
+      case PCI_CAP_ID_AGP3:
+        n.addCapability("agp8x", "AGP 8x");
+        break;
+      case PCI_CAP_ID_EXP:
+        n.addCapability("pciexpress", "PCI Express");
+        break;
+      case PCI_CAP_ID_MSIX:
+        n.addCapability("msix", "MSI-X");
+        break;
+    }
+
+    where = next;
+  }
+
+  return true;
+}
+
 
 static void addHints(hwNode & n,
 long _vendor,
@@ -818,6 +902,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
             device->claim();
 
           scan_resources(*device, d);
+          scan_capabilities(*device, d);
 
           if (deviceclass == hw::display)
             for (int j = 0; j < 6; j++)
@@ -1010,7 +1095,8 @@ bool scan_pci(hwNode & n)
       if (fd >= 0)
       {
         memset(&d, 0, sizeof(d));
-        read(fd, d.config, sizeof(d.config));
+        read(fd, d.config, 64);
+        read(fd, d.config+64, sizeof(d.config)-64);
         close(fd);
       }
 
