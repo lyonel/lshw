@@ -1116,7 +1116,10 @@ bool scan_pci(hwNode & n)
         if(exists(string(devices[i]->d_name)+"/driver"))
         {
           char *drivername = strdup(readlink(string(devices[i]->d_name)+"/driver").c_str());
+          char *modulename = strdup(readlink(string(devices[i]->d_name)+"/driver/module").c_str());
           device->setConfig("driver", basename(drivername));
+          if(exists(string(devices[i]->d_name)+"/driver/module"))
+            device->setConfig("module", basename(modulename));
           if(drivername)
             free(drivername);
           device->claim();
