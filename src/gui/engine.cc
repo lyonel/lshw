@@ -71,7 +71,7 @@ static void populate_sublist(GtkWidget * list1, hwNode * root, hwNode *current=N
       COL_NAME, text.c_str(),
       COL_NODE, root->getChild(i),
       COL_WEIGHT, (root->getChild(i)->countChildren()>0)?PANGO_WEIGHT_BOLD:PANGO_WEIGHT_NORMAL,
-      COL_CONTINUATION, (root->getChild(i)->countChildren()>0)?">":"",
+      COL_CONTINUATION, (root->getChild(i)->countChildren()>0)?"\342\226\270":"",
       -1);
   }
 
