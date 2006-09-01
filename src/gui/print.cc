@@ -121,6 +121,8 @@ static  void inserticon(const string & icon, const string & comment, GtkTextBuff
     icon.c_str(),
     gtk_icon_size_from_name(LSHW_ICON_SIZE_LOGO), /* size */
     NULL);
+  if(!GDK_IS_PIXBUF(pixbuf))
+    return;
   gtk_text_buffer_insert_pixbuf(buffer, &iter, pixbuf);
   gtk_text_buffer_insert(buffer, &iter, comment.c_str(), -1);
 //gtk_text_buffer_insert(buffer, &iter, "\n", -1);

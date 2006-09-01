@@ -64,8 +64,6 @@ find_file(const char *dir, const char *base)
 
   if (!g_file_test(filename, G_FILE_TEST_EXISTS))
   {
-    g_critical("Unable to load stock pixmap %s\n", base);
-
     g_free(filename);
 
     return NULL;

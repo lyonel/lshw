@@ -39,8 +39,11 @@ main (int argc, char *argv[])
     "lshw-logo",
     GTK_ICON_SIZE_DIALOG,
     NULL);
-  gtk_window_set_icon(mainwindow, icon);
-  gtk_window_set_default_icon(icon);
+  if(GDK_IS_PIXBUF(icon))
+  {
+    gtk_window_set_icon(mainwindow, icon);
+    gtk_window_set_default_icon(icon);
+  }
 
   gtk_widget_show (mainwindow);
 
