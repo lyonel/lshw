@@ -1,3 +1,32 @@
+*  B.02.08.01
+  bugfix release for non-x86 platforms (#24)
+*  B.02.08
+  added reporting of GUID-based partitions tables (#4)
+  added reporting of basic LVM2 information (#2)
+  "nicer" (and more customisable) HTML output
+*  B.02.07
+  added reporting of extended partitions (#1)
+  minor cosmetic fixes
+  some new SVG icons [1235] [1236] [1237]
+*  B.02.06
+  fixed reporting of SCSI disks serial numbers [1159] [1158]
+  added support for reporting of disk partitions (MS-DOS [1107], Apple [1112] & HP-UX LIF [1113])
+  some new SVG icons [1163] [1160] [1155]
+*  B.02.05.01
+  fixed a portability problem with GTK+ [1099]
+*  B.02.05
+  added support for DVD writers
+  improved GUI usability (thanks to OpenUsability volonteers: Tina Trillitzsch and Florian Graessle)
+  many new SVG icons
+  added a logo for LSHW (used as icon for gtk-lshw's windows)
+  build system updates
+  bug fixes
+*  B.02.04
+  added support for CPUFreq (Speedstep & similar technologies)
+  the GUI now uses a GtkTextView instead of a GtkLabel
+  SVG icons are now displayed for USB, Firewire, SCSI, etc.
+  added support for reporting VMX (Vanderpool) capabilities (untested)
+  fixed a compilation problem with GCC 4 
 *  B.02.03
   added support for PA-RISC devices (IODC-controlled) on 2.6 kernels
   the GUI can now be launched by invoking lshw with the '-X' option
