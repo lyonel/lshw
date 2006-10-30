@@ -98,7 +98,24 @@ bool scan_cdrom(hwNode & n)
     n.setDescription("DVD-RAM writer");
   }
 
-  scan_partitions(n);
+  switch(ioctl(fd, CDROM_DRIVE_STATUS, 0))
+  {
+    case CDS_NO_INFO:
+    case CDS_NO_DISC:
+      n.setConfig("status", "nodisc");
+      break;
+    case CDS_TRAY_OPEN:
+      n.setConfig("status", "open");
+      break;
+    case CDS_DRIVE_NOT_READY:
+      n.setConfig("status", "busy");
+      break;
+    case CDS_DISC_OK:
+      n.setConfig("status", "ready");
+      scan_partitions(n);
+      break;
+  }
+  close(fd);
 
   return true;
 }
