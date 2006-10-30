@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Thu 2006-10-12 01:05:02
+#	Daily snapshot on Mon 2006-10-30 02:05:01
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -3012,20 +3012,22 @@
 	2200  QLA2200 64-bit Fibre Channel Adapter
 		1077 0002  QLA2200
 	2300  QLA2300 64-bit Fibre Channel Adapter
-	2312  QLA2312 Fibre Channel Adapter
+	2312  ISP2312-based 2Gb Fibre Channel to PCI-X HBA
 		103c 0131  2Gb Fibre Channel - Single port [A7538A]
 		103c 12ba  2Gb Fibre Channel - Dual port [A6826A]
-	2322  QLA2322 Fibre Channel Adapter
-	2422  QLA2422 Fibre Channel Adapter
+	2322  ISP2322-based 2Gb Fibre Channel to PCI-X HBA
+	2422  ISP2422-based 4Gb Fibre Channel to PCI-X HBA
 		103c 12d7  4Gb Fibre Channel [AB379A]
 		103c 12dd  4Gb Fibre Channel [AB429A]
-	2432  QLA2432 Fibre Channel Adapter
-	3010  QLA3010 Network Adapter
-	3022  QLA3022 Network Adapter
-	4010  QLA4010 iSCSI TOE Adapter
-	4022  QLA4022 iSCSI TOE Adapter
-	6312  QLA6312 Fibre Channel Adapter
-	6322  QLA6322 Fibre Channel Adapter
+	2432  ISP2432-based 4Gb Fibre Channel to PCI Express HBA
+	3022  ISP4022-based Ethernet NIC
+	3032  ISP4032-based Ethernet NIC
+	4010  ISP4010-based iSCSI TOE HBA
+	4022  ISP4022-based iSCSI TOE HBA
+	4032  ISP4032-based iSCSI TOE IPv6 HBA
+	5432  SP232-based 4Gb Fibre Channel to PCI Express HBA
+	6312  SP202-based 2Gb Fibre Channel to PCI-X HBA
+	6322  SP212-based 2Gb Fibre Channel to PCI-X HBA
 1078  Cyrix Corporation
 	0000  5510 [Grappa]
 	0001  PCI Master
@@ -10583,6 +10585,10 @@
 	1051  82801EB/ER (ICH5/ICH5R) integrated LAN Controller
 	1052  PRO/100 VM Network Connection
 	1053  PRO/100 VM Network Connection
+	1054  PRO/100 VE Network Connection
+	1055  PRO/100 VM Network Connection
+	1056  PRO/100 VE Network Connection
+	1057  PRO/100 VE Network Connection
 	1059  82551QM Ethernet Controller
 	105b  82546GB Gigabit Ethernet Controller (Copper)
 	105e  82571EB Gigabit Ethernet Controller
@@ -10673,19 +10679,30 @@
 	108c  82573E Gigabit Ethernet Controller (Copper)
 	108e  82573E KCS (Active Management)
 	108f  Active Management Technology - SOL
+	1091  PRO/100 VM Network Connection
 	1092  PRO/100 VE Network Connection
+	1093  PRO/100 VM Network Connection
+	1094  PRO/100 VE Network Connection
+	1095  PRO/100 VE Network Connection
 	1096  80003ES2LAN Gigabit Ethernet Controller (Copper)
 	1097  631xESB/632xESB DPT LAN Controller (Fiber)
 	1098  80003ES2LAN Gigabit Ethernet Controller (Serdes)
 	1099  82546GB Gigabit Ethernet Controller (Copper)
 		8086 1099  PRO/1000 GT Quad Port Server Adapter
 	109a  82573L Gigabit Ethernet Controller
+		1179 ff10  PRO/1000 PL
 		17aa 2001  ThinkPad T60
 		17aa 207e  Thinkpad X60s
 		8086 109a  PRO/1000 PL Network Connection
 	109b  82546GB PRO/1000 GF Quad Port Server Adapter
+	109e  82597EX 10GbE Ethernet Controller
+		8086 a01f  PRO/10GbE CX4 Server Adapter
+		8086 a11f  PRO/10GbE CX4 Server Adapter
 	10a0  82571EB PRO/1000 AT Quad Port Bypass Adapter
 	10a1  82571EB PRO/1000 AF Quad Port Bypass Adapter
+	10a4  82571EB Gigabit Ethernet Controller
+		8086 10a4  PRO/1000 PT Quad Port Server Adapter
+		8086 11a4  PRO/1000 PT Quad Port Server Adapter
 	10b0  82573L PRO/1000 PL Network Connection
 	10b2  82573V PRO/1000 PM Network Connection
 	10b3  82573E PRO/1000 PM Network Connection
@@ -10699,6 +10716,11 @@
 		8086 1093  PRO/1000 PT Desktop Adapter
 	10ba  80003ES2LAN Gigabit Ethernet Controller (Copper)
 	10bb  80003ES2LAN Gigabit Ethernet Controller (Serdes)
+	10bc  82571EB Gigabit Ethernet Controller (Copper)
+		8086 10bc  PRO/1000 PT Quad Port LP Server Adapter
+		8086 11bc  PRO/1000 PT Quad Port LP Server Adapter
+	10c4  82562GT 10/100 Network Connection
+	10c5  82562G 10/100 Network Connection
 	1107  PRO/1000 MF Server Adapter (LX)
 	1130  82815 815 Chipset Host Bridge and Memory Controller Hub
 		1025 1016  Travelmate 612 TX
@@ -10946,6 +10968,9 @@
 	1a31  82845 845 (Brookdale) Chipset AGP Bridge
 	1a38  5000 Series Chipset DMA Engine
 	1a48  PRO/10GbE SR Server Adapter
+	1b48  82597EX 10GbE Ethernet Controller
+		8086 a01f  PRO/10GbE LR Server Adapter
+		8086 a11f  PRO/10GbE LR Server Adapter
 	2410  82801AA ISA Bridge (LPC)
 	2411  82801AA IDE
 	2412  82801AA USB
@@ -10998,6 +11023,7 @@
 		147b 0507  TH7II-RAID
 		8086 4532  D815EEA2 mainboard
 	2445  82801BA/BAM AC'97 Audio
+		0e11 000b  Compaq Deskpro EN Audio
 		0e11 0088  Evo D500
 		1014 01c6  Netvista A40/A40p
 		1025 1016  Travelmate 612 TX
@@ -11838,6 +11864,7 @@
 	2a07  Mobile KT Controller
 	3092  Integrated RAID
 	3200  GD31244 PCI-X SATA HBA
+		1775 c200  C2K onboard SATA host bus adapter
 	3340  82855PM Processor to I/O Controller
 		1025 005a  TravelMate 290
 		103c 088c  NC8000 laptop

@@ -6,7 +6,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.225 2006/07/13 04:18:02 dbrownell Exp $
+# $Id: usb.ids,v 1.226 2006/10/29 02:25:01 dbrownell Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -36,6 +36,8 @@
 	201d  at90usbkey sample firmware (HID generic)
 	2022  at90usbkey sample firmware (composite device)
 	2103  JTAG ICE mkII
+	2104  AVR ISP mkII
+	2107  AVR Dragon
 	2ffb  at90usb AVR DFU bootloader
 	2ffd  at89c5130/c5131 DFU bootloader
 	2fff  at89c5132/c51snd1c DFU bootloader
