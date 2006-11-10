@@ -1409,7 +1409,7 @@ int dmiversionmin)
 // size
           u = data[13] << 8 | data[12];
           if (u != 0xffff)
-            size = (1024 * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024));
+            size = (1024ULL * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024ULL));
           description += string(dmi_memory_device_form_factor(data[14]));
           slot = dmi_string(dm, data[16]);
 //printf("\t\tBank Locator: %s\n", dmi_string(dm, data[17]));
