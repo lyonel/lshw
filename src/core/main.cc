@@ -37,6 +37,7 @@
 #include "display.h"
 #include "parisc.h"
 #include "cpufreq.h"
+#include "ideraid.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -103,6 +104,8 @@ bool scan_system(hwNode & system)
     status("IDE");
     if (enabled("ide"))
       scan_ide(computer);
+    if (enabled("ideraid"))
+      scan_ideraid(computer);
     status("SCSI");
     if (enabled("scsi"))
       scan_scsi(computer);
