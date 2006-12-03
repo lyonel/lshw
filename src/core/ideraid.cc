@@ -23,7 +23,7 @@
 #include <linux/hdreg.h>
 #include <regex.h>
 
-__ID("@(#) $Id: ide.cc 1352 2006-05-27 23:54:13Z ezix $");
+__ID("@(#) $Id$");
 
 #define DEV_TWE "/dev/twe"
 
@@ -226,9 +226,9 @@ static void fix_string(unsigned char * s, unsigned len)
 
 static bool guess_manufacturer(hwNode & device);
 
-static bool probe_unit(unsigned controller, unsigned disknum, hwNode & parent)
+static bool probe_port(unsigned controller, unsigned disknum, hwNode & parent)
 {
-  hwNode device("unit:"+tostring(disknum), hw::disk);
+  hwNode device("member:"+tostring(disknum), hw::disk);
   struct hd_driveid id;
   const u_int8_t *id_regs = (const u_int8_t *) &id;
   string devname = string(DEV_TWE) + tostring(controller);
@@ -275,7 +275,7 @@ static bool probe_unit(unsigned controller, unsigned disknum, hwNode & parent)
   close(fd);
 
   device.setPhysId(disknum);
-  device.setLogicalName("c" + tostring(controller) + "/u" + tostring(disknum));
+  device.setLogicalName("c" + tostring(controller) + "/p" + tostring(disknum));
 
   u_int16_t pidentity[256];
   for (int i = 0; i < 256; i++)
@@ -499,7 +499,7 @@ bool scan_ideraid(hwNode & n)
   for(c=0; c<16; c++)
   {
     for(u=0; u<8; u++)
-      if(!probe_unit(c,u,n))
+      if(!probe_port(c,u,n))
         break;
   }
 
