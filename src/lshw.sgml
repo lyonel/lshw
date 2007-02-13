@@ -38,6 +38,7 @@ list hardware
 	<arg choice="opt" rep="repeat"><option>-class </option><replaceable class="parameter">class</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-disable </option><replaceable class="parameter">test</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-enable </option><replaceable class="parameter">test</replaceable></arg>
+	<arg choice="opt"><option>-quiet</option></arg>
    </cmdsynopsis>
 </refsynopsisdiv>
 
@@ -100,6 +101,10 @@ Alias for <command>-class</command> <replaceable class="parameter">class</replac
 <varlistentry><term>-enable <replaceable class="parameter">test</replaceable></term><term>-disable <replaceable class="parameter">test</replaceable></term>
 <listitem><para>
 Enables or disables a test. <replaceable class="parameter">test</replaceable> can be <command>dmi</command> (for <productname>DMI</productname>/<productname>SMBIOS</productname> extensions), <command>device-tree</command> (for <productname>OpenFirmware</productname> device tree), <command>spd</command> (for memory <productname>Serial Presence Detect</productname>), <command>memory</command> (for memory-size guessing heuristics), <command>cpuinfo</command> (for kernel-reported CPU detection), <command>cpuid</command> (for CPU detection), <command>pci</command> (for <productname>PCI</productname>/<productname>AGP access</productname>), <command>isapnp</command> (for <productname>ISA PnP</productname> extensions), <command>pcmcia</command> (for <productname>PCMCIA</productname>/<productname>PCCARD</productname>), <command>ide</command> (for <productname>IDE</productname>/<productname>ATAPI</productname>), <command>usb</command> (for <productname>USB</productname> devices),<command>scsi</command> (for <productname>SCSI</productname>) or <command>network</command> (for network interfaces detection).
+</para></listitem></varlistentry>
+<varlistentry><term>-quiet</term>
+<listitem><para>
+Don't display status.
 </para></listitem></varlistentry>
 </variablelist>
 </para>
