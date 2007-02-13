@@ -34,6 +34,7 @@ void usage(const char *progname)
     "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr,
     "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n");
+  fprintf(stderr, "\t-quiet          don't display status\n");
   fprintf(stderr, "\n");
 }
 
@@ -41,6 +42,9 @@ void usage(const char *progname)
 void status(const char *message)
 {
   static size_t lastlen = 0;
+
+  if(enabled("quiet") || disabled("verbose"))
+    return;
 
   if (isatty(2))
   {
@@ -64,6 +68,7 @@ char **argv)
   bool X = false;
 
   disable("isapnp");
+  disable("quiet");
 
 // define some aliases for nodes classes
   alias("disc", "disk");
@@ -92,6 +97,21 @@ char **argv)
       usage(argv[0]);
       exit(0);
     }
+
+    if (strcmp(argv[1], "-verbose") == 0)
+    {
+      disable("quiet");
+      enable("verbose");
+      argc--;
+    }
+
+    if (strcmp(argv[1], "-quiet") == 0)
+    {
+      disable("verbose");
+      enable("quiet");
+      argc--;
+    }
+
     if (strcmp(argv[1], "-xml") == 0)
       xmloutput = true;
 
@@ -107,14 +127,16 @@ char **argv)
     if (strcmp(argv[1], "-X") == 0)
       X = true;
 
-    if (!xmloutput && !htmloutput && !hwpath && !businfo && !X)
+    if ((argc>1) && !xmloutput && !htmloutput && !hwpath && !businfo && !X)
     {
       usage(argv[0]);
       exit(1);
     }
+    else
+      argc--;
   }
 
-  if (argc > 2)
+  if (argc >= 2)
   {
     usage(argv[0]);
     exit(1);

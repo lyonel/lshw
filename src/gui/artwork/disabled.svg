@@ -85,7 +85,7 @@
            id="license2918"
            rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
         <dc:source
-           id="source1314">$Id: radio.svg 1007 2005-03-28 19:35:40Z ezix $</dc:source>
+           id="source1314">$Id$</dc:source>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/GPL/2.0/"
