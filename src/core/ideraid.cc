@@ -275,7 +275,9 @@ static bool probe_port(unsigned controller, unsigned disknum, hwNode & parent)
   close(fd);
 
   device.setPhysId(disknum);
+  device.setBusInfo("raid@c" + tostring(controller) + "/p" + tostring(disknum));
   device.setLogicalName("c" + tostring(controller) + "/p" + tostring(disknum));
+  device.claim();
 
   u_int16_t pidentity[256];
   for (int i = 0; i < 256; i++)
