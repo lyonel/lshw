@@ -2,15 +2,16 @@ PACKAGENAME?=lshw
 
 CXX=c++
 CC=cc
+STRIP=strip
 
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)
 INCLUDES=-I../core $(GTKINCLUDES)
-CXXFLAGS=-g -Wall -Os $(INCLUDES) $(DEFINES)
+CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 CFLAGS=$(CXXFLAGS) $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
 LIBS=-L../core -llshw $(GTKLIBS)
-LDFLAGS= -Os -s
+LDFLAGS=
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
@@ -33,7 +34,7 @@ gtk-$(PACKAGENAME): $(OBJS) ../core/liblshw.a
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 install: all
-	strip gtk-$(PACKAGENAME)
+	$(STRIP) gtk-$(PACKAGENAME)
 	
 clean:
 	rm -f $(OBJS) gtk-$(PACKAGENAME) gtk-lshw.glade.bak gtk-lshw.gladep.bak interface.c.bak interface.h.bak callbacks.c.bak callbacks.h.bak Makefile.bak

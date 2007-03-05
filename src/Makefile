@@ -8,6 +8,7 @@ SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share
 INSTALL=install
+STRIP=strip
 export DESTDIR
 export PREFIX
 export SBINDIR
@@ -17,7 +18,7 @@ export DATADIR
 CXX=c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
-CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES)
+CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 LDFLAGS=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
@@ -48,7 +49,7 @@ static: $(PACKAGENAME)-static
 
 $(PACKAGENAME)-static: core core/lib$(PACKAGENAME).a $(PACKAGENAME).o
 	$(CXX) $(LDSTATIC) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS)
-	strip $@
+	$(STRIP) $@
 
 .PHONY: compressed
 compressed: $(PACKAGENAME)-compressed
