@@ -3,10 +3,11 @@
 #
 #	Maintained by Vojtech Pavlik <vojtech@suse.cz>
 #	If you have any new entries, send them to the maintainer.
+#	Send entries as patches (diff -u old new).
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.228 2006/11/06 22:20:22 dbrownell Exp $
+# $Id: usb.ids,v 1.230 2006/12/12 21:43:04 dbrownell Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -45,6 +46,7 @@
 	3312  4-port Hub
 	5601  at76c510 Prism-II 802.11b Access Point
 	5603  Cisco 7920 WiFi IP Phone
+	6124  at91sam SAMBA bootloader
 	7603  at76c503a D-Link DWL-120 802.11b Adapter
 	7605  at76c503a 802.11b Adapter
 	7606  at76c505 802.11b Adapter
@@ -272,7 +274,9 @@
 	0027  WLI-USB-KS11G 802.11b Adapter
 0412  Award Software International
 0413  Leadtek Research, Inc.
-	6026  WinFast DTV Dongle
+	6025  WinFast DTV Dongle (cold state)
+	6026  WinFast DTV Dongle (warm state)
+	6f00  WinFast DTV Dongle (STK7700P based)
 0414  Giga-Byte Technology Co., Ltd
 0416  Winbond Electronics Corp.
 	0961  AVL Flash Card Reader
@@ -352,9 +356,11 @@
 	040f  6230 GSM Phone
 	0410  6630 Imaging Smartphone
 	0415  9300 GSM Smartphone
+	0418  E-70 (PC-Suite mode)
 	041a  9500 GSM Communicator (RNDIS)
 	041b  9300 GSM Smartphone (RNDIS)
 	0429  6230i Camera Phone
+	0435  E-70 (IP Passthrough/RNDIS mode)
 	0800  Connectivity Cable DKU-5
 0422  ADI Systems, Inc.
 0423  Computer Access Technology Corp.
@@ -754,7 +760,7 @@
 	0021  S200 Scanner
 	0033  801.11b Adapter [orinoco]
 	0051  KU-0133 Easy Access Interner Keyboard
-	505a  SA-11x0 based Linux Device, or Itsy (experimental)
+	505a  Linux-USB "CDC Subset" Device, or Itsy (experimental)
 	8511  iPAQ Networking 10/100 Ethernet [pegasus2]
 04a0  Digital Equipment Corp.
 04a1  SystemSoft Corp.
