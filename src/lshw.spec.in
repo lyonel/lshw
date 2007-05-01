@@ -4,7 +4,7 @@
 Summary: HardWare LiSter
 Name: lshw
 Version: @VERSION@
-Release: 1
+Release: 2
 Source: http://www.ezix.org/software/files/%{name}-%{version}.tar.gz
 URL: http://www.ezix.org/software/lshw.html
 License: GPL
@@ -55,40 +55,40 @@ http://www.ezix.org/software/lshw.html
 
 %build
 %{__make} %{?_smp_mflags} \
-	PREFIX="%{_prefix}" \
-	SBINDIR="%{_sbindir}" \
-	MANDIR="%{_mandir}" \
-	DATADIR="%{_datadir}" \
-	all
+  PREFIX="%{_prefix}" \
+  SBINDIR="%{_sbindir}" \
+  MANDIR="%{_mandir}" \
+  DATADIR="%{_datadir}" \
+  all
 %if %{!?_without_gui:1}0
 %{__make} %{?_smp_mflags} \
-	PREFIX="%{_prefix}" \
-	SBINDIR="%{_sbindir}" \
-	MANDIR="%{_mandir}" \
-	DATADIR="%{_datadir}" \
-	gui
+  PREFIX="%{_prefix}" \
+  SBINDIR="%{_sbindir}" \
+  MANDIR="%{_mandir}" \
+  DATADIR="%{_datadir}" \
+  gui
 %endif
 
 %install
 %{__rm} -rf "%{buildroot}"
 
 %{__make} \
-	DESTDIR="%{buildroot}" \
-	PREFIX="%{_prefix}" \
-	SBINDIR="%{_sbindir}" \
-	MANDIR="%{_mandir}" \
-	DATADIR="%{_datadir}" \
-	STRIP=/bin/true \
-	install
+  DESTDIR="%{buildroot}" \
+  PREFIX="%{_prefix}" \
+  SBINDIR="%{_sbindir}" \
+  MANDIR="%{_mandir}" \
+  DATADIR="%{_datadir}" \
+  STRIP=/bin/true \
+  install
 %if %{!?_without_gui:1}0
 %{__make} \
-	DESTDIR="%{buildroot}" \
-	PREFIX="%{_prefix}" \
-	SBINDIR="%{_sbindir}" \
-	MANDIR="%{_mandir}" \
-	DATADIR="%{_datadir}" \
-	STRIP=/bin/true \
-	install-gui
+  DESTDIR="%{buildroot}" \
+  PREFIX="%{_prefix}" \
+  SBINDIR="%{_sbindir}" \
+  MANDIR="%{_mandir}" \
+  DATADIR="%{_datadir}" \
+  STRIP=/bin/true \
+  install-gui
 %endif
 
 %clean
@@ -107,4 +107,8 @@ http://www.ezix.org/software/lshw.html
 %doc COPYING
 %attr(555,bin,bin) %{_sbindir}/gtk-lshw
 %endif
+
+%changelog
+* Tue May  1 2007 Lyonel Vincent <lyonel@ezix.org> B.02.10-2
+- spec file cleanup
 
