@@ -95,20 +95,22 @@ http://www.ezix.org/software/lshw.html
 %{__rm} -rf %{buildroot}
 
 %files
-%defattr(-,root,root, 0755)
+%defattr(-,root,root, 0555)
 %doc README COPYING docs/TODO docs/Changelog docs/lshw.xsd
-%attr(555,bin,bin) %{_sbindir}/lshw
+%{_sbindir}/lshw
 %doc %{_mandir}/man?/*
 %{_datadir}/lshw/
 
 %if %{!?_without_gui:1}0
 %files gui
-%defattr(-,root,root, 0755)
+%defattr(-,root,root, 0555)
 %doc COPYING
-%attr(555,bin,bin) %{_sbindir}/gtk-lshw
+%{_sbindir}/gtk-lshw
 %endif
 
 %changelog
 * Tue May  1 2007 Lyonel Vincent <lyonel@ezix.org> B.02.10-2
 - spec file cleanup
 
+* Thu Apr 10 2003 Lyonel Vincent <lyonel@ezix.org> A.01.00-1
+- RPM packaging
