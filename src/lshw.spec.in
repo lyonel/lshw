@@ -25,7 +25,7 @@ For detailed information on lshw features and usage, please see the
 included documentation or go to the lshw Web page,
 http://www.ezix.org/software/lshw.html
 
-%if %{?_with_gui:1}%{!?_with_gui:0}
+%if %{!?_without_gui:1}0
 %package gui
 Summary: HardWare LiSter (GUI version)
 Group: Applications/System
@@ -60,7 +60,7 @@ http://www.ezix.org/software/lshw.html
 	MANDIR="%{_mandir}" \
 	DATADIR="%{_datadir}" \
 	all
-%if %{?_with_gui:1}%{!?_with_gui:0}
+%if %{!?_without_gui:1}0
 %{__make} %{?_smp_mflags} \
 	PREFIX="%{_prefix}" \
 	SBINDIR="%{_sbindir}" \
@@ -80,7 +80,7 @@ http://www.ezix.org/software/lshw.html
 	DATADIR="%{_datadir}" \
 	STRIP=/bin/true \
 	install
-%if %{?_with_gui:1}%{!?_with_gui:0}
+%if %{!?_without_gui:1}0
 %{__make} \
 	DESTDIR="%{buildroot}" \
 	PREFIX="%{_prefix}" \
@@ -101,7 +101,7 @@ http://www.ezix.org/software/lshw.html
 %doc %{_mandir}/man?/*
 %{_datadir}/lshw/
 
-%if %{?_with_gui:1}%{!?_with_gui:0}
+%if %{!?_without_gui:1}0
 %files gui
 %defattr(-,root,root, 0755)
 %doc COPYING
