@@ -43,7 +43,7 @@ void status(const char *message)
 {
   static size_t lastlen = 0;
 
-  if(enabled("quiet") || disabled("verbose"))
+  if(enabled("output:quiet") || disabled("output:verbose"))
     return;
 
   if (isatty(2))
@@ -61,14 +61,14 @@ void status(const char *message)
 int main(int argc,
 char **argv)
 {
-  bool htmloutput = false;
-  bool xmloutput = false;
-  bool hwpath = false;
-  bool businfo = false;
-  bool X = false;
-
   disable("isapnp");
-  disable("quiet");
+
+  disable("output:xml");
+  disable("output:html");
+  disable("output:hwpath");
+  disable("output:businfo");
+  disable("output:X");
+  disable("output:quiet");
 
 // define some aliases for nodes classes
   alias("disc", "disk");
@@ -85,13 +85,16 @@ char **argv)
     exit(1);
   }
 
-  if (argc == 2)
+  while (argc >= 2)
   {
+    bool validoption = false;
+
     if (strcmp(argv[1], "-version") == 0)
     {
       printf("%s\n", getpackageversion());
       exit(0);
     }
+
     if (strcmp(argv[1], "-help") == 0 || strcmp(argv[1], "--help") == 0)
     {
       usage(argv[0]);
@@ -100,40 +103,58 @@ char **argv)
 
     if (strcmp(argv[1], "-verbose") == 0)
     {
-      disable("quiet");
-      enable("verbose");
-      argc--;
+      disable("output:quiet");
+      enable("output:verbose");
+      validoption = true;
     }
 
     if (strcmp(argv[1], "-quiet") == 0)
     {
-      disable("verbose");
-      enable("quiet");
-      argc--;
+      disable("output:verbose");
+      enable("output:quiet");
+      validoption = true;
     }
 
     if (strcmp(argv[1], "-xml") == 0)
-      xmloutput = true;
+    {
+      enable("output:xml");
+      validoption = true;
+    }
 
     if (strcmp(argv[1], "-html") == 0)
-      htmloutput = true;
+    {
+      enable("output:html");
+      validoption = true;
+    }
 
     if (strcmp(argv[1], "-short") == 0)
-      hwpath = true;
+    {
+      enable("output:hwpath");
+      validoption = true;
+    }
 
     if (strcmp(argv[1], "-businfo") == 0)
-      businfo = true;
+    {
+      enable("output:businfo");
+      validoption = true;
+    }
 
     if (strcmp(argv[1], "-X") == 0)
-      X = true;
+    {
+      enable("output:X");
+      validoption = true;
+    }
 
-    if ((argc>1) && !xmloutput && !htmloutput && !hwpath && !businfo && !X)
+    if(validoption)
+    {	/* shift */
+      memmove(argv+1, argv+2, (argc-1)*(sizeof(argv[0])));
+      argc--;
+    }
+    else
     {
       usage(argv[0]);
       exit(1);
     }
-    else
-      argc--;
   }
 
   if (argc >= 2)
@@ -142,7 +163,7 @@ char **argv)
     exit(1);
   }
 
-  if(X) execl(SBINDIR"/gtk-lshw", SBINDIR"/gtk-lshw", NULL);
+  if(enabled("output:X")) execl(SBINDIR"/gtk-lshw", SBINDIR"/gtk-lshw", NULL);
 
   if (geteuid() != 0)
   {
@@ -155,17 +176,17 @@ char **argv)
 
     scan_system(computer);
 
-    if (hwpath)
+    if (enabled("output:hwpath"))
       printhwpath(computer);
     else
-    if (businfo)
+    if (enabled("output:businfo"))
       printbusinfo(computer);
     else
     {
-      if (xmloutput)
+      if (enabled("output:xml"))
         cout << computer.asXML();
       else
-        print(computer, htmloutput);
+        print(computer, enabled("output:html"));
     }
   }
 
