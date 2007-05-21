@@ -50,7 +50,7 @@ bool scan_system(hwNode & system)
 
   if (gethostname(hostname, sizeof(hostname)) == 0)
   {
-    hwNode computer(hostname,
+    hwNode computer(::enabled("output:sanitize")?"computer":hostname,
       hw::system);
 
     status("DMI");

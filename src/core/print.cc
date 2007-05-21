@@ -315,7 +315,7 @@ int level)
       cout << "serial: ";
       if (html)
         cout << "</td><td class=\"second\">";
-      cout << node.getSerial();
+      cout << (enabled("output:sanitize")?string("[removed]"):node.getSerial());
       if (html)
         cout << "</td></tr>";
       cout << endl;

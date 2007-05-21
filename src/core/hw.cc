@@ -1387,7 +1387,7 @@ string hwNode::asXML(unsigned level)
     {
       out << spaces(2*level+1);
       out << "<serial>";
-      out << escape(getSerial());
+      out << (::enabled("output:sanitize")?"[removed]":escape(getSerial()));
       out << "</serial>";
       out << endl;
     }

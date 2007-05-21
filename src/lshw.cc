@@ -35,6 +35,7 @@ void usage(const char *progname)
   fprintf(stderr,
     "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr, "\t-quiet          don't display status\n");
+  fprintf(stderr, "\t-sanitize       sanitize output (remove sensitive information like serial numbers, etc.)\n");
   fprintf(stderr, "\n");
 }
 
@@ -69,6 +70,7 @@ char **argv)
   disable("output:businfo");
   disable("output:X");
   disable("output:quiet");
+  disable("output:sanitize");
 
 // define some aliases for nodes classes
   alias("disc", "disk");
@@ -142,6 +144,13 @@ char **argv)
     if (strcmp(argv[1], "-X") == 0)
     {
       enable("output:X");
+      validoption = true;
+    }
+
+    if ((strcmp(argv[1], "-sanitize") == 0) ||
+       (strcmp(argv[1], "-sanitise") == 0))
+    {
+      enable("output:sanitize");
       validoption = true;
     }
 
