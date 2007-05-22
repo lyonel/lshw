@@ -18,6 +18,7 @@
 #include "network.h"
 #include "osutils.h"
 #include "sysfs.h"
+#include "options.h"
 #include "heuristics.h"
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -258,7 +259,7 @@ static void scan_ip(hwNode & interface)
     if (ioctl(fd, SIOCGIFADDR, &ifr) == 0)
     {
 // IP address is in ifr.ifr_addr
-      interface.setConfig("ip", print_ip((sockaddr_in *) (&ifr.ifr_addr)));
+      interface.setConfig("ip", ::enabled("output:sanitize")?REMOVED:print_ip((sockaddr_in *) (&ifr.ifr_addr)));
       strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
       if ((interface.getConfig("point-to-point") == "yes")
         && (ioctl(fd, SIOCGIFDSTADDR, &ifr) == 0))

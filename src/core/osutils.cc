@@ -406,6 +406,9 @@ string escape(const string & s)
       case '&':
         result += "&amp;";
         break;
+      case '"':
+        result += "&quot;";
+        break;
     default:
       result += s[i];
   }
