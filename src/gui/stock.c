@@ -56,7 +56,7 @@ find_file(const char *base)
   if (base == NULL)
     return NULL;
 
-  if(basedir = getenv("BASEDIR"))
+  if((basedir = getenv("BASEDIR")))
     filename = g_build_filename(basedir, "artwork", base, NULL);
   else
     filename = g_build_filename(DATADIR, "lshw", "artwork", base, NULL);
