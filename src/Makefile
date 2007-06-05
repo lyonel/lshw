@@ -2,20 +2,20 @@ PACKAGENAME:=lshw
 export PACKAGENAME
 SNAPSHOT=0.$(shell cat .timestamp)
 
-DESTDIR=/
-PREFIX=/usr
+DESTDIR?=/
+PREFIX?=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share
 INSTALL?=install -p -s
-STRIP=strip
+STRIP?=strip
 export DESTDIR
 export PREFIX
 export SBINDIR
 export MANDIR
 export DATADIR
 
-CXX=c++
+CXX=?c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
