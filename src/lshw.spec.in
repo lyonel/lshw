@@ -76,7 +76,7 @@ http://www.ezix.org/software/lshw.html
   SBINDIR="%{_sbindir}" \
   MANDIR="%{_mandir}" \
   DATADIR="%{_datadir}" \
-  STRIP=/bin/true \
+  INSTALL="%{__install} -p" \
   install
 %if %{!?_without_gui:1}0
 %{__make} \
@@ -85,7 +85,7 @@ http://www.ezix.org/software/lshw.html
   SBINDIR="%{_sbindir}" \
   MANDIR="%{_mandir}" \
   DATADIR="%{_datadir}" \
-  STRIP=/bin/true \
+  INSTALL="%{__install} -p" \
   install-gui
 %endif
 

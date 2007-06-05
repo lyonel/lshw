@@ -7,7 +7,7 @@ PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share
-INSTALL=install -p
+INSTALL?=install -p -s
 STRIP=strip
 export DESTDIR
 export PREFIX
@@ -74,7 +74,7 @@ manuf.txt:
 
 install: all
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
-	$(INSTALL) -m 0755 -s $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
+	$(INSTALL) -m 0755 $(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(MANDIR)/man1
 	$(INSTALL) -m 0644 $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
@@ -82,7 +82,7 @@ install: all
 
 install-gui: gui
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
-	$(INSTALL) -m 0755 -s gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
+	$(INSTALL) -m 0755 gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
 	$(INSTALL) -m 0644 gui/artwork/*.svg $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
 	
