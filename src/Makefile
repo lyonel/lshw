@@ -7,7 +7,7 @@ PREFIX=/usr
 SBINDIR=$(PREFIX)/sbin
 MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share
-INSTALL=install
+INSTALL=install -p
 STRIP=strip
 export DESTDIR
 export PREFIX

@@ -1,8 +1,8 @@
 PACKAGENAME?=lshw
 
-CXX=c++
-CC=cc
-STRIP=strip
+CXX?=c++
+CC?=cc
+STRIP?=strip
 
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)
