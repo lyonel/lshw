@@ -529,16 +529,21 @@ hwNode & node)
 
     node.setCapacity(heads * cyl * sectors * sectsize);
 
-    if (rpm / 10000 == 1)
-      node.addCapability("10000rpm", "10000 rotations per minute");
+    if (rpm / 15000 == 1)
+      node.addCapability("15000rpm", "15000 rotations per minute");
     else
     {
-      if (rpm / 7200 == 1)
-        node.addCapability("7200rpm", "7200 rotations per minute");
+      if (rpm / 10000 == 1)
+        node.addCapability("10000rpm", "10000 rotations per minute");
       else
       {
-        if (rpm / 5400 == 1)
-          node.addCapability("5400rpm", "5400 rotations per minute");
+        if (rpm / 7200 == 1)
+          node.addCapability("7200rpm", "7200 rotations per minute");
+        else
+        {
+          if (rpm / 5400 == 1)
+            node.addCapability("5400rpm", "5400 rotations per minute");
+        }
       }
     }
   }
