@@ -739,7 +739,10 @@ hwNode & n)
   find_logicalname(device);
   do_inquiry(fd, device);
   if(device.getVendor() == "ATA")
+  {
     device.setDescription("ATA " + device.getDescription());
+    device.setVendor("");
+  }
   else
   {
     device.setDescription("SCSI " + device.getDescription());

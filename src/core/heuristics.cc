@@ -8,6 +8,8 @@
 #include "sysfs.h"
 #include "osutils.h"
 
+#include <regex.h>
+
 __ID("@(#) $Id$");
 
 string guessBusInfo(const string & info)
@@ -85,3 +87,49 @@ hwNode * guessParent(const hwNode & child, hwNode & base)
 {
   return base.findChildByBusInfo(guessParentBusInfo(child));
 }
+
+static const char *disk_manufacturers[] =
+{
+  "^ST.+", "Seagate",
+  "^D...-.+", "IBM",
+  "^IBM.+", "IBM",
+  "^HITACHI.+", "Hitachi",
+  "^IC.+", "Hitachi",
+  "^HTS.+", "Hitachi",
+  "^FUJITSU.+", "Fujitsu",
+  "^MP.+", "Fujitsu",
+  "^TOSHIBA.+", "Toshiba",
+  "^MK.+", "Toshiba",
+  "^MAXTOR.+", "Maxtor",
+  "^Pioneer.+", "Pioneer",
+  "^PHILIPS.+", "Philips",
+  "^QUANTUM.+", "Quantum",
+  "FIREBALL.+", "Quantum",
+  "^WDC.+", "Western Digital",
+  "WD.+", "Western Digital",
+  NULL, NULL
+};
+
+bool guessVendor(hwNode & device)
+{
+  int i = 0;
+  bool result = false;
+
+  if(device.getVendor() != "")
+    return false;
+
+ 
+  if(device.getClass() == hw::disk)
+    while (disk_manufacturers[i])
+    {
+      if (matches(device.getProduct().c_str(), disk_manufacturers[i], REG_ICASE))
+      {
+        device.setVendor(disk_manufacturers[i + 1]);
+        result = true;
+      }
+      i += 2;
+    }
+
+  return result;
+}
+

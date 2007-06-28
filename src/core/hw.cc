@@ -1125,6 +1125,9 @@ void hwNode::fixInconsistencies()
   if (getCapacity() < getSize())
     setCapacity(0);
 
+  if(getVendor() == "")
+    guessVendor(*this);
+
   for (unsigned int i = 0; i < This->children.size(); i++)
     This->children[i].fixInconsistencies();
 }

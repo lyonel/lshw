@@ -27,7 +27,6 @@
 #include <ctype.h>
 #include <vector>
 #include <linux/hdreg.h>
-#include <regex.h>
 
 __ID("@(#) $Id$");
 
@@ -330,48 +329,6 @@ static bool is_master(const string & device)
   }
 }
 
-
-static const char *manufacturers[] =
-{
-  "^ST.+", "Seagate",
-  "^D...-.+", "IBM",
-  "^IBM.+", "IBM",
-  "^HITACHI.+", "Hitachi",
-  "^IC.+", "Hitachi",
-  "^HTS.+", "Hitachi",
-  "^FUJITSU.+", "Fujitsu",
-  "^MP.+", "Fujitsu",
-  "^TOSHIBA.+", "Toshiba",
-  "^MK.+", "Toshiba",
-  "^MAXTOR.+", "Maxtor",
-  "^Pioneer.+", "Pioneer",
-  "^PHILIPS.+", "Philips",
-  "^QUANTUM.+", "Quantum",
-  "FIREBALL.+", "Quantum",
-  "^WDC.+", "Western Digital",
-  "WD.+", "Western Digital",
-  NULL, NULL
-};
-
-static bool guess_manufacturer(hwNode & device)
-{
-  int i = 0;
-  bool result = false;
-
-  while (manufacturers[i])
-  {
-    if (matches(device.getProduct().c_str(), manufacturers[i], REG_ICASE))
-    {
-      device.setVendor(manufacturers[i + 1]);
-      result = true;
-    }
-    i += 2;
-  }
-
-  return result;
-}
-
-
 bool scan_ide(hwNode & n)
 {
   struct dirent **namelist;
@@ -450,8 +407,6 @@ bool scan_ide(hwNode & n)
             idedevice.getPhysId());
 
           probe_ide(devicelist[j]->d_name, idedevice);
-
-          guess_manufacturer(idedevice);
 
           ide.addChild(idedevice);
           free(devicelist[j]);
