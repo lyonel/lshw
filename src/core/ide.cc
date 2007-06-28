@@ -116,7 +116,7 @@ const string & device)
 
   sscanf(bus.c_str(), "%x", &pcibus);
   sscanf(device.c_str(), "%x", &pcidevfunc);
-  snprintf(buffer, sizeof(buffer), "PCI:%02x:%02x.%x", pcibus,
+  snprintf(buffer, sizeof(buffer), "%02x:%02x.%x", pcibus,
     PCI_SLOT(pcidevfunc), PCI_FUNC(pcidevfunc));
 
   return string(buffer);
@@ -462,8 +462,8 @@ bool scan_ide(hwNode & n)
 
         if ( identify.size() == 11 && identify[0] == "pci")
         {
-          string pciid = get_pciid(identify[2], identify[4]);
-          hwNode *parent = n.findChildByHandle(pciid);
+          string businfo = guessBusInfo(get_pciid(identify[2], identify[4]));
+          hwNode *parent = n.findChildByBusInfo(businfo);
 
           if (parent)
           {
