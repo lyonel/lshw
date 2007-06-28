@@ -730,15 +730,21 @@ hwNode & n)
       break;
   }
 
-  device.setDescription("SCSI " + string(scsi_type(m_id.scsi_type)));
+  device.setDescription(string(scsi_type(m_id.scsi_type)));
   device.setHandle(scsi_handle(m_id.host_no,
     m_id.channel, m_id.scsi_id, m_id.lun));
   device.setBusInfo(scsi_businfo(m_id.host_no,
     m_id.channel, m_id.scsi_id, m_id.lun));
   device.setPhysId(m_id.channel, m_id.scsi_id, m_id.lun);
-  device.addHint("bus.icon", string("scsi"));
   find_logicalname(device);
   do_inquiry(fd, device);
+  if(device.getVendor() == "ATA")
+    device.setDescription("ATA " + device.getDescription());
+  else
+  {
+    device.setDescription("SCSI " + device.getDescription());
+    device.addHint("bus.icon", string("scsi"));
+  }
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
     scan_cdrom(device);
   if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7) || (m_id.scsi_type == 14))
