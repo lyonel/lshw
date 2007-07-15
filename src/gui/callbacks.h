@@ -38,3 +38,11 @@ void on_treeview3_cursor_changed (GtkTreeView * treeview, gpointer user_data);
 void go_up (GtkToolButton * toolbutton, gpointer user_data);
 
 void on_lshw_map (GtkWidget * widget, gpointer user_data);
+
+void
+on_save_activate                       (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_savebutton_clicked                  (GtkToolButton   *toolbutton,
+                                        gpointer         user_data);

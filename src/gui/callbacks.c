@@ -124,3 +124,19 @@ gpointer         user_data)
 {
   refresh(mainwindow);
 }
+
+void
+on_save_activate                       (GtkMenuItem     *menuitem,
+                                        gpointer         user_data)
+{
+  save_as(mainwindow);
+}
+
+
+void
+on_savebutton_clicked                  (GtkToolButton   *toolbutton,
+                                        gpointer         user_data)
+{
+  on_save_activate(NULL, NULL);
+}
+

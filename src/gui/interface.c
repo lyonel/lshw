@@ -34,6 +34,7 @@ create_lshw (void)
   GtkWidget *menubar1;
   GtkWidget *menuitem4;
   GtkWidget *menuitem4_menu;
+  GtkWidget *save;
   GtkWidget *quit1;
   GtkWidget *menuitem6;
   GtkWidget *menuitem6_menu;
@@ -45,6 +46,7 @@ create_lshw (void)
   GtkIconSize tmp_toolbar_icon_size;
   GtkWidget *upbutton;
   GtkWidget *refreshbutton;
+  GtkWidget *savebutton;
   GtkWidget *quitbutton;
   GtkWidget *scrolledwindow1;
   GtkWidget *viewport2;
@@ -88,6 +90,10 @@ create_lshw (void)
 
   menuitem4_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem4), menuitem4_menu);
+
+  save = gtk_image_menu_item_new_from_stock ("gtk-save", accel_group);
+  gtk_widget_show (save);
+  gtk_container_add (GTK_CONTAINER (menuitem4_menu), save);
 
   quit1 = gtk_image_menu_item_new_from_stock ("gtk-quit", accel_group);
   gtk_widget_show (quit1);
@@ -133,6 +139,10 @@ create_lshw (void)
   gtk_widget_show (refreshbutton);
   gtk_container_add (GTK_CONTAINER (toolbar1), refreshbutton);
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (refreshbutton), tooltips, "Rescan the hardware", NULL);
+
+  savebutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-save");
+  gtk_widget_show (savebutton);
+  gtk_container_add (GTK_CONTAINER (toolbar1), savebutton);
 
   quitbutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-quit");
   gtk_widget_show (quitbutton);
@@ -241,6 +251,9 @@ create_lshw (void)
   g_signal_connect_after ((gpointer) lshw, "map",
                           G_CALLBACK (on_lshw_map),
                           NULL);
+  g_signal_connect ((gpointer) save, "activate",
+                    G_CALLBACK (on_save_activate),
+                    NULL);
   g_signal_connect ((gpointer) quit1, "activate",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
@@ -255,6 +268,9 @@ create_lshw (void)
                     NULL);
   g_signal_connect ((gpointer) refreshbutton, "clicked",
                     G_CALLBACK (refresh_display),
+                    NULL);
+  g_signal_connect ((gpointer) savebutton, "clicked",
+                    G_CALLBACK (on_savebutton_clicked),
                     NULL);
   g_signal_connect ((gpointer) quitbutton, "clicked",
                     G_CALLBACK (gtk_main_quit),
@@ -284,6 +300,7 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, menubar1, "menubar1");
   GLADE_HOOKUP_OBJECT (lshw, menuitem4, "menuitem4");
   GLADE_HOOKUP_OBJECT (lshw, menuitem4_menu, "menuitem4_menu");
+  GLADE_HOOKUP_OBJECT (lshw, save, "save");
   GLADE_HOOKUP_OBJECT (lshw, quit1, "quit1");
   GLADE_HOOKUP_OBJECT (lshw, menuitem6, "menuitem6");
   GLADE_HOOKUP_OBJECT (lshw, menuitem6_menu, "menuitem6_menu");
@@ -294,6 +311,7 @@ create_lshw (void)
   GLADE_HOOKUP_OBJECT (lshw, toolbar1, "toolbar1");
   GLADE_HOOKUP_OBJECT (lshw, upbutton, "upbutton");
   GLADE_HOOKUP_OBJECT (lshw, refreshbutton, "refreshbutton");
+  GLADE_HOOKUP_OBJECT (lshw, savebutton, "savebutton");
   GLADE_HOOKUP_OBJECT (lshw, quitbutton, "quitbutton");
   GLADE_HOOKUP_OBJECT (lshw, scrolledwindow1, "scrolledwindow1");
   GLADE_HOOKUP_OBJECT (lshw, viewport2, "viewport2");

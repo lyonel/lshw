@@ -402,3 +402,39 @@ void go_back(GtkWidget *mainwindow)
 
   display(mainwindow);
 }
+
+void save_as(GtkWidget *mainwindow)
+{
+  GtkWidget *dialog;
+
+  dialog = gtk_file_chooser_dialog_new ("Save hardware configuration",
+				      GTK_WINDOW(mainwindow),
+				      GTK_FILE_CHOOSER_ACTION_SAVE,
+				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+				      NULL);
+  gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+
+  /*
+  if (user_edited_a_new_document)
+  {
+    gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), default_folder_for_saving);
+    gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "Untitled document");
+  }
+  else
+    gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (dialog), filename_for_existing_document);
+  */
+
+
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  {
+    char *filename;
+
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+    //save_to_file (filename);
+    fprintf(stderr, "filename = %s\n", filename);
+    g_free (filename);
+  }
+
+  gtk_widget_destroy (dialog);
+}

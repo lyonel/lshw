@@ -16,6 +16,8 @@ extern "C"
 
   void go_back(GtkWidget *);
 
+  void save_as(GtkWidget *);
+
 #ifdef __cplusplus
 };
 #endif
