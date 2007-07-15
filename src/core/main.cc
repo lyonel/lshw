@@ -26,6 +26,7 @@
 #include "device-tree.h"
 #include "pci.h"
 #include "pcmcia.h"
+#include "pcmcia-legacy.h"
 #include "ide.h"
 #include "scsi.h"
 #include "spd.h"
@@ -95,6 +96,9 @@ bool scan_system(hwNode & system)
     status("PCMCIA");
     if (enabled("pcmcia"))
       scan_pcmcia(computer);
+    status("PCMCIA");
+    if (enabled("pcmcia-legacy"))
+      scan_pcmcialegacy(computer);
     status("kernel device tree (sysfs)");
     if (enabled("sysfs"))
       scan_sysfs(computer);

@@ -1,11 +1,14 @@
 #include "version.h"
 #include "disk.h"
+#include "osutils.h"
+#include "heuristics.h"
 #include "partitions.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
+
 //#include <linux/fs.h>
 
 __ID("@(#) $Id$");
