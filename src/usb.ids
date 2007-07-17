@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.230 2006/12/12 21:43:04 dbrownell Exp $
+# $Id: usb.ids,v 1.232 2007/07/10 21:21:53 dbrownell Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -1122,6 +1122,7 @@
 	0111  Connect3D Flash Drive
 	1003  MP3 Player and Recorder
 	300c  ML-1210 Printer
+	323a  ML-1710 Printer
 	324c  ML-1740 Printer
 	3260  CLP-510 Color Laser Printer
 	5a03  Yepp MP3 Player
@@ -1245,6 +1246,7 @@
 	a4a5  Linux-USB File Storage Gadget
 	a4a6  Linux-USB Serial Gadget
 	a4a7  Linux-USB Serial Gadget (CDC ACM mode)
+	a4a8  Linux-USB Printer Gadget
 0526  Temic MHS S.A.
 0527  ALTRA
 0528  ATI Technologies, Inc.
@@ -2111,20 +2113,29 @@
 	0009  Composite TouchPad and TrackPoint
 06cc  Terayon Communication Systems
 06cd  Keyspan
-	0101  USA-28 PDA [preenum]
-	0102  USA-28X PDA [preenum]
-	0103  USA-19 PDA [preenum]
+	0101  USA-28 PDA [no firmware]
+	0102  USA-28X PDA [no firmware]
+	0103  USA-19 PDA [no firmware]
 	0104  PDA [prerenum]
-	0105  USA-18X PDA [preenum]
-	0106  USA-19W PDA [preenum]
+	0105  USA-18X PDA [no firmware]
+	0106  USA-19W PDA [no firmware]
 	0107  USA-19 PDA
 	0108  USA-19W PDA
-	010b  USA-19Q PDA
+	0109  USA-49W serial adapter [no firmware]
+	010a  USA-49W serial adapter
+	010b  USA-19Qi serial adapter [no firmware]
+	010c  USA-19Qi serial adapter
 	010f  USA-28 PDA
-	0110  USA-28X PDA
+	0110  USA-28Xb PDA
 	0112  USA-18X PDA
-	0114  USA-28X PDA
-	0118  USA-19QW PDA
+	0113  USA-28Xb PDA [no firmware]
+	0114  USA-28Xa PDA [no firmware]
+	0115  USA-28Xa PDA
+	0118  USA-19QW PDA [no firmware]
+	0119  USA-19QW PDA
+	011a  USA-49Wlc serial adapter [no firmware]
+	012a  USA-49Wlc serial adapter
+	0121  USA-19hs serial adapter
 	0201  Digital Media Remote
 06cf  SpheronVR AG
 	1010  PanoCam 10
@@ -3968,6 +3979,8 @@
 1275  Xaxero Marine Software Engineering, Ltd.
 	0002  WeatherFax 2000 Demodulator
 	0080  SkyEye Weather Satellite Receiver
+1286  Marvell Semiconductor, Inc.
+	8001  BLOB boot loader firmware
 1292  Innomedia
 	0258  Creative Labs VoIP Blaster
 1293  Belkin Components [hex]
