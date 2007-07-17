@@ -4,7 +4,7 @@
  *
  */
 
-#include "print.h"
+#include "print-gui.h"
 #include "options.h"
 #include "version.h"
 #include "osutils.h"
@@ -271,13 +271,13 @@ static hwNode * find_parent(hwNode * n, hwNode *sub)
 }
 
 
-string printhwpath( hwNode & n, hwNode & base)
+string gethwpath( hwNode & n, hwNode & base)
 {
   ostringstream out;
   hwNode *parent = find_parent(&n, &base);
 
   if(parent && (parent != &base))
-    out << printhwpath(*parent, base) << "/" << n.getPhysId();
+    out << gethwpath(*parent, base) << "/" << n.getPhysId();
 
   return out.str();
 }

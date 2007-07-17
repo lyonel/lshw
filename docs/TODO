@@ -1,7 +1,7 @@
-IMPROVEMENTS:
-* use sysfs instead of trying to "guess" a device's parent
-* report wireless-related information (SSID, channel, AP, mode, etc.) - cf. iwconfig
-* SCSI clean-up (cf. newest versions of sg_utils)
-* on 2.6 kernels, use SG_IO directly on devices, not their sg counterpart
-* for emulated SCSI devices, don't report fake host/channel, just target
-* use businfo to find CPUs instead of hardcoding cpu:n form
+=IMPROVEMENTS:=
+ * use sysfs instead of trying to "guess" a device's parent
+ * report wireless-related information (SSID, channel, AP, mode, etc.) - cf. iwconfig
+ * SCSI clean-up (cf. newest versions of sg_utils)
+ * on 2.6 kernels, use SG_IO directly on devices, not their sg counterpart
+ * for emulated SCSI devices, don't report fake host/channel, just target
+ * use businfo to find CPUs instead of hardcoding cpu:n form

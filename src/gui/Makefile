@@ -16,7 +16,7 @@ ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 
-OBJS = gtk-lshw.o interface.o support.o callbacks.o engine.o print.o stock.o
+OBJS = gtk-lshw.o interface.o support.o callbacks.o engine.o print-gui.o stock.o
 SRCS = $(OBJS:.o=.c)
 
 all: gtk-$(PACKAGENAME)
@@ -45,7 +45,8 @@ depend:
 
 # DO NOT DELETE
 
-gtk-lshw.o: interface.h support.h
+gtk-lshw.o: interface.h support.h stock.h engine.h
 interface.o: callbacks.h interface.h support.h
 support.o: support.h
-callbacks.o: callbacks.h interface.h support.h
+callbacks.o: callbacks.h interface.h support.h engine.h
+stock.o: stock.h

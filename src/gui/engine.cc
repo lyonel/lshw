@@ -1,7 +1,12 @@
 #include "engine.h"
 #include "hw.h"
 #include "main.h"
+#include "print-gui.h"
 #include "print.h"
+
+#include <iostream>
+#include <fstream>
+#include <sys/utsname.h>
 
 static char *id = "@(#) $Id$";
 
@@ -9,6 +14,10 @@ extern "C"
 {
 #include "support.h"
 };
+
+#define LSHW_XML "lshw XML format"
+#define PLAIN_TEXT "plain text document"
+#define HTML "HTML document"
 
 #define YIELD()  while(gtk_events_pending()) gtk_main_iteration()
 
@@ -204,7 +213,7 @@ static void display(GtkWidget * mainwindow)
   {
     create_tags(buffer);
 
-    string hwpath = printhwpath(*displayed, container);
+    string hwpath = gethwpath(*displayed, container);
     printmarkup(*displayed, GTK_TEXT_VIEW(description), hwpath);
   }
 }
@@ -405,7 +414,10 @@ void go_back(GtkWidget *mainwindow)
 
 void save_as(GtkWidget *mainwindow)
 {
-  GtkWidget *dialog;
+  struct utsname buf;
+  GtkWidget *dialog = NULL;
+  GtkFileFilter *filter = NULL;
+
 
   dialog = gtk_file_chooser_dialog_new ("Save hardware configuration",
 				      GTK_WINDOW(mainwindow),
@@ -415,25 +427,54 @@ void save_as(GtkWidget *mainwindow)
 				      NULL);
   gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
 
-  /*
-  if (user_edited_a_new_document)
-  {
-    gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), default_folder_for_saving);
-    gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "Untitled document");
-  }
-  else
-    gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (dialog), filename_for_existing_document);
-  */
+  filter = gtk_file_filter_new ();
+  gtk_file_filter_set_name(filter, LSHW_XML);
+  gtk_file_filter_add_pattern(filter, "*.lshw");
+  gtk_file_filter_add_pattern(filter, "*.xml");
+  gtk_file_filter_add_mime_type(filter, "text/xml");
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
+  filter = gtk_file_filter_new ();
+  gtk_file_filter_set_name(filter, HTML);
+  gtk_file_filter_add_pattern(filter, "*.html");
+  gtk_file_filter_add_pattern(filter, "*.htm");
+  gtk_file_filter_add_mime_type(filter, "text/html");
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
+  filter = gtk_file_filter_new ();
+  gtk_file_filter_set_name(filter, PLAIN_TEXT);
+  gtk_file_filter_add_pattern(filter, "*.text");
+  gtk_file_filter_add_pattern(filter, "*.txt");
+  gtk_file_filter_add_mime_type(filter, "text/plain");
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
 
+  if(uname(&buf)==0)
+    gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), buf.nodename);
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
   {
     char *filename;
 
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-    //save_to_file (filename);
-    fprintf(stderr, "filename = %s\n", filename);
-    g_free (filename);
+    filter = gtk_file_chooser_get_filter(GTK_FILE_CHOOSER(dialog));
+    if(filename && filter)
+    {
+      std::ofstream out(filename);
+      const gchar *filtername = gtk_file_filter_get_name(filter);
+      std::streambuf* old_cout = cout.rdbuf();
+
+      cout.rdbuf(out.rdbuf());
+
+      if(strcmp(filtername, LSHW_XML)==0)
+        cout << container.getChild(0)->asXML();
+      else
+      if(strcmp(filtername, HTML)==0)
+        print(*container.getChild(0), true);
+      else
+      if(strcmp(filtername, PLAIN_TEXT)==0)
+        print(*container.getChild(0), false);
+      g_free (filename);
+
+      cout.rdbuf(old_cout);
+    }
   }
 
   gtk_widget_destroy (dialog);
