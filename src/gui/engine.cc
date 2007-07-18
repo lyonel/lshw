@@ -3,6 +3,7 @@
 #include "main.h"
 #include "print-gui.h"
 #include "print.h"
+#include "osutils.h"
 
 #include <iostream>
 #include <fstream>
@@ -15,6 +16,7 @@ extern "C"
 #include "support.h"
 };
 
+#define AUTOMATIC "automatic"
 #define LSHW_XML "lshw XML format"
 #define PLAIN_TEXT "plain text document"
 #define HTML "HTML document"
@@ -412,12 +414,60 @@ void go_back(GtkWidget *mainwindow)
   display(mainwindow);
 }
 
+static const char *guess_format(char *s)
+{
+  char *dot = strrchr(s, '.');
+
+  if(!dot)
+    return LSHW_XML;
+
+  if(!strcasecmp(".html", dot) || !strcasecmp(".htm", dot))
+    return HTML;
+
+  if(!strcasecmp(".text", dot) || !strcasecmp(".txt", dot))
+    return PLAIN_TEXT;
+
+  return LSHW_XML;
+}
+
+static char *fix_filename(char *s, char *extension)
+{
+  char *dot = strrchr(s, '.');
+
+  if(dot)
+    return s;
+
+  s = (char*)realloc(s, strlen(s) + 1 + strlen(extension) + 1);
+  strcat(s, ".");
+  strcat(s, extension);
+
+  return s;
+}
+
+static void redirect_cout(std::ofstream &out, bool enable = true)
+{
+  static std::streambuf* old_cout;
+  
+  if(enable)
+  {
+    old_cout = cout.rdbuf();
+    cout.rdbuf(out.rdbuf());
+  }
+  else
+    cout.rdbuf(old_cout);
+}
+
 void save_as(GtkWidget *mainwindow)
 {
   struct utsname buf;
   GtkWidget *dialog = NULL;
+  GtkWidget *checkbox = NULL;
   GtkFileFilter *filter = NULL;
+  bool proceed = true;
+  hwNode *computer = container.getChild(0);
 
+  if(!computer)		// nothing to save
+    return;
 
   dialog = gtk_file_chooser_dialog_new ("Save hardware configuration",
 				      GTK_WINDOW(mainwindow),
@@ -425,8 +475,15 @@ void save_as(GtkWidget *mainwindow)
 				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 				      NULL);
-  gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+  //gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+  checkbox = gtk_check_button_new_with_label("Automatic file extension");
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(checkbox), TRUE);
+  gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(dialog), checkbox);
 
+  filter = gtk_file_filter_new ();
+  gtk_file_filter_set_name(filter, AUTOMATIC);
+  gtk_file_filter_add_pattern(filter, "*");
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
   filter = gtk_file_filter_new ();
   gtk_file_filter_set_name(filter, LSHW_XML);
   gtk_file_filter_add_pattern(filter, "*.lshw");
@@ -457,23 +514,66 @@ void save_as(GtkWidget *mainwindow)
     filter = gtk_file_chooser_get_filter(GTK_FILE_CHOOSER(dialog));
     if(filename && filter)
     {
-      std::ofstream out(filename);
       const gchar *filtername = gtk_file_filter_get_name(filter);
-      std::streambuf* old_cout = cout.rdbuf();
 
-      cout.rdbuf(out.rdbuf());
+      if(strcmp(filtername, AUTOMATIC)==0)
+        filtername = guess_format(filename);
 
-      if(strcmp(filtername, LSHW_XML)==0)
-        cout << container.getChild(0)->asXML();
-      else
-      if(strcmp(filtername, HTML)==0)
-        print(*container.getChild(0), true);
-      else
-      if(strcmp(filtername, PLAIN_TEXT)==0)
-        print(*container.getChild(0), false);
+      if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkbox)))
+      {
+        if(strcmp(filtername, LSHW_XML)==0)
+          filename = fix_filename(filename, "lshw");
+        else
+        if(strcmp(filtername, HTML)==0)
+          filename = fix_filename(filename, "html");
+        else
+        if(strcmp(filtername, PLAIN_TEXT)==0)
+          filename = fix_filename(filename, "txt");
+      }
+
+      if(exists(filename))
+      {
+        GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW(mainwindow),
+                                  GTK_DIALOG_DESTROY_WITH_PARENT,
+                                  GTK_MESSAGE_WARNING,
+                                  GTK_BUTTONS_NONE,
+                                  "File '%s' already exists.\nOverwrite ?",
+                                  filename);
+        gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
+				  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				  "Overwrite", GTK_RESPONSE_ACCEPT,
+                                  NULL);
+        proceed = (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT);
+        gtk_widget_destroy (dialog);
+      }
+
+      if(proceed)
+      {
+        if(strcmp(filtername, LSHW_XML)==0)
+        {
+          std::ofstream out(filename);
+          redirect_cout(out);
+          cout << computer->asXML();
+          redirect_cout(out, false);
+        }
+        else
+        if(strcmp(filtername, HTML)==0)
+        {
+          std::ofstream out(filename);
+          redirect_cout(out);
+          print(*computer, true);
+          redirect_cout(out, false);
+        }
+        else
+        if(strcmp(filtername, PLAIN_TEXT)==0)
+        {
+          std::ofstream out(filename);
+          redirect_cout(out);
+          print(*computer, false);
+          redirect_cout(out, false);
+        }
+      }
       g_free (filename);
-
-      cout.rdbuf(old_cout);
     }
   }
 
