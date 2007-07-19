@@ -4,6 +4,7 @@
 #include "print-gui.h"
 #include "print.h"
 #include "osutils.h"
+#include "options.h"
 
 #include <iostream>
 #include <fstream>
@@ -461,7 +462,7 @@ void save_as(GtkWidget *mainwindow)
 {
   struct utsname buf;
   GtkWidget *dialog = NULL;
-  GtkWidget *checkbox = NULL;
+  GtkWidget *sanitize = NULL;
   GtkFileFilter *filter = NULL;
   bool proceed = true;
   hwNode *computer = container.getChild(0);
@@ -476,9 +477,9 @@ void save_as(GtkWidget *mainwindow)
 				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 				      NULL);
   //gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
-  checkbox = gtk_check_button_new_with_label("Automatic file extension");
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(checkbox), TRUE);
-  gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(dialog), checkbox);
+  sanitize = gtk_check_button_new_with_label("Anonymize output");
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sanitize), enabled("output:sanitize")?TRUE:FALSE);
+  gtk_file_chooser_set_extra_widget(GTK_FILE_CHOOSER(dialog), sanitize);
 
   filter = gtk_file_filter_new ();
   gtk_file_filter_set_name(filter, AUTOMATIC);
@@ -510,6 +511,11 @@ void save_as(GtkWidget *mainwindow)
   {
     char *filename;
 
+    if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(sanitize)))
+      enable("output:sanitize");
+    else
+      disable("output:sanitize");
+
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
     filter = gtk_file_chooser_get_filter(GTK_FILE_CHOOSER(dialog));
     if(filename && filter)
@@ -519,7 +525,7 @@ void save_as(GtkWidget *mainwindow)
       if(strcmp(filtername, AUTOMATIC)==0)
         filtername = guess_format(filename);
 
-      if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkbox)))
+      if(!exists(filename))		// creating a new file
       {
         if(strcmp(filtername, LSHW_XML)==0)
           filename = fix_filename(filename, "lshw");
@@ -530,8 +536,7 @@ void save_as(GtkWidget *mainwindow)
         if(strcmp(filtername, PLAIN_TEXT)==0)
           filename = fix_filename(filename, "txt");
       }
-
-      if(exists(filename))
+      else				// existing file
       {
         GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW(mainwindow),
                                   GTK_DIALOG_DESTROY_WITH_PARENT,
