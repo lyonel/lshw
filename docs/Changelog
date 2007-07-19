@@ -1,3 +1,19 @@
+* lshw B.02.11
+  implemented "export" function in GUI (#13)
+  RPM package cleanups, GUI now built by default (#111)
+  fixed XML output (#115)
+  fixed handling of command-line options (#121)
+  added -sanitize option (#122)
+  support 15000rpm SCSI discs (#124)
+  fixed IDE detection (#126)
+* lshw B.02.10
+  minor bugfixes (#95, ...)
+  added -quiet option (#107)
+  added preliminary support for IDE RAID arrays (#25)
+* lshw B.02.09
+  minor bugfixes (#26, #27)
+  added support for PCI domains (#28)
+  use of /sys (sysfs) when possible for PCI devices 
 *  B.02.08.01
   bugfix release for non-x86 platforms (#24)
 *  B.02.08
