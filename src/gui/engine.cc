@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <sys/utsname.h>
+#include <libgen.h>
 
 static char *id = "@(#) $Id$";
 
@@ -536,20 +537,24 @@ void save_as(GtkWidget *mainwindow)
         if(strcmp(filtername, PLAIN_TEXT)==0)
           filename = fix_filename(filename, "txt");
       }
-      else				// existing file
+
+      if(exists(filename))		// existing file
       {
+        char * buffer = g_strdup(filename);
+
         GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW(mainwindow),
                                   GTK_DIALOG_DESTROY_WITH_PARENT,
                                   GTK_MESSAGE_WARNING,
                                   GTK_BUTTONS_NONE,
-                                  "File '%s' already exists.\nOverwrite ?",
-                                  filename);
+                                  "A file named '%s' already exists in folder '%s'.\n\nDo you want to overwrite it?",
+                                  basename(buffer), dirname(buffer));
         gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
 				  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				  "Overwrite", GTK_RESPONSE_ACCEPT,
                                   NULL);
         proceed = (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT);
         gtk_widget_destroy (dialog);
+        g_free(buffer);
       }
 
       if(proceed)
