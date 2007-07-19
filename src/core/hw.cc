@@ -928,6 +928,20 @@ string hwNode::getConfig(const string & key) const
 }
 
 
+vector < string > hwNode::getConfigKeys() const
+{
+  vector < string > result;
+
+  if (!This)
+    return result;
+
+  for (map < string, string >::iterator i = This->config.begin();
+    i != This->config.end(); i++)
+  result.push_back(i->first);
+
+  return result;
+}
+
 vector < string > hwNode::getConfigValues(const string & separator) const
 {
   vector < string > result;
@@ -1270,7 +1284,7 @@ string hwNode::asXML(unsigned level)
 
   if(!This) return "";
 
-  config = getConfigValues("\" value=\"");
+  config = getConfigKeys();
   resources = getResources("\" value=\"");
 
   if (level == 0)
@@ -1494,7 +1508,7 @@ string hwNode::asXML(unsigned level)
       for (unsigned int j = 0; j < config.size(); j++)
       {
         out << spaces(2*level+2);
-        out << "<setting id=\"" << escape(config[j]) << "\" />";
+        out << "<setting id=\"" << escape(config[j]) << "\" value=\"" << escape(getConfig(config[j])) << "\" />";
         out << endl;
       }
       out << spaces(2*level+1);

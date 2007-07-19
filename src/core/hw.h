@@ -176,6 +176,7 @@ class hwNode
     void setConfig(const string & key, const string & value);
     void setConfig(const string & key, unsigned long long value);
     string getConfig(const string & key) const;
+    vector<string> getConfigKeys() const;
     vector<string> getConfigValues(const string & separator = "") const;
 
     vector<string> getLogicalNames() const;

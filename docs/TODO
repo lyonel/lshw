@@ -5,3 +5,5 @@
  * on 2.6 kernels, use SG_IO directly on devices, not their sg counterpart
  * for emulated SCSI devices, don't report fake host/channel, just target
  * use businfo to find CPUs instead of hardcoding cpu:n form
+ * use sysfs for PCMCIA access
+ * use MPTABLE for reporting of CPUs

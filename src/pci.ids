@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Tue 2007-07-17 01:05:01
+#	Daily snapshot on Thu 2007-07-19 01:05:02
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -11348,6 +11348,7 @@
 	10ba  80003ES2LAN Gigabit Ethernet Controller (Copper)
 	10bb  80003ES2LAN Gigabit Ethernet Controller (Serdes)
 	10bc  82571EB Gigabit Ethernet Controller (Copper)
+		103c 704b  NC364T PCI Express Quad Port Gigabit Server Adapter
 		8086 10bc  PRO/1000 PT Quad Port LP Server Adapter
 		8086 11bc  PRO/1000 PT Quad Port LP Server Adapter
 	10bd  82566DM-2 Gigabit Network Connection
@@ -12663,9 +12664,9 @@
 	2918  82801IB (ICH9) LPC Interface Controller
 	2919  Mobile LPC Controller
 	2920  82801IR/IO/IH (ICH9R/DO/DH) 4 port SATA IDE Controller
-	2921  82801I (ICH9 Family) 2 port SATA IDE Controller
+	2921  82801IB (ICH9) 2 port SATA IDE Controller
 	2922  82801IR/IO/IH (ICH9R/DO/DH) 6 port SATA AHCI Controller
-	2923  82801I (ICH9 Family) 4 port SATA AHCI Controller
+	2923  82801IB (ICH9) 4 port SATA AHCI Controller
 	2925  82801IR/IO (ICH9R//DO) SATA RAID Controller
 	2926  82801I (ICH9 Family) 2 port SATA IDE Controller
 	2928  Mobile 2 port SATA IDE Controller
