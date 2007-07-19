@@ -262,6 +262,7 @@ void refresh(GtkWidget *mainwindow)
   displayed = NULL;
   gtk_text_buffer_set_text(gtk_text_view_get_buffer(GTK_TEXT_VIEW(description)), "scanning...", -1);
 
+  disable("output:sanitize");
   container = hwNode("container", hw::generic);
   status("Scanning...");
   scan_system(computer);
