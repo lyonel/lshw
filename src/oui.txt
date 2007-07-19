@@ -47539,6 +47539,31 @@ company_id			Organization
 				Yokohama Kanagawa 220-0004
 				JAPAN
 
+00-1D-62   (hex)		InPhase Technologies
+001D62     (base 16)		InPhase Technologies
+				2000 Pike Road
+				Longmont Colorado 80501
+				UNITED STATES
+
+00-1D-63   (hex)		Miele & Cie. KG
+001D63     (base 16)		Miele & Cie. KG
+				Carl-Miele-Str. 29
+				Gütersloh  33332
+				GERMANY
+
+00-1D-64   (hex)		Adam Communications Systems Int Ltd
+001D64     (base 16)		Adam Communications Systems Int Ltd
+				The Mission
+				Wellington Street
+				Stockport Cheshire SK1 3AH
+				UNITED KINGDOM
+
+00-1D-65   (hex)		Microwave Radio Communications
+001D65     (base 16)		Microwave Radio Communications
+				101 Billerica Avemue, Bldg 6
+				N. Billerica MA 01862
+				UNITED STATES
+
 00-20-00   (hex)		LEXMARK INTERNATIONAL, INC.
 002000     (base 16)		LEXMARK INTERNATIONAL, INC.
 				740 NEW CIRCLE ROAD
