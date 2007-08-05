@@ -247,11 +247,14 @@ void refresh(GtkWidget *mainwindow)
   GtkWidget * description = lookup_widget(mainwindow, "description");
   GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
   GtkWidget * save_button = lookup_widget(mainwindow, "savebutton");
+  GtkWidget * menu = lookup_widget(mainwindow, "menu");
+  GtkWidget * save_menuitem = lookup_widget(menu, "save");
 
   if(lock) return;
 
   lock = true;
   gtk_widget_set_sensitive(save_button, FALSE);
+  gtk_widget_set_sensitive(save_menuitem, FALSE);
 
   GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
   GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
@@ -273,6 +276,7 @@ void refresh(GtkWidget *mainwindow)
 
   gtk_widget_set_sensitive(go_up_button, FALSE);
   gtk_widget_set_sensitive(save_button, TRUE);
+  gtk_widget_set_sensitive(save_menuitem, TRUE);
 
   selected1 = NULL;
   selected2 = NULL;

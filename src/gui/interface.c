@@ -31,7 +31,7 @@ create_lshw (void)
 {
   GtkWidget *lshw;
   GtkWidget *vbox1;
-  GtkWidget *menubar1;
+  GtkWidget *menu;
   GtkWidget *menuitem4;
   GtkWidget *menuitem4_menu;
   GtkWidget *save;
@@ -80,13 +80,13 @@ create_lshw (void)
   gtk_widget_show (vbox1);
   gtk_container_add (GTK_CONTAINER (lshw), vbox1);
 
-  menubar1 = gtk_menu_bar_new ();
-  gtk_widget_show (menubar1);
-  gtk_box_pack_start (GTK_BOX (vbox1), menubar1, FALSE, FALSE, 0);
+  menu = gtk_menu_bar_new ();
+  gtk_widget_show (menu);
+  gtk_box_pack_start (GTK_BOX (vbox1), menu, FALSE, FALSE, 0);
 
   menuitem4 = gtk_menu_item_new_with_mnemonic ("_File");
   gtk_widget_show (menuitem4);
-  gtk_container_add (GTK_CONTAINER (menubar1), menuitem4);
+  gtk_container_add (GTK_CONTAINER (menu), menuitem4);
 
   menuitem4_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem4), menuitem4_menu);
@@ -94,6 +94,7 @@ create_lshw (void)
   save = gtk_image_menu_item_new_from_stock ("gtk-save", accel_group);
   gtk_widget_show (save);
   gtk_container_add (GTK_CONTAINER (menuitem4_menu), save);
+  gtk_widget_set_sensitive (save, FALSE);
 
   quit1 = gtk_image_menu_item_new_from_stock ("gtk-quit", accel_group);
   gtk_widget_show (quit1);
@@ -101,7 +102,7 @@ create_lshw (void)
 
   menuitem6 = gtk_menu_item_new_with_mnemonic ("_View");
   gtk_widget_show (menuitem6);
-  gtk_container_add (GTK_CONTAINER (menubar1), menuitem6);
+  gtk_container_add (GTK_CONTAINER (menu), menuitem6);
 
   menuitem6_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem6), menuitem6_menu);
@@ -115,7 +116,7 @@ create_lshw (void)
 
   menuitem7 = gtk_menu_item_new_with_mnemonic ("_Help");
   gtk_widget_show (menuitem7);
-  gtk_container_add (GTK_CONTAINER (menubar1), menuitem7);
+  gtk_container_add (GTK_CONTAINER (menu), menuitem7);
 
   menuitem7_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem7), menuitem7_menu);
@@ -298,7 +299,7 @@ create_lshw (void)
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (lshw, lshw, "lshw");
   GLADE_HOOKUP_OBJECT (lshw, vbox1, "vbox1");
-  GLADE_HOOKUP_OBJECT (lshw, menubar1, "menubar1");
+  GLADE_HOOKUP_OBJECT (lshw, menu, "menu");
   GLADE_HOOKUP_OBJECT (lshw, menuitem4, "menuitem4");
   GLADE_HOOKUP_OBJECT (lshw, menuitem4_menu, "menuitem4_menu");
   GLADE_HOOKUP_OBJECT (lshw, save, "save");

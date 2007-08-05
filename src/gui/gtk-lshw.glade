@@ -30,7 +30,7 @@
       <property name="spacing">0</property>
 
       <child>
-	<widget class="GtkMenuBar" id="menubar1">
+	<widget class="GtkMenuBar" id="menu">
 	  <property name="visible">True</property>
 	  <property name="pack_direction">GTK_PACK_DIRECTION_LTR</property>
 	  <property name="child_pack_direction">GTK_PACK_DIRECTION_LTR</property>
@@ -47,6 +47,7 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="save">
 		      <property name="visible">True</property>
+		      <property name="sensitive">False</property>
 		      <property name="label">gtk-save</property>
 		      <property name="use_stock">True</property>
 		      <signal name="activate" handler="on_save_activate" last_modification_time="Sun, 15 Jul 2007 21:58:35 GMT"/>
