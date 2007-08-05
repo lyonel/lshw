@@ -246,10 +246,12 @@ void refresh(GtkWidget *mainwindow)
   static bool lock = false;
   GtkWidget * description = lookup_widget(mainwindow, "description");
   GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
+  GtkWidget * save_button = lookup_widget(mainwindow, "savebutton");
 
   if(lock) return;
 
   lock = true;
+  gtk_widget_set_sensitive(save_button, FALSE);
 
   GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
   GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
@@ -269,7 +271,8 @@ void refresh(GtkWidget *mainwindow)
   status(NULL);
   displayed = container.addChild(computer);
 
-  gtk_widget_set_sensitive(go_up_button, 0);
+  gtk_widget_set_sensitive(go_up_button, FALSE);
+  gtk_widget_set_sensitive(save_button, TRUE);
 
   selected1 = NULL;
   selected2 = NULL;

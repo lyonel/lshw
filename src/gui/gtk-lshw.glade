@@ -161,6 +161,7 @@
 	  <child>
 	    <widget class="GtkToolButton" id="savebutton">
 	      <property name="visible">True</property>
+	      <property name="sensitive">False</property>
 	      <property name="stock_id">gtk-save</property>
 	      <property name="visible_horizontal">True</property>
 	      <property name="visible_vertical">True</property>

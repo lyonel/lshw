@@ -143,6 +143,7 @@ create_lshw (void)
   savebutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-save");
   gtk_widget_show (savebutton);
   gtk_container_add (GTK_CONTAINER (toolbar1), savebutton);
+  gtk_widget_set_sensitive (savebutton, FALSE);
 
   quitbutton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-quit");
   gtk_widget_show (quitbutton);
