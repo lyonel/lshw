@@ -1,3 +1,8 @@
+* lshw B.02.12
+  fixed `make install` (#128)
+  GUI: only activate ''Save'' function (toolbar button and menu entry) when needed
+  GUI: better handling of older GTK+ versions that can't read SVG files (#130)
+  updated data files
 * lshw B.02.11
   implemented "export" function in GUI (#13)
   RPM package cleanups, GUI now built by default (#111)

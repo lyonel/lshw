@@ -10,7 +10,7 @@
 #include <errno.h>
 #include <dirent.h>
 
-__ID("@(#) $Id$");
+__ID("@(#) $Id: pcmcia.cc 1352 2006-05-27 23:54:13Z ezix $");
 
 #define SYS_CLASS_PCMCIASOCKET  "/sys/class/pcmcia_socket"
 #define CLASS_PCMCIASOCKET  "pcmcia_socket"
