@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Thu 2007-07-19 01:05:02
+#	Daily snapshot on Sun 2007-08-05 01:05:01
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -2829,8 +2829,14 @@
 1052  ?Young Micro Systems
 1053  Young Micro Systems
 1054  Hitachi, Ltd
+	3009  2Gbps Fibre Channel to PCI HBA 3009
+	300a  4Gbps Fibre Channel to PCI-X HBA 300a
+	300b  4Gbps Fibre Channel to PCI-X HBA 300b
+	300f  ColdFusion 3 Chipset Processor to I/O Controller
+	3010  ColdFusion 3 Chipset Memory Controller Hub
 	3011  ColdFusion 3e Chipset Processor to I/O Controller
 	3012  ColdFusion 3e Chipset Memory Controller Hub
+	3017  Unassigned Hitachi Shared FC Device 3017
 1055  Efar Microsystems
 	9130  SLC90E66 [Victory66] IDE
 	9460  SLC90E66 [Victory66] ISA
@@ -11220,6 +11226,7 @@
 	105b  82546GB Gigabit Ethernet Controller (Copper)
 	105e  82571EB Gigabit Ethernet Controller
 		103c 7044  NC360T PCI Express Dual Port Gigabit Server Adapter
+		103c 704e  Dual Port 1000Base-T (PCIe) [AD337A]
 		1775 1100  CR11/VR11 Single Board Computer
 		1775 6003  Telum GE-QT
 		8086 005e  PRO/1000 PT Dual Port Server Connection
@@ -11229,6 +11236,7 @@
 		8086 125e  PRO/1000 PT Dual Port Server Adapter
 		8086 135e  PRO/1000 PT Dual Port Server Adapter
 	105f  82571EB Gigabit Ethernet Controller
+		103c 704f  Dual Port 1000Base-SX (PCIe) [AD338A]
 		8086 115f  PRO/1000 PF Dual Port Server Adapter
 		8086 116f  PRO/1000 PF Dual Port Server Adapter
 		8086 125f  PRO/1000 PF Dual Port Server Adapter
@@ -12190,6 +12198,7 @@
 		1734 105b  Scenic W620
 		1849 2582  ASRock P4Dual-915GL
 	2584  82925X/XE Memory Controller Hub
+		1028 0177  Dimension 8400
 	2585  82925X/XE PCI Express Root Port
 	2588  E7220/E7221 Memory Controller Hub
 	2589  E7220/E7221 PCI Express Root Port
@@ -12250,6 +12259,7 @@
 		1775 1100  CR11/VR11 Single Board Computer
 		1775 ce90  CE9
 		4c53 10b0  CL9 mainboard
+		4c53 10d0  Telum ASLP10 Processor AMC
 		4c53 10e0  PSL09 PrPMC
 	25ab  6300ESB Watchdog Timer
 		1775 10d0  V5D Single Board Computer
@@ -12350,9 +12360,11 @@
 		e4bf 0cd3  CD3-JIVE
 		e4bf 58b1  XB1
 	2652  82801FR/FRW (ICH6R/ICH6RW) SATA Controller
+		1028 0177  Dimension 8400
 		1462 7028  915P/G Neo2
 	2653  82801FBM (ICH6M) SATA Controller
 	2658  82801FB/FBM/FR/FW/FRW (ICH6 Family) USB UHCI #1
+		1028 0177  Dimension 8400
 		1028 0179  Optiplex GX280
 # (rev 03) (prog-if 00 [UHCI])
 		103c 0934  HP Compaq nw8240 Mobile Workstation
@@ -12365,6 +12377,7 @@
 		e4bf 0cd3  CD3-JIVE
 		e4bf 58b1  XB1
 	2659  82801FB/FBM/FR/FW/FRW (ICH6 Family) USB UHCI #2
+		1028 0177  Dimension 8400
 		1028 0179  Optiplex GX280
 # (prog-if 00 [UHCI])
 		103c 0934  HP Compaq nw8240 Mobile Workstation
@@ -12377,6 +12390,7 @@
 		e4bf 0cd3  CD3-JIVE
 		e4bf 58b1  XB1
 	265a  82801FB/FBM/FR/FW/FRW (ICH6 Family) USB UHCI #3
+		1028 0177  Dimension 8400
 		1028 0179  Optiplex GX280
 # (prog-if 00 [UHCI])
 		103c 0934  HP Compaq nw8240 Mobile Workstation
@@ -12389,6 +12403,7 @@
 		e4bf 0cd3  CD3-JIVE
 		e4bf 58b1  XB1
 	265b  82801FB/FBM/FR/FW/FRW (ICH6 Family) USB UHCI #4
+		1028 0177  Dimension 8400
 		1028 0179  Optiplex GX280
 		103c 099c  NX6110/NC6120
 		1043 80a6  P5GD1-VW Mainboard
@@ -12399,6 +12414,7 @@
 		e4bf 0cd3  CD3-JIVE
 		e4bf 58b1  XB1
 	265c  82801FB/FBM/FR/FW/FRW (ICH6 Family) USB2 EHCI Controller
+		1028 0177  Dimension 8400
 		1028 0179  Optiplex GX280
 # (rev 03) (prog-if 20 [EHCI])
 		103c 0934  HP Compaq nw8240 Mobile Workstation
@@ -12437,6 +12453,7 @@
 		103c 2a09  PufferM-UL8E
 		1043 814e  P5GD1-VW Mainboard
 	266a  82801FB/FBM/FR/FW/FRW (ICH6 Family) SMBus Controller
+		1028 0177  Dimension 8400
 		1028 0179  Optiplex GX280
 		1043 80a6  P5GD1-VW Mainboard
 		1458 266a  GA-8I915ME-G Mainboard
@@ -12453,6 +12470,7 @@
 		103c 099c  NX6110/NC6120
 	266e  82801FB/FBM/FR/FW/FRW (ICH6 Family) AC'97 Audio Controller
 		1025 006a  Realtek ALC 655 codec (in Acer TravelMate 2410 serie laptop)
+		1028 0177  Dimension 8400
 		1028 0179  Optiplex GX280
 		1028 0182  Latitude D610 Laptop
 		1028 0188  Inspiron 6000 laptop
@@ -12465,6 +12483,7 @@
 		152d 0745  Packard Bell A8550 Laptop
 		1734 105a  Scenic W620
 	266f  82801FB/FBM/FR/FW/FRW (ICH6 Family) IDE Controller
+		1028 0177  Dimension 8400
 # (rev 03) (prog-if 8a [Master SecP PriP])
 		103c 0934  HP Compaq nw8240 Mobile Workstation
 		103c 099c  NX6110/NC6120
@@ -12729,14 +12748,14 @@
 	29b5  MEI Controller
 	29b6  PT IDER Controller
 	29b7  Serial KT Controller
-	29c0  82G33/G31/P35 Express DRAM Controller
-	29c1  82G33/G31/P35 Express PCI Express Root Port
+	29c0  82G33/G31/P35/P31 Express DRAM Controller
+	29c1  82G33/G31/P35/P31 Express PCI Express Root Port
 	29c2  82G33/G31 Express Integrated Graphics Controller
 	29c3  82G33/G31 Express Integrated Graphics Controller
-	29c4  82G33/G31/P35 Express MEI Controller
-	29c5  82G33/G31/P35 Express MEI Controller
-	29c6  82G33/G31/P35 Express PT IDER Controller
-	29c7  82G33/G31/P35 Express Serial KT Controller
+	29c4  82G33/G31/P35/P31 Express MEI Controller
+	29c5  82G33/G31/P35/P31 Express MEI Controller
+	29c6  82G33/G31/P35/P31 Express PT IDER Controller
+	29c7  82G33/G31/P35/P31 Express Serial KT Controller
 	29cf  Virtual HECI Controller
 	29d0  DRAM Controller
 	29d1  PCI Express Root Port
@@ -12769,6 +12788,15 @@
 	2a05  Mobile PM965/GM965 MEI Controller
 	2a06  Mobile PM965/GM965 PT IDER Controller
 	2a07  Mobile PM965/GM965 KT Controller
+	2a08  Extended Thermal Model MCH Device
+	2a40  Mobile Memory Controller Hub
+	2a41  Mobile PCI Express Graphics Port
+	2a42  Mobile Integrated Graphics Controller
+	2a43  Mobile Integrated Graphics Controller
+	2a50  Mobile MEI Controller
+	2a51  Mobile MEI Controller
+	2a52  Mobile PT IDER Controller
+	2a53  Mobile AMT SOL Redirection
 	3200  GD31244 PCI-X SATA HBA
 		1775 c200  C2K onboard SATA host bus adapter
 	3313  IOP348 I/O Processor (SL8e) in IOC Mode SAS/SATA

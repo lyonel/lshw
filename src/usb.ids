@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.233 2007/07/17 15:21:37 dbrownell Exp $
+# $Id: usb.ids,v 1.234 2007/07/27 18:02:03 dbrownell Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -1556,6 +1556,7 @@
 	2802  Monterey Keyboard
 	5492  Hub
 	6232  Hi-Speed 16-in-1 Flash Card Reader/Writer
+	6362  Hi-Speed Internal Multi-Card Reader/Writer
 	9213  MacAlly Kbd Hub
 	9215  AU9814 Hub
 	9254  Hub
@@ -4050,6 +4051,8 @@
 13d3  IMC Networks
 	3201  VisionDTV USB-Ter/HAMA USB DVB-T device cold
 	3202  VisionDTV USB-Ter/HAMA USB DVB-T device warm
+13fe  Kingston Technology Company Inc.
+	1d00  DataTraveler 2.0 1GB Flash Drive
 1453  Radio Shack
 	4026  26-183 Serial Cable
 1462  Micro Star International
