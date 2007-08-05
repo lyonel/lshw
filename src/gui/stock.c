@@ -105,16 +105,15 @@ lshw_gtk_stock_init(void)
         continue;
 
       pixbuf = gdk_pixbuf_new_from_file(filename, NULL);
-
       g_free(filename);
 
-      iconset = gtk_icon_set_new_from_pixbuf(pixbuf);
-
-      g_object_unref(G_OBJECT(pixbuf));
-
-    gtk_icon_factory_add(icon_factory, stock_icons[i].name, iconset);
-
-    gtk_icon_set_unref(iconset);
+      if(pixbuf)	/* we managed to load something */
+      {
+        iconset = gtk_icon_set_new_from_pixbuf(pixbuf);
+        g_object_unref(G_OBJECT(pixbuf));
+        gtk_icon_factory_add(icon_factory, stock_icons[i].name, iconset);
+        gtk_icon_set_unref(iconset);
+      }
   }
 
   gtk_widget_destroy(win);
