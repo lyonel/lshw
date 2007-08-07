@@ -116,6 +116,7 @@ static void printsize(long long value, const hwNode & node, const string & name,
 static  void inserticon(const string & icon, const string & comment, GtkTextBuffer *buffer, GtkTextIter &iter, GtkTextView * textview)
 {
   GdkPixbuf *pixbuf;
+  GtkTextTag *tag;
 
   pixbuf = gtk_widget_render_icon(GTK_WIDGET(textview),
     icon.c_str(),
@@ -123,8 +124,12 @@ static  void inserticon(const string & icon, const string & comment, GtkTextBuff
     NULL);
   if(!GDK_IS_PIXBUF(pixbuf))
     return;
+
+  tag = gtk_text_buffer_create_tag (buffer, NULL, 
+				    "rise", 2*LSHW_DEFAULT_ICON_SIZE*PANGO_SCALE/5,
+				    NULL);
   gtk_text_buffer_insert_pixbuf(buffer, &iter, pixbuf);
-  gtk_text_buffer_insert(buffer, &iter, comment.c_str(), -1);
+  gtk_text_buffer_insert_with_tags(buffer, &iter, comment.c_str(), -1, tag, NULL);
 //gtk_text_buffer_insert(buffer, &iter, "\n", -1);
 }
 

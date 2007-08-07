@@ -119,7 +119,7 @@ lshw_gtk_stock_init(void)
   gtk_widget_destroy(win);
 
 /* register logo icon size */
-  gtk_icon_size_register(LSHW_ICON_SIZE_LOGO, 40, 40);
+  gtk_icon_size_register(LSHW_ICON_SIZE_LOGO, LSHW_DEFAULT_ICON_SIZE, LSHW_DEFAULT_ICON_SIZE);
 
   g_object_unref(G_OBJECT(icon_factory));
 
