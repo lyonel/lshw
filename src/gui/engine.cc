@@ -551,11 +551,11 @@ void save_as(GtkWidget *mainwindow)
         char * buffer1 = g_strdup(filename);
         char * buffer2 = g_strdup(filename);
 
-        GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW(mainwindow),
+        GtkWidget *dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW(mainwindow),
                                   GTK_DIALOG_DESTROY_WITH_PARENT,
                                   GTK_MESSAGE_WARNING,
                                   GTK_BUTTONS_NONE,
-                                  "A file named '%s' already exists in folder '%s'.\n\nDo you want to overwrite it?",
+                                  "A file named <i><tt>%s</tt></i> already exists in folder <tt>%s</tt>.\n\nDo you want to overwrite it?",
                                   basename(buffer1), dirname(buffer2));
         gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
 				  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
