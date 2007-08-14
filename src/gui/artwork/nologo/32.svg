@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600.00000pt"
+   height="600.00000pt"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   sodipodi:docbase="/home/support/Source/ezix/artwork/nologo"
+   sodipodi:docname="32.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs3">
+    <foreignObject
+       requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
+       x="0"
+       y="0"
+       width="1"
+       height="1"
+       id="foreignObject1367">
+      <i:pgfRef
+         xlink:href="#adobe_illustrator_pgf" />
+    </foreignObject>
+  </defs>
+  <sodipodi:namedview
+     gridtolerance="4.0000000px"
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5"
+     inkscape:cx="375"
+     inkscape:cy="327.32759"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:grid-points="true"
+     showgrid="true"
+     gridspacingx="10.000000px"
+     gridspacingy="10.000000px"
+     inkscape:window-width="872"
+     inkscape:window-height="676"
+     inkscape:window-x="152"
+     inkscape:window-y="78" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>32</dc:title>
+        <dc:date>2007/08/09</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>32</dc:identifier>
+        <dc:language>C</dc:language>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>32</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+        <dc:source>$Id$</dc:source>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4116">
+      <path
+         transform="matrix(1.5746877,0,0,1.5746877,25.856517,47.108698)"
+         d="M 387.53214 208.22624 A 165.80977 165.80977 0 1 1  55.912598,208.22624 A 165.80977 165.80977 0 1 1  387.53214 208.22624 z"
+         sodipodi:ry="165.80977"
+         sodipodi:rx="165.80977"
+         sodipodi:cy="208.22624"
+         sodipodi:cx="221.72237"
+         id="path3168"
+         style="fill:#6495ed;fill-opacity:1;stroke:#000000;stroke-width:24;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         id="text2171"
+         d="M 353.63589,422.91948 C 353.63573,429.78677 352.8182,435.99997 351.18331,441.55909 C 349.87511,446.79131 347.25903,452.6775 343.33506,459.21767 C 337.12171,470.33605 327.96542,479.81935 315.86616,487.6676 C 303.76665,495.51585 290.35922,499.43998 275.64385,499.43998 C 267.4685,499.43998 261.74582,499.11297 258.47578,498.45895 C 255.53262,497.80492 251.44499,496.16987 246.21288,493.55379 C 237.05654,488.97564 229.04478,483.41647 222.1776,476.87624 L 212.85779,466.08489 L 205.50005,454.80302 L 202.55696,444.50219 C 202.55694,440.2511 203.86499,436.49048 206.48109,433.22032 C 209.09715,429.62327 212.20375,427.82471 215.80089,427.82464 C 217.10891,427.82471 219.39798,428.64223 222.66812,430.27722 C 224.63014,431.91234 226.4287,434.52842 228.06379,438.12548 C 232.96891,449.5709 239.83613,458.56368 248.66546,465.10386 C 258.1487,471.31709 267.30499,474.42368 276.13436,474.42366 C 283.3285,474.42368 290.68624,471.97111 298.20758,467.06592 C 306.05572,461.83379 312.10541,455.62059 316.35668,448.42631 C 320.93469,441.23213 323.22377,433.38388 323.2239,424.88155 C 323.22377,415.39831 321.0982,406.89605 316.84719,399.37471 C 314.55799,395.12367 312.26892,392.01707 309.97997,390.05491 C 307.69077,387.76594 304.25716,385.14986 299.67913,382.20665 C 297.71696,381.22573 294.77386,379.91769 290.84984,378.28252 C 286.92562,376.64759 282.83799,375.83006 278.58694,375.82994 C 273.6817,375.83006 270.08458,374.84903 267.79559,372.88685 C 265.50644,370.5979 264.03489,367.4913 263.38095,363.56704 C 263.38087,360.62408 264.52541,358.008 266.81456,355.71879 C 269.10355,353.42985 273.02768,351.95831 278.58694,351.30414 C 283.81902,351.30429 288.88768,349.34222 293.79294,345.41795 C 298.69799,341.49397 302.94912,335.77129 306.54635,328.24989 C 310.14335,320.72882 311.94191,312.22655 311.94203,302.74306 C 311.94191,296.20304 309.97985,289.82634 306.05584,283.61293 C 302.45861,277.07294 297.38995,272.33128 290.84984,269.38797 C 284.30953,266.11809 278.25984,264.48304 272.70075,264.48281 C 264.52541,264.48304 257.33118,267.91665 251.11804,274.78364 C 244.90479,281.32407 241.79819,290.64386 241.79824,302.74306 C 241.79819,306.99438 240.32664,310.5915 237.3836,313.53441 C 234.76746,316.47768 231.66087,317.94923 228.06379,317.94905 C 224.46664,317.94923 220.86952,316.47768 217.27244,313.53441 C 214.65633,310.26449 213.34829,306.01335 213.34831,300.78099 C 213.34829,289.98984 216.29138,279.85252 222.1776,270.369 C 228.06375,260.55891 235.912,252.87417 245.72237,247.31475 C 255.53262,241.75582 265.50644,238.97623 275.64385,238.97597 C 284.47304,238.97623 292.97531,240.93829 301.15068,244.86217 C 309.65284,248.78654 316.68356,253.8552 322.24287,260.06816 C 328.12892,265.95458 332.54356,272.8218 335.4868,280.66984 C 339.08377,288.84531 340.88232,296.69356 340.88248,304.2146 C 340.88232,323.50841 332.21655,342.80202 314.88513,362.09549 C 327.63841,368.30882 337.28521,376.81109 343.82557,387.60233 C 347.09552,393.16161 349.5481,398.72079 351.18331,404.27987 C 352.8182,409.83914 353.63573,416.05234 353.63589,422.91948 M 539.00497,481.29089 C 539.0048,484.561 537.36975,487.34059 534.09981,489.62966 C 531.81057,491.91874 528.04995,493.39028 522.81794,494.0443 L 410.98028,494.0443 C 396.9188,494.04431 389.88808,490.6107 389.8881,483.74347 C 389.88808,480.14636 392.34066,475.0777 397.24584,468.53747 L 489.95336,342.47485 C 493.87737,337.24284 496.98397,330.86614 499.27317,323.34473 C 502.21614,315.82366 503.68768,308.95644 503.68781,302.74306 C 503.68768,295.87603 502.37964,289.66283 499.76368,284.10345 C 497.14748,278.54448 492.40583,273.47582 485.53872,268.89745 C 478.9984,265.30056 470.98665,263.50201 461.50343,263.50177 C 452.02005,263.50201 443.51778,265.79108 435.9966,270.369 C 430.43736,274.29335 425.53221,280.67005 421.28112,289.49912 C 418.33798,297.02057 416.86643,306.50387 416.86648,317.94905 C 416.86643,323.18139 415.55839,327.43253 412.94235,330.70247 C 410.32623,333.97274 407.05612,335.77129 403.13203,336.09815 C 399.53489,336.0983 396.10128,334.62676 392.83119,331.6835 C 389.88808,328.41356 388.41653,323.83542 388.41655,317.94905 C 388.41653,303.56077 390.86911,290.64386 395.77429,279.19829 C 401.00643,267.42613 409.3452,257.77932 420.7906,250.25784 C 432.23592,242.73685 446.78788,238.97623 464.44653,238.97597 C 476.54582,238.97623 487.82768,241.75582 498.29214,247.31475 C 508.10232,251.89314 516.27758,259.08737 522.81794,268.89745 C 529.358,278.70799 532.6281,289.82634 532.62826,302.25254 C 532.6281,311.40902 530.66604,320.89232 526.74207,330.70247 C 524.45284,336.58882 522.00026,341.98449 519.38432,346.8895 C 516.7681,351.46779 513.33449,356.53645 509.08349,362.09549 L 427.65783,468.53747 L 519.87484,468.53747 C 526.08789,468.5375 530.66604,469.84554 533.60929,472.4616 C 536.55222,474.09667 538.35078,477.03977 539.00497,481.29089"
+         style="font-size:490.51602173px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;font-family:National First Font" />
+    </g>
+  </g>
+</svg>

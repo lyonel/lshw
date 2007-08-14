@@ -44,6 +44,10 @@ $(PACKAGENAME): core $(PACKAGENAME).o
 gui: core
 	+make -C gui all
 
+.PHONY: nologo
+nologo:
+	cp -f gui/artwork/nologo/* gui/artwork/
+
 .PHONY: static
 static: $(PACKAGENAME)-static
 

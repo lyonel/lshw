@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600.00000pt"
+   height="600.00000pt"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   sodipodi:docbase="/home/support/Source/ezix/artwork/nologo"
+   sodipodi:docname="sparc.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs3">
+    <foreignObject
+       requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
+       x="0"
+       y="0"
+       width="1"
+       height="1"
+       id="foreignObject1367">
+      <i:pgfRef
+         xlink:href="#adobe_illustrator_pgf" />
+    </foreignObject>
+  </defs>
+  <sodipodi:namedview
+     gridtolerance="4.0000000px"
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="461.33575"
+     inkscape:cy="327.32759"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:grid-points="true"
+     showgrid="true"
+     gridspacingx="10.000000px"
+     gridspacingy="10.000000px"
+     inkscape:window-width="872"
+     inkscape:window-height="676"
+     inkscape:window-x="152"
+     inkscape:window-y="90" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Sparc</dc:title>
+        <dc:date>2007/08/09</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>sparc</dc:identifier>
+        <dc:language>C</dc:language>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>sparc sun processor</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+        <dc:source>$Id$</dc:source>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2200"
+       transform="translate(0,-1.5258789e-5)">
+      <rect
+         ry="32"
+         rx="32"
+         y="239.03279"
+         x="69.446716"
+         height="270.72089"
+         width="611.10657"
+         id="rect2168"
+         style="fill:#fff5ee;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:24;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <g
+         id="g2190">
+        <rect
+           y="519.96405"
+           x="538.27789"
+           height="24"
+           width="24"
+           id="rect3159"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3181"
+           width="24"
+           height="24"
+           x="470.00244"
+           y="519.96405" />
+        <rect
+           y="519.96405"
+           x="401.72699"
+           height="24"
+           width="24"
+           id="rect3183"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3185"
+           width="24"
+           height="24"
+           x="333.45157"
+           y="519.96405" />
+        <rect
+           y="519.96405"
+           x="265.17615"
+           height="24"
+           width="24"
+           id="rect3187"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3189"
+           width="24"
+           height="24"
+           x="196.9007"
+           y="519.96405" />
+        <rect
+           y="519.96405"
+           x="128.62526"
+           height="24"
+           width="24"
+           id="rect3191"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3193"
+           width="24"
+           height="24"
+           x="606.55328"
+           y="520.03601" />
+      </g>
+      <g
+         id="g2180">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3197"
+           width="24"
+           height="24"
+           x="538.27789"
+           y="205.96402" />
+        <rect
+           y="205.96402"
+           x="470.00244"
+           height="24"
+           width="24"
+           id="rect3199"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3201"
+           width="24"
+           height="24"
+           x="401.72699"
+           y="205.96402" />
+        <rect
+           y="205.96402"
+           x="333.45157"
+           height="24"
+           width="24"
+           id="rect3203"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3205"
+           width="24"
+           height="24"
+           x="265.17615"
+           y="205.96402" />
+        <rect
+           y="205.96402"
+           x="196.9007"
+           height="24"
+           width="24"
+           id="rect3207"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect3209"
+           width="24"
+           height="24"
+           x="128.62526"
+           y="205.96402" />
+        <rect
+           y="206.03598"
+           x="606.55328"
+           height="24"
+           width="24"
+           id="rect3211"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:24;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      </g>
+    </g>
+    <path
+       style="font-size:173.55418396px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;font-family:Interstate;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 230.59749,389.83036 C 230.59742,399.09563 227.37718,405.87509 220.93676,410.16874 C 214.49621,414.4624 206.30438,416.60922 196.36122,416.60922 C 183.48022,416.60922 171.84215,412.76753 161.447,405.08414 L 169.58235,391.52522 C 178.16964,397.51376 187.03943,400.50802 196.19173,400.50801 C 207.2648,400.50802 212.80135,397.17479 212.80141,390.5083 C 212.80135,387.34458 211.16298,384.74579 207.8863,382.71192 C 204.7225,380.56513 199.29894,378.07933 191.6156,375.25452 C 181.67236,371.29987 174.72342,367.2887 170.76876,363.22097 C 166.92705,359.15335 165.0062,353.6168 165.00622,346.6113 C 165.0062,338.58901 167.83098,332.43101 173.48054,328.13727 C 179.13007,323.8437 186.64396,321.69687 196.02225,321.69678 C 207.32129,321.69687 217.60346,325.0866 226.86879,331.86597 L 219.07241,345.42489 C 211.50196,340.22738 203.64909,337.62859 195.51379,337.62851 C 191.33308,337.62859 188.16934,338.41953 186.02254,340.00132 C 183.98867,341.47028 182.97176,343.44762 182.97179,345.93335 C 182.97176,348.30623 184.10166,350.50955 186.36152,352.54332 C 188.73429,354.46423 193.19743,356.66755 199.75095,359.1533 C 211.16298,363.56 219.12884,367.79716 223.64855,371.86479 C 228.2811,375.81951 230.59742,381.80803 230.59749,389.83036 M 329.7471,370.67838 C 329.74701,385.48023 326.30079,396.83582 319.40842,404.74517 C 312.5159,412.65454 303.98509,416.60922 293.81596,416.60922 C 289.40926,416.60922 285.1721,415.6488 281.10447,413.72795 C 277.03676,411.69412 273.64703,409.20832 270.93528,406.27055 L 270.93528,438.98144 L 253.30869,448.3032 L 253.30869,323.56113 L 270.93528,323.56113 L 270.93528,332.37443 C 278.61863,325.25609 286.58449,321.69687 294.83288,321.69678 C 305.22799,321.69687 313.64581,325.76455 320.08637,333.89981 C 326.52677,341.92224 329.74701,354.18175 329.7471,370.67838 M 311.95102,371.18684 C 311.95094,349.15366 305.115,338.13705 291.44315,338.13697 C 283.87271,338.13705 276.98026,342.03523 270.7658,349.83154 L 270.7658,388.13549 C 273.13857,391.29926 276.24582,394.12404 280.08755,396.60982 C 284.04219,398.98264 288.05337,400.16905 292.1211,400.16903 C 305.34098,400.16905 311.95094,390.50833 311.95102,371.18684 M 421.94777,414.74487 L 404.49065,414.74487 L 404.49065,405.76209 C 397.25917,412.99351 388.95434,416.60922 379.57614,416.60922 C 371.10178,416.60922 363.70088,414.06693 357.37341,408.98233 C 351.0459,403.89775 347.88215,396.21437 347.88216,385.93217 C 347.88215,376.21498 351.21538,368.87057 357.88187,363.89892 C 364.54831,358.92737 373.3051,356.44157 384.15227,356.44151 C 392.51355,356.44157 399.29301,357.57148 404.49065,359.83124 L 404.49065,353.05178 C 404.49059,348.08025 403.02171,344.29505 400.08401,341.69619 C 397.14618,338.98448 392.90902,337.62859 387.37252,337.62851 C 378.44619,337.62859 370.48033,339.54943 363.47492,343.39105 L 356.52597,329.83213 C 365.67822,324.40865 376.12988,321.69687 387.88098,321.69678 C 398.38908,321.69687 406.69391,324.29566 412.79549,329.49316 C 418.89693,334.69083 421.94768,342.26122 421.94777,352.20435 L 421.94777,414.74487 M 404.49065,388.81344 L 404.49065,375.93246 C 399.29301,373.22072 392.34407,371.86483 383.64381,371.86479 C 377.99423,371.86483 373.47459,373.10773 370.08489,375.59349 C 366.69514,377.96634 365.00027,381.24307 365.0003,385.42371 C 365.00027,390.05636 366.46915,393.72857 369.40695,396.44033 C 372.34468,399.15213 376.69483,400.50802 382.45741,400.50801 C 386.86401,400.50802 391.04467,399.37811 394.99941,397.11828 C 398.95404,394.74549 402.11778,391.97721 404.49065,388.81344 M 501.9454,325.59497 L 497.36926,342.54362 C 493.30153,340.39687 488.7254,339.32345 483.64086,339.32338 C 477.87827,339.32345 473.41513,341.30079 470.25142,345.2554 C 467.20063,349.21016 465.67526,355.02919 465.67529,362.71252 L 465.67529,414.74487 L 447.8792,414.74487 L 447.8792,323.56113 L 465.67529,323.56113 L 465.67529,332.37443 C 470.64686,325.25609 477.5958,321.69687 486.52213,321.69678 C 493.18854,321.69687 498.32962,322.99627 501.9454,325.59497 M 588.55299,337.12005 L 578.04482,349.83154 C 570.70035,342.37421 563.29944,338.64551 555.84209,338.64543 C 549.28857,338.64551 544.09099,341.41378 540.24933,346.95027 C 536.40761,352.3739 534.48676,359.71831 534.48679,368.98352 C 534.48676,378.13582 536.40761,385.53673 540.24933,391.18625 C 544.09099,396.83582 549.45806,399.66059 556.35055,399.66057 C 560.30518,399.66059 563.75141,398.81316 566.68923,397.11828 C 569.73992,395.31044 573.18615,392.37268 577.02791,388.30498 L 588.3835,399.66057 C 584.20276,404.97116 579.57013,409.15182 574.48561,412.20258 C 569.51394,415.14034 563.29944,416.60922 555.84209,416.60922 C 544.54295,416.60922 535.10821,412.25907 527.53784,403.55876 C 520.08043,394.85848 516.35173,383.50289 516.35174,369.49198 C 516.35173,354.8032 520.13692,343.16514 527.70733,334.57775 C 535.2777,325.99053 544.82543,321.69687 556.35055,321.69678 C 569.11847,321.69687 579.85261,326.83796 588.55299,337.12005"
+       id="text2176" />
+  </g>
+</svg>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600.00000pt"
+   height="600.00000pt"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   sodipodi:docbase="/home/support/Source/ezix/artwork/nologo"
+   sodipodi:docname="64.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs3">
+    <foreignObject
+       requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
+       x="0"
+       y="0"
+       width="1"
+       height="1"
+       id="foreignObject1367">
+      <i:pgfRef
+         xlink:href="#adobe_illustrator_pgf" />
+    </foreignObject>
+  </defs>
+  <sodipodi:namedview
+     gridtolerance="4.0000000px"
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.36675273"
+     inkscape:cx="375"
+     inkscape:cy="327.32759"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:grid-points="true"
+     showgrid="true"
+     gridspacingx="10.000000px"
+     gridspacingy="10.000000px"
+     inkscape:window-width="872"
+     inkscape:window-height="676"
+     inkscape:window-x="152"
+     inkscape:window-y="78" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>64</dc:title>
+        <dc:date>2007/08/09</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Lyonel Vincent</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>ezIX.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>64</dc:identifier>
+        <dc:language>C</dc:language>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>64</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+        <dc:source>$Id$</dc:source>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g6098">
+      <path
+         transform="matrix(1.5746877,0,0,1.5746877,25.856517,47.108698)"
+         d="M 387.53214 208.22624 A 165.80977 165.80977 0 1 1  55.912598,208.22624 A 165.80977 165.80977 0 1 1  387.53214 208.22624 z"
+         sodipodi:ry="165.80977"
+         sodipodi:rx="165.80977"
+         sodipodi:cy="208.22624"
+         sodipodi:cx="221.72237"
+         id="path3168"
+         style="fill:#6495ed;fill-opacity:1;stroke:#000000;stroke-width:24;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         id="text4143"
+         d="M 353.53126,420.06424 C 353.53111,431.71357 351.99832,441.37019 348.93288,449.03412 C 346.17369,456.69815 343.87449,462.06293 342.03527,465.12849 C 340.19578,468.19411 337.28348,471.87282 333.29834,476.16463 C 326.86046,483.52207 319.34975,489.19342 310.76621,493.1787 C 302.48901,496.8574 293.59879,498.69676 284.09554,498.69676 C 273.36588,498.69676 263.70927,496.70412 255.12566,492.71885 C 246.54194,488.42702 238.87797,481.98927 232.13369,473.4056 L 223.85658,460.98996 L 217.87867,446.27509 C 216.65242,441.06363 215.57947,435.69885 214.65981,430.18071 C 213.74011,424.35614 213.28027,418.6848 213.28029,413.16665 C 213.28027,399.37158 216.03931,384.0436 221.5574,367.18273 C 227.38199,350.32209 234.1263,334.99415 241.79032,321.19879 C 249.45426,307.40382 258.49776,294.22177 268.92084,281.65262 C 278.11755,270.61671 286.54792,262.49289 294.21199,257.28113 C 297.89062,253.2961 301.72261,251.30348 305.70798,251.30323 C 308.46691,251.30348 311.22594,252.83626 313.98508,255.90163 C 317.05057,258.66089 318.58335,261.57322 318.58348,264.63856 C 318.58335,268.62407 317.35713,271.38311 314.90476,272.91567 C 301.41605,284.56516 289.61351,296.9808 279.49713,310.16267 C 269.68717,323.03833 262.17647,334.99415 256.96502,346.03012 L 274.4389,341.89156 L 281.79633,340.9719 L 290.07344,340.05222 C 301.72261,340.05237 311.5325,342.50484 319.50316,347.40964 C 327.47358,352.31473 334.21788,358.90576 339.73609,367.18273 C 340.96219,369.63532 342.34171,372.08781 343.87463,374.54017 C 344.48761,375.45995 345.10073,376.99275 345.71399,379.13855 C 347.55321,382.81739 349.39256,388.33545 351.23206,395.69277 C 352.1516,400.29125 352.76471,404.12323 353.07142,407.18874 C 353.37783,409.94786 353.53111,414.23969 353.53126,420.06424 M 325.02123,417.30521 C 325.0211,412.70691 324.71454,408.72162 324.10155,405.34938 C 323.4883,401.67077 322.1088,397.37894 319.963,392.47388 C 317.81697,384.50344 313.21858,377.60587 306.16782,371.78112 C 299.4234,365.65006 292.06599,362.58447 284.09554,362.58434 C 274.59212,362.58447 266.62157,365.49678 260.18389,371.32128 C 254.05265,376.83947 248.99442,383.89034 245.00919,392.47388 C 241.63699,401.05765 239.95093,409.79458 239.95096,418.68473 C 239.95093,424.50943 240.25749,429.41438 240.87064,433.39959 C 241.48371,437.38493 242.86324,441.83004 245.00919,446.73494 C 249.30098,455.01207 254.66577,461.90966 261.10357,467.42771 C 268.15437,472.63923 275.81835,475.24498 284.09554,475.24497 C 290.83975,475.24498 296.5111,473.5589 301.10958,470.18672 C 306.32099,467.42771 310.91938,463.13588 314.90476,457.31122 C 321.64896,446.5817 325.0211,433.24636 325.02123,417.30521 M 536.71972,421.44376 C 536.71957,424.50943 535.79988,427.42175 533.9607,430.18071 C 531.50806,432.02013 528.59574,432.9398 525.22375,432.93975 L 512.34825,432.93975 L 512.34825,482.6024 C 512.34811,486.58766 511.12187,490.57295 508.66953,494.55821 C 506.21692,497.31724 503.30461,498.69676 499.93259,498.69676 C 497.17343,498.69676 494.41438,497.31724 491.65548,494.55821 C 489.50944,491.79917 488.43649,487.8139 488.4366,482.6024 L 488.4366,432.93975 L 396.92859,432.93975 C 391.71705,432.9398 387.42522,431.71357 384.05309,429.26103 C 380.98749,426.50207 379.45469,422.97662 379.4547,418.68473 C 379.45469,415.61921 380.68093,411.63394 383.13341,406.7289 L 470.04304,267.39761 C 476.17411,257.58794 483.37826,252.68298 491.65548,252.68275 C 497.78655,252.68298 502.53821,254.98218 505.9105,259.58034 C 510.20219,263.8724 512.34811,269.23719 512.34825,275.67471 L 512.34825,409.48794 L 525.22375,409.48794 C 529.20886,409.48802 531.9679,410.71426 533.50086,413.16665 C 535.6466,415.00609 536.71957,417.76513 536.71972,421.44376 M 488.4366,409.48794 L 488.4366,275.67471 L 409.80408,409.48794 L 488.4366,409.48794"
+         style="font-size:292.01934814px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-family:National First Font" />
+    </g>
+  </g>
+</svg>
