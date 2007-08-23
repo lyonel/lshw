@@ -52,11 +52,12 @@ also look for this information in
 	/usr/share/hwdata/,
 	/usr/share/misc/.
 
-(2) statically-linked and/or compressed binaries can be built by using
+(2) Statically-linked and/or compressed binaries can be built by using
 
 	$ make static
 or
 	$ make compressed
 
 in the src/ directory
+Building compressed binaries requires upx (cf. http://upx.sourceforge.net/).
 
