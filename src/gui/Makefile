@@ -3,6 +3,7 @@ PACKAGENAME?=lshw
 CXX?=c++
 CC?=cc
 STRIP?=strip
+OBJCOPY?=objcopy
 
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)
@@ -26,6 +27,10 @@ all: gtk-$(PACKAGENAME)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
+
+icon.o: artwork/logo.svg
+	$(LD) -r -b binary -o $@ $^
+	$(OBJCOPY) --rename-section .data=.icon,readonly,cont $@
 
 interface.c: gtk-lshw.glade gtk-lshw.gladep
 	glade-2 -w gtk-lshw.glade
