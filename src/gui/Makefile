@@ -28,9 +28,9 @@ all: gtk-$(PACKAGENAME)
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-icon.o: artwork/logo.svg
-	$(LD) -r -b binary -o $@ $^
-	$(OBJCOPY) --rename-section .data=.icon,readonly,cont $@
+.PHONY: icon
+icon: gtk-$(PACKAGENAME) artwork/logo.svg
+	$(OBJCOPY) --add-section .icon=artwork/logo.svg gtk-$(PACKAGENAME)
 
 interface.c: gtk-lshw.glade gtk-lshw.gladep
 	glade-2 -w gtk-lshw.glade
