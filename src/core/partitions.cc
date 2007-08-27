@@ -40,6 +40,7 @@ struct maptypes
 static bool detect_dosmap(source & s, hwNode & n);
 static bool detect_macmap(source & s, hwNode & n);
 static bool detect_lif(source & s, hwNode & n);
+static bool detect_luks(source & s, hwNode & n);
 static bool detect_gpt(source & s, hwNode & n);
 
 static struct maptypes map_types[] =
@@ -49,6 +50,7 @@ static struct maptypes map_types[] =
   {"gpt", "GUID partition table", detect_gpt},
   {"dos", "MS-DOS partition table", detect_dosmap},
   {"lif", "HP-UX LIF", detect_lif},
+  {"luks", "Linux Unified Key Setup", detect_luks},
   {"solaris-x86", "Solaris disklabel", NULL},
   {"solaris-sparc", "Solaris disklabel", NULL},
   {"raid", "Linux RAID", NULL},
@@ -1191,6 +1193,37 @@ static bool detect_lif(source & s, hwNode & n)
   return true;
 }
 
+static bool detect_luks(source & s, hwNode & n)
+{
+  static char buffer[BLOCKSIZE];
+  source luksvolume;
+  unsigned luks_version = 0;
+
+  luksvolume = s;
+  luksvolume.blocksize = BLOCKSIZE;
+
+                                                  // read the first block
+  if(readlogicalblocks(luksvolume, buffer, 0, 1)!=1)
+    return false;
+
+  if(memcmp(buffer, "LUKS", 4) != 0)                    // wrong magic number
+    return false;
+  if(be_short(buffer+4) != 0xbabe)
+    return false;
+
+  luks_version = be_short(buffer+6);
+  if(luks_version<1) return false;                 // weird LUKS version
+
+  n.addCapability("encrypted", "Encrypted volume");
+  n.addCapability("luks", "Linux Unified Key Setup");
+  n.setConfig("luks.version", luks_version);
+  n.setConfig("luks.cipher", hw::strip(std::string(buffer+8, 32)));
+  n.setConfig("luks.mode", hw::strip(std::string(buffer+40, 32)));
+  n.setConfig("luks.hash", hw::strip(std::string(buffer+72, 32)));
+  n.setConfig("luks.bits", 8*be_long(buffer+108));
+  n.setConfig("luks.uuid", hw::strip(std::string(buffer+168, 40)));
+  return true;
+}
 
 bool scan_partitions(hwNode & n)
 {
