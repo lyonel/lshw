@@ -46,10 +46,10 @@ static bool detect_gpt(source & s, hwNode & n);
 
 static struct maptypes map_types[] =
 {
-  {"mac", "Apple Macintosh partition map", detect_macmap},
   {"bsd", "BSD disklabel", NULL},
   {"gpt", "GUID partition table", detect_gpt},
   {"dos", "MS-DOS partition table", detect_dosmap},
+  {"mac", "Apple Macintosh partition map", detect_macmap},
   {"lif", "HP-UX LIF", detect_lif},
   {"luks", "Linux Unified Key Setup", detect_luks},
   {"solaris-x86", "Solaris disklabel", NULL},
@@ -349,9 +349,10 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
 
     spart.offset = 0;
     spart.fd = dev;
+    spart.diskname = "";
 
+    // read the first sector
     if((readlogicalblocks(s, buffer1, 0, 1)!=1) ||
-                                                  // read the first sector
       (readlogicalblocks(spart, buffer2, 0, 1)!=1))
     {
       close(dev);
