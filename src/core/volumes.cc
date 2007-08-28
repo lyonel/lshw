@@ -464,6 +464,7 @@ static bool detect_fat(hwNode & n, source & s)
   }
 
   n.setSerial(dos_serial(serial));
+  n.setDescription("");
 
   return true;
 }
@@ -471,8 +472,6 @@ static bool detect_fat(hwNode & n, source & s)
 bool scan_volume(hwNode & n, source & s)
 {
   int i = 0;
-
-  n.setDescription("");
 
   while(fs_types[i].id)
   {
