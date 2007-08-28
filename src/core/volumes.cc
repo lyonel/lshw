@@ -32,11 +32,12 @@ struct fstypes
 static bool detect_luks(hwNode & n, source & s);
 static bool detect_ext2(hwNode & n, source & s);
 static bool detect_reiserfs(hwNode & n, source & s);
+static bool detect_fat(hwNode & n, source & s);
 
 static struct fstypes fs_types[] =
 {
   {"blank", "Blank", "", NULL},
-  {"fat", "MS-DOS FAT derivatives (FAT12, FAT16, FAT32)", "", NULL},
+  {"fat", "Windows FAT", "", detect_fat},
   {"ntfs", "Windows NTFS", "secure", NULL},
   {"hpfs", "OS/2 HPFS", "secure", NULL},
   {"ext2", "EXT2/EXT3", "secure", detect_ext2},
@@ -405,6 +406,66 @@ static bool detect_reiserfs(hwNode & n, source & s)
     n.setVersion("nonstandard " + tostring(le_short(buffer+72)));
 
   n.setCapacity(reiserfsvolume.size);
+  return true;
+}
+
+static string dos_serial(unsigned long serial)
+{
+  char buffer[16];
+
+  snprintf(buffer, sizeof(buffer), "%04lx-%04lx", serial >> 16, serial & 0xffff);
+
+  return string(buffer);
+}
+
+static bool detect_fat(hwNode & n, source & s)
+{
+  static char buffer[BLOCKSIZE];
+  source fatvolume;
+  string magic;
+  unsigned long long bytes_per_sector = 512;
+  unsigned long long size = 0;
+  unsigned long serial = 0;
+
+  fatvolume = s;
+  fatvolume.blocksize = BLOCKSIZE;
+
+                                                  // read the first block
+  if(readlogicalblocks(fatvolume, buffer, 0, 1)!=1)
+    return false;
+
+  if(be_short(buffer+0x1fe) != 0x55aa)		// no "boot" signature
+    return false;
+
+  magic = hw::strip(string(buffer+0x52, 8));
+  if(magic != "FAT32")
+    magic = hw::strip(string(buffer+0x36, 8));
+  if(magic != "FAT12" && magic != "FAT16" && magic != "FAT32")                    // wrong magic
+    return false;
+
+  n.setVendor(hw::strip(string(buffer+0x3, 8)));
+  n.setVersion(magic);
+  n.setDescription("");
+
+  bytes_per_sector = le_short(buffer+0xb);
+  size = le_long(buffer+0x20);
+  size *= bytes_per_sector;
+  n.setSize(size);
+  n.setCapacity(fatvolume.size);
+
+  if(magic == "FAT32")
+  {
+    n.setConfig("label", hw::strip(std::string(buffer+0x47, 11)));
+    serial = le_long(buffer+0x43);
+  }
+  else
+  {
+    n.setConfig("label", hw::strip(std::string(buffer+0x2b, 11)));
+    serial = le_long(buffer+0x27);
+  }
+
+  n.setSerial(dos_serial(serial));
+
   return true;
 }
 
