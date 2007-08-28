@@ -31,7 +31,7 @@ struct fstypes
 
 static bool detect_luks(hwNode & n, source & s);
 static bool detect_ext2(hwNode & n, source & s);
-static bool detect_ext3(hwNode & n, source & s);
+static bool detect_reiserfs(hwNode & n, source & s);
 
 static struct fstypes fs_types[] =
 {
@@ -40,7 +40,7 @@ static struct fstypes fs_types[] =
   {"ntfs", "Windows NTFS", "secure", NULL},
   {"hpfs", "OS/2 HPFS", "secure", NULL},
   {"ext2", "EXT2/EXT3", "secure", detect_ext2},
-  {"reiserfs", "Linux ReiserFS", "secure,journaled", NULL},
+  {"reiserfs", "Linux ReiserFS", "secure,journaled", detect_reiserfs},
   {"romfs", "Linux ROMFS", "ro", NULL},
   {"squashfs", "Linux SquashFS", "ro", NULL},
   {"cramfs", "Linux CramFS", "ro", NULL},
@@ -212,7 +212,7 @@ static bool detect_ext2(hwNode & n, source & s)
   time_t mtime, wtime, mkfstime;
   tm ltime;
   char datetime[80];
-  unsigned long blocksize = EXT2_DEFAULT_BLOCK_SIZE;
+  unsigned long long blocksize = EXT2_DEFAULT_BLOCK_SIZE;
 
   ext2volume = s;
   ext2volume.blocksize = EXT2_DEFAULT_BLOCK_SIZE;
@@ -341,6 +341,70 @@ static bool detect_luks(hwNode & n, source & s)
   n.setSerial(hw::strip(std::string(buffer+168, 40)));
   n.setCapacity(luksvolume.size);
   n.setSize(luksvolume.size);
+  return true;
+}
+
+#define REISERFSBLOCKSIZE 0x1000
+
+static bool detect_reiserfs(hwNode & n, source & s)
+{
+  static char buffer[REISERFSBLOCKSIZE];
+  source reiserfsvolume;
+  string magic;
+  long long blocksize = 0;
+
+  reiserfsvolume = s;
+  reiserfsvolume.blocksize = REISERFSBLOCKSIZE;
+                                                  // read the 16th block
+  if(readlogicalblocks(reiserfsvolume, buffer, 0x10, 1)!=1)
+    return false;
+
+  magic = hw::strip(string(buffer+52, 10));
+  if(magic != "ReIsEr2Fs" && magic != "ReIsErFs" && magic != "ReIsEr3Fs")                    // wrong magic
+    return false;
+
+  n.setConfig("label", hw::strip(string(buffer + 0x64, 16)));
+
+  blocksize = le_short(buffer+44);
+  n.setSize(le_long(buffer)*blocksize);
+
+  if(le_long(buffer+20) != 0)
+    n.addCapability("journaled");
+
+  n.setSerial(hw::strip(uuid((uint8_t*)buffer+0x54)));
+
+  switch(le_long(buffer+64))
+  {
+    case 1:
+	n.setConfig("hash", "tea");
+	break;
+    case 2:
+	n.setConfig("hash", "yura");
+	break;
+    case 3:
+	n.setConfig("hash", "r5");
+  }
+
+  switch(le_short(buffer+50))
+  {
+    case 1:
+	n.setConfig("state", "clean");
+	break;
+    case 2:
+	n.setConfig("state", "unclean");
+	break;
+    default:
+	n.setConfig("state", "unknown");
+  }
+
+  if(magic == "ReIsErFs")
+    n.setVersion("3.5");
+  if(magic == "ReIsEr2Fs")
+    n.setVersion("3.6");
+  if(magic == "ReIsEr3Fs")
+    n.setVersion("nonstandard " + tostring(le_short(buffer+72)));
+
+  n.setCapacity(reiserfsvolume.size);
   return true;
 }
 
