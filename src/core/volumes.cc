@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-__ID("@(#) $Id: partitions.cc 1850 2007-08-27 22:34:04Z lyonel $");
+__ID("@(#) $Id$");
 
 struct fstypes
 {
@@ -92,6 +92,7 @@ static bool detect_luks(hwNode & n, source & s)
   n.setWidth(8*be_long(buffer+108));
   n.setSerial(hw::strip(std::string(buffer+168, 40)));
   n.setCapacity(luksvolume.size);
+  n.setSize(luksvolume.size);
   return true;
 }
 
