@@ -445,7 +445,6 @@ static bool detect_fat(hwNode & n, source & s)
 
   n.setVendor(hw::strip(string(buffer+0x3, 8)));
   n.setVersion(magic);
-  n.setDescription("");
 
   bytes_per_sector = le_short(buffer+0xb);
   size = le_long(buffer+0x20);
@@ -472,6 +471,8 @@ static bool detect_fat(hwNode & n, source & s)
 bool scan_volume(hwNode & n, source & s)
 {
   int i = 0;
+
+  n.setDescription("");
 
   while(fs_types[i].id)
   {
