@@ -1142,6 +1142,9 @@ void hwNode::fixInconsistencies()
   if(getVendor() == "")
     guessVendor(*this);
 
+  if(getLogicalName() != "")
+    claim();
+
   for (unsigned int i = 0; i < This->children.size(); i++)
     This->children[i].fixInconsistencies();
 }
