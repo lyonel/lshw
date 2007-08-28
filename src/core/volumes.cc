@@ -424,6 +424,8 @@ static bool detect_fat(hwNode & n, source & s)
   source fatvolume;
   string magic;
   unsigned long long bytes_per_sector = 512;
+  unsigned long long reserved_sectors = 0;
+  unsigned long long hidden_sectors = 0;
   unsigned long long size = 0;
   unsigned long serial = 0;
 
@@ -447,7 +449,10 @@ static bool detect_fat(hwNode & n, source & s)
   n.setVersion(magic);
 
   bytes_per_sector = le_short(buffer+0xb);
+  reserved_sectors = le_short(buffer+0xe);
+  hidden_sectors = le_short(buffer+0x1c);
   size = le_long(buffer+0x20);
+  size -= reserved_sectors + hidden_sectors;
   size *= bytes_per_sector;
   n.setSize(size);
   n.setCapacity(fatvolume.size);
