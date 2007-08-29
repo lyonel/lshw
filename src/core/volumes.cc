@@ -208,6 +208,24 @@ static string uuid(const uint8_t s_uuid[16])
   return string(buffer);
 }
 
+static string datetime(time_t timestamp, bool utc = true)
+{
+  char buffer[50];
+  tm ltime;
+
+  if(timestamp)
+  {
+    if(utc)
+      localtime_r(&timestamp, &ltime);
+    else
+      gmtime_r(&timestamp, &ltime);
+    strftime(buffer, sizeof(buffer), "%F %T", &ltime);
+    return string(buffer);
+  }
+  else
+    return "";
+}
+
 static bool detect_ext2(hwNode & n, source & s)
 {
   static char buffer[EXT2_DEFAULT_BLOCK_SIZE];
@@ -215,8 +233,6 @@ static bool detect_ext2(hwNode & n, source & s)
   ext2_super_block *sb = (ext2_super_block*)buffer;
   uint32_t ext2_version = 0;
   time_t mtime, wtime, mkfstime;
-  tm ltime;
-  char datetime[80];
   unsigned long long blocksize = EXT2_DEFAULT_BLOCK_SIZE;
 
   ext2volume = s;
@@ -256,17 +272,9 @@ static bool detect_ext2(hwNode & n, source & s)
   n.setVersion(tostring(ext2_version)+"."+tostring(le_short(&sb->s_minor_rev_level)));
 
   mtime = (time_t)le_long(&sb->s_mtime);
-  if(mtime && localtime_r(&mtime, &ltime))
-  {
-    strftime(datetime, sizeof(datetime), "%F %T", &ltime);
-    n.setConfig("mounted", datetime);
-  }
+  n.setConfig("mounted", datetime(mtime));
   wtime = (time_t)le_long(&sb->s_wtime);
-  if(wtime && localtime_r(&wtime, &ltime))
-  {
-    strftime(datetime, sizeof(datetime), "%F %T", &ltime);
-    n.setConfig("modified", datetime);
-  }
+  n.setConfig("modified", datetime(wtime));
 
   if(ext2_version >= 1)
   {
@@ -290,11 +298,7 @@ static bool detect_ext2(hwNode & n, source & s)
       n.addCapability("journaled");
       
       mkfstime = (time_t)le_long(&sb->s_mkfs_time);
-      if(mkfstime && localtime_r(&mkfstime, &ltime))
-      {
-        strftime(datetime, sizeof(datetime), "%F %T", &ltime);
-        n.setConfig("created", datetime);
-      }
+      n.setConfig("created", datetime(mkfstime));
     }
     if(le_long(&sb->s_feature_compat) && EXT2_FEATURE_COMPAT_EXT_ATTR)
       n.addCapability("extended_attributes", "Extended Attributes");
@@ -547,6 +551,8 @@ enum {
 
 #define HFSBLOCKSIZE 1024
 
+#define TIMEOFFSET 2082844800UL // time difference between 1904-01-01 00:00:00 and 1970-01-01 00:00:00
+
 static bool detect_hfsx(hwNode & n, source & s)
 {
   static char buffer[HFSBLOCKSIZE];
@@ -555,6 +561,7 @@ static bool detect_hfsx(hwNode & n, source & s)
   HFSPlusVolumeHeader *vol = (HFSPlusVolumeHeader*)buffer;
   uint16_t version = 0;
   uint32_t attributes = 0;
+  time_t mkfstime, fscktime, wtime;
 
   hfsvolume = s;
   hfsvolume.blocksize = HFSBLOCKSIZE;
@@ -610,6 +617,13 @@ static bool detect_hfsx(hwNode & n, source & s)
   if(vol->finderInfo[0] && (vol->finderInfo[0] == vol->finderInfo[5]))
     n.setConfig("boot", "osx");
 
+  mkfstime = (time_t)(be_long(&vol->createDate) - TIMEOFFSET);
+  fscktime = (time_t)(be_long(&vol->checkedDate) - TIMEOFFSET);
+  wtime = (time_t)(be_long(&vol->modifyDate) - TIMEOFFSET);
+  n.setConfig("created", datetime(mkfstime, false));	// creation time uses local time
+  n.setConfig("checked", datetime(fscktime));
+  n.setConfig("modified", datetime(wtime));
+
   return true;
 }
 
@@ -623,6 +637,7 @@ static bool detect_ntfs(hwNode & n, source & s)
   unsigned long long reserved_sectors = 0;
   unsigned long long hidden_sectors = 0;
   unsigned long long size = 0;
+  unsigned long long mft = 0;
 
   ntfsvolume = s;
   ntfsvolume.blocksize = BLOCKSIZE;
@@ -649,6 +664,11 @@ static bool detect_ntfs(hwNode & n, source & s)
   n.setCapacity(ntfsvolume.size);
   n.setConfig("clustersize", bytes_per_sector * sectors_per_cluster);
 
+  mft = (unsigned long long)le_long(buffer+0x30) + ((unsigned long long)le_long(buffer+0x34) << 32);
+#if 0
+  n.setConfig("mft", mft);
+#endif
+
   n.setSerial(dos_serial(le_long(buffer+0x48)));
   n.setDescription("");
 
@@ -666,10 +686,19 @@ static bool detect_swap(hwNode & n, source & s)
   unsigned long badpages = 0;
   unsigned long long pagesize = 4096;
   bool bigendian = false;
+  string signature = "";
 
   swapvolume = s;
   swapvolume.blocksize = SWAPBLOCKSIZE;
 
+  if(readlogicalblocks(swapvolume, buffer, 3, 1)!=1) // look for a signature
+    return false;
+  signature = string(buffer+SWAPBLOCKSIZE-10, 10);
+  if(signature != "SWAPSPACE2" && signature != "SWAP-SPACE")
+    return false;
+
+  swapvolume = s;
+  swapvolume.blocksize = SWAPBLOCKSIZE;
   if(readlogicalblocks(swapvolume, buffer, 1, 1)!=1) // skip the first block
     return false;
 
