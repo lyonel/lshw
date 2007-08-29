@@ -33,6 +33,7 @@ static bool detect_luks(hwNode & n, source & s);
 static bool detect_ext2(hwNode & n, source & s);
 static bool detect_reiserfs(hwNode & n, source & s);
 static bool detect_fat(hwNode & n, source & s);
+static bool detect_hfsx(hwNode & n, source & s);
 
 static struct fstypes fs_types[] =
 {
@@ -60,7 +61,7 @@ static struct fstypes fs_types[] =
   {"qnxfs", "QNX FS", "", NULL},
   {"mfs", "MacOS MFS", "", NULL},
   {"hfs", "MacOS HFS", "", NULL},
-  {"hfsplus", "MacOS HFS+", "secure,journaled", NULL},
+  {"hfsplus", "MacOS HFS+", "secure,journaled", detect_hfsx},
   {"luks", "Linux Unified Key Setup", "encrypted", detect_luks},
   { NULL, NULL, NULL, NULL }
 };
@@ -457,6 +458,8 @@ static bool detect_fat(hwNode & n, source & s)
   n.setSize(size);
   n.setCapacity(fatvolume.size);
 
+  n.setConfig("FATs", buffer[0x10]);
+
   if(magic == "FAT32")
   {
     n.setConfig("label", hw::strip(std::string(buffer+0x47, 11)));
@@ -470,6 +473,139 @@ static bool detect_fat(hwNode & n, source & s)
 
   n.setSerial(dos_serial(serial));
   n.setDescription("");
+
+  return true;
+}
+
+typedef uint32_t HFSCatalogNodeID;
+
+struct HFSPlusExtentDescriptor {
+    uint32_t                  startBlock;
+    uint32_t                  blockCount;
+};
+typedef HFSPlusExtentDescriptor HFSPlusExtentRecord[8];
+
+struct HFSPlusForkData {
+    uint64_t                  logicalSize;
+    uint32_t                  clumpSize;
+    uint32_t                  totalBlocks;
+    HFSPlusExtentRecord     extents;
+};
+
+struct HFSPlusVolumeHeader {
+    uint16_t              signature;
+    uint16_t              version;
+    uint32_t              attributes;
+    uint32_t              lastMountedVersion;
+    uint32_t              journalInfoBlock;
+ 
+    uint32_t              createDate;
+    uint32_t              modifyDate;
+    uint32_t              backupDate;
+    uint32_t              checkedDate;
+ 
+    uint32_t              fileCount;
+    uint32_t              folderCount;
+ 
+    uint32_t              blockSize;
+    uint32_t              totalBlocks;
+    uint32_t              freeBlocks;
+ 
+    uint32_t              nextAllocation;
+    uint32_t              rsrcClumpSize;
+    uint32_t              dataClumpSize;
+    HFSCatalogNodeID    nextCatalogID;
+ 
+    uint32_t              writeCount;
+    uint64_t              encodingsBitmap;
+ 
+    uint32_t              finderInfo[8];
+ 
+    HFSPlusForkData     allocationFile;
+    HFSPlusForkData     extentsFile;
+    HFSPlusForkData     catalogFile;
+    HFSPlusForkData     attributesFile;
+    HFSPlusForkData     startupFile;
+};
+
+enum {
+    /* Bits 0-6 are reserved */
+    kHFSVolumeHardwareLockBit       =  7,
+    kHFSVolumeUnmountedBit          =  8,
+    kHFSVolumeSparedBlocksBit       =  9,
+    kHFSVolumeNoCacheRequiredBit    = 10,
+    kHFSBootVolumeInconsistentBit   = 11,
+    kHFSCatalogNodeIDsReusedBit     = 12,
+    kHFSVolumeJournaledBit          = 13,
+    /* Bit 14 is reserved */
+    kHFSVolumeSoftwareLockBit       = 15
+    /* Bits 16-31 are reserved */
+};
+
+#define HFSBLOCKSIZE 1024
+
+static bool detect_hfsx(hwNode & n, source & s)
+{
+  static char buffer[HFSBLOCKSIZE];
+  source hfsvolume;
+  string magic;
+  HFSPlusVolumeHeader *vol = (HFSPlusVolumeHeader*)buffer;
+  uint16_t version = 0;
+  uint32_t attributes = 0;
+
+  hfsvolume = s;
+  hfsvolume.blocksize = HFSBLOCKSIZE;
+
+                                                  // read the second block
+  if(readlogicalblocks(hfsvolume, buffer, 1, 1)!=1)
+    return false;
+
+  magic = hw::strip(string(buffer, 2));
+  if((magic != "H+") && (magic != "HX"))		// wrong signature
+    return false;
+
+  version = be_short(&vol->version);
+  if(version >= 5)
+    n.addCapability("hfsx");
+
+  magic = hw::strip(string(buffer+8, 4));
+  if(magic == "10.0")
+    n.setVendor("Mac OS X");
+  if(magic == "8.10")
+    n.setVendor("Mac OS");
+  if(magic == "HFSJ")
+    n.setVendor("Mac OS X (journaled)");
+  if(magic == "fsck")
+    n.setVendor("Mac OS X (fsck)");
+  n.setConfig("lastmountedby", hw::strip(magic));
+
+  n.setSize((unsigned long long)be_long(&vol->blockSize) * (unsigned long long)be_long(&vol->totalBlocks));
+  n.setVersion(tostring(version));
+ 
+  attributes = be_long(&vol->attributes);
+  if(attributes & (1 << kHFSVolumeJournaledBit))
+    n.addCapability("journaled");
+  if(attributes & (1 << kHFSVolumeSoftwareLockBit))
+    n.addCapability("ro");
+  if(attributes & (1 << kHFSBootVolumeInconsistentBit))
+    n.addCapability("recover");
+  if(attributes & (1 << kHFSVolumeUnmountedBit))
+    n.setConfig("state", "clean");
+  else
+    n.setConfig("state", "unclean");
+  
+  n.setSerial(uuid((uint8_t*)&vol->finderInfo[6]));	// finderInfo[6] and finderInfo[7] contain uuid
+
+  if(vol->finderInfo[0])
+    n.addCapability("bootable");
+  if(vol->finderInfo[3])
+    n.addCapability("macos", "Contains a bootable Mac OS installation");
+  if(vol->finderInfo[5])
+    n.addCapability("osx", "Contains a bootable Mac OS X installation");
+  if(vol->finderInfo[0] && (vol->finderInfo[0] == vol->finderInfo[3]))
+    n.setConfig("boot", "macos");
+  if(vol->finderInfo[0] && (vol->finderInfo[0] == vol->finderInfo[5]))
+    n.setConfig("boot", "osx");
 
   return true;
 }
