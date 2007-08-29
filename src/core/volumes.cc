@@ -34,12 +34,14 @@ static bool detect_ext2(hwNode & n, source & s);
 static bool detect_reiserfs(hwNode & n, source & s);
 static bool detect_fat(hwNode & n, source & s);
 static bool detect_hfsx(hwNode & n, source & s);
+static bool detect_ntfs(hwNode & n, source & s);
+static bool detect_swap(hwNode & n, source & s);
 
 static struct fstypes fs_types[] =
 {
   {"blank", "Blank", "", NULL},
   {"fat", "Windows FAT", "", detect_fat},
-  {"ntfs", "Windows NTFS", "secure", NULL},
+  {"ntfs", "Windows NTFS", "secure", detect_ntfs},
   {"hpfs", "OS/2 HPFS", "secure", NULL},
   {"ext2", "EXT2/EXT3", "secure", detect_ext2},
   {"reiserfs", "Linux ReiserFS", "secure,journaled", detect_reiserfs},
@@ -63,6 +65,7 @@ static struct fstypes fs_types[] =
   {"hfs", "MacOS HFS", "", NULL},
   {"hfsplus", "MacOS HFS+", "secure,journaled", detect_hfsx},
   {"luks", "Linux Unified Key Setup", "encrypted", detect_luks},
+  {"swap", "Linux swap", "", detect_swap},
   { NULL, NULL, NULL, NULL }
 };
 
@@ -606,6 +609,99 @@ static bool detect_hfsx(hwNode & n, source & s)
     n.setConfig("boot", "macos");
   if(vol->finderInfo[0] && (vol->finderInfo[0] == vol->finderInfo[5]))
     n.setConfig("boot", "osx");
+
+  return true;
+}
+
+static bool detect_ntfs(hwNode & n, source & s)
+{
+  static char buffer[BLOCKSIZE];
+  source ntfsvolume;
+  string magic;
+  unsigned long long bytes_per_sector = 512;
+  unsigned long long sectors_per_cluster = 8;
+  unsigned long long reserved_sectors = 0;
+  unsigned long long hidden_sectors = 0;
+  unsigned long long size = 0;
+
+  ntfsvolume = s;
+  ntfsvolume.blocksize = BLOCKSIZE;
+
+                                                  // read the first block
+  if(readlogicalblocks(ntfsvolume, buffer, 0, 1)!=1)
+    return false;
+
+  if(be_short(buffer+0x1fe) != 0x55aa)		// no "boot" signature
+    return false;
+
+  magic = hw::strip(string(buffer+3, 8));
+  if(magic != "NTFS")				// wrong magic
+    return false;
+
+  bytes_per_sector = le_short(buffer+0xb);
+  sectors_per_cluster = le_short(buffer+0xd);
+  reserved_sectors = le_short(buffer+0xe);
+  hidden_sectors = le_short(buffer+0x1c);
+  size = le_long(buffer+0x28);
+  size -= reserved_sectors + hidden_sectors;
+  size *= bytes_per_sector;
+  n.setSize(size);
+  n.setCapacity(ntfsvolume.size);
+  n.setConfig("clustersize", bytes_per_sector * sectors_per_cluster);
+
+  n.setSerial(dos_serial(le_long(buffer+0x48)));
+  n.setDescription("");
+
+  return true;
+}
+
+#define SWAPBLOCKSIZE 1024
+
+static bool detect_swap(hwNode & n, source & s)
+{
+  static char buffer[SWAPBLOCKSIZE];
+  source swapvolume;
+  unsigned long version = 0;
+  unsigned long pages = 0;
+  unsigned long badpages = 0;
+  unsigned long long pagesize = 4096;
+  bool bigendian = false;
+
+  swapvolume = s;
+  swapvolume.blocksize = SWAPBLOCKSIZE;
+
+  if(readlogicalblocks(swapvolume, buffer, 1, 1)!=1) // skip the first block
+    return false;
+
+  version = le_long(buffer);
+  if(version == 0x01000000)
+  {
+    bigendian = true;
+    version = 1;
+  }
+
+  if((version < 0) || (version > 1))	// unknown version
+    return false;
+
+  if(bigendian)
+  {
+    pages = be_long(buffer + 4) + 1;
+    badpages = be_long(buffer + 8);
+  }
+  else
+  {
+    pages = le_long(buffer + 4) + 1;
+    badpages = le_long(buffer + 8);
+  }
+  pagesize = swapvolume.size / (unsigned long long)pages;
+
+  n.setSerial(uuid((uint8_t*)buffer+0xc));
+  n.setConfig("label", hw::strip(std::string(buffer+0x1c, 16)));
+  n.setConfig("pagesize", pagesize);
+  n.setSize((unsigned long long)(pages - badpages) * pagesize);
+  n.setCapacity(swapvolume.size);
+  n.setVersion(tostring(version));
+  n.setDescription("");
 
   return true;
 }
