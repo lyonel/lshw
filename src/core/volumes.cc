@@ -747,7 +747,7 @@ bool scan_volume(hwNode & n, source & s)
       n.addCapability(string("initialized"), "initialized volume");
       if(n.getDescription()=="")
         n.setDescription(string(fs_types[i].description) + " volume");
-      break;
+      return true;
     }
     i++;
   }
