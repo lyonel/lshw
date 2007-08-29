@@ -61,44 +61,6 @@ static struct maptypes map_types[] =
   { NULL, NULL, NULL }
 };
 
-struct fstypes
-{
-  const char * id;
-  const char * description;
-  const char * capabilities;
-};
-
-static struct fstypes fs_types[] =
-{
-  {"blank", "Blank", ""},
-  {"fat", "MS-DOS FAT derivatives (FAT12, FAT16, FAT32)", ""},
-  {"ntfs", "Windows NTFS", "secure"},
-  {"hpfs", "OS/2 HPFS", "secure"},
-  {"ext2", "Linux EXT2", "secure"},
-  {"ext3", "Linux EXT3", "secure,journaled"},
-  {"reiserfs", "Linux ReiserFS", "secure,journaled"},
-  {"romfs", "Linux ROMFS", "ro"},
-  {"squashfs", "Linux SquashFS", "ro"},
-  {"cramfs", "Linux CramFS", "ro"},
-  {"minixfs", "MinixFS", "secure"},
-  {"sysvfs", "System V FS", "secure"},
-  {"jfs", "Linux JFS", "secure,journaled"},
-  {"xfs", "Linux XFS", "secure,journaled"},
-  {"iso9660", "ISO-9660", "secure,ro"},
-  {"xboxdvd", "X-Box DVD", "ro"},
-  {"udf", "UDF", "secure,ro"},
-  {"ufs", "UFS", "secure"},
-  {"hphfs", "HP-UX HFS", "secure"},
-  {"vxfs", "VxFS", "secure,journaled"},
-  {"ffs", "FFS", "secure"},
-  {"befs", "BeOS BFS", "journaled"},
-  {"qnxfs", "QNX FS", ""},
-  {"mfs", "MacOS MFS", ""},
-  {"hfs", "MacOS HFS", ""},
-  {"hfsplus", "MacOS HFS+", "secure,journaled"},
-  { NULL, NULL, NULL }
-};
-
 struct efi_guid_t
 {
   uint32_t time_low;
@@ -1239,7 +1201,7 @@ bool scan_partitions(hwNode & n)
 
   if(n.isCapable("removable"))
   {
-    medium = n.addChild(hwNode("disc", hw::disk));
+    medium = n.addChild(hwNode("medium", hw::disk));
 
     medium->claim();
     medium->setSize(n.getSize());
@@ -1268,7 +1230,8 @@ bool scan_partitions(hwNode & n)
 
   if(!medium->isCapable("partitioned"))
   {
-    scan_lvm(*medium, s);
+    if(scan_volume(*medium, s))	// whole disk volume?
+      medium->setClass(hw::volume);
   }
 
   close(fd);
