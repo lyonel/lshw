@@ -425,6 +425,9 @@ string hwNode::getSerial() const
 
 void hwNode::setSerial(const string & serial)
 {
+  if(serial == "00000000-0000-0000-0000-000000000000")
+    return;
+
   if (This)
     This->serial = strip(serial);
 }
