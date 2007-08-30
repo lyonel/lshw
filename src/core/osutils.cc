@@ -547,17 +547,14 @@ string utf8(wchar_t c)
   return result;
 }
 
-string utf8(const wchar_t * s, size_t length, bool forcelittleendian)
+string utf8(uint16_t * s, size_t length, bool forcelittleendian)
 {
   string result = "";
   size_t i;
 
-  if(length < 0)
-    length = wcslen(s);
-
-  for(i=0; i<length; s++)
-    if(s[0])
-      result += utf8(forcelittleendian?le_short(s):s[0]);
+  for(i=0; (length<0) || (i<length); i++)
+    if(s[i])
+      result += utf8(forcelittleendian?le_short(s+i):s[i]);
     else
       break;	// NUL found
 
