@@ -551,7 +551,7 @@ enum {
 
 #define HFSBLOCKSIZE 1024
 
-#define TIMEOFFSET 2082844800UL // time difference between 1904-01-01 00:00:00 and 1970-01-01 00:00:00
+#define HFSTIMEOFFSET 2082844800UL // time difference between 1904-01-01 00:00:00 and 1970-01-01 00:00:00
 
 static bool detect_hfsx(hwNode & n, source & s)
 {
@@ -617,9 +617,9 @@ static bool detect_hfsx(hwNode & n, source & s)
   if(vol->finderInfo[0] && (vol->finderInfo[0] == vol->finderInfo[5]))
     n.setConfig("boot", "osx");
 
-  mkfstime = (time_t)(be_long(&vol->createDate) - TIMEOFFSET);
-  fscktime = (time_t)(be_long(&vol->checkedDate) - TIMEOFFSET);
-  wtime = (time_t)(be_long(&vol->modifyDate) - TIMEOFFSET);
+  mkfstime = (time_t)(be_long(&vol->createDate) - HFSTIMEOFFSET);
+  fscktime = (time_t)(be_long(&vol->checkedDate) - HFSTIMEOFFSET);
+  wtime = (time_t)(be_long(&vol->modifyDate) - HFSTIMEOFFSET);
   n.setConfig("created", datetime(mkfstime, false));	// creation time uses local time
   n.setConfig("checked", datetime(fscktime));
   n.setConfig("modified", datetime(wtime));
@@ -689,7 +689,6 @@ struct attr_entry
                 };
 };
 
-
 typedef enum {
         AT_UNUSED                       = 0,
         AT_STANDARD_INFORMATION         = 0x10,
@@ -701,17 +700,63 @@ typedef enum {
 	// other values are defined but we don't use them
 } ATTR_TYPES;
 
+typedef enum { 
+        VOLUME_IS_DIRTY                 = 0x0001,
+        VOLUME_RESIZE_LOG_FILE          = 0x0002,
+        VOLUME_UPGRADE_ON_MOUNT         = 0x0004,
+        VOLUME_MOUNTED_ON_NT4           = 0x0008,
+        VOLUME_DELETE_USN_UNDERWAY      = 0x0010,
+        VOLUME_REPAIR_OBJECT_ID         = 0x0020,
+        VOLUME_MODIFIED_BY_CHKDSK       = 0x8000,
+        VOLUME_FLAGS_MASK               = 0x803f,
+} VOLUME_FLAGS;
+
+struct volinfo {
+        uint64_t reserved;           /* Not used (yet?). */
+        uint8_t major_ver;           /* Major version of the ntfs format. */
+        uint8_t minor_ver;           /* Minor version of the ntfs format. */
+        uint16_t flags;     /* Bit array of VOLUME_* flags. */
+};
+
+struct stdinfo
+{
+/*Ofs*/
+/*  0*/ int64_t creation_time;              /* Time file was created. Updated when
+                                           a filename is changed(?). */
+/*  8*/ int64_t last_data_change_time;      /* Time the data attribute was last
+                                           modified. */
+/* 16*/ int64_t last_mft_change_time;       /* Time this mft record was last
+                                           modified. */
+/* 24*/ int64_t last_access_time;           /* Approximate time when the file was
+                                           last accessed (obviously this is not
+                                           updated on read-only volumes). In
+                                           Windows this is only updated when
+                                           accessed if some time delta has
+                                           passed since the last update. Also,
+                                           last access times updates can be
+                                           disabled altogether for speed. */
+/* 32*/ uint32_t file_attributes; /* Flags describing the file. */
+	/* CAUTION: this structure is incomplete */
+};
+
 #define MFT_RECORD_SIZE 1024
 #define MFT_MFT		0	// entry for $MFT
 #define MFT_MFTMirr	1	// entry for $MFTMirr
 #define MFT_LogFile	2	// entry for $LogFile
 #define MFT_VOLUME	3	// entry for $Volume
 
+#define NTFSTIMEOFFSET ((int64_t)(369 * 365 + 89) * 24 * 3600 * 10000000)
+
+static time_t ntfs2utc(int64_t ntfs_time)
+{
+  return (ntfs_time - (NTFSTIMEOFFSET)) / 10000000;
+}
+
 static bool detect_ntfs(hwNode & n, source & s)
 {
   static char buffer[BLOCKSIZE];
   source ntfsvolume;
-  string magic, serial, name;
+  string magic, serial, name, version;
   unsigned long long bytes_per_sector = 512;
   unsigned long long sectors_per_cluster = 8;
   signed char clusters_per_mft_record = 1;
@@ -723,6 +768,8 @@ static bool detect_ntfs(hwNode & n, source & s)
   mft_entry *entry = NULL;
   attr_entry *attr = NULL;
   unsigned long long mft_record_size = MFT_RECORD_SIZE;
+  volinfo *vi = NULL;
+  stdinfo *info = NULL;
 
   ntfsvolume = s;
   ntfsvolume.blocksize = BLOCKSIZE;
@@ -784,12 +831,16 @@ static bool detect_ntfs(hwNode & n, source & s)
          switch(le_long(&attr->type))
          {
            case AT_STANDARD_INFORMATION:
-		break;
+             info = (stdinfo*)(buffer+offset+le_short(&attr->value_offset));
+             break;
            case AT_VOLUME_INFORMATION:
-		break;
+             vi = (volinfo*)(buffer+offset+le_short(&attr->value_offset));
+             vi->flags = le_short(&vi->flags);
+             version = tostring(vi->major_ver) + "." + tostring(vi->minor_ver);
+             break;
            case AT_VOLUME_NAME:
-                name = utf8((uint16_t*)(buffer+offset+le_short(&attr->value_offset)), le_short(&attr->value_length)/2, true);
-		break;
+             name = utf8((uint16_t*)(buffer+offset+le_short(&attr->value_offset)), le_short(&attr->value_length)/2, true);
+             break;
            }
        offset += le_short(&attr->length);
     }
@@ -800,7 +851,30 @@ static bool detect_ntfs(hwNode & n, source & s)
   n.setConfig("clustersize", bytes_per_sector * sectors_per_cluster);
   n.setConfig("label", name);
   n.setSerial(serial);
+  n.setVersion(version);
   n.setDescription("");
+  if(vi)
+  {
+    if(vi->flags && VOLUME_IS_DIRTY)
+      n.setConfig("state", "dirty");
+    else
+      n.setConfig("state", "clean");
+
+    if(vi->flags && VOLUME_MODIFIED_BY_CHKDSK)
+      n.setConfig("modified_by_chkdsk", "true");
+    if(vi->flags && VOLUME_MOUNTED_ON_NT4)
+      n.setConfig("mounted_on_nt4", "true");
+    if(vi->flags && VOLUME_UPGRADE_ON_MOUNT)
+      n.setConfig("upgrade_on_mount", "true");
+    if(vi->flags && VOLUME_RESIZE_LOG_FILE)
+      n.setConfig("resize_log_file", "true");
+  }
+  if(info)
+  {
+    n.setConfig("created", datetime(ntfs2utc(le_longlong(&info->creation_time))));
+    n.setConfig("mounted", datetime(ntfs2utc(le_longlong(&info->last_access_time))));
+    n.setConfig("modified", datetime(ntfs2utc(le_longlong(&info->last_mft_change_time))));
+  }
   return true;
 }
 
