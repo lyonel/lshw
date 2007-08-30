@@ -27,7 +27,7 @@ std::string uppercase(const std::string &);
 std::string lowercase(const std::string &);
 std::string tostring(unsigned long long);
 std::string utf8(wchar_t);
-std::string utf8(const wchar_t *s, size_t length = -1, bool forcelittleendian = false);
+std::string utf8(uint16_t *s, size_t length = -1, bool forcelittleendian = false);
 
 std::string spaces(unsigned int count, const std::string & space = " ");
 

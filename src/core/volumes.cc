@@ -627,17 +627,102 @@ static bool detect_hfsx(hwNode & n, source & s)
   return true;
 }
 
+struct mft_entry
+{
+  char magic[4];
+  uint16_t usa_ofs;
+  uint16_t usa_count;
+
+  uint64_t logseqnumber;
+  uint16_t seq;
+  uint16_t links;
+  uint16_t attr_ofs;
+  uint16_t flags;
+  uint32_t bytes_used;
+  uint32_t bytes_allocated;
+  
+  /* some garbage */
+};
+
+// for flags
+#define MFT_RECORD_IN_USE 1
+#define MFT_RECORD_IS_DIRECTORY 2
+
+struct attr_entry
+{
+/*Ofs*/ 
+/*  0*/ uint32_t type;        /* The (32-bit) type of the attribute. */
+/*  4*/ uint32_t length;             /* Byte size of the resident part of the
+                                   attribute (aligned to 8-byte boundary).
+                                   Used to get to the next attribute. */
+/*  8*/ uint8_t non_resident;        /* If 0, attribute is resident.
+                                   If 1, attribute is non-resident. */
+/*  9*/ uint8_t name_length;         /* Unicode character size of name of attribute.
+                                   0 if unnamed. */
+/* 10*/ uint16_t name_offset;        /* If name_length != 0, the byte offset to the
+                                   beginning of the name from the attribute
+                                   record. Note that the name is stored as a
+                                   Unicode string. When creating, place offset
+                                   just at the end of the record header. Then,
+                                   follow with attribute value or mapping pairs
+                                   array, resident and non-resident attributes
+                                   respectively, aligning to an 8-byte
+                                   boundary. */
+/* 12*/ uint16_t flags;       /* Flags describing the attribute. */
+/* 14*/ uint16_t instance;           /* The instance of this attribute record. This
+                                   number is unique within this mft record (see
+                                   MFT_RECORD/next_attribute_instance notes
+                                   above for more details). */
+                /* CAUTION: we only use resident attributes. */
+                struct {
+/* 16 */                uint32_t value_length; /* Byte size of attribute value. */
+/* 20 */                uint16_t value_offset; /* Byte offset of the attribute
+                                               value from the start of the
+                                               attribute record. When creating,
+                                               align to 8-byte boundary if we
+                                               have a name present as this might
+                                               not have a length of a multiple
+                                               of 8-bytes. */
+/* 22 */                uint8_t resident_flags; /* See above. */
+/* 23 */                int8_t reservedR;       /* Reserved/alignment to 8-byte
+                                               boundary. */
+                };
+};
+
+
+typedef enum {
+        AT_UNUSED                       = 0,
+        AT_STANDARD_INFORMATION         = 0x10,
+        AT_ATTRIBUTE_LIST               = 0x20,
+        AT_FILE_NAME                    = 0x30,
+        AT_VOLUME_NAME                  = 0x60,
+        AT_VOLUME_INFORMATION           = 0x70,
+        AT_END                          = 0xffffffff,
+	// other values are defined but we don't use them
+} ATTR_TYPES;
+
+#define MFT_RECORD_SIZE 1024
+#define MFT_MFT		0	// entry for $MFT
+#define MFT_MFTMirr	1	// entry for $MFTMirr
+#define MFT_LogFile	2	// entry for $LogFile
+#define MFT_VOLUME	3	// entry for $Volume
+
 static bool detect_ntfs(hwNode & n, source & s)
 {
   static char buffer[BLOCKSIZE];
   source ntfsvolume;
-  string magic;
+  string magic, serial, name;
   unsigned long long bytes_per_sector = 512;
   unsigned long long sectors_per_cluster = 8;
+  signed char clusters_per_mft_record = 1;
+  signed char clusters_per_index_record = 1;
   unsigned long long reserved_sectors = 0;
   unsigned long long hidden_sectors = 0;
   unsigned long long size = 0;
   unsigned long long mft = 0;
+  mft_entry *entry = NULL;
+  attr_entry *attr = NULL;
+  unsigned long long mft_record_size = MFT_RECORD_SIZE;
 
   ntfsvolume = s;
   ntfsvolume.blocksize = BLOCKSIZE;
@@ -660,18 +745,62 @@ static bool detect_ntfs(hwNode & n, source & s)
   size = le_long(buffer+0x28);
   size -= reserved_sectors + hidden_sectors;
   size *= bytes_per_sector;
+
+  serial = dos_serial(le_long(buffer+0x48));
+
+  mft = le_longlong(buffer+0x30);
+  clusters_per_mft_record = (char)buffer[0x40];
+  if(clusters_per_mft_record < 0)
+    mft_record_size = 1 << -clusters_per_mft_record;
+  else
+  {
+    mft_record_size = clusters_per_mft_record;
+    mft_record_size *= bytes_per_sector * sectors_per_cluster;
+  }
+  clusters_per_index_record = (char)buffer[0x44];
+
+  ntfsvolume = s;
+  ntfsvolume.offset += mft * bytes_per_sector * sectors_per_cluster; // point to $MFT
+  ntfsvolume.blocksize = mft_record_size;
+  if(readlogicalblocks(ntfsvolume, buffer, 3, 1)!=1)		// read $Volume
+    return false;
+
+  entry = (mft_entry*)buffer;
+  if(strncmp(entry->magic, "FILE", 4) != 0)
+    return false;
+
+  if(le_short(&entry->flags) && MFT_RECORD_IN_USE)	// $Volume is valid
+  {
+    unsigned offset = le_short(&entry->attr_ofs);
+
+    while(offset < mft_record_size)
+    {
+       attr = (attr_entry*)(buffer+offset);
+
+       if(attr->type == AT_END)
+         break;
+
+       if(!attr->non_resident)		// ignore non-resident attributes
+         switch(le_long(&attr->type))
+         {
+           case AT_STANDARD_INFORMATION:
+		break;
+           case AT_VOLUME_INFORMATION:
+		break;
+           case AT_VOLUME_NAME:
+                name = utf8((uint16_t*)(buffer+offset+le_short(&attr->value_offset)), le_short(&attr->value_length)/2, true);
+		break;
+           }
+       offset += le_short(&attr->length);
+    }
+  }
+
   n.setSize(size);
   n.setCapacity(ntfsvolume.size);
   n.setConfig("clustersize", bytes_per_sector * sectors_per_cluster);
-
-  mft = (unsigned long long)le_long(buffer+0x30) + ((unsigned long long)le_long(buffer+0x34) << 32);
-#if 0
-  n.setConfig("mft", mft);
-#endif
-
-  n.setSerial(dos_serial(le_long(buffer+0x48)));
+  n.setConfig("label", name);
+  n.setSerial(serial);
   n.setDescription("");
-
   return true;
 }
 
