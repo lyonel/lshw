@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <errno.h>
+#include <wchar.h>
 #ifndef MINOR
 #include <linux/kdev_t.h>
 #endif
@@ -417,7 +418,7 @@ string escape(const string & s)
 }
 
 
-unsigned short be_short(void * from)
+unsigned short be_short(const void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
@@ -426,7 +427,7 @@ unsigned short be_short(void * from)
 }
 
 
-unsigned short le_short(void * from)
+unsigned short le_short(const void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
@@ -435,7 +436,7 @@ unsigned short le_short(void * from)
 }
 
 
-unsigned long be_long(void * from)
+unsigned long be_long(const void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
@@ -446,7 +447,7 @@ unsigned long be_long(void * from)
 }
 
 
-unsigned long le_long(void * from)
+unsigned long le_long(const void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
@@ -458,7 +459,7 @@ unsigned long le_long(void * from)
 }
 
 
-unsigned long long be_longlong(void * from)
+unsigned long long be_longlong(const void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
@@ -473,7 +474,7 @@ unsigned long long be_longlong(void * from)
 }
 
 
-unsigned long long le_longlong(void * from)
+unsigned long long le_longlong(const void * from)
 {
   __uint8_t *p = (__uint8_t*)from;
 
@@ -514,7 +515,6 @@ int open_dev(dev_t dev, const string & name)
   return -1;
 }                                                 /* open_dev */
 
-
 #define putchar(c) ((char)(c & 0xff))
 
 string utf8(wchar_t c)
@@ -543,6 +543,23 @@ string utf8(wchar_t c)
     result += putchar (0x80 | c>>6 & 0x3F);
     result += putchar (0x80 | c & 0x3F);
   }
+
+  return result;
+}
+
+string utf8(const wchar_t * s, size_t length, bool forcelittleendian)
+{
+  string result = "";
+  size_t i;
+
+  if(length < 0)
+    length = wcslen(s);
+
+  for(i=0; i<length; s++)
+    if(s[0])
+      result += utf8(forcelittleendian?le_short(s):s[0]);
+    else
+      break;	// NUL found
 
   return result;
 }

@@ -27,6 +27,7 @@ std::string uppercase(const std::string &);
 std::string lowercase(const std::string &);
 std::string tostring(unsigned long long);
 std::string utf8(wchar_t);
+std::string utf8(const wchar_t *s, size_t length = -1, bool forcelittleendian = false);
 
 std::string spaces(unsigned int count, const std::string & space = " ");
 
@@ -39,12 +40,12 @@ bool matches(const std::string & s, const std::string & pattern, int cflags=0);
 int selectdir(const struct dirent *d);
 int selectlink(const struct dirent *d);
 
-unsigned short be_short(void *);
-unsigned short le_short(void *);
-unsigned long be_long(void *);
-unsigned long le_long(void *);
-unsigned long long be_longlong(void *);
-unsigned long long le_longlong(void *);
+unsigned short be_short(const void *);
+unsigned short le_short(const void *);
+unsigned long be_long(const void *);
+unsigned long le_long(const void *);
+unsigned long long be_longlong(const void *);
+unsigned long long le_longlong(const void *);
 
 int open_dev(dev_t dev, const std::string & name="");
 #endif
