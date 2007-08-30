@@ -430,7 +430,7 @@ static bool detect_fat(hwNode & n, source & s)
 {
   static char buffer[BLOCKSIZE];
   source fatvolume;
-  string magic;
+  string magic, label;
   unsigned long long bytes_per_sector = 512;
   unsigned long long reserved_sectors = 0;
   unsigned long long hidden_sectors = 0;
@@ -469,14 +469,17 @@ static bool detect_fat(hwNode & n, source & s)
 
   if(magic == "FAT32")
   {
-    n.setConfig("label", hw::strip(std::string(buffer+0x47, 11)));
+    label = hw::strip(std::string(buffer+0x47, 11));
     serial = le_long(buffer+0x43);
   }
   else
   {
-    n.setConfig("label", hw::strip(std::string(buffer+0x2b, 11)));
+    label = hw::strip(std::string(buffer+0x2b, 11));
     serial = le_long(buffer+0x27);
   }
+
+  if(label != "NO NAME" && label != "")
+    n.setConfig("label", label);
 
   n.setSerial(dos_serial(serial));
   n.setDescription("");
@@ -694,6 +697,7 @@ typedef enum {
         AT_STANDARD_INFORMATION         = 0x10,
         AT_ATTRIBUTE_LIST               = 0x20,
         AT_FILE_NAME                    = 0x30,
+        AT_OBJECT_ID                    = 0x40,
         AT_VOLUME_NAME                  = 0x60,
         AT_VOLUME_INFORMATION           = 0x70,
         AT_END                          = 0xffffffff,
@@ -770,6 +774,7 @@ static bool detect_ntfs(hwNode & n, source & s)
   unsigned long long mft_record_size = MFT_RECORD_SIZE;
   volinfo *vi = NULL;
   stdinfo *info = NULL;
+  string guid = "";
 
   ntfsvolume = s;
   ntfsvolume.blocksize = BLOCKSIZE;
@@ -838,6 +843,9 @@ static bool detect_ntfs(hwNode & n, source & s)
              vi->flags = le_short(&vi->flags);
              version = tostring(vi->major_ver) + "." + tostring(vi->minor_ver);
              break;
+           case AT_OBJECT_ID:
+             guid = uuid((uint8_t*)buffer+offset+le_short(&attr->value_offset));
+             break;
            case AT_VOLUME_NAME:
              name = utf8((uint16_t*)(buffer+offset+le_short(&attr->value_offset)), le_short(&attr->value_length)/2, true);
              break;
@@ -851,6 +859,8 @@ static bool detect_ntfs(hwNode & n, source & s)
   n.setConfig("clustersize", bytes_per_sector * sectors_per_cluster);
   n.setConfig("label", name);
   n.setSerial(serial);
+  if(guid != "")
+    n.setSerial(guid);
   n.setVersion(version);
   n.setDescription("");
   if(vi)
