@@ -872,8 +872,8 @@ static bool detect_ntfs(hwNode & n, source & s)
   if(info)
   {
     n.setConfig("created", datetime(ntfs2utc(le_longlong(&info->creation_time))));
-    n.setConfig("mounted", datetime(ntfs2utc(le_longlong(&info->last_access_time))));
-    n.setConfig("modified", datetime(ntfs2utc(le_longlong(&info->last_mft_change_time))));
+    //n.setConfig("mounted", datetime(ntfs2utc(le_longlong(&info->last_access_time))));
+    //n.setConfig("modified", datetime(ntfs2utc(le_longlong(&info->last_mft_change_time))));
   }
   return true;
 }
