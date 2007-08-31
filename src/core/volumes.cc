@@ -34,6 +34,7 @@ static bool detect_ext2(hwNode & n, source & s);
 static bool detect_reiserfs(hwNode & n, source & s);
 static bool detect_fat(hwNode & n, source & s);
 static bool detect_hfsx(hwNode & n, source & s);
+static bool detect_hfs(hwNode & n, source & s);
 static bool detect_ntfs(hwNode & n, source & s);
 static bool detect_swap(hwNode & n, source & s);
 
@@ -62,8 +63,8 @@ static struct fstypes fs_types[] =
   {"befs", "BeOS BFS", "journaled", NULL},
   {"qnxfs", "QNX FS", "", NULL},
   {"mfs", "MacOS MFS", "", NULL},
-  {"hfs", "MacOS HFS", "", NULL},
   {"hfsplus", "MacOS HFS+", "secure,journaled", detect_hfsx},
+  {"hfs", "MacOS HFS", "", detect_hfs},
   {"luks", "Linux Unified Key Setup", "encrypted", detect_luks},
   {"swap", "Linux swap", "", detect_swap},
   { NULL, NULL, NULL, NULL }
@@ -627,6 +628,98 @@ static bool detect_hfsx(hwNode & n, source & s)
   n.setConfig("created", datetime(mkfstime, false));	// creation time uses local time
   n.setConfig("checked", datetime(fscktime));
   n.setConfig("modified", datetime(wtime));
+
+  return true;
+}
+
+/* Master Directory Block (HFS only) */
+
+#pragma pack(2)
+struct HFSMasterDirectoryBlock
+{
+  uint16_t drSigWord;           /* volume signature */
+
+  uint32_t drCrDate;              /* date and time of volume creation */
+  uint32_t drLsMod;               /* date and time of last modification */
+  uint16_t drAtrb;                /* volume attributes */
+  int16_t drNmFls;               /* number of files in root folder */
+  uint16_t drVBMSt;               /* first block of volume bitmap */
+  uint16_t drAllocPtr;            /* start of next allocation search */
+  uint16_t drNmAlBlks;            /* number of allocation blocks in volume */
+  int32_t drAlBlkSiz;            /* size (in bytes) of allocation blocks */
+  int32_t drClpSiz;              /* default clump size */
+  int16_t drAlBlSt;              /* first allocation block in volume */
+  uint32_t drNxtCNID;             /* next unused catalog node ID */
+  int16_t drFreeBks;             /* number of unused allocation blocks */
+  char drVN[28];                /* volume name */
+  uint32_t drVolBkUp;            /* date and time of last backup */
+  uint16_t drVSeqNum;      /* backup sequence number */
+  uint32_t drWrCnt;        /* fs write count */
+  uint32_t drXTClpSiz;     /* clumpsize for the extents B-tree */
+  uint32_t drCTClpSiz;     /* clumpsize for the catalog B-tree */
+  uint16_t drNmRtDirs;     /* number of directories in the root directory */
+  uint32_t drFilCnt;       /* number of files in the fs */
+  uint32_t drDirCnt;       /* number of directories in the fs */
+  uint32_t drFndrInfo[8]; /* data used by the Finder */
+  uint16_t drEmbedSigWord; /* embedded volume signature */
+  uint32_t drEmbedExtent;  /* starting block number (xdrStABN) 
+                                   and number of allocation blocks 
+                                   (xdrNumABlks) occupied by embedded
+                                   volume */
+  uint32_t drXTFlSize;     /* bytes in the extents B-tree */
+  uint8_t  drXTExtRec[12]; /* extents B-tree's first 3 extents */
+  uint32_t drCTFlSize;     /* bytes in the catalog B-tree */
+  uint8_t  drCTExtRec[12]; /* catalog B-tree's first 3 extents */
+};
+
+#define HFS_ATTR_HW_LOCKED		(1 << 7) // Set if the volume is locked by hardware
+#define HFS_ATTR_CLEAN			(1 << 8) // Set if the volume was successfully unmounted
+#define HFS_ATTR_BAD_BLOCKS_SPARED	(1 << 9) // Set if the volume has had its bad blocks spared
+#define HFS_ATTR_LOCKED			(1 << 15) // Set if the volume is locked by software
+
+static bool detect_hfs(hwNode & n, source & s)
+{
+  static char buffer[HFSBLOCKSIZE];
+  source hfsvolume;
+  string magic;
+  HFSMasterDirectoryBlock *vol = (HFSMasterDirectoryBlock*)buffer;
+  uint16_t version = 0;
+  uint16_t attributes = 0;
+  time_t mkfstime, dumptime, wtime;
+
+  hfsvolume = s;
+  hfsvolume.blocksize = HFSBLOCKSIZE;
+
+                                                  // read the second block
+  if(readlogicalblocks(hfsvolume, buffer, 1, 1)!=1)
+    return false;
+
+  magic = hw::strip(string(buffer, 2));
+  if((magic != "BD"))		// wrong signature
+    return false;
+
+  n.setSize((unsigned long long)be_short(&vol->drNmAlBlks) * (unsigned long long)be_long(&vol->drAlBlkSiz));
+  n.setConfig("label", hw::strip(string(vol->drVN, sizeof(vol->drVN))));
+
+  attributes = be_short(&vol->drAtrb);
+  if(attributes & (HFS_ATTR_LOCKED | HFS_ATTR_HW_LOCKED))
+    n.addCapability("ro");
+  if(attributes & HFS_ATTR_CLEAN)
+    n.setConfig("state", "clean");
+  else
+    n.setConfig("state", "unclean");
+  if(vol->drFndrInfo[0])
+    n.addCapability("bootable");
+
+  mkfstime = (time_t)be_long(&vol->drCrDate);
+  dumptime = (time_t)be_long(&vol->drVolBkUp);
+  wtime = (time_t)be_long(&vol->drLsMod);
+  if(mkfstime)
+    n.setConfig("created", datetime(mkfstime - HFSTIMEOFFSET, false));	// all dates use local time
+  if(dumptime)
+    n.setConfig("backup", datetime(dumptime - HFSTIMEOFFSET, false));
+  if(wtime)
+    n.setConfig("modified", datetime(wtime - HFSTIMEOFFSET, false));
 
   return true;
 }
