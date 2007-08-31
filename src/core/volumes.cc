@@ -314,6 +314,7 @@ static bool detect_ext2(hwNode & n, source & s)
   {
     n.addCapability("ext3");
     n.setDescription("EXT3 volume");
+    n.setConfig("filesystem", "ext3");
   }
 
   return true;
@@ -744,10 +745,10 @@ struct stdinfo
 };
 
 #define MFT_RECORD_SIZE 1024
-#define MFT_MFT		0	// entry for $MFT
-#define MFT_MFTMirr	1	// entry for $MFTMirr
-#define MFT_LogFile	2	// entry for $LogFile
-#define MFT_VOLUME	3	// entry for $Volume
+#define MFT_MFT		0	// inode for $MFT
+#define MFT_MFTMirr	1	// inode for $MFTMirr
+#define MFT_LogFile	2	// inode for $LogFile
+#define MFT_VOLUME	3	// inode for $Volume
 
 #define NTFSTIMEOFFSET ((int64_t)(369 * 365 + 89) * 24 * 3600 * 10000000)
 
@@ -814,7 +815,8 @@ static bool detect_ntfs(hwNode & n, source & s)
   ntfsvolume = s;
   ntfsvolume.offset += mft * bytes_per_sector * sectors_per_cluster; // point to $MFT
   ntfsvolume.blocksize = mft_record_size;
-  if(readlogicalblocks(ntfsvolume, buffer, 3, 1)!=1)		// read $Volume
+  // FIXME mft_record_size<=sizeof(buffer)
+  if(readlogicalblocks(ntfsvolume, buffer, MFT_VOLUME, 1)!=1)	// read $Volume
     return false;
 
   entry = (mft_entry*)buffer;
@@ -957,7 +959,9 @@ bool scan_volume(hwNode & n, source & s)
     if(fs_types[i].detect && fs_types[i].detect(n, s))
     {
       n.addCapability(fs_types[i].id, fs_types[i].description);
-      n.addCapability(string("initialized"), "initialized volume");
+      if(n.getConfig("filesystem") == "")
+        n.setConfig("filesystem", fs_types[i].id);
+      n.addCapability("initialized", "initialized volume");
       if(n.getDescription()=="")
         n.setDescription(string(fs_types[i].description) + " volume");
       return true;
