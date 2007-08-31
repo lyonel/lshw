@@ -1578,6 +1578,41 @@ string hwNode::asXML(unsigned level)
   return out.str();
 }
 
+string hwNode::asString()
+{
+  string summary = "";
+  if(!This)
+    return "";
+
+  if(getClass() != hw::memory)
+    summary = getProduct();        // memory devices tend to have obscure product names
+  if (summary == "")
+    summary = getDescription();
+
+  if((getClass() == hw::memory) || (getClass() == hw::disk) || (getClass() == hw::storage) || (getClass() == hw::volume))
+  {
+    unsigned long long size = 0;
+    if(getClass() != hw::memory)
+    {
+      if(getCapacity())
+        size = getCapacity();
+      else
+      {
+        if(getSize())
+          size = getSize();
+      }
+    }
+    else
+    {
+      if(getSize())
+        size = getSize();
+    }
+    if(size)
+      summary = (getClass()==hw::disk?(decimalkilos(size)+"B"):kilobytes(size)) +" "+ summary;
+  }
+
+  return summary;
+}
 
 struct hw::resource_i
 {

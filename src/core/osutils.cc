@@ -1,5 +1,7 @@
 #include "version.h"
 #include "osutils.h"
+#include <sstream>
+#include <iomanip>
 #include <stack>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -559,4 +561,44 @@ string utf8(uint16_t * s, size_t length, bool forcelittleendian)
       break;	// NUL found
 
   return result;
+}
+
+string decimalkilos(unsigned long long value)
+{
+  const char *prefixes = "KMGTPEZY";
+  unsigned int i = 0;
+  ostringstream out;
+
+  while ((i <= strlen(prefixes)) && ((value > 10000) || (value % 1000 == 0)))
+  {
+    value = value / 1000;
+    i++;
+  }
+
+  out << value;
+  if ((i > 0) && (i <= strlen(prefixes)))
+    out << prefixes[i - 1];
+
+  return out.str();
+}
+
+
+string kilobytes(unsigned long long value)
+{
+  const char *prefixes = "KMGTPEZY";
+  unsigned int i = 0;
+  ostringstream out;
+
+  while ((i <= strlen(prefixes)) && ((value > 10240) || (value % 1024 == 0)))
+  {
+    value = value >> 10;
+    i++;
+  }
+
+  out << value;
+  if ((i > 0) && (i <= strlen(prefixes)))
+    out << prefixes[i - 1];
+  out << "iB";
+
+  return out.str();
 }

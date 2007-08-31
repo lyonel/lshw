@@ -16,57 +16,6 @@
 
 static char *id = "@(#) $Id$";
 
-static string itos(unsigned long long value)
-{
-  ostringstream out;
-
-  out << value;
-
-  return out.str();
-}
-
-
-static string decimalkilos(unsigned long long value)
-{
-  const char *prefixes = "KMGTPEZY";
-  unsigned int i = 0;
-  ostringstream out;
-
-  while ((i <= strlen(prefixes)) && ((value > 10000) || (value % 1000 == 0)))
-  {
-    value = value / 1000;
-    i++;
-  }
-
-  out << value;
-  if ((i > 0) && (i <= strlen(prefixes)))
-    out << prefixes[i - 1];
-
-  return out.str();
-}
-
-
-static string kilobytes(unsigned long long value)
-{
-  const char *prefixes = "KMGTPEZY";
-  unsigned int i = 0;
-  ostringstream out;
-
-  while ((i <= strlen(prefixes)) && ((value > 10240) || (value % 1024 == 0)))
-  {
-    value = value >> 10;
-    i++;
-  }
-
-  out << value;
-  if ((i > 0) && (i <= strlen(prefixes)))
-    out << prefixes[i - 1];
-  out << "B";
-
-  return out.str();
-}
-
-
 static void printattr(const string & name, const string & value, GtkTextBuffer *buffer, GtkTextIter &iter)
 {
   if(value == "") return;
@@ -84,11 +33,14 @@ static void printsize(long long value, const hwNode & node, const string & name,
   {
     switch (node.getClass())
     {
+      case hw::disk:
+        printattr(name,kilobytes(value)+" ("+decimalkilos(value)+"B)", buffer, iter);
+        break;
       case hw::display:
       case hw::memory:
       case hw::address:
       case hw::storage:
-      case hw::disk:
+      case hw::volume:
         printattr(name,kilobytes(value), buffer, iter);
         break;
 
@@ -103,11 +55,11 @@ static void printsize(long long value, const hwNode & node, const string & name,
         break;
 
       case hw::power:
-        printattr(name,itos(value)+"mWh", buffer, iter);
+        printattr(name,tostring(value)+"mWh", buffer, iter);
         break;
 
       default:
-        printattr(name,itos(value), buffer, iter);
+        printattr(name,tostring(value), buffer, iter);
     }
   }
 }
@@ -204,10 +156,10 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
     printsize(node.getCapacity(), node, "capacity", buffer, iter);
 
   if(node.getWidth() > 0)
-    printattr("width",itos(node.getWidth())+" bits", buffer, iter);
+    printattr("width",tostring(node.getWidth())+" bits", buffer, iter);
 
   if(node.getClock() > 0)
-    printattr("clock", decimalkilos(node.getClock())+string("Hz") + ((node.getClass() == hw::memory)?(string(" (")+itos((long long)(1.0e9 / node.getClock())) + string("ns)")):string("")), buffer, iter);
+    printattr("clock", decimalkilos(node.getClock())+string("Hz") + ((node.getClass() == hw::memory)?(string(" (")+tostring((long long)(1.0e9 / node.getClock())) + string("ns)")):string("")), buffer, iter);
 
   config.clear();
   splitlines(node.getCapabilities(), config, ' ');

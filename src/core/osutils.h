@@ -35,6 +35,9 @@ std::string escape(const std::string &);
 
 std::string join(const std::string &, const std::string &, const std::string &);
 
+std::string decimalkilos(unsigned long long value);
+std::string kilobytes(unsigned long long value);
+
 bool matches(const std::string & s, const std::string & pattern, int cflags=0);
 
 int selectdir(const struct dirent *d);

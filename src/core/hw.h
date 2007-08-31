@@ -39,6 +39,8 @@ namespace hw
   string strip(const string &);
   string asString(long);
 
+  string reportSize(unsigned long long);
+
   class resource
   {
     public:
@@ -208,6 +210,7 @@ class hwNode
     void fixInconsistencies();
 
     string asXML(unsigned level = 0);
+    string asString();
   private:
 
     void setId(const string & id);

@@ -68,42 +68,6 @@ bool connect = true)
     cout << "  ";
 }
 
-
-static void decimalkilos(ostream & out, unsigned long long value)
-{
-  const char *prefixes = "KMGTPEZY";
-  unsigned int i = 0;
-
-  while ((i <= strlen(prefixes)) && ((value > 10000) || (value % 1000 == 0)))
-  {
-    value = value / 1000;
-    i++;
-  }
-
-  out << value;
-  if ((i > 0) && (i <= strlen(prefixes)))
-    out << prefixes[i - 1];
-}
-
-
-static void kilobytes(ostream & out, unsigned long long value)
-{
-  const char *prefixes = "KMGTPEZY";
-  unsigned int i = 0;
-
-  while ((i <= strlen(prefixes)) && ((value > 10240) || (value % 1024 == 0)))
-  {
-    value = value >> 10;
-    i++;
-  }
-
-  out << value;
-  if ((i > 0) && (i <= strlen(prefixes)))
-    out << prefixes[i - 1];
-  out << "B";
-}
-
-
 void print(hwNode & node,
 bool html,
 int level)
@@ -345,13 +309,17 @@ int level)
         cout << "</td><td class=\"second\">";
       switch (node.getClass())
       {
+        case hw::disk:
+          cout << kilobytes(node.getSize()) << " (" << decimalkilos(node.getSize()) << "B)";
+          if (html)
+            cout << "</td></tr>";
+          break;
         case hw::display:
         case hw::memory:
         case hw::address:
         case hw::storage:
         case hw::volume:
-        case hw::disk:
-          kilobytes(cout, node.getSize());
+          cout << kilobytes(node.getSize());
           if (html)
             cout << "</td></tr>";
           break;
@@ -359,15 +327,13 @@ int level)
         case hw::processor:
         case hw::bus:
         case hw::system:
-          decimalkilos(cout, node.getSize());
-          cout << "Hz";
+          cout << decimalkilos(node.getSize()) << "Hz";
           if (html)
             cout << "</td></tr>";
           break;
 
         case hw::network:
-          decimalkilos(cout, node.getSize());
-          cout << "B/s";
+          cout << decimalkilos(node.getSize()) << "B/s";
           if (html)
             cout << "</td></tr>";
           break;
@@ -397,12 +363,16 @@ int level)
         cout << "</td><td class=\"second\">";
       switch (node.getClass())
       {
+        case hw::disk:
+          cout << kilobytes(node.getCapacity()) << " (" << decimalkilos(node.getCapacity()) << "B)";
+          if (html)
+            cout << "</td></tr>";
+          break;
         case hw::memory:
         case hw::address:
         case hw::storage:
         case hw::volume:
-        case hw::disk:
-          kilobytes(cout, node.getCapacity());
+          cout << kilobytes(node.getCapacity());
           if (html)
             cout << "</td></tr>";
           break;
@@ -410,14 +380,14 @@ int level)
         case hw::processor:
         case hw::bus:
         case hw::system:
-          decimalkilos(cout, node.getCapacity());
+          cout << decimalkilos(node.getCapacity());
           cout << "Hz";
           if (html)
             cout << "</td></tr>";
           break;
 
         case hw::network:
-          decimalkilos(cout, node.getCapacity());
+          cout << decimalkilos(node.getCapacity());
           cout << "B/s";
           if (html)
             cout << "</td></tr>";
@@ -475,7 +445,7 @@ int level)
       cout << "clock: ";
       if (html)
         cout << "</td><td class=\"second\">";
-      decimalkilos(cout, node.getClock());
+      cout << decimalkilos(node.getClock());
       cout << "Hz";
       if (node.getClass() == hw::memory)
         cout << " (" << setiosflags(ios::fixed) << setprecision(1) << 1.0e9 / node.getClock() << "ns)";
@@ -585,39 +555,14 @@ struct hwpath
   string classname;
 };
 
-static void printhwnode(hwNode & node,
-vector < hwpath > &l,
-string prefix = "")
+static void printhwnode(hwNode & node, vector < hwpath > &l, string prefix = "")
 {
   hwpath entry;
 
   entry.path = "";
   if (node.getPhysId() != "")
     entry.path = prefix + "/" + node.getPhysId();
-  if(node.getClass() != hw::memory)
-    entry.description = node.getProduct();        // memory devices tend to have obscure product names
-  if (entry.description == "")
-    entry.description = node.getDescription();
-  if((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage) || (node.getClass() == hw::volume))
-  {
-    ostringstream size;
-    if(node.getClass() != hw::memory)
-    {
-      if(node.getCapacity())
-        kilobytes(size, node.getCapacity());
-      else
-      {
-        if(node.getSize())
-          kilobytes(size, node.getSize());
-      }
-    }
-    else
-    {
-      if(node.getSize())
-        kilobytes(size, node.getSize());
-    }
-    entry.description = join(" ", size.str(), entry.description);
-  }
+  entry.description = node.asString();
   entry.devname = node.getLogicalName();
   entry.classname = node.getClassName();
 
@@ -629,47 +574,23 @@ string prefix = "")
 }
 
 
-static void printbusinfo(hwNode & node,
-vector < hwpath > &l)
+static void printbusinfo(hwNode & node, vector < hwpath > &l)
 {
   hwpath entry;
 
   entry.path = "";
   if (node.getBusInfo() != "")
     entry.path = node.getBusInfo();
-  entry.description = node.getProduct();
-  if (entry.description == "")
-    entry.description = node.getDescription();
-  if((node.getClass() == hw::memory) || (node.getClass() == hw::disk) || (node.getClass() == hw::storage) || (node.getClass() == hw::volume))
-  {
-    ostringstream size;
-    if(node.getClass() != hw::memory)
-    {
-      if(node.getCapacity())
-        kilobytes(size, node.getCapacity());
-      else
-      {
-        if(node.getSize())
-          kilobytes(size, node.getSize());
-      }
-    }
-    else
-    {
-      if(node.getSize())
-        kilobytes(size, node.getSize());
-    }
-    entry.description = join(" ", size.str(), entry.description);
-  }
+  entry.description = node.asString();
   entry.devname = node.getLogicalName();
   entry.classname = node.getClassName();
-
-  l.push_back(entry);
+  
+  l.push_back(entry); 
   for (unsigned int i = 0; i < node.countChildren(); i++)
-  {
+  { 
     printbusinfo(*node.getChild(i), l);
   }
 }
-
 
 static void printline(ostringstream & out)
 {
