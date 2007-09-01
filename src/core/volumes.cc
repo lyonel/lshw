@@ -245,7 +245,7 @@ static bool detect_ext2(hwNode & n, source & s)
   if(le_short(&sb->s_magic) != EXT2_SUPER_MAGIC)	// wrong magic number
     return false;
 
-  blocksize = (1 << le_long(&sb->s_log_block_size));
+  blocksize = 1024LL*(1 << le_long(&sb->s_log_block_size));
   if(blocksize < EXT2_DEFAULT_BLOCK_SIZE)
     blocksize = EXT2_DEFAULT_BLOCK_SIZE;
   n.setSize(blocksize * le_long(&sb->s_blocks_count));
