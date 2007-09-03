@@ -683,7 +683,6 @@ static bool detect_hfs(hwNode & n, source & s)
   source hfsvolume;
   string magic;
   HFSMasterDirectoryBlock *vol = (HFSMasterDirectoryBlock*)buffer;
-  uint16_t version = 0;
   uint16_t attributes = 0;
   time_t mkfstime, dumptime, wtime;
 
