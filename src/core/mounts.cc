@@ -14,7 +14,7 @@
 #include <unistd.h>
 
 
-__ID("@(#) $Id: mounts.cc 1352 2006-05-27 23:54:13Z ezix $");
+__ID("@(#) $Id$");
 
 #define MOUNTS "/proc/mounts"
 
@@ -66,7 +66,7 @@ static void update_mount_status(hwNode & n, const vector <string> & mount)
 
   if(has_device(mount[0], n))
   {
-    n.setConfig("mounted", "true");
+    n.setConfig("state", "mounted");
     n.setLogicalName(mount[1]);		// mountpoint
     n.setConfig("mount.fstype", mount[2]);
     n.setConfig("mount.options", mount[3]);
