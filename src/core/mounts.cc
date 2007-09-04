@@ -39,6 +39,27 @@ static bool has_device(const string & dev, hwNode & n)
   return false;
 }
 
+// unescape octal-encoded "special" characters:
+//  "/this\040is\040a\040test" --> "/this is a test"
+
+static string unescape(string s)
+{
+  size_t backslash;
+  string result = s;
+  
+  while((backslash=result.find('\\')) != string::npos)
+  {
+    string code = result.substr(backslash+1,3);
+    if(matches(code, "^0[0-9][0-9]$"))
+    {
+      result[backslash] = (char)strtol(code.c_str(), NULL, 8);
+      result.erase(backslash+1,3);
+    }
+  }
+  
+  return result;
+}
+
 static void update_mount_status(hwNode & n, const vector <string> & mount)
 {
   unsigned i;
@@ -68,6 +89,9 @@ static bool process_mount(const string & s, hwNode & n)
     if(splitlines(s, mount, '\t') != 6)
       return false;
   }
+
+  mount[0] = unescape(mount[0]);
+  mount[1] = unescape(mount[1]);
 
   if(mount[0][0] != '/')	// devicenode isn't a full path
     return false;
