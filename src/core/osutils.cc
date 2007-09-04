@@ -287,8 +287,7 @@ string get_devid(const string & name)
 }
 
 
-bool samefile(const string & path1,
-const string & path2)
+bool samefile(const string & path1, const string & path2)
 {
   struct stat stat1;
   struct stat stat2;

@@ -8,7 +8,7 @@ LDFLAGS=
 LDSTATIC=
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o
+OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o mounts.o
 SRCS = $(OBJS:.o=.cc)
 
 all: lib$(PACKAGENAME).a
@@ -32,8 +32,9 @@ depend:
 
 hw.o: hw.h osutils.h version.h options.h heuristics.h
 main.o: hw.h print.h version.h options.h mem.h dmi.h cpuinfo.h cpuid.h
-main.o: device-tree.h pci.h pcmcia-legacy.h ide.h scsi.h spd.h network.h
-main.o: isapnp.h fb.h usb.h sysfs.h display.h parisc.h cpufreq.h ideraid.h
+main.o: device-tree.h pci.h pcmcia.h pcmcia-legacy.h ide.h scsi.h spd.h
+main.o: network.h isapnp.h fb.h usb.h sysfs.h display.h parisc.h cpufreq.h
+main.o: ideraid.h mounts.h
 print.o: print.h hw.h options.h version.h osutils.h
 mem.o: version.h mem.h hw.h
 dmi.o: version.h dmi.h hw.h osutils.h
@@ -45,11 +46,11 @@ version.o: version.h
 cpuid.o: version.h cpuid.h hw.h
 ide.o: version.h cpuinfo.h hw.h osutils.h cdrom.h disk.h heuristics.h
 cdrom.o: version.h cdrom.h hw.h partitions.h
-pcmcia-legacy.o: version.h osutils.h
+pcmcia-legacy.o: version.h pcmcia-legacy.h hw.h osutils.h
 scsi.o: version.h mem.h hw.h cdrom.h disk.h osutils.h heuristics.h sysfs.h
-disk.o: version.h disk.h hw.h partitions.h
+disk.o: version.h disk.h hw.h osutils.h heuristics.h partitions.h
 spd.o: version.h spd.h hw.h osutils.h
-network.o: version.h network.h hw.h osutils.h sysfs.h heuristics.h
+network.o: version.h network.h hw.h osutils.h sysfs.h options.h heuristics.h
 isapnp.o: version.h isapnp.h hw.h pnp.h
 pnp.o: version.h pnp.h hw.h
 fb.o: version.h fb.h hw.h
@@ -60,7 +61,10 @@ display.o: display.h hw.h
 heuristics.o: version.h sysfs.h hw.h osutils.h
 parisc.o: version.h device-tree.h hw.h osutils.h heuristics.h
 cpufreq.o: version.h hw.h osutils.h
-partitions.o: version.h partitions.h hw.h blockio.h lvm.h osutils.h
+partitions.o: version.h partitions.h hw.h blockio.h lvm.h volumes.h osutils.h
 blockio.o: version.h blockio.h osutils.h
 lvm.o: version.h lvm.h hw.h blockio.h osutils.h
 ideraid.o: version.h cpuinfo.h hw.h osutils.h cdrom.h disk.h heuristics.h
+pcmcia.o: version.h pcmcia.h hw.h osutils.h sysfs.h
+volumes.o: version.h volumes.h hw.h blockio.h lvm.h osutils.h
+mounts.o: version.h mounts.h hw.h osutils.h

@@ -985,14 +985,15 @@ void hwNode::setLogicalName(const string & name)
     for (unsigned i = 0; i < This->logicalnames.size(); i++)
       if (This->logicalnames[i] == strip(name) || This->logicalnames[i] == "/dev/" + strip(name))
         return;                                   // nothing to add, this logical name already exists
-    if (exists("/dev/" + strip(name)))
+    if ((name[0] != '/') && exists("/dev/" + strip(name)))
     {
       This->logicalnames.push_back("/dev/" + strip(name));
     }
     else
       This->logicalnames.push_back(strip(name));
 
-    This->dev = get_devid(strip(name));
+    if(This->dev == "")
+      This->dev = get_devid(strip(name));
   }
 }
 

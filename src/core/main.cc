@@ -39,6 +39,7 @@
 #include "parisc.h"
 #include "cpufreq.h"
 #include "ideraid.h"
+#include "mounts.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -113,6 +114,8 @@ bool scan_system(hwNode & system)
     status("SCSI");
     if (enabled("scsi"))
       scan_scsi(computer);
+    if (enabled("mounts"))
+      scan_mounts(computer);
     status("Network interfaces");
     if (enabled("network"))
       scan_network(computer);
