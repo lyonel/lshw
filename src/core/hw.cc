@@ -43,17 +43,19 @@ string hw::strip(const string & s)
 {
   string result = s;
 
-  while ((result.length() > 0) && (result[0] <= ' '))
+  while ((result.length() > 0) && ((uint8_t)result[0] <= ' '))
     result.erase(0, 1);
-  while ((result.length() > 0) && (result[result.length() - 1] <= ' '))
-    result.erase(result.length() - 1, 1);
+  while ((result.length() > 0) && ((uint8_t)result[result.length() - 1] <= ' '))
+    result.erase(result.length() - 1);
 
   for (unsigned int i = 0; i < result.length(); i++)
-    if ((result[i] < ' ') || ((unsigned char)result[i] > 0x7f))
+    if ((uint8_t)result[i] < ' ')
     {
       result.erase(i, 1);
       i--;
     }
+
+  result = utf8_sanitize(result);
 
   return result;
 }
@@ -981,20 +983,22 @@ vector<string> hwNode::getLogicalNames() const
 
 void hwNode::setLogicalName(const string & name)
 {
+  string n = strip(name);
+
   if (This)
   {
     for (unsigned i = 0; i < This->logicalnames.size(); i++)
-      if (This->logicalnames[i] == strip(name) || This->logicalnames[i] == "/dev/" + strip(name))
+      if (This->logicalnames[i] == n || This->logicalnames[i] == "/dev/" + n)
         return;                                   // nothing to add, this logical name already exists
-    if ((name[0] != '/') && exists("/dev/" + strip(name)))
+    if ((name[0] != '/') && exists("/dev/" + n))
     {
-      This->logicalnames.push_back("/dev/" + strip(name));
+      This->logicalnames.push_back("/dev/" + n);
     }
     else
-      This->logicalnames.push_back(strip(name));
+      This->logicalnames.push_back(n);
 
     if(This->dev == "")
-      This->dev = get_devid(strip(name));
+      This->dev = get_devid(n);
   }
 }
 

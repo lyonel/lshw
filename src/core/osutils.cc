@@ -562,6 +562,71 @@ string utf8(uint16_t * s, size_t length, bool forcelittleendian)
   return result;
 }
 
+string utf8_sanitize(const string & s)
+{
+  unsigned int i = 0;
+  unsigned int remaining = 0;
+  string result = "";
+  string emit = "";
+  unsigned char c = 0;
+
+  while(i<s.length())
+  {
+    c = s[i];
+    switch(remaining)
+    {
+      case 3:
+      case 2:
+      case 1:
+        if((0x80<=c) && (c<=0xbf))
+        {
+          emit += s[i];
+          remaining--;
+        }
+        else		// invalid sequence
+        {
+          emit = "";
+          remaining = 0;
+        }
+        break;
+
+      case 0:
+        result += emit;
+        emit = "";
+
+        if(c<=0x7f)
+          emit = s[i];
+        else
+        if((0xc2<=c) && (c<=0xdf))	// start 2-byte sequence
+        {
+          remaining = 1;
+          emit = s[i];
+        }
+        else
+        if((0xe0<=c) && (c<=0xef))	// start 3-byte sequence
+        {
+          remaining = 2;
+          emit = s[i];
+        }
+        else
+        if((0xf0<=c) && (c<=0xf4))	// start 4-byte sequence
+        {
+          remaining = 3;
+          emit = s[i];
+        }
+
+        break;
+    }
+
+    i++;
+  }
+
+  if(remaining == 0)
+    result += emit;
+
+  return result;
+}
+
 string decimalkilos(unsigned long long value)
 {
   const char *prefixes = "KMGTPEZY";
