@@ -47,12 +47,13 @@ string hw::strip(const string & s)
     result.erase(0, 1);
   while ((result.length() > 0) && (result[result.length() - 1] <= ' '))
     result.erase(result.length() - 1, 1);
+
   for (unsigned int i = 0; i < result.length(); i++)
-    if (result[0] <= ' ')
-  {
-    result.erase(i, 1);
-    i--;
-  }
+    if ((result[i] < ' ') || ((unsigned char)result[i] > 0x7f))
+    {
+      result.erase(i, 1);
+      i--;
+    }
 
   return result;
 }
