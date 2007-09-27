@@ -50,7 +50,18 @@ void
 on_version_realize                     (GtkWidget       *widget,
 gpointer         user_data)
 {
-  gtk_label_set_text(GTK_LABEL(widget), getpackageversion());
+  char *latest = checkupdates();
+  char *msg = NULL;
+
+  if(latest)
+  {
+    if(strcmp(latest, getpackageversion()) != 0)
+      msg = g_strdup_printf("%s\nlatest version is %s", getpackageversion(), latest);
+  }
+  if(!msg)
+    msg = g_strdup(getpackageversion());
+  gtk_label_set_text(GTK_LABEL(widget), msg);
+  g_free(msg);
 }
 
 
