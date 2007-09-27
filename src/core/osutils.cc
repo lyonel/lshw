@@ -562,6 +562,9 @@ string utf8(uint16_t * s, size_t length, bool forcelittleendian)
   return result;
 }
 
+// U+FFFD replacement character
+#define REPLACEMENT  "\357\277\275"
+
 string utf8_sanitize(const string & s)
 {
   unsigned int i = 0;
@@ -583,9 +586,10 @@ string utf8_sanitize(const string & s)
           emit += s[i];
           remaining--;
         }
-        else		// invalid sequence
+        else		// invalid sequence (truncated)
         {
-          emit = "";
+          emit = REPLACEMENT;
+          emit += s[i];
           remaining = 0;
         }
         break;
@@ -614,6 +618,8 @@ string utf8_sanitize(const string & s)
           remaining = 3;
           emit = s[i];
         }
+        else
+          emit = REPLACEMENT;	// invalid character
 
         break;
     }
