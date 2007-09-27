@@ -13,6 +13,8 @@ extern "C" {
 
 const char * getpackageversion();
 
+const char * checkupdates();
+
 #ifdef __cplusplus
 }
 #endif
