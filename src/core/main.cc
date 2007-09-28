@@ -40,6 +40,7 @@
 #include "cpufreq.h"
 #include "ideraid.h"
 #include "mounts.h"
+#include "smp.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -58,6 +59,9 @@ bool scan_system(hwNode & system)
     status("DMI");
     if (enabled("dmi"))
       scan_dmi(computer);
+    status("SMP");
+    if (enabled("smp"))
+      scan_smp(computer);
     status("PA-RISC");
     if (enabled("parisc"))
       scan_parisc(computer);
