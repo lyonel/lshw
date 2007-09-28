@@ -94,13 +94,12 @@ char **argv)
     if (strcmp(argv[1], "-version") == 0)
     {
       const char *latest = checkupdates();
-      printf("%s", getpackageversion());
+      printf("%s\n", getpackageversion());
       if(latest)
       {
         if(strcmp(latest, getpackageversion()) != 0)
-          printf(" (latest version is %s)", latest);
+          fprintf(stderr, "the latest version is %s\n", latest);
       }
-      printf("\n");
       exit(0);
     }
 

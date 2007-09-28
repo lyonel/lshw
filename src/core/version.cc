@@ -9,6 +9,7 @@
  *
  */
 #include "version.h"
+#include "config.h"
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -126,7 +127,7 @@ const char * checkupdates()
   static char *latest = NULL;
 
   if(!latest)
-    latest = txtquery("lshw", "ezix.org", NULL);
+    latest = txtquery(PACKAGE, "ezix.org", NULL);
 
   return latest;
 }

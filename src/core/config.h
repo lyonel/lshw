@@ -1,6 +1,10 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+#ifndef PACKAGE
+#define PACKAGE "lshw"
+#endif
+
 #ifndef PREFIX
 #define PREFIX "/usr"
 #endif
