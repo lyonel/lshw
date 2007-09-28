@@ -51,8 +51,7 @@ void
 on_version_realize                     (GtkWidget       *widget,
 gpointer         user_data)
 {
-  char *latest = checkupdates();
-  char *msg = NULL;
+  const char *latest = checkupdates();
 
   gtk_label_set_text(GTK_LABEL(widget), getpackageversion());
 
@@ -60,7 +59,7 @@ gpointer         user_data)
   {
     if(strcmp(latest, getpackageversion()) != 0)
     {
-      GtkWidget *dialog = gtk_message_dialog_new_with_markup (mainwindow,
+      GtkWidget *dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW(mainwindow),
                                   GTK_DIALOG_DESTROY_WITH_PARENT,
                                   GTK_MESSAGE_INFO,
                                   GTK_BUTTONS_CLOSE,
