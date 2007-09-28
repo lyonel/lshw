@@ -59,18 +59,24 @@ gpointer         user_data)
   {
     if(strcmp(latest, getpackageversion()) != 0)
     {
-      GtkWidget *dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW(mainwindow),
+      static GtkWidget *dialog = NULL;
+
+      if(!GTK_IS_WIDGET(dialog))
+      {
+        dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW(mainwindow),
                                   GTK_DIALOG_DESTROY_WITH_PARENT,
                                   GTK_MESSAGE_INFO,
                                   GTK_BUTTONS_CLOSE,
                                   "The latest version is <tt>%s</tt>.\n\nYou can visit <span foreground=\"blue\"><u>http://www.ezix.org/</u></span> for more information.",
                                   latest);
 
-      gtk_window_set_title(GTK_WINDOW(dialog), "Update available");
-      /* Destroy the dialog when the user responds to it (e.g. clicks a button) */
-      g_signal_connect_swapped (dialog, "response",
+        gtk_window_set_title(GTK_WINDOW(dialog), "Update available");
+        /* Destroy the dialog when the user responds to it (e.g. clicks a button) */
+        g_signal_connect_swapped (dialog, "response",
                            G_CALLBACK (gtk_widget_destroy),
                            dialog);
+      }
+
       gtk_widget_show(dialog);
     }
   }
