@@ -170,11 +170,62 @@ static int apic_probe(vm_offset_t* paddr)
         return 0;
 }
 
-bool issmp()
+static void MPConfigDefault( hwNode & n, int featureByte )
+{
+    switch ( featureByte ) {
+    case 1:
+        n.addCapability("ISA");
+        n.addCapability("APIC:82489DX");
+        break;
+    case 2:
+    case 3:
+        n.addCapability("EISA");
+        n.addCapability("APIC:82489DX");
+        break;
+    case 4:
+        n.addCapability("MCA");
+        n.addCapability("APIC:82489DX");
+        break;
+    case 5:
+        n.addCapability("ISA");
+        n.addCapability("PCI");
+        n.addCapability("APIC:integrated");
+        break;
+    case 6:
+        n.addCapability("EISA");
+        n.addCapability("PCI");
+        n.addCapability("APIC:integrated");
+        break;
+    case 7:
+        n.addCapability("MCA");
+        n.addCapability("PCI");
+        n.addCapability("APIC:integrated");
+        break;
+    }
+
+    switch ( featureByte ) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+        n.setConfig("bus", 1);
+        break;
+    case 5:
+    case 6:
+    case 7:
+        n.setConfig("bus", 2);
+        break;
+    }
+
+    n.setConfig("cpus", 2);
+    n.setConfig("apic", 1);
+    n.setConfig("apic", 16);
+}
+
+bool issmp(hwNode & n)
 {
   vm_offset_t paddr;
   mpfps_t mpfps;
-  bool result = false;
 
   if((pfd = open("/dev/mem", O_RDONLY)) < 0)
     return false;
@@ -186,12 +237,15 @@ bool issmp()
   seekEntry(paddr);
   readEntry(&mpfps, sizeof(mpfps_t));
 
-  /* check whether an MP config table exists */
-  if (!mpfps.mpfb1)
-    result = true;
+  /* check whether a pre-defined MP config table exists */
+  if (mpfps.mpfb1)
+  {
+    n.setConfig("smpconfig", mpfps.mpfb1);
+    MPConfigDefault(n, mpfps.mpfb1);
+  }
 
   close(pfd);
-  return result;
+  return true;
 }
 
 bool scan_smp(hwNode & n)
@@ -206,7 +260,7 @@ bool scan_smp(hwNode & n)
 
   if (core)
   {
-    if(issmp())
+    if(issmp(*core))
       core->addCapability("smp", "Symmetric Multi-Processing");
   }
 
