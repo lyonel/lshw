@@ -11,6 +11,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "osutils.h"
+
 __ID("@(#) $Id: mem.cc 1352 2006-05-27 23:54:13Z ezix $");
 
 typedef unsigned long vm_offset_t;
@@ -29,6 +31,33 @@ typedef struct MPFPS {
         uint8_t      mpfb5;
 } mpfps_t;
 
+/* MP Configuration Table Header */
+typedef struct MPCTH {
+    char        signature[ 4 ];
+    u_short     base_table_length;
+    uint8_t      spec_rev;
+    uint8_t      checksum;
+    char        oem_id[ 8 ];
+    char        product_id[ 12 ];
+    void*       oem_table_pointer;
+    u_short     oem_table_size;
+    u_short     entry_count;
+    void*       apic_address;
+    u_short     extended_table_length;
+    uint8_t      extended_table_checksum;
+    uint8_t      reserved;
+} mpcth_t;
+
+typedef struct PROCENTRY {
+    uint8_t      type;
+    uint8_t      apicID;
+    uint8_t      apicVersion;
+    uint8_t      cpuFlags;
+    uint32_t      cpuSignature;
+    uint32_t      featureFlags;
+    uint32_t      reserved1;
+    uint32_t      reserved2;
+} ProcEntry;
 
 /* EBDA is @ 40:0e in real-mode terms */
 #define EBDA_POINTER                    0x040e            /* location of EBDA pointer */
@@ -64,6 +93,17 @@ static bool readEntry(void* entry, int size)
 {
   return (read(pfd, entry, size) == size);
 }
+
+static int readType( void )
+{
+    uint8_t      type;
+
+    if ( read( pfd, &type, sizeof( type ) ) == sizeof( type ) )
+      lseek( pfd, -sizeof( type ), SEEK_CUR );
+
+    return (int)type;
+}
+
 
 /*
  * set PHYSICAL address of MP floating pointer structure
@@ -170,6 +210,35 @@ static int apic_probe(vm_offset_t* paddr)
         return 0;
 }
 
+static hwNode *addCPU(hwNode & n, int i, ProcEntry entry)
+{
+  hwNode *cpu = NULL;
+
+  if(!(entry.cpuFlags & PROCENTRY_FLAG_EN))
+    return NULL;
+
+  cpu = n.findChildByBusInfo("cpu@"+tostring(i));
+  if(!cpu)
+  {
+    cpu = n.addChild(hwNode("cpu", hw::processor));
+    if(cpu)
+      cpu->setBusInfo("cpu@"+tostring(i));
+  }
+
+  if(cpu)
+  {
+    if(cpu->getVersion() == "")
+      cpu->setVersion(tostring((entry.cpuSignature >> 8) & 0x0f) + "." + tostring((entry.cpuSignature >> 4) & 0x0f) + "." + tostring(entry.cpuSignature & 0x0f));
+
+    if(entry.cpuFlags & PROCENTRY_FLAG_EN)
+      cpu->enable();
+    if(entry.cpuFlags & PROCENTRY_FLAG_BP)
+      cpu->addCapability("boot", "boot processor");
+  }
+
+  return cpu;
+}
+
 static void MPConfigDefault( hwNode & n, int featureByte )
 {
     switch ( featureByte ) {
@@ -218,8 +287,69 @@ static void MPConfigDefault( hwNode & n, int featureByte )
     }
 
     n.setConfig("cpus", 2);
-    n.setConfig("apic", 1);
-    n.setConfig("apic", 16);
+}
+
+static void MPConfigTableHeader( hwNode & n, uint32_t pap )
+{
+    mpcth_t	cth;
+    int		c;
+    int		entrytype;
+    int ncpu = 0;
+    int nbus = 0;
+    int napic = 0;
+    int nintr = 0;
+    ProcEntry   entry;
+
+    if ( !pap )
+      return;
+
+    /* read in cth structure */
+    seekEntry( pap );
+    readEntry( &cth, sizeof( cth ) );
+
+
+  if(string(cth.signature, 4) != "PCMP")
+    return;
+
+  if(n.getVendor() == "")
+    n.setVendor(hw::strip(string(cth.oem_id, 8)));
+  if(n.getProduct() == "")
+    n.setProduct(hw::strip(string(cth.product_id, 12)));
+
+  n.addCapability("smp-1." + tostring(cth.spec_rev), "SMP specification v1."+tostring(cth.spec_rev));
+
+    for (c = cth.entry_count; c; c--) {
+	entrytype = readType();
+	switch (entrytype) {
+	case 0:
+	    readEntry( &entry, sizeof( entry ) );
+	    if(addCPU(n, ncpu, entry))
+              ncpu++;
+	    break;
+
+	case 1:
+	    //busEntry();
+	    nbus++;
+	    break;
+
+	case 2:
+	    //ioApicEntry();
+	    napic++;
+	    break;
+
+	case 3:
+	    //intEntry();
+	    nintr++;
+	    break;
+
+	case 4:
+	    //intEntry();
+	    nintr++;
+	    break;
+	}
+    }
+
+    n.setConfig("cpus", ncpu);
 }
 
 bool issmp(hwNode & n)
@@ -237,12 +367,15 @@ bool issmp(hwNode & n)
   seekEntry(paddr);
   readEntry(&mpfps, sizeof(mpfps_t));
 
+  if(string(mpfps.signature, 4) != "_MP_")
+    return false;
+
   /* check whether a pre-defined MP config table exists */
   if (mpfps.mpfb1)
-  {
-    n.setConfig("smpconfig", mpfps.mpfb1);
     MPConfigDefault(n, mpfps.mpfb1);
-  }
+  else
+  if(mpfps.pap)
+    MPConfigTableHeader(n, mpfps.pap);
 
   close(pfd);
   return true;
