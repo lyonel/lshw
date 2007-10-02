@@ -13,7 +13,7 @@
 
 #include "osutils.h"
 
-__ID("@(#) $Id: mem.cc 1352 2006-05-27 23:54:13Z ezix $");
+__ID("@(#) $Id: smp.cc 1897 2007-10-02 13:29:47Z lyonel $");
 
 typedef unsigned long vm_offset_t;
 
@@ -220,15 +220,25 @@ static hwNode *addCPU(hwNode & n, int i, ProcEntry entry)
   cpu = n.findChildByBusInfo("cpu@"+tostring(i));
   if(!cpu)
   {
-    cpu = n.addChild(hwNode("cpu", hw::processor));
+    hwNode *core = n.getChild("core");
+
+    if (!core)
+    {
+      n.addChild(hwNode("core", hw::bus));
+      core = n.getChild("core");
+    }
+    if(!core)
+      cpu = n.addChild(hwNode("cpu", hw::processor));
+    else
+      cpu = core->addChild(hwNode("cpu", hw::processor));
+
     if(cpu)
       cpu->setBusInfo("cpu@"+tostring(i));
   }
 
   if(cpu)
   {
-    if(cpu->getVersion() == "")
-      cpu->setVersion(tostring((entry.cpuSignature >> 8) & 0x0f) + "." + tostring((entry.cpuSignature >> 4) & 0x0f) + "." + tostring(entry.cpuSignature & 0x0f));
+    cpu->setVersion(tostring((entry.cpuSignature >> 8) & 0x0f) + "." + tostring((entry.cpuSignature >> 4) & 0x0f) + "." + tostring(entry.cpuSignature & 0x0f));
 
     if(entry.cpuFlags & PROCENTRY_FLAG_EN)
       cpu->enable();
@@ -383,19 +393,11 @@ bool issmp(hwNode & n)
 
 bool scan_smp(hwNode & n)
 {
-  hwNode *core = n.getChild("core");
-
-  if (!core)
+  if(issmp(n))
   {
-    n.addChild(hwNode("core", hw::bus));
-    core = n.getChild("core");
+    n.addCapability("smp", "Symmetric Multi-Processing");
+    return true;
   }
-
-  if (core)
-  {
-    if(issmp(*core))
-      core->addCapability("smp", "Symmetric Multi-Processing");
-  }
-
-  return false;
+  else
+    return false;
 }
