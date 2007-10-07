@@ -1,3 +1,13 @@
+* lshw B.02.12
+  be more careful about invalid UTF-8 strings (some DMI implementations return garbage) (#142)
+  added detection of LUKS volumes (#132)
+  implemented automatic check for updates
+  implemented SMP detection (#7)
+  report volume/filesystem detailed information (FAT, ext2/ext3, reiserfs, NTFS, HFS/HFS+, swap)
+  GUI: added `nologo` make target to remove copyrighted icons
+  GUI: added `icon` make target to embed SVG icon into executable
+  GUI: display a warning when running as non-root user
+  updated data files
 * lshw B.02.11.01
   fixed `make install` (#128)
   GUI: only activate ''Save'' function (toolbar button and menu entry) when needed
