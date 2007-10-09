@@ -4,6 +4,7 @@
   implemented automatic check for updates
   implemented SMP detection (#7)
   report volume/filesystem detailed information (FAT, ext2/ext3, reiserfs, NTFS, HFS/HFS+, swap)
+  report MBR disk signatures (#21)
   GUI: added `nologo` make target to remove copyrighted icons
   GUI: added `icon` make target to embed SVG icon into executable
   GUI: display a warning when running as non-root user
