@@ -995,6 +995,7 @@ static bool detect_dosmap(source & s, hwNode & n)
   unsigned char type;
   unsigned long long start, size;
   bool partitioned = false;
+  unsigned long signature = 0;
 
   if(s.offset!=0)
     return false;                                 // partition tables must be at the beginning of the disk
@@ -1004,6 +1005,16 @@ static bool detect_dosmap(source & s, hwNode & n)
 
   if(le_short(buffer+510)!=0xaa55)                // wrong magic number
     return false;
+
+  signature=le_long(buffer+440);
+  if(signature == 0xffffffffL)
+    signature = 0;
+  if(signature)
+  {
+    char buffer[8+1];
+    snprintf(buffer, sizeof(buffer), "%08lx", signature);
+    n.setConfig("signature", buffer);
+  }
 
   lastlogicalpart = 5;
 
