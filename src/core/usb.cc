@@ -298,7 +298,7 @@ static bool load_usbids(const string & name)
     char * buffer = NULL;
     size_t linelen;
     unsigned t = 0;
-    char description[100];
+    char *description = NULL;
 
     if(getline(&buffer, &linelen, usbids)>0)
     {
@@ -306,20 +306,26 @@ static bool load_usbids(const string & name)
         buffer[linelen-1] = '\0';                 // chop \n
       string line = string(buffer);
       free(buffer);
-      memset(description, 0, sizeof(description));
 
+      description = NULL;
+      t = 0;
       if(line.length()>0)
       {
         if(line[0] == '\t')                       // product id entry
         {
-          if(sscanf(line.c_str(), "%x %[ -z]", &t, description)>0)
+          line.erase(0, 1);
+          if(matches(line, "^[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]"))
+            t = strtol(line.c_str(), &description, 16);
+          if(description && (description != line.c_str()))
           {
             usbproducts[PRODID(vendorid,t)] = hw::strip(description);
           }
         }
         else                                      // vendor id entry
         {
-          if(sscanf(line.c_str(), "%x %[ -z]", &t, description)>0)
+          if(matches(line, "^[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]"))
+            t = strtol(line.c_str(), &description, 16);
+          if(description && (description != line.c_str()))
           {
             vendorid = t;
             usbvendors[t] = hw::strip(description);
