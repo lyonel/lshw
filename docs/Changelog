@@ -1,4 +1,6 @@
 * lshw B.02.12
+  fix problem with log lines in `usb.ids` (#321)
+* lshw B.02.12
   be more careful about invalid UTF-8 strings (some DMI implementations return garbage) (#142)
   added detection of LUKS volumes (#132)
   implemented automatic check for updates
