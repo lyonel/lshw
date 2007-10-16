@@ -348,14 +348,14 @@ bool scan_usb(hwNode & n)
   bool defined = false;
   unsigned int bus,lev,prnt,port,cnt,devnum,mxch;
   float speed;
-  char ver[10];
+  char ver[10+1];
   unsigned int cls, sub, prot, mxps, numcfgs;
   unsigned int vendor, prodid;
-  char rev[10];
+  char rev[10+1];
   unsigned numifs, cfgnum, atr;
-  char mxpwr[10];
+  char mxpwr[10+1];
   unsigned ifnum, alt, numeps;
-  char driver[80];
+  char driver[80+1];
 
   if (!exists(PROCBUSUSBDEVICES))
     return false;
@@ -374,8 +374,8 @@ bool scan_usb(hwNode & n)
   {
     char * buffer = NULL;
     size_t linelen;
-    char strname[80];
-    char strval[80];
+    char strname[80+1];
+    char strval[80+1];
 
     if(getline(&buffer, &linelen, usbdevices)>0)
     {
@@ -441,7 +441,7 @@ bool scan_usb(hwNode & n)
           case 'P':
             vendor = prodid = 0;
             strcpy(rev, "");
-            if(sscanf(line.c_str(), "P: Vendor=%x ProdID=%x Rev=%s", &vendor, &prodid, rev)>0)
+            if(sscanf(line.c_str(), "P: Vendor=%x ProdID=%x Rev=%10s", &vendor, &prodid, rev)>0)
             {
               describeUSB(device, vendor, prodid);
               device.setVersion(hw::strip(rev));
@@ -450,7 +450,7 @@ bool scan_usb(hwNode & n)
           case 'S':
             memset(strname, 0, sizeof(strname));
             memset(strval, 0, sizeof(strval));
-            if(sscanf(line.c_str(), "S: %[^=]=%[ -z]", strname, strval)>0)
+            if(sscanf(line.c_str(), "S: %80[^=]=%80[ -z]", strname, strval)>0)
             {
               if(strcasecmp(strname, "Manufacturer")==0)
                 device.setVendor(hw::strip(strval));
@@ -471,7 +471,7 @@ bool scan_usb(hwNode & n)
           case 'I':
             ifnum = alt = numeps = cls = sub = prot = 0;
             memset(driver, 0, sizeof(driver));
-            if((sscanf(line.c_str(), "I: If#=%u Alt=%u #EPs=%u Cls=%x(%*5c) Sub=%x Prot=%x Driver=%[ -z]", &ifnum, &alt, &numeps, &cls, &sub, &prot, driver)>0) && (cfgnum>0))
+            if(((sscanf(line.c_str(), "I:* If#=%u Alt=%u #EPs=%u Cls=%x(%*5c) Sub=%x Prot=%x Driver=%80[ -z]", &ifnum, &alt, &numeps, &cls, &sub, &prot, driver)>0) && (cfgnum>0)) || ((sscanf(line.c_str(), "I: If#=%u Alt=%u #EPs=%u Cls=%x(%*5c) Sub=%x Prot=%x Driver=%80[ -z]", &ifnum, &alt, &numeps, &cls, &sub, &prot, driver)>0) && (cfgnum>0)))
             {
               setUSBClass(device, cls, sub, prot);
               if((strlen(driver)!=0) && (strcasecmp("(none)", driver)!=0))
