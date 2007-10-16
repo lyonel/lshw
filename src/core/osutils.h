@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <sys/types.h>
+#include <stdint.h>
 
 bool pushd(const std::string & dir = "");
 std::string popd();
