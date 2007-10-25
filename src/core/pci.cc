@@ -982,7 +982,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
             else
               result = n.addChild(*device);
           }
-          free(device);
+          delete device;
 
         }
       }
