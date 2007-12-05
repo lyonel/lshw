@@ -30,6 +30,7 @@ void usage(const char *progname)
   fprintf(stderr,
     "\t-class CLASS    only show a certain class of hardware\n");
   fprintf(stderr, "\t-C CLASS        same as '-class CLASS'\n");
+  fprintf(stderr, "\t-c CLASS        same as '-class CLASS'\n");
   fprintf(stderr,
     "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n");
   fprintf(stderr,

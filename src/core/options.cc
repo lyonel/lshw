@@ -76,7 +76,7 @@ char *argv[])
 
       remove_option_argument(i, argc, argv);
     }
-    else if ( (option == "-class") || (option == "-C") )
+    else if ( (option == "-class") || (option == "-C") || (option == "-c"))
     {
       vector < string > classes;
 
