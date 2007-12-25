@@ -72,8 +72,13 @@ int n = 0)
 
 #ifdef __i386__
 
+/* %ebx may be the PIC register.  */
 #define cpuid_up(in,a,b,c,d)\
-asm("cpuid": "=a" (a), "=b" (b), "=c" (c), "=d" (d) : "a" (in));
+  __asm__ ("xchgl\t%%ebx, %1\n\t"			\
+	   "cpuid\n\t"					\
+	   "xchgl\t%%ebx, %1\n\t"			\
+	   : "=a" (a), "=r" (b), "=c" (c), "=d" (d)	\
+	   : "0" (in))
 
 static void cpuid(int cpunumber,
 unsigned long idx,
