@@ -9,6 +9,7 @@
 #include <dirent.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <string.h>
 #include <regex.h>
 #include <ctype.h>
 #include <stdio.h>

@@ -12,6 +12,7 @@
 #include "version.h"
 #include "lvm.h"
 #include "osutils.h"
+#include <string.h>
 
 __ID("@(#) $Id$");
 

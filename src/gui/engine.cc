@@ -9,6 +9,8 @@
 #include <iostream>
 #include <fstream>
 #include <sys/utsname.h>
+#include <stdlib.h>
+#include <string.h>
 #include <libgen.h>
 
 static char *id = "@(#) $Id$";

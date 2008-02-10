@@ -9,6 +9,7 @@
 #include "version.h"
 #include "pnp.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 __ID("@(#) $Id$");

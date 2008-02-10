@@ -23,6 +23,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <limits.h>
 #include <linux/cdrom.h>
 
 __ID("@(#) $Id$");

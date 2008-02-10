@@ -4,12 +4,14 @@
 #include "version.h"
 #include "options.h"
 #include "heuristics.h"
+#include <cstring>
 #include <vector>
 #include <map>
 #include <sstream>
 #include <unistd.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <limits.h>
 #include <unistd.h>
 #include <sys/utsname.h>
 

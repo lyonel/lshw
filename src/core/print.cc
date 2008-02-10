@@ -11,10 +11,12 @@
 #include "options.h"
 #include "version.h"
 #include "osutils.h"
+#include <cstring>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <sys/ioctl.h>
 #include <termios.h>
