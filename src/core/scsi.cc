@@ -564,12 +564,15 @@ static void scan_devices()
         if (fd >= 0)
         {
           int bus = -1;
-          char host[50];
-          int * length = (int*)host;
-          *length = sizeof(host);
-          memset(host, 0, sizeof(host));
+          union
+          {
+            char host[50];
+            int length;
+          } tmp;
+          tmp.length = sizeof(tmp.host);
+          memset(tmp.host, 0, sizeof(tmp.host));
 
-          if(ioctl(fd, SCSI_IOCTL_PROBE_HOST, &host) >= 0)
+          if(ioctl(fd, SCSI_IOCTL_PROBE_HOST, &tmp.length) >= 0)
           {
             if (ioctl(fd, SCSI_IOCTL_GET_BUS_NUMBER, &bus) >= 0)
             {
