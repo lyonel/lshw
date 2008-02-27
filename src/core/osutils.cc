@@ -334,6 +334,15 @@ string tostring(unsigned long long n)
 }
 
 
+string tohex(unsigned long long n)
+{
+  char buffer[80];
+
+  snprintf(buffer, sizeof(buffer), "%llX", n);
+
+  return string(buffer);
+}
+
 string join(const string & j, const string & s1, const string & s2)
 {
   if(s1 == "") return s2;

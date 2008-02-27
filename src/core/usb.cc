@@ -11,6 +11,7 @@
 #include "usb.h"
 #include "osutils.h"
 #include "heuristics.h"
+#include "options.h"
 #include <stdio.h>
 #include <map>
 #include <sys/types.h>
@@ -276,12 +277,12 @@ static bool describeUSB(hwNode & device, unsigned vendor, unsigned prodid)
 {
   if(usbvendors.find(vendor)==usbvendors.end()) return false;
 
-  device.setVendor(usbvendors[vendor]);
+  device.setVendor(usbvendors[vendor]+(enabled("output:numeric")?" ["+tohex(vendor)+"]":""));
   device.addHint("usb.idVendor", vendor);
   device.addHint("usb.idProduct", prodid);
 
   if(usbproducts.find(PRODID(vendor, prodid))!=usbproducts.end())
-    device.setProduct(usbproducts[PRODID(vendor, prodid)]);
+    device.setProduct(usbproducts[PRODID(vendor, prodid)]+(enabled("output:numeric")?" ["+tohex(vendor)+":"+tohex(prodid)+"]":""));
 
   return true;
 }
@@ -455,9 +456,9 @@ bool scan_usb(hwNode & n)
             if(sscanf(line.c_str(), "S: %80[^=]=%80[ -z]", strname, strval)>0)
             {
               if(strcasecmp(strname, "Manufacturer")==0)
-                device.setVendor(hw::strip(strval));
+                device.setVendor(hw::strip(strval)+(enabled("output:numeric")?" ["+tohex(vendor)+"]":""));
               if(strcasecmp(strname, "Product")==0)
-                device.setProduct(hw::strip(strval));
+                device.setProduct(hw::strip(strval)+(enabled("output:numeric")?" ["+tohex(vendor)+":"+tohex(prodid)+"]":""));
               if(strcasecmp(strname, "SerialNumber")==0)
                 device.setSerial(hw::strip(strval));
             }

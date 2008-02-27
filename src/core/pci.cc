@@ -1,6 +1,7 @@
 #include "version.h"
 #include "pci.h"
 #include "osutils.h"
+#include "options.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -802,8 +803,8 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           hw::bridge);
 
         host.setDescription(get_class_description(dclass, progif));
-        host.setVendor(get_device_description(d.vendor_id));
-        host.setProduct(get_device_description(d.vendor_id, d.device_id));
+        host.setVendor(get_device_description(d.vendor_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+"]":""));
+        host.setProduct(get_device_description(d.vendor_id, d.device_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+":"+tohex(d.device_id)+"]":""));
         host.setHandle(pci_bushandle(d.bus, d.domain));
         host.setVersion(revision);
         addHints(host, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
@@ -949,9 +950,9 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           {
             device->addCapability(moredescription);
           }
-          device->setVendor(get_device_description(d.vendor_id));
+          device->setVendor(get_device_description(d.vendor_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+"]":""));
           device->setVersion(revision);
-          device->setProduct(get_device_description(d.vendor_id, d.device_id));
+          device->setProduct(get_device_description(d.vendor_id, d.device_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+":"+tohex(d.device_id)+"]":""));
 
           if (cmd & PCI_COMMAND_MASTER)
             device->addCapability("bus master", "bus mastering");

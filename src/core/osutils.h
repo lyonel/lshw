@@ -27,6 +27,7 @@ std::string get_devid(const std::string &);
 std::string uppercase(const std::string &);
 std::string lowercase(const std::string &);
 std::string tostring(unsigned long long);
+std::string tohex(unsigned long long);
 std::string utf8(wchar_t);
 std::string utf8_sanitize(const std::string &);
 std::string utf8(uint16_t *s, size_t length = -1, bool forcelittleendian = false);
