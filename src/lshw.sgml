@@ -38,6 +38,8 @@ list hardware
 	<arg choice="opt" rep="repeat"><option>-class </option><replaceable class="parameter">class</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-disable </option><replaceable class="parameter">test</replaceable></arg>
 	<arg choice="opt" rep="repeat"><option>-enable </option><replaceable class="parameter">test</replaceable></arg>
+	<arg choice="opt"><option>-sanitize</option></arg>
+	<arg choice="opt"><option>-numeric</option></arg>
 	<arg choice="opt"><option>-quiet</option></arg>
    </cmdsynopsis>
 </refsynopsisdiv>
@@ -105,6 +107,14 @@ Enables or disables a test. <replaceable class="parameter">test</replaceable> ca
 <varlistentry><term>-quiet</term>
 <listitem><para>
 Don't display status.
+</para></listitem></varlistentry>
+<varlistentry><term>-sanitize</term>
+<listitem><para>
+Remove potentially sensible information from output (IP addresses, serial numbers, etc.).
+</para></listitem></varlistentry>
+<varlistentry><term>-numeric</term>
+<listitem><para>
+Also display numeric IDs (for PCI and USB devices).
 </para></listitem></varlistentry>
 </variablelist>
 </para>

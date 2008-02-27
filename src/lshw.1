@@ -3,7 +3,7 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "LSHW" "1" "28 December 2007" "$Rev: 1913 $" ""
+.TH "LSHW" "1" "27 February 2008" "$Rev: 1913 $" ""
 
 .SH NAME
 lshw \- list hardware
@@ -18,7 +18,7 @@ lshw \- list hardware
 \fBlshw\fR [ \fB-X\fR ]
 
 
-\fBlshw\fR [ \fB-html\fR | \fB-short\fR | \fB-xml\fR | \fB-businfo\fR ] [ \fB-class \fIclass\fB\fR\fI ...\fR ] [ \fB-disable \fItest\fB\fR\fI ...\fR ] [ \fB-enable \fItest\fB\fR\fI ...\fR ] [ \fB-quiet\fR ]
+\fBlshw\fR [ \fB-html\fR | \fB-short\fR | \fB-xml\fR | \fB-businfo\fR ] [ \fB-class \fIclass\fB\fR\fI ...\fR ] [ \fB-disable \fItest\fB\fR\fI ...\fR ] [ \fB-enable \fItest\fB\fR\fI ...\fR ] [ \fB-sanitize\fR ] [ \fB-numeric\fR ] [ \fB-quiet\fR ]
 
 .SH "DESCRIPTION"
 .PP
@@ -71,6 +71,12 @@ Enables or disables a test. \fItest\fR can be \fBdmi\fR (for DMI/SMBIOS extensio
 .TP
 \fB-quiet\fR
 Don't display status.
+.TP
+\fB-sanitize\fR
+Remove potentially sensible information from output (IP addresses, serial numbers, etc.).
+.TP
+\fB-numeric\fR
+Also display numeric IDs (for PCI and USB devices).
 .SH "BUGS"
 .PP
 \fBlshw\fR currently does not detect 
