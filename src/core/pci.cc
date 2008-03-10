@@ -70,6 +70,7 @@ __ID("@(#) $Id$");
 #define PCI_CAP_LIST_NEXT       1       /* Next capability in the list */
 #define PCI_CAP_FLAGS           2       /* Capability defined flags (16 bits) */
 #define PCI_CAP_SIZEOF          4
+#define PCI_FIND_CAP_TTL       48
 
 #define PCI_SID_ESR             2       /* Expansion Slot Register */
 #define  PCI_SID_ESR_NSLOTS     0x1f    /* Number of expansion slots available */
@@ -668,8 +669,9 @@ static bool scan_capabilities(hwNode & n, struct pci_dev &d)
 {
   unsigned int where = get_conf_byte(d, PCI_CAPABILITY_LIST) & ~3;
   string buffer;
+  unsigned int ttl = PCI_FIND_CAP_TTL;
 
-  while(where)
+  while(where && ttl--)
   {
     unsigned int id, next, cap;
 
@@ -677,7 +679,7 @@ static bool scan_capabilities(hwNode & n, struct pci_dev &d)
     next = get_conf_byte(d, where + PCI_CAP_LIST_NEXT) & ~3;
     cap = get_conf_word(d, where + PCI_CAP_FLAGS);
 
-    if(!id)
+    if(!id || id == 0xff)
       return false;
 
     switch(id)
