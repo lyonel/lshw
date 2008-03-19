@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.332 2008/03/04 09:15:10 gowdy Exp $
+# $Id: usb.ids,v 1.335 2008/03/11 13:30:29 gowdy Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -921,6 +921,8 @@
 	3060  Sound Blaster Audigy 2 ZS External
 	3061  SoundBlaster Audigy 2 ZS Video Editor
 	3090  Sound Blaster Digital Music SX
+	3f02  E-Mu 0202
+	3f04  E-Mu 0404
 	4003  VideoBlaster WebCam Go Plus [W9967CF]
 	4004  Nomad II MG
 	4005  WebCam Blaster Go ES
@@ -1012,6 +1014,9 @@
 0421  Nokia Mobile Phones
 	0018  6288 GSM Smartphone
 	0019  6288 GSM Smartphone (imaging mode)
+	0024  5610 XpressMusic (Storage mode)
+	0025  5610 XpressMusic (PC-Suite mode)
+	0028  5610 XpressMusic (Imaging mode)
 	001a  6288 GSM Smartphone (file transfer mode)
 	0103  ADL Flashing Engine AVALON Parent
 	0104  ADL Re-Flashing Engine Parent
@@ -1068,7 +1073,8 @@
 	046e  6110 Navigator
 	0485  MTP Device
 	04c3  N800 Internet Tablet
-	04ce  E90 Communicator
+	04ce  E90 Communicator (PC-Suite mode)
+	04cf  E90 Communicator (Storage mode)
 	04f9  6300 (PC-Suite mode)
 	0600  Digital Pen SU-1B
 	0800  Connectivity Cable DKU-5
@@ -1859,6 +1865,7 @@
 	0a04  V20 portable speakers (USB powered)
 	0b02  BT Mini-Receiver (HID proxy mode)
 	8801  Video Camera
+	b305  BT Mini-Receiver
 	bfe4  Premium Optical Wheel Mouse
 	c000  N43 [Pilot Mouse]
 	c001  N48/M-BB48 [FirstMouse Plus]
@@ -1903,6 +1910,7 @@
 	c045  Optical Mouse
 	c046  RX1000 Laser Mouse
 	c047  Laser Mouse
+	c049  G5 Laser Mouse
 	c050  RX 250 Optical Mouse
 	c051  G3 (MX518) Optical Mouse
 	c053  Laser Mouse
@@ -1987,9 +1995,11 @@
 	c707  Bluetooth wireless hub
 	c708  Bluetooth wireless hub
 	c709  BT Mini-Receiver (HCI mode)
+	c70a  MX5000 Cordless Desktop
 	c70b  BT Mini-Receiver (HID proxy mode)
 	c70c  BT Mini-Receiver (HID proxy mode)
 	c70d  Bluetooth wireless hub
+	c70e  MX1000 Bluetooth Laser Mouse
 	c70f  Bluetooth wireless hub
 	c712  Bluetooth wireless hub
 	c715  Bluetooth wireless hub
@@ -2016,6 +2026,7 @@
 0471  Philips
 	0101  DSS350 Digital Speaker System
 	0104  DSS330 Digital Speaker System [uda1321]
+	0105  UDA1321
 	0160  MP3 Player
 	0161  MP3 Player
 	0201  Hub
@@ -2239,13 +2250,76 @@
 0498  Capetronic (Kaohsiung) Corp.
 0499  Yamaha Corp.
 	1000  UX256 MIDI I/F
+	1001  MU1000
+	1002  MU2000
+	1003  MU500
+	1004  UW500
+	1005  MOTIF6
+	1006  MOTIF7
+	1007  MOTIF8
 	1008  UX96 MIDI I/F
+	1009  UX16 MIDI I/F
+	100a  EOS BX
+	100c  UC-MX
+	100d  UC-KX
+	100e  S08
+	100f  CLP-150
+	1010  CLP-170
+	1011  P-250
+	1012  TYROS
+	1013  PF-500
+	1014  S90
+	1015  MOTIF-R
+	1016  MDP-5
+	1017  CVP-204
+	1018  CVP-206
+	1019  CVP-208
+	101a  CVP-210
+	101b  PSR-1100
+	101c  PSR-2100
+	101d  CLP-175
+	101e  PSR-K1
+	101f  EZ-J24
+	1020  EZ-250i
+	1021  MOTIF ES 6
+	1022  MOTIF ES 7
+	1023  MOTIF ES 8
+	1024  CVP-301
+	1025  CVP-303
+	1026  CVP-305
+	1027  CVP-307
+	1028  CVP-309
+	1029  CVP-309GP
+	102a  PSR-1500
+	102b  PSR-3000
+	102e  ELS-01/01C
+	1030  PSR-295/293
+	1031  DGX-205/203
+	1032  DGX-305
+	1033  DGX-505
+	2000  DGP-7
+	2001  DGP-5
 	3001  YST-MS55D USB Speaker
 	4000  NetVolante RTA54i Broadband&ISDN Router
 	4001  NetVolante RTW65b Broadband Wireless Router
 	4002  NetVolante RTW65i Broadband&ISDN Wireless Router
 	4004  NetVolante RTA55i Broadband VoIP Router
+	5000  CS1D
+	5001  DSP1D
+	5002  DME32
+	5003  DM2000
+	5004  02R96
+	5005  ACU16-C
+	5006  NHB32-C
+	5007  DM1000
+	5008  01V96
+	5009  SPX2000
+	500a  PM5D
+	500b  DME64N
+	500c  DME24N
 	6001  CRW2200UX Lightspeed 2 External CD-RW Drive
+	7000  DTX
+	7010  UB99
 049a  Gandalf Technologies, Ltd
 049b  Curtis Computer Products
 049c  Acer Advanced Labs, Inc.
@@ -3585,6 +3659,7 @@
 	0120  MFC580 Port(FaxModem)
 	0121  MFC-590
 	0122  MFC-5100J
+	0129  Imagistics 2500 (MFC-8640D clone)
 	012f  FAX-4750e
 	0132  MFC-5200C RemovableDisk
 	0135  MFC-100 Scanner
@@ -4450,44 +4525,95 @@
 0580  Denron, Inc.
 0581  Racal Data Group
 0582  Roland Corp.
-	0002  MPU64 Midi Interface
-	0003  Sound Canvas SC-8850
+	0000  UA-100
+	0002  UM-4/MPU-64 MIDI Interface
+	0003  SoundCanvas SC-8850
+	0004  U-8
 	0005  Edirol UM-2 MIDI Adapter
-	0007  SC-8820
-	0008  PC-300 Driver
+	0007  SoundCanvas SC-8820
+	0008  PC-300
 	0009  Edirol UM-1SX MIDI Adapter
+	000b  SK-500
 	000c  SC-D70
 	0010  EDIROL UA-5
 	0011  Edirol UA-5 Sound Capture
+	0012  XV-5050
+	0013  XV-5050
 	0014  EDIROL UM-880 MIDI I/F (native)
 	0015  EDIROL UM-880 MIDI I/F (generic)
 	0016  EDIROL SD-90
+	0017  EDIROL SD-90
+	001b  MMP-2
+	001c  MMP-2
+	001d  V-SYNTH
+	001e  V-SYNTH
 	0023  EDIROL UM-550
+	0024  EDIROL UM-550
 	0025  EDIROL UA-20
+	0026  EDIROL UA-20
 	0027  EDIROL SD-20
+	0028  EDIROL SD-20
 	0029  EDIROL SD-80
+	002a  EDIROL SD-80
 	002b  EDIROL UA-700
-	002d  VX-2020 Synthesizer
+	002c  EDIROL UA-700
+	002d  XV-2020 Synthesizer
+	002e  XV-2020 Synthesizer
+	002f  VariOS
+	0030  VariOS
 	0033  EDIROL PCR
+	0034  EDIROL PCR
 	0037  Digital Piano
+	0038  Digital Piano
+	003b  BOSS GS-10
+	003c  BOSS GS-10
+	0040  GI-20
+	0041  GI-20
+	0042  RS-70
+	0043  RS-70
 	0044  EDIROL UA-1000
 	0047  EDIROL UR-80 WAVE
 	0048  EDIROL UR-80 MIDI
+	0049  EDIROL UR-80 WAVE
+	004a  EDIROL UR-80 MIDI
 	004b  EDIROL M-100FX
 	004c  EDIROL PCR-A WAVE
 	004d  EDIROL PCR-A MIDI
+	004e  EDIROL PCR-A WAVE
+	004f  EDIROL PCR-A MIDI
 	0050  EDIROL UA-3FX
+	0052  EDIROL UM-1SX
+	0054  Digital Piano
+	0060  EXR Series
 	0064  EDIROL PCR-1 WAVE
 	0065  EDIROL PCR-1 MIDI
+	0066  EDIROL PCR-1 WAVE
+	0067  EDIROL PCR-1 MIDI
+	006a  SP-606
+	006b  SP-606
+	006d  FANTOM-X
+	006e  FANTOM-X
+	0073  EDIROL UA-25
 	0074  EDIROL UA-25
+	0075  BOSS DR-880
+	0076  BOSS DR-880
+	007a  RD
+	007b  RD
 	007d  EDIROL UA-101
+	0080  G-70
+	0081  G-70
 	008b  EDIROL PC-50
+	008c  EDIROL PC-50
 	008d  EDIROL UA-101 USB1
 	0092  EDIROL PC-80 WAVE
 	0093  EDIROL PC-80 MIDI
 	0096  EDIROL UA-1EX
-	009a  EDIROL UM-3
+	009a  EDIROL UM-3EX
+	009d  EDIROL UM-1
+	00a2  Digital Piano
 	00a3  EDIROL UA-4FX
+	00a6  Juno-G
+	00ad  SH-201
 	00c4  EDIROL M-16DX
 0583  Padix Co., Ltd (Rockfire)
 	2030  RM-203 USB Nest [mode 1]
@@ -5981,7 +6107,9 @@
 	0003  USB->Din 4 Adaptor
 06f8  Guillemot Corp.
 	a300  Dual Analog Leader GamePad
+	b000  Hercules DJ Console
 	c000  Hercules Muse Pocket
+	d002  Hercules DJ Console
 	e000  HWGUSB2-54 WLAN
 	e010  HWGUSB2-54-LB
 	e020  HWGUSB2-54V2-AP
@@ -6151,48 +6279,50 @@
 075b  Sophisticated Circuits, Inc.
 	0001  Kick-off! Watchdog
 0763  Midiman
-	0115  KeyRig 25 Driver
-	0117  Trigger Finger Driver
-	0119  MidAir Driver
-	0150  M-Audio Uno Driver
-	0160  M-Audio 1x1 Driver
+	0115  KeyRig 25
+	0117  Trigger Finger
+	0119  MidAir
+	0150  M-Audio Uno
+	0160  M-Audio 1x1
 	0192  M-Audio Keystation 88es
-	0193  ProKeys 88 Driver
-	0194  ProKeys 88sx Driver
-	0195  Oxygen 8 v2 Driver
-	0196  Oxygen 49 Driver
-	0197  Oxygen 61 Driver
-	0198  Axiom 25 Driver
-	0199  Axiom 49 Driver
-	019a  Axiom 61 Driver
-	019b  KeyRig 49 Driver
-	019c  KeyStudio Driver
-	1001  Midisport 2x2
-	1002  MidiSport 2x2 Driver
-	1003  MidiSport 2x2 Driver
-	1010  Midisport 1x1
-	1011  Midi 1x1 Driver
+	0193  ProKeys 88
+	0194  ProKeys 88sx
+	0195  Oxygen 8 v2
+	0196  Oxygen 49
+	0197  Oxygen 61
+	0198  Axiom 25
+	0199  Axiom 49
+	019a  Axiom 61
+	019b  KeyRig 49
+	019c  KeyStudio
+	1001  MidiSport 2x2
+	1002  MidiSport 2x2
+	1003  MidiSport 2x2
+	1010  MidiSport 1x1
+	1011  MidiSport 1x1
 	1014  M-Audio Keystation Loader
 	1015  M-Audio Keystation
 	1020  Midisport 4x4
-	1021  MidiSport 4x4 Driver
+	1021  MidiSport 4x4
 	1030  Midisport 8x8
 	1031  MidiSport 8x8/s Loader
-	1033  MidiSport 8x8/s Driver
+	1033  MidiSport 8x8/s
 	1040  M-Audio MidiSport 2x4 Loader
 	1041  M-Audio MidiSport 2x4
-	2001  M Audio Quattro Midi Driver (WDM)
-	2002  M Audio Duo ASIO
-	2003  M Audio AudioPhile ASIO 3/4
+	2001  M Audio Quattro
+	2002  M Audio Duo
+	2003  M Audio AudioPhile
 	2004  M-Audio MobilePre
 	2006  M-Audio Transit
 	2007  M-Audio Sonica Theater
-	200d  M-Audio Omni Midi
+	2008  M-Audio Ozone
+	200d  M-Audio OmniStudio
 	200f  M-Audio MobilePre
 	2010  M-Audio Fast Track
 	2013  M-Audio JamLab
 	2015  M-Audio RunTime DFU
 	2016  M-Audio RunTime DFU
+	2019  M-Audio Ozone Academic
 	201a  M-Audio Micro
 	201b  M-Audio RunTime DFU
 	201d  M-Audio Producer
@@ -6262,6 +6392,7 @@
 	0405  iMate, ADB Adapter
 	0410  PowerMate
 	041a  PowerWave
+	07af  iMic
 	627a  Radio SHARK
 077f  Well Excellent & Most Corp.
 0781  SanDisk Corp.
@@ -6648,6 +6779,8 @@
 	4104  Cw75 Device
 	4107  CW-L300 Device
 	4500  LV-20 Digital Camera
+	6801  PL-40R
+	6802  MIDI Keyboard
 07d0  Dazzle
 	0001  Digital Video Creator I
 	0002  Global Village VideoFX Grabber
@@ -6834,6 +6967,7 @@
 	1005  Digimax 220
 	1009  Digimax V4
 	1012  6500 Document Camera
+	1058  S730 Camera
 	1542  Digimax 50 Duo
 	3000  Digimax 35 MP3
 083a  Accton Technology Corp.
@@ -6946,7 +7080,10 @@
 	9812  ECON Data acquisition unit
 	9816  DT9816 ECON data acquisition module
 	9836  DT9836 data acquisition card
-086a  Emagic Soft-und Hardware GmbH
+086a  Emagic Soft- und Hardware GmbH
+	0001  Unitor8
+	0002  AMT8
+	0003  MT4
 086c  DeTeWe - Deutsche Telephonwerke AG & Co.
 	1001  Eumex 504PC ISDN TA
 	1002  Eumex 504PC (FlashLoad)
@@ -7811,6 +7948,7 @@
 	0011  SYS WaveTerminal U2A
 	0021  GIGAPort
 	0031  GIGAPortAG
+	0053  AudioTrak Optoplay
 	0061  Waveterminal U24
 	0071  MAYA EX7
 	0091  Maya 44
@@ -8494,6 +8632,7 @@
 	1065  Mass Storage Reader
 	1066  Mass Storage Reader
 	1067  Mass Storage Reader
+	1158  A56AK
 	184c  VoIP Phone
 	6001  Genius VideoCAM NB
 	6005  Sweex Mini WebCam
@@ -8701,11 +8840,15 @@
 0ccb  SKNet Co., Ltd
 0ccc  Domex Technology Corp.
 0ccd  TerraTec Electronic GmbH
+	0012  PHASE 26
+	0013  PHASE 26
 	0014  PHASE 26
 	0015  Flash Update for TerraTec PHASE 26
 	0021  Cameo Grabster 200
 	0023  Mystify Claw
+	0028  Aureon 5.1 MkII
 	0032  MIDI HUBBLE
+	0035  Miditech Play'n Roll
 	0036  Cinergy 250 Audio
 	0037  Cinergy 250 Audio
 	0038  Cinergy T^2 DVB-T Receiver
@@ -8924,6 +9067,7 @@
 	000e  Audio Adapter (Planet UP-100, Genius G-Talk)
 	0102  CM106 Like Sound Device
 	0103  Turtle Beach Audio Advantage Micro
+	0201  CM6501
 	5000  Mass Storage Controller
 	5200  Mass Storage Controller(0D8C,5200)
 	b213  USB Phone CM109 (aka CT2000,VPT1000)
@@ -9532,6 +9676,9 @@
 	0100  Zboard
 1039  devolo AG
 	2140  dsl+ 1100 duo
+103d  Stanton
+	0100  ScratchAmp
+	0101  ScratchAmp
 1043  iCreate Technologies Corp.
 	160f  Wireless Network Adapter
 	4901  AV-836 Video Capture Device
@@ -9739,6 +9886,8 @@
 10e1  CablePlus, Ltd
 10e2  Nada Electronics, Ltd
 10ec  Vast Technologies, Inc.
+10f5  Turtle Beach
+	0200  Audio Advantage Roadie
 10fb  Pictos Technologies, Inc.
 10fd  Anubis Electronics, Ltd
 	804d  Typhoon Webshot II Webcam [zc0301]
@@ -9893,6 +10042,10 @@
 	3403  Muzio JM250 Audio Player
 1223  SKYCABLE ENTERPRISE. CO., LTD.
 1230  Chipidea-Microelectronica, S.A.
+1235  Novation EMS
+	0001  ReMOTE Audio/XStation
+	0002  Speedio
+	4661  ReMOTE25
 1241  Belkin
 	1111  Mouse
 	1122  Typhoon Stream Optical Mouse USB+PS/2
@@ -10061,6 +10214,8 @@
 13dc  ALEREON, INC.
 13dd  i.Tech Dynamic Limited
 13e1  Kaibo Wire & Cable (Shenzhen) Co., Ltd.
+13e5  Rane
+	0001  SL-1
 13e6  TechnoScope Co., Ltd.
 13fd  Initio Corporation
 13fe  Kingston Technology Company Inc.
@@ -10501,6 +10656,13 @@
 17b3  Grey Innovation
 	0004  Linux-USB Midi Gadget
 17c3  Singim International Corp.
+17cc  Native Instruments
+	0815  Audio Kontrol 1
+	1940  RigKontrol3
+	1969  RigKontrol2
+	1978  Audio 8 DJ
+	4711  Kore Controller
+	4712  Kore Controller 2
 17cf  Hip Hing Cable & Plug Mfy. Ltd.
 17d0  Sanford L.P.
 17d3  Korea Techtron Co., Ltd.
@@ -11185,6 +11347,8 @@
 	1026  Crystal Bar Flash Drive
 4670  EMS Production
 	9394  Game Cube USB Memory Adaptor 64M
+4752  Miditech
+	0011  Midistart-2
 4766  Aceeca
 	0001  MEZ1000 RDA
 4855  Memorex

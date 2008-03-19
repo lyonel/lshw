@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Tue 2008-03-04 02:05:02
+#	Daily snapshot on Wed 2008-03-19 02:05:02
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -40,6 +40,7 @@
 	4800  WinTV PVR-350
 	4801  WinTV PVR-250 MCE
 	4803  WinTV PVR-250
+	7801  WinTV HVR-1800 MCE
 	8003  WinTV PVR-150
 	8801  WinTV PVR-150
 	c801  WinTV PVR-150
@@ -383,6 +384,8 @@
 		8086 34cd  Integrated RAID Controller SROMBSAS28E
 	0062  SAS1078 PCI-Express Fusion-MPT SAS
 		1000 0062  SAS1078 PCI-Express Fusion-MPT SAS
+	007c  MegaRAID SAS 1078DE
+		1014 0395  ServeRAID-AR10is SAS/SATA Controller
 	008f  53c875J
 		1092 8000  FirePort 40 SCSI Controller
 		1092 8760  FirePort 40 Dual SCSI Host Adapter
@@ -561,6 +564,7 @@
 		1014 053a  ThinkPad R40e
 		103c 0850  Radeon IGP 345M
 	4341  IXP150 AC'97 Audio Controller
+	4342  IXP200 3COM 3C920B Ethernet Controller
 	4345  EHCI USB Controller
 	4347  OHCI USB Controller #1
 	4348  OHCI USB Controller #2
@@ -1382,24 +1386,32 @@
 	940b  R600GL [Fire GL V8600]
 	94c1  Radeon HD 2400 XT
 		1028 0211  Optiplex 755
-	94c3  Radeon HD 2400 PRO
+	94c3  RV610 video device [Radeon HD 2400 PRO]
 		1002 94c3  Radeon HD 2400PRO
 		174b e400  Sapphire HD 2400 PRO video device
 	94c4  RV610LE [Radeon HD 2400 Series]
 	94c8  Radeon HD 2400 XT
 	94c9  Mobility Radeon HD 2400
 		1002 94c9  Radeon HD2400
+	94cb  Radeon E2400
+	94cc  RV 610LE PCI [Radeon HD 2400]
 	9501  Radeon HD 3870
 	9504  Mobility Radeon HD 3850
 	9505  Radeon HD 3850
+	9507  RV670 [Radeon HD 3850]
 	9508  M88 XT Mobility Radeon HD 3870]
+	950f  R680 [Radeon HD 3870 x2]
+	9515  RV670 AGP [Radeon HD 3850]
 	9559  Mobilitiy Radeon HD 3600 Series
 	9581  M76 [Radeon Mobility HD 2600 Series]
+	9586  RV 630 XT AGP [Radeon HD 2600 XT AGP]
 	9587  RV630 [Radeon HD 2600 AGP Series]
 	9588  RV630 [Radeon HD 2600XT]
 		1458 216c  Radeon HD 2600 XT, 256MB GDDR3, 2x DVI, TV-out, PCIe (GV-RX26T256H)
 	9589  RV630 [Radeon HD 2600 Series]
 	9591  Mobilitiy Radeon HD 3650
+	9593  Radeon Mobility HD 3670
+	9596  RV635 PRO AGP [Radeon HD 3650]
 	9598  Mobilitiy Radeon HD 3600 Series
 	95c0  Mobilitiy Radeon HD 3470
 	95c4  Mobilitiy Radeon HD 3400 Series
@@ -1549,6 +1561,7 @@
 		1186 0100  DE-530+
 	0016  DGLPB [OPPO]
 	0017  PV-PCI Graphics Controller (ZLXp-L)
+	0018  Memory Channel interface
 	0019  DECchip 21142/43
 		1011 500a  DE500A Fast Ethernet
 		1011 500b  DE500B Fast Ethernet
@@ -2112,6 +2125,7 @@
 	000d  Embedded Remote Access: BMC/SMIC device
 	000e  PowerEdge Expandable RAID controller 4/Di
 	000f  PowerEdge Expandable RAID controller 4/Di
+		1028 014a  PowerEdge 1750
 	0010  Remote Access Card 4
 	0011  Remote Access Card 4 Daughter Card
 	0012  Remote Access Card 4 Daughter Card Virtual UART
@@ -2122,7 +2136,7 @@
 		1028 016f  PowerEdge Expandable RAID Controller 4e/Di
 		1028 0170  PowerEdge Expandable RAID Controller 4e/Di
 	0014  Remote Access Card 4 Daughter Card SMIC interface
-	0015  PowerEdge Expandable RAID controller 5i
+	0015  PowerEdge Expandable RAID controller 5
 		1028 1f01  PERC 5/E Adapter RAID Controller
 		1028 1f02  PERC 5/i Adapter RAID Controller
 		1028 1f03  PERC 5/i Integrated RAID Controller
@@ -2455,6 +2469,7 @@
 	0645  SiS645 Host & Memory & AGP Controller
 	0646  SiS645DX Host & Memory & AGP Controller
 	0648  645xx
+	0649  SiS649 Host
 	0650  650/M650 Host
 	0651  651 Host
 	0655  655 Host
@@ -2550,6 +2565,7 @@
 	7012  AC'97 Sound Controller
 		1043 818f  A8S-X Motherboard
 		13f6 0300  ECS K7SOM+ motherboard
+		1462 5850  MSI 648 Max (MS-6585)
 		1462 7010  MS-6701 motherboard
 		15bd 1001  DFI 661FX motherboard
 		1734 109f  D2030-A1 Motherboard
@@ -2645,6 +2661,7 @@
 	1302  RMP-3 Shared Memory Driver
 	1303  RMP-3 (Remote Management Processor)
 	1361  BCM4312 802.11a/b/g WLAN Controller
+	1371  Broadcom Corporation BCM4312 802.11a/b/g (rev 02)
 	2910  E2910A PCIBus Exerciser
 	2925  E2925A 32 Bit, 33 MHzPCI Exerciser & Analyzer
 	3080  Pavilion ze2028ea
@@ -3068,6 +3085,7 @@
 	3011  ColdFusion 3e Chipset Processor to I/O Controller
 	3012  ColdFusion 3e Chipset Memory Controller Hub
 	3017  Unassigned Hitachi Shared FC Device 3017
+	301d  PCIe-to-PCIe Bridge with Virtualization IO Assist Feature
 1055  Efar Microsystems
 	9130  SLC90E66 [Victory66] IDE
 	9460  SLC90E66 [Victory66] ISA
@@ -4330,13 +4348,14 @@
 		1849 5229  ASRock 939Dual-SATA2 Motherboard IDE (PATA)
 	5235  M5225
 	5237  USB 1.1 Controller
-		1014 0540  ThinkPad R40e (2684-HVG) builtin USB
+		1014 0540  ThinkPad R40e
 		103c 0024  Pavilion ze4400 builtin USB
 		104d 810f  VAIO PCG-U1 USB/OHCI Revision 1.0
 		10b9 5237  ASRock 939Dual-SATA2 Motherboard
 		1849 5237  ASRock 939Dual-SATA2 Motherboard
 	5239  USB 2.0 Controller
 		10b9 5239  ASRock 939Dual-SATA2 Motherboard
+		1849 5239  ASRock 939Dual-SATA2 Motherboard
 	5243  M1541 PCI to AGP Controller
 	5246  AGP8X Controller
 	5247  PCI to AGP Controller
@@ -4352,11 +4371,12 @@
 	5281  ALi M5281 Serial ATA / RAID Host Controller
 	5287  ULi 5287 SATA
 	5288  ULi M5288 SATA
+		1043 8056  A8R-MVP Mainboard
 	5289  ULi 5289 SATA
 	5450  Lucent Technologies Soft Modem AMR
 	5451  M5451 PCI AC-Link Controller Audio Device
 		1014 0506  ThinkPad R30
-		1014 053e  ThinkPad R40e (2684-HVG) builtin Audio
+		1014 053e  ThinkPad R40e
 		103c 0024  Pavilion ze4400 builtin Audio
 		10b9 5451  HP Compaq nc4010 (DY885AA#ABN)
 	5453  M5453 PCI AC-Link Controller Modem Device
@@ -4364,7 +4384,7 @@
 		10b9 5455  ASRock 939Dual-SATA2 Motherboard
 		1849 0850  ASRock 939Dual-SATA2 Motherboard
 	5457  M5457 AC'97 Modem Controller
-		1014 0535  ThinkPad R40e (2684-HVG) builtin modem
+		1014 0535  ThinkPad R40e
 		103c 0024  Pavilion ze4400 builtin Modem Device
 	5459  SmartLink SmartPCI561 56K Modem
 	545a  SmartLink SmartPCI563 56K Modem
@@ -4373,9 +4393,10 @@
 	5473  M5473 SD-MMC Controller
 	7101  M7101 Power Management Controller [PMU]
 		1014 0510  ThinkPad R30
-		1014 053c  ThinkPad R40e (2684-HVG) Power Management Controller
+		1014 053c  ThinkPad R40e
 		103c 0024  Pavilion ze4400
 		10b9 7101  ASRock 939Dual-SATA2 Motherboard
+		1849 7101  ASRock 939Dual-SATA2 Motherboard
 10ba  Mitsubishi Electric Corp.
 	0301  AccelGraphics AccelECLIPSE
 	0304  AccelGALAXY A2100 [OEM Evans & Sutherland]
@@ -4431,7 +4452,7 @@
 	8005  NM2200 [MagicMedia 256AV Audio]
 		0e11 b0d1  MagicMedia 256AV Audio Device on Discovery
 		0e11 b126  MagicMedia 256AV Audio Device on Durango
-		1014 00dd  MagicMedia 256AV Audio Device on BlackTip Thinkpad
+		1014 00dd  ThinkPad 390/i1720/i1721
 		1025 1003  MagicMedia 256AV Audio Device on TravelMate 720
 		1028 0088  Latitude CPi A
 		1028 008f  MagicMedia 256AV Audio Device on Colorado Inspiron
@@ -5358,7 +5379,9 @@
 	03e6  MCP61 Ethernet
 	03e7  MCP61 SATA Controller
 	03e8  MCP61 PCI Express bridge
+		1849 03e8  939NF6G-VSTA Board
 	03e9  MCP61 PCI Express bridge
+		1849 03e9  939NF6G-VSTA Board
 	03ea  MCP61 Memory Controller
 		1849 03ea  939NF6G-VSTA Board
 	03eb  MCP61 SMBus
@@ -5402,6 +5425,7 @@
 	0427  GeForce 8400M GS
 	0428  GeForce 8400M G
 	0429  Quadro NVS 140M
+		17aa 20d8  ThinkPad T61
 	042a  Quadro NVS 130M
 	042b  Quadro NVS 135M
 	042d  Quadro FX 360M
@@ -5442,7 +5466,9 @@
 	053a  GeForce 7050 PV / nForce 630a
 	053b  GeForce 7050 PV / nForce 630a
 	053e  GeForce 7025
+	0541  MCP67 Memory Controller
 	0542  MCP67 SMBus
+	0543  MCP67 Co-processor
 	0547  MCP67 Memory Controller
 		1849 0547  ALiveNF7G-HDready
 	0548  MCP67 ISA Bridge
@@ -5450,19 +5476,41 @@
 		1849 054c  ALiveNF7G-HDready, MCP67 Gigabit Ethernet
 	0550  MCP67 AHCI Controller
 	0554  MCP67 AHCI Controller
+	0555  MCP67 SATA Controller
 	055c  MCP67 High Definition Audio
 	055d  MCP67 High Definition Audio
 	055e  MCP67 OHCI USB 1.1 Controller
 	055f  MCP67 EHCI USB 2.0 Controller
 	0560  MCP67 IDE Controller
+	0561  MCP67 PCI Bridge
 	0562  MCP67 PCI Express Bridge
 		1849 0562  ALiveNF7G-HDready
 	0563  MCP67 PCI Express Bridge
+	056a  GeForce 7100/nForce 630i
 	0600  GeForce 8800 GTS 512
+	0606  GeForce 8800 GS
 	0609  GeForce 8800M GTS
 	060c  GeForce 8800M GTX
 	0611  GeForce 8800 GT
 	061a  Quadro FX 3700
+	0622  Geforce 9600 GT 512mb
+	07cb  nForce 630i memory controller
+	07cd  nForce 630i memory controller
+	07ce  nForce 630i memory controller
+	07cf  nForce 630i memory controller
+	07d0  nForce 630i memory controller
+	07d1  nForce 630i memory controller
+	07d2  nForce 630i memory controller
+	07d3  nForce 630i memory controller
+	07d6  nForce 630i memory controller
+	07dc  MCP73 Ethernet
+	07e1  GeForce 7100/nForce 630i
+	07e3  GeForce 7050/nForce 610i
+	07f4  GeForce 7100/nForce 630i
+	07fc  MCP73 High Definition Audio
+		10de 07fc  MCP73 High Definition Audio
+	07fe  GeForce 7100/nForce 630i
+	0849  GeForce 8200
 	c615  G70 [GeForce 7600 GT]
 10df  Emulex Corporation
 	1ae5  LP6000 Fibre Channel Host Adapter
@@ -5497,6 +5545,7 @@
 	fc40  Saturn-X: LightPulse Fibre Channel Host Adapter
 	fd00  Helios-X LightPulse Fibre Channel Host Adapter
 	fe00  Zephyr-X LightPulse Fibre Channel Host Adapter
+	fe05  Zephyr-X: LightPulse FCoE Adapter
 	ff00  Neptune LightPulse Fibre Channel Host Adapter
 10e0  Integrated Micro Solutions Inc.
 	5026  IMS5026/27/28
@@ -5620,6 +5669,7 @@
 		1436 8139  RT8139
 		144d c00c  P30/P35 notebook
 		1458 e000  GA-7VM400M/7VT600 Motherboard
+		1462 217c  Aspire L250
 		1462 788c  865PE Neo2-V Mainboard
 		146c 1439  FE-1439TX
 		1489 6001  GF100TXRII
@@ -13830,6 +13880,38 @@
 	2e05  Eaglelake HECI Controller
 	2e06  Eaglelake PT IDER Controller
 	2e07  Eaglelake Serial KT Controller
+	2e10  Eaglelake DRAM Controller
+	2e11  Eaglelake PCI Express Root Port
+	2e12  Eaglelake Integrated Graphics Controller
+	2e13  Eaglelake Integrated Graphics Controller
+	2e14  Eaglelake HECI Controller
+	2e15  Eaglelake HECI Controller
+	2e16  Eaglelake PT IDER Controller
+	2e17  Eaglelake Serial KT Controller
+	2e20  Eaglelake DRAM Controller
+	2e21  Eaglelake PCI Express Root Port
+	2e22  Eaglelake Integrated Graphics Controller
+	2e23  Eaglelake HECI Controller
+	2e24  Eaglelake HECI Controller
+	2e25  Eaglelake HECI Controller
+	2e26  Eaglelake PT IDER Controller
+	2e27  Eaglelake Serial KT Controller
+	2e30  Eaglelake DRAM Controller
+	2e31  Eaglelake PCI Express Root Port
+	2e32  Eaglelake Integrated Graphics Controller
+	2e33  Eaglelake Integrated Graphics Controller
+	2e34  Eaglelake HECI Controller
+	2e35  Eaglelake HECI Controller
+	2e36  Eaglelake PT IDER Controller
+	2e37  Eaglelake Serial KT Controller
+	2e40  Eaglelake DRAM Controller
+	2e41  Eaglelake PCI Express Root Port
+	2e42  Eaglelake Integrated Graphics Controller
+	2e43  Eaglelake Integrated Graphics Controller
+	2e44  Eaglelake HECI Controller
+	2e45  Eaglelake HECI Controller
+	2e46  Eaglelake PT IDER Controller
+	2e47  Eaglelake Serial KT Controller
 	3200  GD31244 PCI-X SATA HBA
 		1775 c200  C2K onboard SATA host bus adapter
 	3313  IOP348 I/O Processor (SL8e) in IOC Mode SAS/SATA
@@ -13873,10 +13955,10 @@
 	3421  QuickPath Architecture I/O Hub PCI Express Root Port 0
 	3422  QuickPath Architecture I/O Hub GPIO and Scratch Pad Registers
 	3423  QuickPath Architecture I/O Hub Control Status and RAS Registers
-	3425  QuickPath Interconnect Physical and Link Layer Registers - Port 0
-	3426  QuickPath Interconnect Routing and Protocol Layer Registers - Port 0
-	3427  QuickPath Interconnect Physical and Link Layer Registers - Port 1
-	3428  QuickPath Interconnect Routing & Protocol Layer Registers - Port 1
+	3425  QuickPath Interconnect Physical and Link Layer Registers Port 0
+	3426  QuickPath Interconnect Routing and Protocol Layer Registers Port 0
+	3427  QuickPath Interconnect Physical and Link Layer Registers Port 1
+	3428  QuickPath Interconnect Routing & Protocol Layer Registers Port 1
 	3429  DMA Engine
 	342a  DMA Engine
 	342b  DMA Engine
