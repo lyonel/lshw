@@ -47,8 +47,9 @@ static unsigned char get_spd_byte(unsigned int offset)
     if (in)
     {
       for (int i = 0; i < SPD_BLKSIZE; i++)
-        fscanf(in, "%d",
-          (int *) &spd[i + (offset / SPD_BLKSIZE) * SPD_BLKSIZE]);
+        if(fscanf(in, "%d",
+          (int *) &spd[i + (offset / SPD_BLKSIZE) * SPD_BLKSIZE]) < 1)
+            break;
       fclose(in);
       spd_page_loaded[offset / SPD_BLKSIZE] = true;
     }

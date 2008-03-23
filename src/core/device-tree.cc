@@ -42,7 +42,8 @@ static unsigned long get_long(const string & path)
 
   if (fd >= 0)
   {
-    read(fd, &result, sizeof(result));
+    if(read(fd, &result, sizeof(result)) != sizeof(result))
+      result = 0;
 
     close(fd);
   }
@@ -70,13 +71,15 @@ unsigned int offset = 0)
       if (strings)
       {
         memset(strings, 0, buf.st_size + 1);
-        read(fd, strings, buf.st_size);
-        curstring = strings + offset;
-
-        while (strlen(curstring))
+        if(read(fd, strings, buf.st_size) == buf.st_size)
         {
-          result.push_back(string(curstring));
-          curstring += strlen(curstring) + 1;
+          curstring = strings + offset;
+
+          while (strlen(curstring))
+          {
+            result.push_back(string(curstring));
+            curstring += strlen(curstring) + 1;
+          }
         }
 
         free(strings);
@@ -121,8 +124,13 @@ static void scan_devtree_bootrom(hwNode & core)
     int fd = open(DEVICETREE "/rom/boot-rom/reg", O_RDONLY);
     if (fd >= 0)
     {
-      read(fd, &base, sizeof(base));
-      read(fd, &size, sizeof(size));
+      if(read(fd, &base, sizeof(base)) == sizeof(base))
+      {
+        if(read(fd, &size, sizeof(size)) != sizeof(size))
+          size = 0;
+      }
+      else
+        base = 0;
 
       bootrom.setPhysId(base);
       bootrom.setSize(size);
@@ -332,8 +340,13 @@ static void scan_devtree_memory(hwNode & core)
           hwNode bank("bank",
             hw::memory);
 
-          read(fd2, &base, sizeof(base));
-          read(fd2, &size, sizeof(size));
+          if(read(fd2, &base, sizeof(base)) == sizeof(base))
+          {
+            if(read(fd2, &size, sizeof(size)) != sizeof(size))
+              size = 0;
+          }
+          else
+            base = 0;
 
           if (fd >= 0)
           {

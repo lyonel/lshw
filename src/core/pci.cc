@@ -1061,7 +1061,8 @@ bool scan_pci_legacy(hwNode & n)
       fd = open(devicepath.c_str(), O_RDONLY);
       if (fd >= 0)
       {
-        read(fd, d.config, sizeof(d.config));
+        if(read(fd, d.config, sizeof(d.config)) != sizeof(d.config))
+          memset(&d.config, 0, sizeof(d.config));
         close(fd);
       }
 
@@ -1108,8 +1109,11 @@ bool scan_pci(hwNode & n)
       if (fd >= 0)
       {
         memset(&d, 0, sizeof(d));
-        read(fd, d.config, 64);
-        read(fd, d.config+64, sizeof(d.config)-64);
+        if(read(fd, d.config, 64) == 64)
+        {
+          if(read(fd, d.config+64, sizeof(d.config)-64) != sizeof(d.config)-64)
+            memset(d.config+64, 0, sizeof(d.config)-64);
+        }
         close(fd);
       }
 

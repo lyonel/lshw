@@ -136,15 +136,17 @@ static void udelay(unsigned long l)
 
 static bool write_data(unsigned char x)
 {
+  bool result = true;
   int fd = open("/dev/port", O_WRONLY);
 
   if (fd >= 0)
   {
     lseek(fd, _PNPWRP, SEEK_SET);
-    write(fd, &x, 1);
+    if(write(fd, &x, 1) != 1)
+      result = false;
     close(fd);
 
-    return true;
+    return result;
   }
   else
   {
@@ -156,15 +158,17 @@ static bool write_data(unsigned char x)
 
 static bool write_address(unsigned char x)
 {
+  bool result = true;
   int fd = open("/dev/port", O_WRONLY);
 
   if (fd >= 0)
   {
     lseek(fd, _PIDXR, SEEK_SET);
-    write(fd, &x, 1);
+    if(write(fd, &x, 1) != 1)
+      result = false;
     close(fd);
     udelay(20);
-    return true;
+    return result;
   }
   else
   {
@@ -182,7 +186,8 @@ static unsigned char read_data(void)
   if (fd >= 0)
   {
     lseek(fd, isapnp_rdp, SEEK_SET);
-    read(fd, &val, 1);
+    if(read(fd, &val, 1) != 1)
+      val = 0;
     close(fd);
   }
   else

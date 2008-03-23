@@ -98,12 +98,14 @@ unsigned long &edx)
   {
     lseek(fd, idx, SEEK_CUR);
     memset(buffer, 0, sizeof(buffer));
-    read(fd, buffer, sizeof(buffer));
+    if(read(fd, buffer, sizeof(buffer)) == sizeof(buffer))
+    {
+      eax = (*(unsigned long *) buffer);
+      ebx = (*(unsigned long *) (buffer + 4));
+      ecx = (*(unsigned long *) (buffer + 8));
+      edx = (*(unsigned long *) (buffer + 12));
+    }
     close(fd);
-    eax = (*(unsigned long *) buffer);
-    ebx = (*(unsigned long *) (buffer + 4));
-    ecx = (*(unsigned long *) (buffer + 8));
-    edx = (*(unsigned long *) (buffer + 12));
   }
   else
     cpuid_up(idx, eax, ebx, ecx, edx);

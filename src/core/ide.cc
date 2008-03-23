@@ -101,7 +101,8 @@ static unsigned long long get_longlong(const string & path)
 
   if (in)
   {
-    fscanf(in, "%lld", &l);
+    if(fscanf(in, "%lld", &l) < 1)
+      l = 0;
     fclose(in);
   }
 
