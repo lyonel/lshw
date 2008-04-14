@@ -8,11 +8,13 @@
 #include <vector>
 #include <map>
 #include <sstream>
-#include <unistd.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 #include <limits.h>
 #include <unistd.h>
+#include <limits.h>
 #include <sys/utsname.h>
 
 using namespace hw;
