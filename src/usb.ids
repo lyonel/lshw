@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.335 2008/03/11 13:30:29 gowdy Exp $
+# $Id: usb.ids,v 1.342 2008/04/21 07:48:55 gowdy Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -1381,7 +1381,7 @@
 0456  Analog Devices, Inc.
 0457  Silicon Integrated Systems Corp.
 	0150  Super Talent 1GB Flash Drive
-	0151  Super Flash 1GB Flash Drive
+	0151  Super Flash 1GB / GXT  64MB Flash Drive
 	0162  SiS162 usb Wireless LAN Adapter
 	0163  802.11 Wireless LAN Adapter
 	5401  Wireless Adapter RO80211GS-USB
@@ -1534,6 +1534,7 @@
 	0095  IntelliMouse Explorer 4.0 (IntelliPoint)
 	009c  Wireless Transceiver for Bluetooth 2.0
 	00a0  eHome Infrared Receiver
+	00b0  Digital Media Pro Keyboard
 	00b9  Wireless Optical Mouse 3.0
 	00bb  Fingerprint Reader
 	00bc  Fingerprint Reader
@@ -1541,6 +1542,7 @@
 	00c2  Wireless Adapter MN-710
 	00c9  MTP Device
 	00ce  Generic PPC Flash device
+	00d1  Optical Mouse with Tilt Wheel
 	00da  eHome Infrared Receiver
 	00db  Natural Ergonomic Keyboard 4000 V1.0
 	00e1  Wireless Laser Mouse 6000 Reciever
@@ -2178,6 +2180,7 @@
 	2021  PilotBoard Wireless
 	2030  PilotBoard Wireless
 	2034  SlimBlade Media Notebook Set
+	4003  Gravis Xterminator Digital Gamepad
 	4005  Gravis Eliminator GamePad Pro
 	4006  Gravis Eliminator AfterShock
 	4007  Gravis Xterminator Force
@@ -2225,6 +2228,7 @@
 	481d  BT Digital Access adapter
 	5000  ST Micro Bluetooth Device
 	5001  ST Micro Bluetooth Device
+	7270  ST Micro Serial Bridge
 	7554  56k SoftModem
 	ff10  Swann ST56 Modem
 0484  Specialix
@@ -2806,6 +2810,7 @@
 	3117  PowerShot A700
 	3138  PowerShot A710 IS
 	315a  PowerShot G9
+	3176  PowerShot A590
 	31ff  Digital IXUS 55
 04aa  DaeWoo Telecom, Ltd
 04ab  Chromatic Research
@@ -3341,6 +3346,7 @@
 	9120  WS004SH
 	9122  WS007SH
 	9123  W-ZERO3 ES Smartphone
+	91a3  922SH Internet Machine
 04de  MindShare, Inc.
 04df  Interlink Electronics
 04e1  Iiyama North America, Inc.
@@ -3530,7 +3536,7 @@
 	662e  MITs Sync
 	6630  MITs Sync
 	6632  MITs Sync
-	663f  SGH-E720
+	663f  SGH-E720/SGH-E840
 	6640  Usb Modem Enumerator
 	7011  SEW-2003U Card
 	7021  Bluetooth Device
@@ -3563,6 +3569,7 @@
 	0111  KU-9908 Keyboard
 	0112  KU-8933 Keyboard with PS/2 Mouse port
 	0116  KU-2971 German Keyboard
+	0403  KU-0420 keyboard
 	a001  E-Video DC-100 Camera
 	a120  ORITE CCD Webcam(PC370R)
 	a121  ORITE CCD Webcam(PC370R)
@@ -4520,6 +4527,7 @@
 	62ff  WLAN USB v1.1 [no firmware]
 057d  Shark Multimedia, Inc.
 057e  Nintendo Co., Ltd
+	0306  Wii Remote Controller RVL-003
 057f  QuickShot, Ltd
 	6238  USB StrikePad
 0580  Denron, Inc.
@@ -4723,6 +4731,7 @@
 0590  Omron Corp.
 	0004  Cable Modem
 	000b  MR56SVS
+	0028  HJ-720IT Pedometer
 0591  Questra Consulting
 0592  Powerware Corp.
 	0002  UPS (X-Slot)
@@ -4746,7 +4755,9 @@
 	0031  Zip 100 (Type 3)
 	0032  Zip 250 (Ver 2)
 	0034  Zip 100 Driver
+	0037  Zip 750 MB
 	0040  SCSI Bridge
+	0042  Rev 70 GB
 	0050  Zip CD 650 Writer
 	0053  CDRW55292EXT CD-RW External Drive
 	0057  Mass Storage Device
@@ -4782,7 +4793,8 @@
 	0212  PocketDrive
 	0213  PocketDrive USB2
 	0323  LaCie d2 Drive USB2
-	0641  Mobile Hard drvie
+	0641  Mobile Hard Drive
+	1010  Desktop Hard Drive
 	a601  HardDrive
 	a602  CD R/W
 05a0  Vetronix Corp.
@@ -5189,6 +5201,7 @@
 	200d  MC70 Rugged Mobile Computer
 05e1  Syntek Semiconductor Co., Ltd
 	0500  DC-112X
+	0501  WebCam, Chipset DC-1125 similar to 174f:a311 - Asus F2F, F2J, F3J, F3T, G1, Z53JA
 	0890  STK011 Camera
 	0892  STK013 Camera
 	0895  STK016 Camera
@@ -5378,6 +5391,7 @@
 0628  Tasking Software, Inc.
 0629  Zida Technologies, Ltd
 062a  Creative Labs
+	0000  Optical mouse
 	0001  Notebook Optical Mouse
 	0201  Defender Office Keyboard (K7310) S Zodiak KM-9010
 	9003  VoIP Conference Hub (A16GH)
@@ -5608,6 +5622,7 @@
 	0001  PL2302 USB-USB Bridge
 	04bb  PL2303 Serial (IODATA USB-RSAQ2)
 	0610  Onext EG210U MODEM
+	0611  AlDiga AL-11U Quad-band GSM/GPRS/EDGE modem
 	2303  PL2303 Serial Port
 	2305  PL2305 Parallel Port
 	2307  PL2307 USB-ATAPI4 Bridge
@@ -5997,7 +6012,10 @@
 	0008  UBS-10BT Ethernet [klsi]
 	0009  UBS-10BT Ethernet
 	0833  Mass Storage Device
-	a190  Instand VCD Usb Capture
+	a160  Instant Video-To-Go RDX-160 (no firmware)
+	a161  Instant Video-To-Go RDX-160
+	a190  Instand VCD Capture
+	a191  Instant VideoXpress
 	a337  Mini DigitalTV
 	a701  DVD Xpress
 	b337  Mini DigitalTV
@@ -6413,6 +6431,7 @@
 	5153  Cruzer USB-Flash-Drive
 	5406  Cruzer Micro 1/4GB Flash Drive
 	5408  Cruzer Titanium U3
+	6100  Ultra II SD Plus 2GB
 	7100  Cruzer Mini
 	7101  Pen Flash
 	7102  Cruzer Mini
@@ -6809,6 +6828,7 @@
 	13f2  DSL-502G Router
 	3a07  WUA-2340 Adapter
 	3a08  predator Bootloader Download
+	3a0d  DWA-120 Wireless 108G Adapter
 	3b01  AirPlus G DWL-G122 Wireless Adapter
 	3b10  RangeBooster N Adapter
 	3b11  Wireless N Adapter DWA-130
@@ -6824,6 +6844,8 @@
 07d3  Cyberdata Corp.
 07d7  GCC Technologies, Inc.
 07da  Arasan Chip Systems
+07de  Diamond Multimedia
+	2820  VC500 Video Capture Dongle
 07df  David Electronics Co., Ltd
 07e1  Ambient Technologies, Inc.
 	5201  V.90 Modem
@@ -7250,6 +7272,7 @@
 	3438  GemPC Key SmartCard Reader
 	3478  PinPad Smart Card Reader
 	4433  GemPC433-Swap
+	5501  GemProx-PU Contactless Smart Card Reader
 	ace0  UA HYBRID TOKEN
 08e7  Pan-International Wire & Cable
 08e8  Integrated Memory Logic
@@ -7540,6 +7563,7 @@
 	6534  TravelDrive
 	653c  Kingston DataTraveler 2.0 USB Stick (512M)
 	653d  Kingston DataTraveler 2.0 USB Stick (1GB)
+	653e  USB Flash Memory
 	6540  TransMemory USB Flash Memory
 0931  Harmonic Data Systems, Ltd
 0932  Crescentec Corp.
@@ -8595,6 +8619,8 @@
 	ffff  Bluetooth module with BlueCore in DFU mode
 0c25  Sampo Corp.
 	0310  Scream Cam
+0c27  RFIDeas, Inc
+	3bfa  pcProx Card Reader
 0c2e  Metro
 	0200  Metrologic Scanner
 0c35  Eagletron, Inc.
@@ -10188,7 +10214,7 @@
 	3207  DTV-DVB UDST7020BDA DVB-S Box(DVBS for MCE2005)
 	3208  DTV-DVB UDST7020BDA DVB-S Box(DVBS for MCE2005)
 	3209  DTV-DVB UDST7022BDA DVB-S Box(Without HID)
-	3211  DTV-DVB Hybrid Analog/Capture
+	3211  DTV-DVB Hybrid Analog/Capture / Pinnacle PCTV 310e
 	3212  DTV-DVB UDTT704C - DVBT/NTSC/PAL Driver(PCM4)
 	3213  DTV-DVB UDTT704D - DVBT/NTSC/PAL Driver (PCM4)
 	3214  DTV-DVB UDTT704F -(MiniCard) DVBT/NTSC/PAL Driver(Without HID)
@@ -10221,7 +10247,8 @@
 13fe  Kingston Technology Company Inc.
 	1a00  512MB/1GB Flash Drive
 	1a23  512MB Flash Drive
-	1d00  DataTraveler 2.0 1GB/4GB Flash Drive
+	1d00  DataTraveler 2.0 1GB/4GB Flash Drive / Patriot Xporter 4GB Flash Drive
+	1f00  DataTraveler 2.0 4GB Flash Drive
 1400  Axxion Group Corp.
 1402  Bowe Bell & Howell
 1403  Sitronix
@@ -10628,6 +10655,8 @@
 16f5  Futurelogic Inc.
 1706  BlueView Technologies, Inc.
 1707  ARTIMI
+170b  Swissonic
+	0011  MIDI-USB 1x1
 170d  Avnera
 1733  Cellink Technology Co., Ltd
 	0101  RF Wireless Optical Mouse OP-701
@@ -10639,8 +10668,17 @@
 1743  General Atomics
 174c  ASMedia Technology Inc.
 174f  Syntek
-	a311  1.3M Web Cam
-	a312  1.3M Web Cam
+	5a35  1.3MPixel Web Cam - Asus G1s
+	6a31  Web Cam - Asus A8J, F3S, F5R, VX2S, V1S
+	6a33  Web Cam - Asus F3SA, F9J, F9S
+	6a51  2.0MPixel Web Cam - Asus Z96J, Z96S, S96S
+	6a54  Web Cam
+	6d51  2.0Mpixel Web Cam - Eurocom D900C
+	8a12  0.3MPixel Web Cam - Packard Bell MX37-T-003
+	a311  1.3MPixel Web Cam - Asus A3A, A6J, A6K, A6M, A6R, A6T, A6V, A7T, A7sv, A7U
+	a312  1.3MPixel Web Cam
+	a821  Web Cam - Packard Bell BU45, PB Easynote MX66-208W
+	aa11  Web Cam
 1759  LucidPort Technology, Inc.
 1772  System Level Solutions, Inc.
 1781  Multiple Vendors
@@ -10717,7 +10755,9 @@
 1953  Ironkey Inc.
 1954  Radiient Technologies
 195d  Itron Technology iONE
+	7002  Libra-Q11 IR remote
 	7006  Libra-Q26 / 1.0 Remote
+	7777  Scorpius wireless keyboard
 1967  CASIO HITACHI Mobile Communications Co., Ltd.
 196b  Wispro Technology Inc.
 1970  Dane-Elec Corp. USA
@@ -10952,6 +10992,7 @@
 1d1f  Diostech Co., Ltd.
 1d20  SAMTACK INC.
 1d50  OpenMoko, Inc.
+1d5b  Smartronix, Inc.
 1d6b  Linux Foundation
 	0001  1.1 root hub
 	0002  2.0 root hub
@@ -11112,22 +11153,22 @@
 22b9  eTurboTouch Technology, Inc.
 22ba  Technology Innovation Holdings, Ltd
 2304  Pinnacle Systems, Inc. [hex]
-	0109  Pinnacle Studio PCTV USB (SECAM)
-	0110  Pinnacle Studio PCTV USB (PAL)
+	0109  Studio PCTV USB (SECAM)
+	0110  Studio PCTV USB (PAL)
 	0111  Miro PCTV USB
-	0112  Pinnacle Studio PCTV USB (NTSC) with FM radio
+	0112  Studio PCTV USB (NTSC) with FM radio
 	0201  Systems MovieBox Device
 	0204  MovieBox USB_B
 	0205  DVC 150B
 	0206  Systems MovieBox Deluxe Device
 	0207  Dazzle DVC90 Video Device
-	0208  Pinnacle Studio PCTV USB2
+	0208  Studio PCTV USB2
 	020e  PCTV 200e
 	020f  PCTV 400e BDA Device
-	0210  Pinnacle Studio PCTV USB (PAL) with FM radio
-	0212  Pinnacle Studio PCTV USB (NTSC)
-	0213  Systems 500-USB Device
-	0214  Pinnacle Studio PCTV USB (PAL) with FM radio
+	0210  Studio PCTV USB (PAL) with FM radio
+	0212  Studio PCTV USB (NTSC)
+	0213  500-USB Device
+	0214  Studio PCTV USB (PAL) with FM radio
 	0216  PCTV 60e
 	0219  PCTV 260e
 	021a  Dazzle DVC100 Audio Device
@@ -11138,14 +11179,15 @@
 	0222  PCTV Sat Pro BDA Device
 	0223  DazzleTV Sat BDA Device
 	0226  PCTV 330e
-	0227  Pinnacle TV for Mac, HD Stick
+	0227  PCTV for Mac, HD Stick
+	0228  PCTV DVB-T Flash Stick
 	022a  PCTV 160e
 	022b  PCTV 71e
 	0232  PCTV 170e
-	0300  Pinnacle Studio Linx Video input cable (NTSC)
-	0301  Pinnacle Studio Linx Video input cable (PAL)
+	0300  Studio Linx Video input cable (NTSC)
+	0301  Studio Linx Video input cable (PAL)
 	0302  Dazzle DVC120
-	0419  Pinnacle PCTV Bungee USB (PAL) with FM radio
+	0419  PCTV Bungee USB (PAL) with FM radio
 	061d  PCTV Deluxe (NTSC) Device
 	061e  PCTV Deluxe (PAL) Device
 2318  Shining Technologies, Inc. [hex]
@@ -11172,6 +11214,7 @@
 	913c  Argus DC-1730
 	9150  Mini Cam
 	9153  iClick 5X
+	915d  Cyberpix S-210S
 	930b  CCD Webcam(PC370R)
 	930c  CCD Webcam(PC370R)
 2899  Toptronic Industrial Co., Ltd
@@ -11340,6 +11383,7 @@
 	4220  Echo 1 Camera
 4348  WinChipHead
 	5523  USB->RS 232 adapter with Prolifec PL 2303 chipset
+	5537  13.56Mhz RFID Card Reader and Writer
 	5584  CH34x printer adapter cable
 4572  Shuttle, Inc.
 	4572  Shuttle PN31 Remote
