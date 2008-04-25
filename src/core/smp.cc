@@ -16,6 +16,8 @@
 
 __ID("@(#) $Id: smp.cc 1897 2007-10-02 13:29:47Z lyonel $");
 
+#if defined(__i386__)
+
 typedef unsigned long vm_offset_t;
 
 /* MP Floating Pointer Structure */
@@ -391,6 +393,15 @@ bool issmp(hwNode & n)
   close(pfd);
   return true;
 }
+
+#else
+
+bool issmp(hwNode & n)
+{
+  return false;
+}
+
+#endif
 
 bool scan_smp(hwNode & n)
 {
