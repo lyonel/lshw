@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.342 2008/04/21 07:48:55 gowdy Exp $
+# $Id: usb.ids,v 1.346 2008/04/23 13:51:46 gowdy Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -258,6 +258,7 @@
 	2402  photosmart 7700 series
 	2405  ScanJet 4070 Photosmart
 	2417  LaserJet 4250
+	2424  LP1965 19" Monitor Hub
 	2502  photosmart 7700 series
 	2505  ScanJet 3770
 	2512  Officejet Pro L7300
@@ -1014,10 +1015,11 @@
 0421  Nokia Mobile Phones
 	0018  6288 GSM Smartphone
 	0019  6288 GSM Smartphone (imaging mode)
+	001a  6288 GSM Smartphone (file transfer mode)
 	0024  5610 XpressMusic (Storage mode)
 	0025  5610 XpressMusic (PC-Suite mode)
 	0028  5610 XpressMusic (Imaging mode)
-	001a  6288 GSM Smartphone (file transfer mode)
+	0096  N810 Internet Tablet
 	0103  ADL Flashing Engine AVALON Parent
 	0104  ADL Re-Flashing Engine Parent
 	0105  E-61 (Firmware update mode)
@@ -2697,6 +2699,7 @@
 	268f  iR 5870C EUR
 	2691  iR7105
 	26a3  MF4100 Series
+	26b5  MF4200 Series
 	3041  PowerShot S10
 	3042  CanoScan FS4000US Film Scanner
 	3043  PowerShot S20
@@ -11214,7 +11217,7 @@
 	913c  Argus DC-1730
 	9150  Mini Cam
 	9153  iClick 5X
-	915d  Cyberpix S-210S
+	915d  Cyberpix S-210S / Little Tikes My Real Digital Camera
 	930b  CCD Webcam(PC370R)
 	930c  CCD Webcam(PC370R)
 2899  Toptronic Industrial Co., Ltd
@@ -11308,6 +11311,7 @@
 	4007  Axim Sync
 	4008  Axim Sync
 	4009  Axim Sync
+	4011  Axim X51v
 	5103  AIO Printer A940
 	5105  AIO Printer A920
 	5107  AIO Printer A960

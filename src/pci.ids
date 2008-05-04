@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Tue 2008-04-22 01:05:01
+#	Daily snapshot on Sun 2008-05-04 01:05:01
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -3512,7 +3512,7 @@
 	6312  SP202-based 2Gb Fibre Channel to PCI-X HBA
 	6322  SP212-based 2Gb Fibre Channel to PCI-X HBA
 	7220  IBA7220 InfiniBand HCA
-	8432  10GbE FCoE to PCI Express Converged Network Adapter (CNA)
+	8432  10GbE Converged Network Adapter (CNA)
 1078  Cyrix Corporation
 	0000  5510 [Grappa]
 	0001  PCI Master
@@ -12252,6 +12252,10 @@
 		8086 a05f  10 Gigabit XF SR Server Adapter
 		8086 a15f  10 Gigabit XF SR Server Adapter
 		8086 a16f  10 Gigabit XF SR Server Adapter
+	10c8  82598EB 10 Gigabit AT Network Connection
+		8086 a10c  10 Gigabit AT Server Adapter
+		8086 a11c  10 Gigabit AT Server Adapter
+		8086 a12c  10 Gigabit AT Server Adapter
 	10cb  82567V Gigabit Network Connection
 	10cc  82567LM-2 Gigabit Network Connection
 	10cd  82567LF-2 Gigabit Network Connection
@@ -13478,6 +13482,7 @@
 	269e  631xESB/632xESB IDE Controller
 		15d9 8680  X7DVL-E-O motherboard
 	2770  82945G/GZ/P/PL Memory Controller Hub
+		1028 01ad  OptiPlex GX620
 		107b 5048  E4500
 		8086 544e  DeskTop Board D945GTP
 	2771  82945G/GZ/P/PL PCI Express Root Port
@@ -13535,6 +13540,7 @@
 	27bd  82801GHM (ICH7-M DH) LPC Interface Bridge
 		1025 006c  9814 WKMI
 	27c0  82801GB/GR/GH (ICH7 Family) SATA IDE Controller
+		1028 01ad  OptiPlex GX620
 		1028 01df  PowerEdge SC440
 		1028 01e6  PowerEdge 860
 		107b 5048  E4500
@@ -13555,6 +13561,7 @@
 	27c6  82801GHM (ICH7-M DH) SATA RAID Controller
 	27c8  82801G (ICH7 Family) USB UHCI Controller #1
 		1025 006c  9814 WKMI
+		1028 01ad  OptiPlex GX620
 		1028 01df  PowerEdge SC440
 		1028 01e6  PowerEdge 860
 		103c 30a1  NC2400
@@ -13564,6 +13571,7 @@
 		8086 544e  DeskTop Board D945GTP
 	27c9  82801G (ICH7 Family) USB UHCI Controller #2
 		1025 006c  9814 WKMI
+		1028 01ad  OptiPlex GX620
 		1028 01df  PowerEdge SC440
 		1028 01e6  PowerEdge 860
 		103c 30a1  NC2400
@@ -13573,6 +13581,7 @@
 		8086 544e  DeskTop Board D945GTP
 	27ca  82801G (ICH7 Family) USB UHCI Controller #3
 		1025 006c  9814 WKMI
+		1028 01ad  OptiPlex GX620
 		1028 01df  PowerEdge SC440
 		1028 01e6  PowerEdge 860
 		103c 30a1  NC2400
@@ -13582,6 +13591,7 @@
 		8086 544e  DeskTop Board D945GTP
 	27cb  82801G (ICH7 Family) USB UHCI Controller #4
 		1025 006c  9814 WKMI
+		1028 01ad  OptiPlex GX620
 		1028 01df  PowerEdge SC440
 		103c 30a1  NC2400
 		103c 30a3  Compaq nw8440
@@ -13590,6 +13600,7 @@
 		8086 544e  DeskTop Board D945GTP
 	27cc  82801G (ICH7 Family) USB2 EHCI Controller
 		1025 006c  9814 WKMI
+		1028 01ad  OptiPlex GX620
 		1028 01df  PowerEdge SC440
 		1028 01e6  PowerEdge 860
 		103c 30a1  NC2400
@@ -13620,6 +13631,7 @@
 		8086 27d8  Lenovo 3000 N100 Audio (Intel HDA)
 	27da  82801G (ICH7 Family) SMBus Controller
 		1025 006c  9814 WKMI
+		1028 01ad  OptiPlex GX620
 		1028 01df  PowerEdge SC440
 		1028 01e6  PowerEdge 860
 		10f7 8338  Panasonic CF-Y5 laptop
@@ -13630,6 +13642,7 @@
 		8086 308d  DeskTop Board D945GTP
 	27dd  82801G (ICH7 Family) AC'97 Modem Controller
 	27de  82801G (ICH7 Family) AC'97 Audio Controller
+		1028 01ad  OptiPlex GX620
 		1462 7267  Realtek ALC883 Audio Controller
 	27df  82801G (ICH7 Family) IDE Controller
 		1028 01df  PowerEdge SC440
@@ -14296,6 +14309,7 @@
 		103c 0934  Compaq nw8240/nx8220
 		103c 12f6  Compaq nw8240/nx8220
 		8086 2721  Dell B130 laptop integrated WLAN
+		8086 2722  Dell Latitude D600
 		8086 2731  Samsung P35 integrated WLAN
 	4222  PRO/Wireless 3945ABG Network Connection
 		103c 135c  Compaq 6710b
