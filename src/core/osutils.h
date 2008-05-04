@@ -45,6 +45,7 @@ bool matches(const std::string & s, const std::string & pattern, int cflags=0);
 
 int selectdir(const struct dirent *d);
 int selectlink(const struct dirent *d);
+int selectfile(const struct dirent *d);
 
 unsigned short be_short(const void *);
 unsigned short le_short(const void *);

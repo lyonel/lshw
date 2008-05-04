@@ -41,6 +41,7 @@
 #include "ideraid.h"
 #include "mounts.h"
 #include "smp.h"
+#include "abi.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -55,6 +56,9 @@ bool scan_system(hwNode & system)
   {
     hwNode computer(::enabled("output:sanitize")?"computer":hostname,
       hw::system);
+
+    // are we compiled as 32- or 64-bit process ?
+    computer.setWidth(sysconf(_SC_LONG_BIT));
 
     status("DMI");
     if (enabled("dmi"))
@@ -132,6 +136,9 @@ bool scan_system(hwNode & system)
     status("CPUFreq");
     if (enabled("cpufreq"))
       scan_cpufreq(computer);
+    status("ABI");
+    if (enabled("abi"))
+      scan_abi(computer);
     status("");
 
     if (computer.getDescription() == "")
