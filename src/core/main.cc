@@ -57,9 +57,6 @@ bool scan_system(hwNode & system)
     hwNode computer(::enabled("output:sanitize")?"computer":hostname,
       hw::system);
 
-    // are we compiled as 32- or 64-bit process ?
-    computer.setWidth(sysconf(_SC_LONG_BIT));
-
     status("DMI");
     if (enabled("dmi"))
       scan_dmi(computer);
