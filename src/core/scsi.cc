@@ -440,7 +440,6 @@ static bool do_inquiry(int sg_fd,
 hwNode & node)
 {
   char rsp_buff[MX_ALLOC_LEN + 1];
-  char version[5];
   int k;
   unsigned int len;
 
@@ -459,6 +458,8 @@ hwNode & node)
     if (!do_inq(sg_fd, 0, 0, 0, rsp_buff, len, 1))
       return false;
   }
+  else
+    return false;
 
   if (len != ((unsigned int) rsp_buff[4] + 5))
     return false;                                 // twin INQUIRYs yield different lengths
@@ -474,9 +475,8 @@ hwNode & node)
   if (len > 32)
     node.setVersion(string(rsp_buff + 32, 4));
 
-  snprintf(version, sizeof(version), "%d", ansiversion);
   if (ansiversion)
-    node.setConfig("ansiversion", version);
+    node.setConfig("ansiversion", tostring(ansiversion));
 
   memset(rsp_buff, 0, sizeof(rsp_buff));
   if (do_inq(sg_fd, 0, 1, 0x80, rsp_buff, MX_ALLOC_LEN, 0))
@@ -614,28 +614,20 @@ int channel = -1,
 int target = -1,
 int lun = -1)
 {
-  char businfo[20];
   string result;
 
-  snprintf(businfo, sizeof(businfo), "scsi@%d", host);
-
-  result = string(businfo);
+  result = "scsi@" + tostring(host);
 
   if (channel >= 0)
   {
-    snprintf(businfo, sizeof(businfo), ":%d", channel);
-    result += string(businfo);
+    result += ":" + tostring(channel);
 
     if (target >= 0)
     {
-      snprintf(businfo, sizeof(businfo), ".%d", target);
-      result += string(businfo);
+      result += "." + tostring(target);
 
       if (lun >= 0)
-      {
-        snprintf(businfo, sizeof(businfo), ".%d", lun);
-        result += string(businfo);
-      }
+        result += "." + tostring(lun);
     }
   }
 
@@ -645,21 +637,13 @@ int lun = -1)
 
 static string host_logicalname(int i)
 {
-  char host[20];
-
-  snprintf(host, sizeof(host), "scsi%d", i);
-
-  return string(host);
+  return "scsi"+tostring(i);
 }
 
 
 static string host_kname(int i)                   // for sysfs
 {
-  char host[20];
-
-  snprintf(host, sizeof(host), "host%d", i);
-
-  return string(host);
+  return "host"+tostring(i);
 }
 
 
