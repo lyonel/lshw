@@ -468,7 +468,8 @@ bool scan_usb(hwNode & n)
             strcpy(mxpwr, "");
             if(sscanf(line.c_str(), "C:* #Ifs=%u Cfg#=%u Atr=%x MxPwr=%s", &numifs, &cfgnum, &atr, mxpwr)>0)
             {
-              device.setConfig("maxpower", mxpwr);
+              if(strcmp("0mA", mxpwr)!=0)
+                device.setConfig("maxpower", mxpwr);
             }
             break;
           case 'I':
