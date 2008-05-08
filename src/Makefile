@@ -65,16 +65,23 @@ $(PACKAGENAME).1: $(PACKAGENAME).sgml
 	docbook2man $<
 
 pci.ids:
+	rm -f pci.ids
 	wget http://pciids.sourceforge.net/pci.ids
 
 usb.ids:
+	rm -f usb.ids
 	wget http://www.linux-usb.org/usb.ids
 
 oui.txt:
+	rm -f oui.txt
 	wget http://standards.ieee.org/regauth/oui/oui.txt
 
 manuf.txt:
+	rm -f manuf.txt
 	wget http://www.ethereal.com/distribution/manuf.txt
+
+.PHONY: usb.ids pci.ids oui.txt manuf.txt
+refresh-data: usb.ids pci.ids
 
 install: all
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)

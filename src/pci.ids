@@ -11,7 +11,7 @@
 #	This file can be distributed under either the GNU General Public License
 #	(version 2 or higher) or the 3-clause BSD License.
 #
-#	Daily snapshot on Sun 2008-05-04 01:05:01
+#	Daily snapshot on Thu 2008-05-08 01:05:02
 #
 
 # Vendors, devices and subsystems. Please keep sorted.
@@ -13815,6 +13815,7 @@
 	2929  ICH9M/M-E SATA AHCI Controller
 	292c  ICH9M-E SATA RAID Controller
 	292d  ICH9M/M-E 2 port SATA IDE Controller
+	292e  ICH9M SATA IDE Controller
 	2930  82801I (ICH9 Family) SMBus Controller
 		1028 0211  Optiplex 755
 	2932  82801I (ICH9 Family) Thermal Subsystem
