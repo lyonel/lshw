@@ -886,6 +886,20 @@ string hwNode::getCapabilities() const
 }
 
 
+vector < string > hwNode::getCapabilitiesList() const
+{
+  vector < string > result;
+
+  if (!This)
+    return result;
+
+  for (unsigned int i = 0; i < This->features.size(); i++)
+    result.push_back(This->features[i]);
+
+  return result;
+}
+
+
 string hwNode::getCapabilityDescription(const string & feature) const
 {
   string featureid = cleanupId(feature);

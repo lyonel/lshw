@@ -88,12 +88,12 @@ int level)
   if (html && (level == 0))
   {
     cout <<
-      "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">" <<
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">" <<
       endl;
-    cout << "<html>" << endl;
+    cout << "<html xmlns=\"http://www.w3.org/1999/xhtml\">" << endl;
     cout << "<head>" << endl;
     cout << "<meta name=\"generator\" " <<
-      " content=\"lshw-" << getpackageversion() << "\">" << endl;
+      " content=\"lshw-" << getpackageversion() << "\" />" << endl;
     cout << "<style type=\"text/css\">" << endl;
     cout << "  .first {font-weight: bold; margin-left: none; padding-right: 1em;vertical-align: top; }" << endl;
     cout << "  .second {padding-left: 1em; width: 100%; vertical-align: center; }" << endl;
@@ -463,10 +463,17 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << "capabilities: ";
       if (html)
+      {
+        vector < string > capabilities = node.getCapabilitiesList();
         cout << "</td><td class=\"second\">";
-      cout << node.getCapabilities();
-      if (html)
+        for(unsigned i=0; i<capabilities.size(); i++)
+        {
+          cout << "<dfn title=\"" << escape(node.getCapabilityDescription(capabilities[i])) << "\">" << capabilities[i] << "</dfn> ";
+        }
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getCapabilities();
       cout << endl;
     }
 

@@ -171,6 +171,7 @@ class hwNode
     void addCapability(const string & feature, const string & description = "");
     void describeCapability(const string & feature, const string & description);
     string getCapabilities() const;
+    vector<string> getCapabilitiesList() const;
     string getCapabilityDescription(const string & feature) const;
 
     void attractHandle(const string & handle);
