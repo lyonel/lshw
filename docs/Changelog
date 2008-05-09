@@ -1,4 +1,13 @@
-* lshw B.02.12
+* lshw B.02.13
+  fix bug #402: properly detect 64 bit systems (even when compiled for i386)
+  fix bug #401: SMP-related crash on IA-64
+  fix bug #399: portability problem on Arch Linux
+  fix bug #386: portability problem (crash) on Sparc
+  fix bug #340: hang on certain PCI devices
+  fix bug #105: Debian bug 456896
+  code cleanup
+  updated data files
+* lshw B.02.12.01
   fix problem with log lines in `usb.ids` (#321)
 * lshw B.02.12
   be more careful about invalid UTF-8 strings (some DMI implementations return garbage) (#142)
