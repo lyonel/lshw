@@ -8,6 +8,7 @@
 #include "abi.h"
 #include "osutils.h"
 #include <unistd.h>
+#include <stdlib.h>
 #include <dirent.h>
 
 __ID("@(#) $Id: mem.cc 1352 2006-05-27 23:54:13Z ezix $");
