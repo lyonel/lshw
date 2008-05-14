@@ -100,8 +100,8 @@ int level)
     cout << "  .id {font-family: monospace;}" << endl;
     cout << "  .indented {margin-left: 2em; border-left: dotted thin #dde; padding-bottom: 1em; }" << endl;
     cout << "  .node {border: solid thin #ffcc66; padding: 1em; background: #ffffcc; }" << endl;
-    cout << "  .node-unclaimed {border: dotted thin #c3c3c3; padding: 1em; background: #fafafa; }" << endl;
-    cout << "  .node-disabled {border: solid thin #f55; padding: 1em; background: #fee; }" << endl;
+    cout << "  .node-unclaimed {border: dotted thin #c3c3c3; padding: 1em; background: #fafafa; color: red; }" << endl;
+    cout << "  .node-disabled {border: solid thin #f55; padding: 1em; background: #fee; color: gray; }" << endl;
     cout << "</style>" << endl;
 
     cout << "<title>";
@@ -133,11 +133,7 @@ int level)
 
     if (html)
       cout << " <thead><tr><td class=\"first\">id:</td><td class=\"second\"><div class=\"id\">";
-    if (html && (!node.claimed() || node.disabled()))
-      cout << "<font color=\"gray\">";
     cout << node.getId();
-    if (html && (!node.claimed() || node.disabled()))
-      cout << "</font>";
     if (html)
       cout << "</div>";
     else
