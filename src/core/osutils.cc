@@ -292,7 +292,7 @@ string get_devid(const string & name)
   {
     char devid[80];
 
-    snprintf(devid, sizeof(devid), "%ud:%ud", (unsigned int)MAJOR(buf.st_rdev), (unsigned int)MINOR(buf.st_rdev));
+    snprintf(devid, sizeof(devid), "%u:%u", (unsigned int)MAJOR(buf.st_rdev), (unsigned int)MINOR(buf.st_rdev));
     return string(devid);
   }
   else
