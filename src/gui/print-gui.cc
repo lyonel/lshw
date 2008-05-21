@@ -200,6 +200,22 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
 
   gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 
+  config.clear();
+  config = node.getResources(": ");
+
+  if (config.size() > 0)
+  {
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "resources", -1, "bold", NULL);
+    gtk_text_buffer_insert (buffer, &iter, ":", -1);
+    for(unsigned j=0; j<config.size(); j++)
+    {
+      gtk_text_buffer_insert (buffer, &iter, "\n\t", -1);
+      gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, config[j].c_str(), -1, "italic", NULL);
+    }
+  }
+
+  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+
   if(!node.claimed())
     inserticon(LSHW_STOCK_DISABLED, "this device hasn't been claimed\n", buffer, iter, textview);
 
