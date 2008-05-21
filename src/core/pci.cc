@@ -1134,7 +1134,7 @@ bool scan_pci(hwNode & n)
           {
             long irq = get_number(string(devices[i]->d_name)+"/irq", -1);
             if(irq>=0)
-              device->setConfig("irq", irq);
+              device->addResource(hw::resource::irq(irq));
           }
           if(drivername)
             free(drivername);
