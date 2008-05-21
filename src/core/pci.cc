@@ -1130,6 +1130,12 @@ bool scan_pci(hwNode & n)
           device->setConfig("driver", basename(drivername));
           if(exists(string(devices[i]->d_name)+"/driver/module"))
             device->setConfig("module", basename(modulename));
+          if(exists(string(devices[i]->d_name)+"/irq"))
+          {
+            long irq = get_number(string(devices[i]->d_name)+"/irq", -1);
+            if(irq>=0)
+              device->setConfig("irq", irq);
+          }
           if(drivername)
             free(drivername);
           device->claim();

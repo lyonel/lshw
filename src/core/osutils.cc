@@ -156,6 +156,14 @@ const string & def)
   return result;
 }
 
+long get_number(const string & path, long def)
+{
+  string s = get_string(path, "");
+
+  if(s=="") return def;
+
+  return strtol(s.c_str(), NULL, 10);
+}
 
 int selectdir(const struct dirent *d)
 {

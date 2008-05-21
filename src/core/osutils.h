@@ -20,6 +20,7 @@ size_t splitlines(const std::string & s,
 std::vector < std::string > &lines,
 char separator = '\n');
 std::string get_string(const std::string & path, const std::string & def = "");
+long get_number(const std::string & path, long def = 0);
 
 std::string find_deventry(mode_t mode, dev_t device);
 std::string get_devid(const std::string &);
