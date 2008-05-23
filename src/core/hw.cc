@@ -1822,7 +1822,7 @@ string resource::asString(const string & separator) const
       break;
     case hw::ioport:
       result = "ioport" + separator;
-      snprintf(buffer, sizeof(buffer), "%lx-%lx", This->ul1, This->ul2);
+      snprintf(buffer, sizeof(buffer), "%lx(size=%ld)", This->ul1, This->ul2 - This->ul1 + 1);
       break;
     default:
       result = "(unknown)";
