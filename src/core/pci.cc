@@ -1122,24 +1122,54 @@ bool scan_pci(hwNode & n)
 
       if(device)
       {
+        string resourcename = string(devices[i]->d_name)+"/resource";
+
         device->setBusInfo(devices[i]->d_name);
         if(exists(string(devices[i]->d_name)+"/driver"))
         {
-          char *drivername = strdup(readlink(string(devices[i]->d_name)+"/driver").c_str());
-          char *modulename = strdup(readlink(string(devices[i]->d_name)+"/driver/module").c_str());
-          device->setConfig("driver", basename(drivername));
-          if(exists(string(devices[i]->d_name)+"/driver/module"))
-            device->setConfig("module", basename(modulename));
+          string drivername = readlink(string(devices[i]->d_name)+"/driver");
+          string modulename = readlink(string(devices[i]->d_name)+"/driver/module");
+
+          device->setConfig("driver", basename(drivername.c_str()));
+          if(exists(modulename))
+            device->setConfig("module", basename(modulename.c_str()));
           if(exists(string(devices[i]->d_name)+"/irq"))
           {
             long irq = get_number(string(devices[i]->d_name)+"/irq", -1);
             if(irq>=0)
               device->addResource(hw::resource::irq(irq));
           }
-          if(drivername)
-            free(drivername);
           device->claim();
         }
+
+        if(exists(resourcename))
+        {
+            FILE*resource = fopen(resourcename.c_str(), "r");
+
+            if(resource)
+            {
+              while(!feof(resource))
+              {
+                unsigned long start, end, flags;
+
+                start = end = flags = 0;
+
+                if(fscanf(resource, "%lx %lx %lx", &start, &end, &flags) != 3)
+                  break;
+
+                if(flags & 0x101)
+                  device->addResource(hw::resource::ioport(start, end));
+                else
+                if(flags & 0x100)
+                  device->addResource(hw::resource::iomem(start, end));
+                else
+                if(flags & 0x200)
+                  device->addResource(hw::resource::mem(start, end));
+              }
+              fclose(resource);
+            }
+        }
+
         result = true;
       }
 
