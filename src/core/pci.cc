@@ -369,7 +369,7 @@ static const char *get_class_name(unsigned int c)
     case PCI_BASE_CLASS_COMMUNICATION:
       return "communication";
     case PCI_BASE_CLASS_SYSTEM:
-      return "system";
+      return "generic";
     case PCI_BASE_CLASS_INPUT:
       return "input";
     case PCI_BASE_CLASS_DOCKING:
@@ -881,7 +881,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
               deviceicon = "modem";
             break;
           case PCI_BASE_CLASS_SYSTEM:
-            deviceclass = hw::system;
+            deviceclass = hw::generic;
             break;
           case PCI_BASE_CLASS_INPUT:
             deviceclass = hw::input;
