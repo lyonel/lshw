@@ -1133,6 +1133,12 @@ bool scan_pci(hwNode & n)
           device->setConfig("driver", basename(drivername.c_str()));
           if(exists(modulename))
             device->setConfig("module", basename(modulename.c_str()));
+
+          if(exists(string(devices[i]->d_name)+"/rom"))
+          {
+            device->addCapability("rom", "extension ROM");
+          }
+
           if(exists(string(devices[i]->d_name)+"/irq"))
           {
             long irq = get_number(string(devices[i]->d_name)+"/irq", -1);
