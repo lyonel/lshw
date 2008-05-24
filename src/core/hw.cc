@@ -1645,6 +1645,7 @@ struct hw::resource_i
   unsigned int ui1;
   unsigned long ul1, ul2;
   unsigned long long ull1, ull2;
+  bool b;
 
   int refcount;
 };
@@ -1746,7 +1747,7 @@ unsigned long end)
 
 
 resource resource::mem(unsigned long long start,
-unsigned long long end)
+unsigned long long end, bool prefetchable)
 {
   resource r;
 
@@ -1756,6 +1757,7 @@ unsigned long long end)
   r.This->type = hw::mem;
   r.This->ull1 = start;
   r.This->ull2 = end;
+  r.This->b = prefetchable;
 
   return r;
 }
@@ -1819,6 +1821,7 @@ string resource::asString(const string & separator) const
     case hw::mem:
       result = "memory" + separator;
       snprintf(buffer, sizeof(buffer), "%llx-%llx", This->ull1, This->ull2);
+      if(This->b) strcat(buffer, "(prefetchable)");
       break;
     case hw::ioport:
       result = "ioport" + separator;

@@ -1164,7 +1164,7 @@ bool scan_pci(hwNode & n)
                   device->addResource(hw::resource::iomem(start, end));
                 else
                 if(flags & 0x200)
-                  device->addResource(hw::resource::mem(start, end));
+                  device->addResource(hw::resource::mem(start, end, flags & 0x1000));
               }
               fclose(resource);
             }

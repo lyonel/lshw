@@ -52,7 +52,7 @@ namespace hw
 
       static resource iomem(unsigned long long, unsigned long long);
       static resource ioport(unsigned long, unsigned long);
-      static resource mem(unsigned long long, unsigned long long);
+      static resource mem(unsigned long long, unsigned long long, bool prefetchable = false);
       static resource irq(unsigned int);
       static resource dma(unsigned int);
 
