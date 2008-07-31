@@ -513,8 +513,9 @@ static char *dmi_memory_device_form_factor(u8 num)
     " RIMM",
     " SODIMM",
     " SRIMM",
+    " FB-DIMM",
   };
-  if (num > 0x0E)
+  if (num > 0x0F)
     return "";
   return memory_device_form_factor[num];
 }
