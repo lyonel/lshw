@@ -1121,7 +1121,11 @@ int dmiversionmin)
             	newnode.disable();
           }
           else
+          {
+            newnode.setBusInfo("");	// blank businfo to make sure further detections can't confuse this empty CPU slot with a real CPU
             newnode.setDescription(newnode.getDescription() + " [empty]");
+            newnode.disable();
+          }
 
           newnode.setHandle(handle);
 
@@ -1250,9 +1254,8 @@ int dmiversionmin)
           newnode.setHandle(handle);
           newnode.setPhysId(dm->handle);
           newnode.claim();
-          if(newnode.getSize()==0)
-            newnode.disable();
-          hardwarenode->addChild(newnode);
+          if(newnode.getSize()!=0)
+            hardwarenode->addChild(newnode);
         }
         break;
       case 8:
