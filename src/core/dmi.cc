@@ -543,8 +543,10 @@ static char *dmi_memory_device_type(u8 num)
     " SGRAM",
     " RDRAM",
     " DDR",                                       /* 0x12 */
+    " DDR2",                                      /* 0x13 */
+    " DDR2 FB-DIMM",                              /* 0x14 */
   };
-  if (num > 0x12)
+  if (num > 0x14)
     return "";
   return memory_device_type[num];
 }
