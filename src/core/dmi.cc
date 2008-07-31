@@ -1099,23 +1099,29 @@ int dmiversionmin)
                 string(dmi_string(dm, data[0x22])) + ")");
           }
 
-// external clock
-          u = data[0x13] << 8 | data[0x12];
-          newnode.setClock(u * 1000000);
-// maximum speed
-          u = data[0x15] << 8 | data[0x14];
-          newnode.setCapacity(u * 1000000);
-// current speed
-          u = data[0x17] << 8 | data[0x16];
-          newnode.setSize(u * 1000000);
+// CPU socket populated ?
+          if (data[0x18] & 0x40)
+          {
+	// external clock
+          	u = data[0x13] << 8 | data[0x12];
+          	newnode.setClock(u * 1000000);
+	// maximum speed
+          	u = data[0x15] << 8 | data[0x14];
+          	newnode.setCapacity(u * 1000000);
+	// current speed
+          	u = data[0x17] << 8 | data[0x16];
+          	newnode.setSize(u * 1000000);
 
-          if (newnode.getCapacity() < newnode.getSize())
-            newnode.setCapacity(0);
+          	if (newnode.getCapacity() < newnode.getSize())
+            	newnode.setCapacity(0);
 
-// CPU enabled/disabled by BIOS?
-          u = data[0x18] & 0x07;
-          if ((u == 2) || (u == 3) || (u == 4))
-            newnode.disable();
+	// CPU enabled/disabled by BIOS?
+          	u = data[0x18] & 0x07;
+          	if ((u == 2) || (u == 3) || (u == 4))
+            	newnode.disable();
+          }
+          else
+            newnode.setDescription(newnode.getDescription() + " [empty]");
 
           newnode.setHandle(handle);
 
