@@ -1597,6 +1597,17 @@ int dmiversionmin)
         break;
       case 30:
 // Out-of-Band Remote Access
+        if (dm->length < 0x06)
+          break;
+        else
+        {
+          hwNode oob("remoteaccess", hw::system);
+
+          oob.setVendor(dmi_string(dm, data[0x04]));
+          if(data[0x05] & 0x2) oob.addCapability("outbound", "make outbound connections");
+          if(data[0x05] & 0x1) oob.addCapability("inbound", "receive inbound connections");
+          node.addChild(oob);
+        }
         break;
       case 31:
 // Boot Integrity Services Entry Point
@@ -1627,6 +1638,20 @@ int dmiversionmin)
         break;
       case 39:
 // Power Supply
+        if (dm->length < 0x15)
+          break;
+        else
+        {
+          hwNode power("power", hw::power);
+
+          power.setDescription(dmi_string(dm, data[0x06]));
+          power.setVendor(dmi_string(dm, data[0x07]));
+          power.setSerial(dmi_string(dm, data[0x08]));
+          power.setProduct(dmi_string(dm, data[0x0a]));
+          power.setVersion(dmi_string(dm, data[0x0b]));
+          power.setCapacity(data[0x0c] + 256*data[0x0d]));
+          node.addChild(power);
+        }
         break;
       case 126:
 // Inactive
