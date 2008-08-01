@@ -1649,7 +1649,7 @@ int dmiversionmin)
           power.setSerial(dmi_string(dm, data[0x08]));
           power.setProduct(dmi_string(dm, data[0x0a]));
           power.setVersion(dmi_string(dm, data[0x0b]));
-          power.setCapacity(data[0x0c] + 256*data[0x0d]));
+          power.setCapacity(data[0x0c] + 256*data[0x0d]);
           node.addChild(power);
         }
         break;
