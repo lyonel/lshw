@@ -421,7 +421,6 @@ string spaces(unsigned int count, const string & space)
   return result;
 }
 
-
 string escape(const string & s)
 {
   string result = "";
@@ -448,6 +447,20 @@ string escape(const string & s)
   return result;
 }
 
+string escapecomment(const string & s)
+{
+  string result = "";
+  char previous = 0;
+
+  for (unsigned int i = 0; i < s.length(); i++)
+    if(!(previous == '-' && s[i] == '-'))
+    {
+      result += s[i];
+      previous = s[i];
+    }
+
+  return result;
+}
 
 unsigned short be_short(const void * from)
 {
