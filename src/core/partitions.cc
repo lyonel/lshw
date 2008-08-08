@@ -1155,6 +1155,7 @@ static bool detect_lif(source & s, hwNode & n)
   ipl_length = be_long(buffer+244);               // size of boot code
   ipl_entry = be_long(buffer+248);                // boot code entry point
 
+#if 0
   fprintf(stderr, "system: %x\n", be_short(buffer+12));
   fprintf(stderr, "start of directory: %ld\n", dir_start);
   fprintf(stderr, "length of directory: %ld\n", dir_length);
@@ -1165,6 +1166,7 @@ static bool detect_lif(source & s, hwNode & n)
   fprintf(stderr, "ipl addr: %ld\n", ipl_addr);
   fprintf(stderr, "ipl length: %ld\n", ipl_length);
   fprintf(stderr, "ipl entry point: %lx\n", ipl_entry);
+#endif
 
   if((ipl_addr!=0) && (ipl_length>0)) n.addCapability("bootable", "Bootable disk");
 
