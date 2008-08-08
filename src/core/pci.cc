@@ -1156,11 +1156,11 @@ bool scan_pci(hwNode & n)
             {
               while(!feof(resource))
               {
-                unsigned long start, end, flags;
+                uint64_t start, end, flags;
 
                 start = end = flags = 0;
 
-                if(fscanf(resource, "%lx %lx %lx", &start, &end, &flags) != 3)
+                if(fscanf(resource, "%llx %llx %llx", &start, &end, &flags) != 3)
                   break;
 
                 if(flags & 0x101)
