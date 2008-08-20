@@ -57,7 +57,7 @@ static struct maptypes map_types[] =
   {"solaris-x86", "Solaris disklabel", NULL},
   {"solaris-sparc", "Solaris disklabel", NULL},
   {"raid", "Linux RAID", NULL},
-  {"lvm", "Linux LVM", NULL},
+  {"lvm", "Linux LVM Physical Volume", NULL},
   {"atari", "Atari ST", NULL},
   {"amiga", "Amiga", NULL},
   { NULL, NULL, NULL }
@@ -890,7 +890,7 @@ static bool detect_gpt(source & s, hwNode & n)
       else
       if(p.PartitionTypeGUID == PARTITION_LVM_GUID)
       {
-        partition.setDescription("Linux LVM physical volume");
+        partition.setDescription("Linux LVM Physical Volume");
         partition.addCapability("multi");
       }
       else
