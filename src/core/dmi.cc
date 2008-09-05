@@ -462,9 +462,9 @@ u8 cachetype = 0)
 }
 
 
-static char *dmi_memory_array_location(u8 num)
+static const char *dmi_memory_array_location(u8 num)
 {
-  static char *memory_array_location[] =
+  static const char *memory_array_location[] =
   {
     "",                                           /* 0x00 */
     "",
@@ -478,7 +478,7 @@ static char *dmi_memory_array_location(u8 num)
     "Proprietary add-on card",
     "NuBus",                                      /* 0x0A , master.mif says 16 */
   };
-  static char *jp_memory_array_location[] =
+  static const char *jp_memory_array_location[] =
   {
     "PC-98/C20 add-on card",                      /* 0xA0 */
     "PC-98/C24 add-on card",
@@ -494,9 +494,9 @@ static char *dmi_memory_array_location(u8 num)
 }
 
 
-static char *dmi_memory_device_form_factor(u8 num)
+static const char *dmi_memory_device_form_factor(u8 num)
 {
-  static char *memory_device_form_factor[] =
+  static const char *memory_device_form_factor[] =
   {
     "",
     "",
@@ -521,9 +521,9 @@ static char *dmi_memory_device_form_factor(u8 num)
 }
 
 
-static char *dmi_memory_device_type(u8 num)
+static const char *dmi_memory_device_type(u8 num)
 {
-  static char *memory_device_type[] =
+  static const char *memory_device_type[] =
   {
     "",                                           /* 0x00 */
     "",
