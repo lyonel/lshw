@@ -368,7 +368,7 @@ hp_cpu_type_mask_list[] =
   }
 };
 
-static char *cpu_name_version[][2] =
+static const char *cpu_name_version[][2] =
 {
   { "PA7000 (PCX)",     "1.0" },
   { "PA7000 (PCX-S)",   "1.1a" },
