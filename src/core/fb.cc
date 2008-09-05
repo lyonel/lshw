@@ -167,7 +167,7 @@ struct fb_var_screeninfo
   u_int32_t reserved[6];                          /* Reserved for future compatibility */
 };
 
-static int lookup_dev(char *name)
+static int lookup_dev(const char *name)
 {
   FILE *f;
   int n;
@@ -192,11 +192,12 @@ static int lookup_dev(char *name)
 
 static int open_dev(dev_t dev)
 {
-  static char *paths[] =
+  static const char *paths[] =
   {
     "/var/run", "/dev", "/tmp", NULL
   };
-  char **p, fn[64];
+  char const **p;
+  char fn[64];
   int fd;
 
   for (p = paths; *p; p++)

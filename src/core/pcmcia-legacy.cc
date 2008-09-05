@@ -844,7 +844,7 @@ ds_ioctl_arg_t;
 
 #define MAX_SOCK 8
 
-static int lookup_dev(char *name)
+static int lookup_dev(const char *name)
 {
   FILE *f;
   int n;

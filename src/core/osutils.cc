@@ -535,11 +535,12 @@ unsigned long long le_longlong(const void * from)
 
 int open_dev(dev_t dev, const string & name)
 {
-  static char *paths[] =
+  static const char *paths[] =
   {
     "/usr/tmp", "/var/tmp", "/var/run", "/dev", "/tmp", NULL
   };
-  char **p, fn[64];
+  char const **p;
+  char fn[64];
   int fd;
 
   for (p = paths; *p; p++)

@@ -86,7 +86,7 @@ uint32_t calc_crc(uint32_t initial, void *buf, uint32_t size)
 }
 
 
-static char *id = "@(#) $Id$";
+static const char *id = "@(#) $Id$";
 
 static string uuid(void * s)
 {

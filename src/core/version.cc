@@ -49,7 +49,7 @@ const char *getpackageversion()
   if(lastslash)
     result = lastslash+1;
   else
-    result = "unknown";
+    return "unknown";
 
   return result;
 }
