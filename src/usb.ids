@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.369 2008/08/13 20:50:43 gowdy Exp $
+# $Id: usb.ids,v 1.370 2008/08/29 19:13:24 gowdy Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -33,7 +33,7 @@
 0386  LTS
 	0001  PSX for USB Converter
 03e8  EndPoints, Inc.
-	0004  SE401 WebCam
+	0004  SE401 Webcam
 	0008  101 Ethernet [klsi]
 	0015  USB ATAPI Enclosure
 	2123  SiPix StyleCam Deluxe
@@ -41,6 +41,7 @@
 03e9  Thesys Microelectronics
 03ea  Data Broadcasting Corp.
 03eb  Atmel Corp.
+	0902  4-Port Hub
 	2002  Mass Storage Device
 	2015  at90usbkey sample firmware (HID keyboard)
 	2018  at90usbkey sample firmware (CDC ACM)
@@ -55,8 +56,8 @@
 	2ffb  at90usb AVR DFU bootloader
 	2ffd  at89c5130/c5131 DFU bootloader
 	2fff  at89c5132/c51snd1c DFU bootloader
-	3301  at43301 4-port Hub
-	3312  4-port Hub
+	3301  at43301 4-Port Hub
+	3312  4-Port Hub
 	5601  at76c510 Prism-II 802.11b Access Point
 	5603  Cisco 7920 WiFi IP Phone
 	6124  at91sam SAMBA bootloader
@@ -542,6 +543,7 @@
 	5462  M5462 IDE Controller
 	5602  Video Camera Controller
 	5603  USB 2.0 Q-tec Webcam 300
+	5606  USB 2.0 Camera
 	5621  USB 2.0 Storage Device
 	5623  VistaScan Astra 3600
 	5627  Welland ME-740PS USB2 3.5" Power Saving Enclosure
@@ -630,6 +632,7 @@
 0406  Fujitsu-ICL Computers
 0407  Fujitsu Personal Systems, Inc.
 0408  Quanta Computer, Inc.
+	030c  HP Webcam
 0409  NEC Corp.
 	0011  PC98 Series Layout Keyboard Mouse
 	0012  ATerm IT75DSU ISDN TA
@@ -790,6 +793,7 @@
 	05c3  Digital Camera
 	05c4  Digital Camera
 	05c5  Digital Camera
+	1001  EasyShare SV811 Digital Picture Frame
 	4000  InkJet Color Printer
 	410d  EasyShare G600 Printer Dock
 	5010  Wireless Adapter
@@ -951,32 +955,35 @@
 	4013  PC-Cam 750
 	4015  CardCam Value
 	4016  CardCam
-	4017  WebCam Mobile
-	4018  WebCam Vista
+	4017  WebCam Mobile [PD1090]
+	4018  WebCam Vista [PD1100]
 	4019  Audio Device
+	401a  WebCam Vista [PD1100]
 	401c  WebCam NX [PD1110]
 	401d  WebCam NX Ultra
 	401e  WebCam NX Pro
-	401f  Webcam Notebook
+	401f  WebCam Notebook [PD1171]
 	4020  WebCam NX
 	4021  WebCam NX Ultra
 	4022  WebCam NX Pro
 	4028  Vista Plus cam [VF0090]
+	4029  WebCam Live!
 	402f  DC-CAM 3000Z
 	4034  WebCam Instant
 	4035  WebCam Instant
 	4036  Webcam Live!/Live! Pro
 	4037  WebCam Live!
-	4038  ORITE CCD Webcam(PC370R)
+	4038  ORITE CCD Webcam [PC370R]
 	4039  WebCam Live! Effects
 	403a  WebCam NX Pro 2
+	403b  Creative Webcam Vista [VF0010]
 	403c  WebCam Live! Ultra
 	403d  WebCam Notebook Ultra
 	403e  WebCam Vista Plus
 	4041  WebCam Live! Motion
 	4045  Live! Cam Voice
 	4049  Live! Cam Voice
-	4051  Live! Cam Notebook Pro
+	4051  Live! Cam Notebook Pro [VF0250]
 	4052  Live! Cam Vista IM
 	4053  Live! Cam Video IM
 	4054  Live! Cam Video IM
@@ -984,6 +991,7 @@
 	4056  Live! Cam Video IM Pro
 	4057  Live! Cam Optia
 	4058  Live! Cam Optia AF
+	4063  Live! Cam Video IM Pro
 	4068  WebCam Live! Notebook
 	4100  Nomad Jukebox 2
 	4101  Nomad Jukebox 3
@@ -1458,16 +1466,19 @@
 	2021  ColorPage-SF600
 	301d  Genius MaxFire MiniPad
 	6001  GF3000F Ethernet Adapter
-	7004  VideoCAM Express
+	7004  VideoCAM Express V2
+	7006  Dsc 1.3 Smart Camera Device
 	7007  VideoCAM Web
 	7009  G-Shot G312 Still Camera Device
 	700c  VideoCAM Web V3
 	700d  G-Shot G511 Composite Device
-	700f  VideoCAM Web V4
+	700f  VideoCAM Web
 	7012  WebCAM USB2.0
 	7014  VideoCAM Live V3
 	701c  G-Shot G512 Still Camera
 	7020  Sim 321C
+	7025  Eye 311Q Camera Device
+	705a  Asus USB2.0 Webcam
 0459  Adobe Systems, Inc.
 045a  SONICblue, Inc.
 	07da  Supra Express 56K modem
@@ -1567,9 +1578,9 @@
 	00db  Natural Ergonomic Keyboard 4000 V1.0
 	00e1  Wireless Laser Mouse 6000 Reciever
 	00f4  LifeCam VX-6000 (SN9C20x + OV9650)
-	00f5  LifeCam VX-3000.
-	00f7  LifeCam VX-1000.
-	00f8  LifeCam NX-6000.
+	00f5  LifeCam VX-3000
+	00f7  LifeCam VX-1000
+	00f8  LifeCam NX-6000
 	0202  Xbox Controller
 	0280  XBox Device
 	0284  Xbox DVD Playback Kit
@@ -1751,12 +1762,12 @@
 	0392  Medion/Lifetec/Tevion/Cytron MD 6190
 	03a8  9420M
 	0813  IBM UltraPort Camera
-	0815  Micro Innovations WebCam
+	0815  Micro Innovations IC200 Webcam
 	0819  Fujifilm IX-30 Camera [webcam mode]
 	081a  Fujifilm IX-30 Camera [storage mode]
 	081c  Elitegroup ECS-C11 Camera
 	081d  Elitegroup ECS-C11 Storage
-	0a00  Web Cam 320
+	0a00  Micro Innovations Web Cam 320
 	4d01  Comfort Keyboard
 	4d02  Mouse-in-a-Box
 	4d03  Kensington Mouse-in-a-box
@@ -1821,7 +1832,7 @@
 	08aa  Labtec Notebooks
 	08ac  QuickCam Cool
 	08ad  QuickCam Communicate STX
-	08ae  Quickcam for Notebooks
+	08ae  QuickCam for Notebooks
 	08af  QuickCam Easy/Cool
 	08b0  QuickCam 3000 Pro [pwc]
 	08b1  QuickCam Notebook Pro
@@ -1837,6 +1848,7 @@
 	08c3  Camera (Notebooks Pro)
 	08c5  QuickCam Pro 5000
 	08c6  QuickCam for DELL Notebooks
+	08c7  QuickCam OEM Cisco VT Camera II
 	08c9  QuickCam Ultra Vision
 	08ca  Mic (Fusion)
 	08cb  Mic (Notebooks Pro)
@@ -1850,23 +1862,23 @@
 	08da  QuickCam Messanger
 	08dd  QuickCam for Notebooks
 	08e0  QuickCam Express
-	08e1  Labtec WebCam
+	08e1  Labtec Webcam
 	08f0  QuickCam Messenger
 	08f1  QuickCam Express
 	08f2  Microphone (Messenger)
 	08f3  QuickCam Express
-	08f4  Labtec WebCam
+	08f4  Labtec Webcam
 	08f5  QuickCam Messenger Communicate
-	08f6  Quickcam Messenger Plus
+	08f6  QuickCam Messenger Plus
 	0900  ClickSmart 310
 	0901  ClickSmart 510
 	0903  ClickSmart 820
 	0905  ClickSmart 820
 	0910  QuickCam Cordless
 	0920  QuickCam Express
-	0921  Labtec WebCam
+	0921  Labtec Webcam
 	0922  QuickCam Live
-	0928  Quickcam Express
+	0928  QuickCam Express
 	0929  Labtec WebCam Pro
 	092a  QuickCam for Notebooks
 	092b  Labtec WebCam Plus
@@ -1881,7 +1893,12 @@
 	0991  QuickCam Pro for Notebooks
 	0992  QuickCam Communicate Deluxe
 	0994  QuickCam Orbit/Sphere AF
-	09b0  OrbiCam
+	09a1  QuickCam Communicate MP/S5500
+	09a2  QuickCam Communicate Deluxe/S7500
+	09a4  QuickCam E 3500
+	09a6  QuickCam Vision Pro
+	09b0  Acer OrbiCam
+	09b2  Fujitsu Webcam
 	09c0  QuickCam for Dell Notebooks Mic
 	09c1  QuickCam Deluxe for Notebooks
 	0a01  USB Headset
@@ -1985,7 +2002,7 @@
 	c30a  iTouch Composite
 	c30c  Internet Keys (X)
 	c30d  Internet Keys
-	c30e  UltraX Keys (X)
+	c30e  UltraX Keyboard (Y-BL49)
 	c30f  Logicool HID-Compliant Keyboard (106 key)
 	c315  Classic New Touch Keyboard
 	c316  HID-Compliant Keyboard
@@ -2072,10 +2089,19 @@
 	0314  DMVC 1000K
 	0316  DMVC 2000K Video Capture
 	0321  FunCam
+	0322  DMVC1300K PC Camera
 	0325  SPC 200NC PC Camera
 	0326  SPC 300NC PC Camera
 	0327  WebCam SPC 6000 NC (WebCam w/ mic)
+	0328  SPC 700NC PC Camera
 	0329  ORITE CCD Webcam(PC370R)
+	032d  SPC 210NC PC Camera
+	032e  SPC 315NC PC Camera
+	0330  SPC 710NC PC Camera
+	0331  SPC 1300NC PC Camera
+	0332  SPC 1000NC PC Camera
+	0333  SPC 620NC PC Camera
+	0334  SPC 520/525NC PC Camera
 	0401  Semiconductors CICT Keyboard
 	0402  PS/2 Mouse on Semiconductors CICT Keyboard
 	0406  15 inch Detachable Monitor
@@ -2124,6 +2150,7 @@
 	0401  Optical Drive
 	0701  SCP-4900 Cellphone
 	071f  Usb Com Port Enumerator
+	0722  W33SA Camera
 0475  Relisys/Teco Information System
 	0100  NEC Petiscan
 	0103  Eclipse 1200U/Episode
@@ -2249,9 +2276,9 @@
 	0204  iBurst Terminal
 0483  SGS Thomson Microelectronics
 	0137  BeWAN ADSL USB ST (blue or green)
-	1307  Cytronix 6in1 card reader
+	1307  Cytronix 6in1 Card Reader
 	163d  Cool Icam Digi-MP3
-	2015  TouchChipÂ® Fingerprint Reader
+	2015  TouchChip® Fingerprint Reader
 	2016  Fingerprint Reader
 	2017  Biometric Smart Card Reader
 	2018  BioSimKey
@@ -2285,6 +2312,7 @@
 0495  ESS Technology, Inc.
 0496  Micron Electronics
 0497  Smile International
+	c001  Camera Device
 0498  Capetronic (Kaohsiung) Corp.
 0499  Yamaha Corp.
 	1000  UX256 MIDI I/F
@@ -2419,7 +2447,7 @@
 	20fe  SW2 5300U
 	2137  Benq 5150/5250
 	2202  Benq 7400UT
-	3003  Benq WebCam
+	3003  Benq Webcam
 	3008  Benq 1500
 	300a  Benq 3410
 	300c  Benq 1016
@@ -2940,6 +2968,7 @@
 	310b  Red Wheel Mouse
 	4427  Portable CD ROM
 	4482  Serial Converter
+	4485  Serial Converter
 	4525  Double sided CRT
 	4550  NVRAM (128 KB)
 	4554  Cash Drawer
@@ -3339,7 +3368,9 @@
 	1b00  MultiMediaCard
 	2121  EB-VS6
 	2317  DVC USB-SERIAL Driver for WinXP
+	2318  NV-GS11/230/250 (webcam mode)
 	2319  NV-GS15 (webcam mode)
+	231a  NV-GS11/230/250 (DV mode)
 	231d  DVC Web Camera Device
 	231e  DVC DV Stream Device
 	2372  Lumix DMC-FZ10 Camera
@@ -3481,6 +3512,7 @@
 	0082  Touchmonitor Interface
 	00ff  Touchmonitor Interface
 04e8  Samsung Electronics Co., Ltd
+	0100  Kingston Flash Drive (128MB)
 	0110  Connect3D Flash Drive
 	0111  Connect3D Flash Drive
 	1003  MP3 Player and Recorder
@@ -3609,6 +3641,7 @@
 	0008  GZ-MG30AA/MC500E Digital Video Camera
 	0009  GR-DX25EK Digital Video Camera
 	000a  GR-D72 Digital Video Camera
+	1001  GC-A50 Camera Device
 	3008  MP-PRX1 Ethernet
 	3009  MP-XP7250 WLAN Adapter
 04f2  Chicony Electronics Co., Ltd
@@ -3633,14 +3666,23 @@
 	a20a  DSC WIA Device (3310)
 	a20c  DSC WIA Device (3320)
 	a210  Audio Device
+	b008  USB 2.0 Camera
 	b009  Integrated Camera
 	b010  Integrated Camera
-	b012  1.3 MPixel UVC webcam
-	b018  Video Device
-	b022  Camera
+	b012  1.3 MPixel UVC Webcam
+	b013  USB 2.0 Camera
+	b015  VGA 24fps UVC Webcam
+	b016  VGA 30fps UVC Webcam
+	b018  2M UVC Webcam
+	b021  ViewSonic 1.3M, USB2.0 Webcam 
+	b022  Gateway USB 2.0 Webcam
+	b023  Gateway USB 2.0 Webcam
+	b024  USB 2.0 Webcam
 	b025  Camera
-	b027  Gateway Webcam
-	b028  VGA UVC WebCam
+	b027  Gateway USB 2.0 Webcam
+	b028  VGA UVC Webcam
+	b029  USB 2.0 1.3M UVC Webcam
+	b107  CNF7070 Webcam
 04f3  Elan Microelectronics Corp.
 	0210  AM-400 Hama Optical Mouse
 	0212  Laser Mouse
@@ -3849,10 +3891,12 @@
 	0232  Fingerprint
 	0561  Flexcam 100
 	1533  Mass Storage
-	504a  SPCA504a Digital Camera
-	504b  Aiptek, 1.3 mega PockerCam
+	500c  CA500C Digital Camera
+	504a  Aiptek Mini PenCam 1.3
+	504b  Aiptek Mega PockerCam 1.3/Maxell MaxPocket LE 1.3 
 	5330  Digitrex 2110
 	5331  Vivitar Vivicam 10
+	5360  Sunplus Generic Digital Camera
 	5720  Card Reader Driver
 	7333  Finet Technology Palmpix DC-85
 	757a  Aiptek, MP315 MP3 Player
@@ -4043,7 +4087,7 @@
 	0102  Ca508A HP1020 Camera v.1.3.1.6
 	0801  Yakumo MegaImage 37
 	1512  Yakumo MegaImage IV
-	1513  Aosta CX100 WebCam
+	1513  Aosta CX100 Webcam
 	1514  Aosta CX100 WebCam Storage
 	1905  Yakumo MegaImage 47
 	1911  Yakumo MegaImage 47 SL
@@ -4099,11 +4143,11 @@
 	8009  Veo PC Camera
 	800c  Veo StingRay
 	800d  Veo PC Camera
-	8080  IBM C-It WebCam
+	8080  IBM C-It Webcam
 	808a  Veo PC Camera
 	808b  Veo PC Camera
 	808d  Veo PC Camera
-	810a  Veo Advanced Connect WebCam
+	810a  Veo Advanced Connect Webcam
 	810b  Veo PC Camera
 	810c  Veo PC Camera
 	8135  Veo Mobile/Advanced Web Camera
@@ -4117,7 +4161,10 @@
 	0daf  PDC 2300Z
 	1bed  PDC 1320 Camera
 	3097  PDC 310
-	3187  Digital Cam
+	3155  PDC 3070 Camera
+	3187  Digital Camera
+	3191  Ion 80 Camera
+	3273  PDC 2030 Camera
 	dccf  Sound Vision Stream Driver
 0547  Anchor Chips, Inc.
 	0001  ICSI Bluetooth Device
@@ -4234,6 +4281,7 @@
 	01c3  NW-E55 Network Walkman
 	01c6  MEMORY P-AUDIO
 	01c7  Printing Support
+	01c8  PSP Type A
 	01d0  DVD+RW External Drive DRU-700A
 	01d5  IC RECORDER
 	01de  VRD-VC10 [Video Capture]
@@ -4273,11 +4321,12 @@
 	0287  Hi-MD WALKMAN
 	0290  VGP-UVC100 Visual Communication Camera
 	029b  PRS-500 eBook reader
-	02ae  PlayStation 3 Memory Card Adaptor
+	02a5  MicroVault Flash Drive
 	02af  Handycam DCR-DVD306E
 	02c4  Device
 	02d1  DVD RW
-	02d2  PSP
+	02d2  PSP Slim
+	02ea  PlayStation 3 Memory Card Adaptor
 054d  Try Corp.
 054e  Proside Corp.
 054f  WYSE Technology Taiwan
@@ -4289,7 +4338,7 @@
 0552  Philips Monitors
 0553  STMicroelectronics Imaging Division (VLSI Vision)
 	0001  TerraCAM
-	0002  CPiA WebCam
+	0002  CPiA Webcam
 	0100  STV0672 Camera
 	0140  Video Camera
 	0150  CDE CAM 100
@@ -4366,22 +4415,28 @@
 	0409  BearPaw 2448 TA Pro
 	0873  ScanExpress 600 USB
 	1000  BearPaw 4800 TA Pro
-	a350  gSmart 350
+	a350  gSmart 350 Camera
 	a800  MDC 800 Camera
 	b500  MDC 3000 Camera
 	c005  PC CAM 300A
 	c200  gSmart 300
+	c211  Kowa Bs888e Microcamera
 	c220  gSmart mini
-	c360  Mustek DV 4000
-	c420  gSmart mini 2
-	c440  Mustek DV 3000
-	c520  gSmart mini 3
-	c530  Mustek Gsmart LCD 2
-	c631  MDC-4000
-	c650  Mustek MDC5500Z
+	c230  Digicam 330K
+	c232  MDC3500 Camera
+	c360  DV 4000 Camera
+	c420  gSmart mini 2 Camera
+	c430  gSmart LCD 2 Camera
+	c440  DV 3000 Camera
+	c520  gSmart mini 3 Camera
+	c530  gSmart LCD 2 Camera
+	c540  gSmart D30 Camera
+	c630  MDC 4000 Camera
+	c631  MDC 4000 Camera
+	c650  MDC 5500Z Camera
 	d001  WCam 300
-	d003  PC CAM 300A
-	d004  PC CAM 300A
+	d003  WCam 300A
+	d004  WCam 300AN
 0560  Interface Corp.
 0561  Oasis Design, Inc.
 0562  Telex Communications, Inc.
@@ -4461,9 +4516,9 @@
 0571  Interex, Inc.
 	0002  echoFX InterView Lite
 0572  Conexant Systems (Rockwell), Inc.
-	0001  Ezcam II WebCam
-	0002  Ezcam II WebCam
-	0040  Wondereye CP-115 WebCam
+	0001  Ezcam II Webcam
+	0002  Ezcam II Webcam
+	0040  Wondereye CP-115 Webcam
 	0041  WebCam Notebook
 	0042  WebCam Notebook
 	1232  V.90 modem
@@ -4873,15 +4928,18 @@
 05a7  Bose Corp.
 05a8  Spacetec IMC Corp.
 05a9  OmniVision Technologies, Inc.
-	0511  OV511 WebCam
-	0518  OV518 WebCam
+	0511  OV511 Webcam
+	0518  OV518 Webcam
 	0519  OV519 Microphone
 	1550  VEHO Filmscanner
+	2640  OV2640 Webcam
+	2643  Monitor Webcam
 	2800  SuperCAM
 	4519  Webcam Classic
-	8519  OV519 WebCam
-	a511  OV511+ WebCam
-	a518  D-Link DSB-C310 WebCam
+	7670  OV7670 Webcam
+	8519  OV519 Webcam
+	a511  OV511+ Webcam
+	a518  D-Link DSB-C310 Webcam
 05aa  Utilux South China, Ltd
 05ab  In-System Design
 	0002  Parallel Port
@@ -4945,6 +5003,8 @@
 	120a  iPod Nano
 	1260  iPod Nano 2.Gen
 	1261  iPod Classic
+	1290  iPhone
+	1292  iPhone 3G
 	1300  iPod Shuffle
 	1301  iPod Shuffle 2.Gen
 	8202  HCF V.90 Data/Fax Modem
@@ -4955,6 +5015,7 @@
 	8240  IR Receiver [build-in]
 	8300  Built-in iSight (no firmware loaded)
 	8501  Built-in iSight [Micron]
+	8502  Built-in iSight
 	912f  Hub in 30" Cinema Display
 	9221  30" Cinema Display
 	ffff  Bluetooth in DFU mode - Driver
@@ -5002,6 +5063,7 @@
 	2011  SCorpius Keyboard
 	6001  Ten-Keypad
 05c8  Cheng Uei Precision Industry Co., Ltd (Foxlink)
+	0103  FO13FF-65 PC-CAM
 05c9  Semtech Corp.
 05ca  Ricoh Co., Ltd
 	0101  RDC-5300 Camera
@@ -5226,6 +5288,7 @@
 	0433  Locked Z Device
 	4d02  MP3 Player
 	4d12  MP3 Player
+	4d30  MP3 Player
 	a300  JumpDrive2
 	a400  JumpDrive trade; Pro 40-501
 	a410  JumpDrive 128MB/256MB
@@ -5383,7 +5446,7 @@
 0601  Jazz Hipster Corp.
 	0003  Internet Security Co., Ltd. SecureKey
 0602  Vista Imaging, Inc.
-	1001  ViCam WebCam
+	1001  ViCam Webcam
 0603  Novatek Microelectronics Corp.
 	00f1  Keyboard
 	6871  Mouse
@@ -5512,7 +5575,9 @@
 064c  Ji-Haw Industrial Co., Ltd
 064d  TriTech Microelectronics, Ltd
 064e  Suyin Corp.
-	a101 Laptop integrated WebCam
+	a100  Acer OrbiCam
+	a101  Acer CrystalEye Webcam
+	a110  HP Webcam
 064f  WIBU-Systems AG
 	0bd7  BOX/U
 	0bd8  BOX/RU
@@ -5798,6 +5863,7 @@
 	0001  Mindstorms Tower
 0698  Chuntex (CTX)
 	1786  1300ex Monitor
+	2003  CTX M730V built in Camera
 	9999  VLxxxx Monitor+Hub
 0699  Tektronix, Inc.
 069a  Askey Computer Corp.
@@ -5892,7 +5958,7 @@
 06a4  Xiamen Doowell Electron Co., Ltd
 06a5  Divio
 	0000  Typhoon Webcam 100k [nw8000]
-	d001  ProLink DS3303u WebCam
+	d001  ProLink DS3303u Webcam
 	d800  Chicony TwinkleCam
 	d820  Wize Media 1000
 06a7  MicroStore, Inc.
@@ -5941,6 +6007,7 @@
 	20fd  SnapScan e52
 	20ff  SnapScan e42
 06be  AME Optimedia Technology Co., Ltd
+	0800  Optimedia Camera
 	1005  Dazzle DPVM! (1005)
 	d001  P35U Camera Capture
 06bf  Leoco Corp.
@@ -6051,13 +6118,14 @@
 	002d  Trust PowerC@m 350FT
 	002e  Trust PowerC@m 350FS
 	0030  Trust 710 LCD POWERC@M ZOOM - MSD
-	0031  Trust 710 LCD POWERC@M ZOOM
+	0031  Trust 610/710 LCD POWERC@M ZOOM
 	003a  Trust PowerC@m 770Z
 	003c  Trust 910z PowerC@m
 	003f  Trust 735S POWERC@M ZOOM, WDM DSC Bulk Driver
 	0050  Trust 738AV LCD PV Digital Camera
 	0062  TRUST 782AV LCD P. V. Video Capture
 	0066  TRUST Digital PCTV and Movie Editor
+	0067  Trust 350FS POWERC@M FLASH
 	006b  TRUST AUDIO VIDEO EDITOR
 06d7  Network Computing Devices (NCD)
 06d8  Technical Marketing Research, Inc.
@@ -6189,6 +6257,8 @@
 06f7  Wailly Technology Ltd
 	0003  USB->Din 4 Adaptor
 06f8  Guillemot Corp.
+	3005  Hercules Dualpix Exchange
+	3007  Hercules Dualpix Chat and Show
 	a300  Dual Analog Leader GamePad
 	b000  Hercules DJ Console
 	c000  Hercules Muse Pocket
@@ -6290,20 +6360,25 @@
 0732  Goldfull Electronics & Telecommunications Corp.
 0733  ViewQuest Technologies, Inc.
 	0101  Digital Video Camera
-	0110  VQ110
-	0401  CS330 WebCam
-	0402  M-318B WebCam
-	0430  Intel Pro Share WebCam
+	0110  VQ110 Video Camera
+	0401  CS330 Webcam
+	0402  M-318B Webcam
+	0430  Intel Pro Share Webcam
 	0630  VQ630 Dual Mode Digital Camera(Bulk)
 	0631  Hercules Dualpix
 	0780  Smart Cam Deluxe(composite)
 	1310  Epsilon 1.3/Jenoptik JD C1.3/UMAX AstraPix 470
 	1311  Digital Dream Epsilon 1.3
-	2211  Jenoptik
+	1314  Mercury 2.1MEG Deluxe Classic Cam
+	2211  Jenoptik jdc 21 LCD Camera
+	2221  Mercury Digital Pro 3.1p
+	3261  Concord 3045 spca536a Camera
+	3281  Cyberpix S550V
 0734  Lasat Communications A/S
 	0001  560V Modem
 	0002  Lasat 560V Modem
 	043a  DVS Audio
+	043b  3DeMon USB Capture
 0735  Asuscom Network
 	2100  ISDN Adapter
 	2101  ISDN Adapter
@@ -6595,6 +6670,7 @@
 	004a  XG-760A
 	004b  Wi-Fi 11g adapter
 	0056  Agfa AP1100 Photo Printer
+	005d  my401C mobile phone
 	0062  XG-76NA
 079d  Alfadata Computer Corp.
 	0201  GamePort Adapter
@@ -7120,7 +7196,7 @@
 	a001  PA101 10 Mbps HPNA Home Phoneline RJ-1
 084d  Minton Optic Industry Co., Inc.
 	0001  Jenoptik JD800i
-	0003  S-Cam F5 Digital Camera
+	0003  S-Cam F5/D-Link DSC-350 Digital Camera
 	0011  Argus DC3500 Digital Camera
 	0014  Praktica DC 32
 	0019  Praktica DPix3000
@@ -7289,17 +7365,23 @@
 	0104  Pocket DVII
 	0105  Mega DV(Disk)
 	0106  Pocket DV3100+
-	0107  Pocket DV 3100
+	0107  Pocket DV3100
 	0109  Nisis DV4 Digital Camera
 	010a  Trust 738AV LCD PV Mass Storage
 	0111  PenCam VGA Plus
 	2008  Mini PenCam 2
 	2010  Pocket CAM 3 Mega (webcam)
 	2011  Pocket CAM 3 Mega (storage)
-	2018  Pencam SD 2
+	2016  PocketCam 2 Mega 
+	2018  Pencam SD 2M
+	2020  Slim 3000F 
+	2022  Slim 3200 
 	2024  Pocket DV3500
-	2042  DV 5100M Composite Device
-	2043  DV 5100M(Disk)
+	2028  Pocket Cam4M 
+	2040  Pocket DV4100M 
+	2042  Pocket DV5100M Composite Device
+	2043  Pocket DV5100M (Disk)
+	2060  Pocket DV5300 
 08cd  Jue Hsun Ind. Corp.
 08ce  Long Well Electronics Corp.
 08cf  Productivity Enhancement Products
@@ -7496,6 +7578,7 @@
 090c  Feiya Technology Corp.
 	1000  Memory Bar
 	1132  5-in-1 Card Reader
+	b371  Silicon Motion SM371 Camera
 090d  Multiport Computer Vertriebs GmbH
 090e  Shining Technology, Inc.
 090f  Fujitsu Devices, Inc.
@@ -7658,13 +7741,18 @@
 	010e  Digital camera, CD302N/Elta Medi@ digi-cam/HE-501A
 	010f  Argus DC-1610/DC-1620/Emprex PCD3600/Philips P44417B keychain camera/Precision Mini,Model HA513A/Vivitar Vivicam 55
 	020f  Bullet Line Photo Viewer
+	050f  Mars-Semi Pc-Camera
 	2460  Q-TEC WEBCAM 100
-	2468  Cammaestro 2.5DU/X-EYE/Orite SC-120/ICGear TravelCam/Easy Snap Snake Eye WebCam
+	2468  Cammaestro 2.5DU/X-EYE/Orite SC-120/ICGear TravelCam/Easy Snap Snake Eye Webcam
 	2470  SoC PC-Camera
 	2471  SoC PC-Camera
 	2500  USB Optical Mouse
 	2600  Typhoon Easycam USB 330K (newer)/Typhoon Easycam USB 2.0 VGA 1.3M/Sansun SN-508
 	2601  SPC 610NC Laptop Camera
+	2603  PAC7312 Camera
+	2608  PAC7311 Trust WB-3300p 
+	260e  PAC7311 Gigaware VGA PC Camera:Trust WB-3350p:SIGMA cam 2350 
+	260f  PAC7311 SnakeCam 
 093b  Plextor Corp.
 	0010  Storage Adapter
 	0011  PlexWriter 40/12/40U
@@ -7917,7 +8005,8 @@
 0a43  Boca Systems, Inc.
 0a46  Davicom Semiconductor, Inc.
 	0268  ST268
-	9601  DM9601 To Fast Ethernet Adapter
+	6688  ZT6688 Fast Ethernet Adapter
+	9601  DM9601 Fast Ethernet Adapter
 0a47  Hirose Electric
 0a48  I/O Interconnect
 	3233  Multimedia Card Reader
@@ -8036,6 +8125,7 @@
 	0103  Keyboard
 	0203  Mouse
 	0205  PS/2 Keyboard+Mouse Adapter
+	0701  USB Missile Launcher
 0a82  Syscan
 	4600  TravelScan 460/464
 0a83  NextComm, Inc.
@@ -8136,14 +8226,21 @@
 0ac7  Panwest Corp.
 0ac8  Z-Star Microelectronics Corp.
 	0301  Web Camera
-	0302  ZC0302 WebCam
-	0321  USB 2.0 Webcam
+	0302  ZC0302 Webcam
+	0321  Vimicro generic vc0321 Camera
 	0323  Luxya WC-1200 USB 2.0 Webcam
-	301b  ZC0301 WebCam
-	303b  ZC0303 WebCam
-	305b  ZC0305 WebCam
-	307b  USB 1.1 WebCam
+	0328  A4Tech PK-130MG
+	0336  Elecom UCAM-DLQ30
+	301b  ZC0301 Webcam
+	303b  ZC0303 Webcam
+	305b  ZC0305 Webcam
+	307b  USB 1.1 Webcam
+	332d  Vega USB 2.0 Camera
+	3343  Sirius USB 2.0 Camera
+	c001  Sony embedded vimicro Camera
 	c002  Visual Communication Camera VGP-VCC1
+	c302  Vega USB 2.0 Camera
+	c303  Saturn USB 2.0 Camera
 0ac9  Micro Solutions, Inc.
 	0000  Backpack CD-ReWriter
 	0001  BACKPACK  2 Cable
@@ -8207,7 +8304,7 @@
 	0101  Digital TV USB Receiver (DVB-S/T/C / ATSC)
 0af9  Hama, Inc.
 	0010  USB SightCam 100
-	0011  Micro Innovations IC50C WebCam
+	0011  Micro Innovations IC50C Webcam
 0afc  Zaptronix Ltd
 0afd  Tateno Dennou, Inc.
 0afe  Cummins Engine Co.
@@ -8316,7 +8413,7 @@
 0b61  NEC Viewtechnology, Ltd
 0b62  Orange Micro, Inc.
 	000b  Bluetooth Device
-	0059  iBOT2 WebCam
+	0059  iBOT2 Webcam
 0b63  ADLink Technology, Inc.
 0b64  Wonderful Wire Cable Co., Ltd
 0b65  Expert Magnetics Corp.
@@ -8749,7 +8846,7 @@
 	1158  A56AK
 	184c  VoIP Phone
 	6001  Genius VideoCAM NB
-	6005  Sweex Mini WebCam
+	6005  Sweex Mini Webcam
 	6007  VideoCAM Eye
 	6009  VideoCAM ExpressII
 	600d  TwinkleCam USB camera
@@ -8761,7 +8858,7 @@
 	6029  Triplex i-mini PC Camera
 	602a  Meade ETX-105EC Camera
 	602b  VideoCAM NB 300
-	602c  Clas Ohlson TWC-30XOP WebCam
+	602c  Clas Ohlson TWC-30XOP Webcam
 	602d  VideoCAM ExpressII
 	602e  VideoCAM Messenger
 	6030  VideoCAM ExpressII
@@ -8839,7 +8936,9 @@
 	62bb  PC Camera with Microphone (SN9C202 + OV7660)
 	62bc  PC Camera with Microphone (SN9C202 + HV7131R)
 	62be  PC Camera with Microphone (SN9C202 + OV7663)
-	62c0  Pavilion Webcam
+	62c0  Sonix USB 2.0 Camera
+	62e0  MSI Starcam Racer
+	63e0  Sonix Integrated Webcam
 	8000  DC31VC
 	8006  Dual Mode Camera (8006 VGA)
 	800a  Vivitar Vivicam3350B
@@ -9500,6 +9599,7 @@
 0e83  Shin An Wire & Cable Co.
 0e8c  Well Force Electronic Co., Ltd
 0e8d  MediaTek Inc.
+	0004  MT6227 phone
 0e8f  GreenAsia Inc.
 	0012  Joystick
 0e90  WiebeTech, LLC
@@ -9748,7 +9848,7 @@
 	1004  MP3 Player
 	1006  MP3 Player
 	b113  Handy Steno 2.0/HT203
-	b223  CD-RW + 6 in 1 Card Reader Digital Storage / Converter
+	b223  CD-RW + 6in1 Card Reader Digital Storage / Converter
 1006  iRiver, Ltd.
 	3001  iHP-100
 	3002  iHP-120/140 MP3 Player
@@ -9796,7 +9896,8 @@
 102a  Ramos Technology Co., Ltd
 102b  Infotronic America, Inc.
 102c  Etoms Electronics Corp.
-	6251  Q-Cam
+	6151  Q-Cam Sangha CIF 
+	6251  Q-Cam VGA
 102d  Winic Corp.
 1031  Comax Technology, Inc.
 1032  C-One Technology Corp.
@@ -10013,8 +10114,10 @@
 	1101  D-Wave 2GB MP4 Player / AK1025 MP3/MP4 Player
 	8888  ADFU Device
 	ff51  ADFU Device
+	ff61  MP4 Player
 10de  Authenex, Inc.
 10df  In-Win Development, Inc.
+	0500  iAPP CR-e500 Card reader
 10e0  Post-Op Video, Inc.
 10e1  CablePlus, Ltd
 10e2  Nada Electronics, Ltd
@@ -10023,6 +10126,7 @@
 	0200  Audio Advantage Roadie
 10fb  Pictos Technologies, Inc.
 10fd  Anubis Electronics, Ltd
+	7e50  FlyCam Usb 100 
 	804d  Typhoon Webshot II Webcam [zc0301]
 	8050  FlyCAM-USB 300 XP2
 	de00  WinFast WalkieTV WDM Capture Driver.
@@ -10396,8 +10500,10 @@
 	0829  AR5523 (no firmware)
 1436  Denali Software, Inc.
 143c  Altek Corporation
-145f  Unknown
+145f  Trust
 	013d  PC Camera (SN9C201 + OV7660)
+	013f  Megapixel USB2 Auto Focus Webcam
+	0142  WB-6250X Webcam
 1453  Radio Shack
 	4026  26-183 Serial Cable
 1456  Extending Wire & Cable Co., Ltd.
@@ -10771,6 +10877,7 @@
 	03ef  free for internal lab use 1007
 	03f0  free for internal lab use 1008
 	03f1  free for internal lab use 1009
+	05dd  BlackcatUSB2
 	076b  OpenPCD 13.56MHz RFID Reader
 	076c  OpenPICC 13.56MHz RFID Simulator (native)
 	08ac  OpenBeacon USB stick
@@ -10800,19 +10907,25 @@
 1743  General Atomics
 174c  ASMedia Technology Inc.
 174f  Syntek
-	5a35  1.3MPixel Web Cam - Asus G1s
+	5212  USB 2.0 UVC PC Camera
+	5a11  PC Camera
+	5a31  Sonix USB 2.0 Camera
+	5a35  Sonix 1.3MPixel USB 2.0 Camera
 	6a31  Web Cam - Asus A8J, F3S, F5R, VX2S, V1S
 	6a33  Web Cam - Asus F3SA, F9J, F9S
 	6a51  2.0MPixel Web Cam - Asus Z96J, Z96S, S96S
 	6a54  Web Cam
 	6d51  2.0Mpixel Web Cam - Eurocom D900C
-	8a12  0.3MPixel Web Cam - Packard Bell MX37-T-003
+	8a12  Syntek 0.3MPixel USB 2.0 UVC PC Camera
+	8a33  Syntek USB 2.0 UVC PC Camera
 	a311  1.3MPixel Web Cam - Asus A3A, A6J, A6K, A6M, A6R, A6T, A6V, A7T, A7sv, A7U
 	a312  1.3MPixel Web Cam
 	a821  Web Cam - Packard Bell BU45, PB Easynote MX66-208W
 	aa11  Web Cam
 1759  LucidPort Technology, Inc.
 1772  System Level Solutions, Inc.
+1776  Arowana
+	501c  300K CMOS Camera
 1781  Multiple Vendors
 	083e  MetaGeek Wi-Spy
 	0938  Iguanaworks USB IR Transceiver
@@ -10841,6 +10954,7 @@
 17eb  Cornice, Inc.
 17ef  Lenovo
 	3815  ChipsBnk 2GB USB Stick
+	4802  Lenovo Vc0323+MI1310_SOC Camera
 17f5  K.K. Rocky
 17f6  Unicomp, Inc
 1822  Twinhan
@@ -10863,6 +10977,8 @@
 18b7  Zotek Electronic Co., Ltd.
 18c5  AMIT
 	0002  CG-WLUSB2GO
+18cd  Ecamm
+	cafe  Pico iMage
 18d5  Starline International Group Limited
 18d9  Kaba
 	01a0  B-Net 91 07
@@ -10909,8 +11025,11 @@
 	3202  REC-ADPT-USB (recorder)
 	3203  REC-A-ADPT-USB (recorder)
 199e  The Imaging Source Europe GmbH
+	8101  DFx 21BU04 Camera
 199f  Benica Corporation
 19a8  Biforst Technology Inc.
+19ab  Bodelin
+	1000  ProScope HR
 19af  S Life
 	6611  Celestia VoIP Phone
 19b5  B & W Group
@@ -10923,7 +11042,8 @@
 19e1  WeiDuan Electronic Accessory (S.Z.) Co., Ltd.
 19e8  Industrial Technology Research Institute
 19ef  Pak Heng Technology (Shenzhen) Co., Ltd.
-19ff  Best Buy
+19ff  Dynex
+	0102  1.3MP Webcam
 	0201  Rocketfish Wireless 2.4G Laser Mouse
 1a08  Bellwood International, Inc.
 1a0a  USB-IF non-workshop
@@ -11041,6 +11161,7 @@
 1b27  Current Electronics Inc.
 1b28  NAVIsis Inc.
 1b32  Ugobe Life Forms, Inc.
+	0064  Pleo robotic dinosaur
 1b36  ViXS Systems, Inc.
 1b3f  Generalplus Technology Inc.
 1b47  Energizer Holdings, Inc.
@@ -11098,6 +11219,8 @@
 1c3d  NONIN MEDICAL INC.
 1c3e  Wep Peripherals
 1c49  Cherng Weei Technology Corp.
+1c4f  SiGma Micro
+	3000  Micro USB Web Camera
 1c6b  Philips & Lite-ON Digital Solutions Corporation
 1c6c  Skydigital Inc.
 1c77  Kaetat Industrial Co., Ltd.
@@ -11111,6 +11234,9 @@
 1c8e  ASTRON INTERNATIONAL CORP.
 1c98  ALPINE ELECTRONICS, INC.
 1ca0  ACCARIO Inc.
+1cac  Kinstone
+	a332  C8 Webcam
+	b288  C18 Webcam
 1cb3  Aces Electronic Co., Ltd.
 1cb4  OPEX CORPORATION
 1cbe  Luminary Micro Inc.
@@ -11284,6 +11410,7 @@
 	6001  Dalhart EZX
 	6003  Dalhart flash
 	6004  EZX GSM Phone (CDC Net)
+	6006  MOTOROKR E6
 	6008  Dalhart RDL
 	6009  EZX GSM Phone (P2K)
 	600a  Dalhart EZX config 17
@@ -11403,6 +11530,7 @@
 2821  Unknown
 	3300  Wireless Adapter 
 2899  Toptronic Industrial Co., Ltd
+	012c Camera Device
 2c02  Planex Communications
 	14ea  GW-US11H WLAN
 2fb2  Fujitsu, Ltd
@@ -11621,7 +11749,9 @@
 	b207  Memory Stick Reader
 5986  Acer, Inc
 	0100  Orbicam
-	0102  Crystal Eye webcam
+	0101  USB2.0 Camera
+	0102  Crystal Eye Webcam
+	0200  OrbiCam
 5a57  Zinwell
 	0260  RT2570
 6189  Sitecom
@@ -11683,12 +11813,16 @@
 	7715  Printer cable
 	7780  MS7780 4Mbps Fast IRDA Adapter
 	7830  MCS7830 Ethernet
+99fa  Grandtec
+	8988  V.cap Camera Device
 a600  Asix
 	e110  OK1ZIA Davac 4.x
 a727  3Com
 	6893  AR5523
 	6895  AR5523
 	6897  AR5523
+abcd  Unknown
+	cdee  Petcam
 c251  Keil Software, Inc.
 	2710  ULink
 d209  Ultimarc
@@ -11696,9 +11830,9 @@ d209  Ultimarc
 eb1a  eMPIA Technology, Inc.
 	17de  KWorld V-Stream XPERT DTV - DVB-T USB cold
 	17df  KWorld V-Stream XPERT DTV - DVB-T USB warm
-	2710  SilverCrest WebCam
-	2750  ECS Elitegroup G220 integrated webcam
-	2761  EeePC 701 integrated webcam
+	2710  SilverCrest Webcam
+	2750  ECS Elitegroup G220 integrated Webcam
+	2761  EeePC 701 integrated Webcam
 	2800  Terratec Cinergy 200
 	2801  GrabBeeX+ Video Encoder
 	2870  Pinnacle PCTV USB Stick
