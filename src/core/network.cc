@@ -505,6 +505,9 @@ bool scan_network(hwNode & n)
           interface.setBusInfo(guessBusInfo(drvinfo.bus_info));
       }
 
+      if(sysfs::entry::byClass("net", interface.getLogicalName()).hassubdir("bridge"))
+        interface.addCapability("logical", "Logical interface");
+
       if (hwNode * existing = n.findChildByBusInfo(interface.getBusInfo()))
       {
         existing->merge(interface);

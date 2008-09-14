@@ -20,6 +20,8 @@ namespace sysfs
       entry(const entry &);
       ~entry();
 
+      bool hassubdir(const string &);
+
       struct entry_i * This;
 
     private:

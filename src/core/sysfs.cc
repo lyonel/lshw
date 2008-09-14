@@ -294,6 +294,16 @@ entry::~entry()
   delete This;
 }
 
+bool entry::hassubdir(const string & s)
+{
+  if(This->devclass != "")
+    return exists(fs.path + string("/class/") + This->devclass + string("/") + This->devname + "/" + s);
+  
+  if(This->devbus != "")
+    return exists(fs.path + string("/bus/") + This->devbus + string("/devices/") + This->devname + string("/") + s);
+
+  return false;
+}
 
 bool scan_sysfs(hwNode & n)
 {
