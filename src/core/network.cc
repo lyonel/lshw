@@ -275,7 +275,7 @@ static void scan_ip(hwNode & interface)
 }
 
 
-static bool isVMware(const string & MAC)
+static bool isVirtual(const string & MAC)
 {
   if (MAC.length() < 8)
     return false;
@@ -284,7 +284,9 @@ static bool isVMware(const string & MAC)
 
   if ((manufacturer == "00:05:69") ||
     (manufacturer == "00:0C:29") || (manufacturer == "00:50:56"))
-    return true;
+    return true;	// VMware
+  if (manufacturer == "00:1C:42")
+    return true;	// Parallels
 
   return false;
 }
@@ -371,7 +373,7 @@ bool scan_network(hwNode & n)
           " interface");
         interface.setSerial(hwaddr);
 
-        if (isVMware(interface.getSerial()))
+        if (isVirtual(interface.getSerial()))
           interface.addCapability("logical", "Logical interface");
       }
 
