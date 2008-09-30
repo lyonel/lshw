@@ -1024,7 +1024,8 @@ int dmiversionmin)
             hardwarenode->setProduct(dmi_string(dm, data[5]));
             hardwarenode->setVersion(dmi_string(dm, data[6]));
             hardwarenode->setSerial(dmi_string(dm, data[7]));
-            hardwarenode->setSlot(dmi_string(dm, data[0x0A]));
+            if(dm->length >= 0x0a)
+              hardwarenode->setSlot(dmi_string(dm, data[0x0A]));
             hardwarenode->setHandle(handle);
             hardwarenode->setDescription("Motherboard");
             hardwarenode->addHint("icon", string("motherboard"));
