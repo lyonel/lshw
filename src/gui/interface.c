@@ -361,7 +361,7 @@ create_aboutlshw (void)
   dialog_vbox1 = GTK_DIALOG (aboutlshw)->vbox;
   gtk_widget_show (dialog_vbox1);
 
-  aboutext = gtk_label_new ("<big><b>GTK+ front-end for <tt>lshw</tt></b></big>\n\n\302\251 2004, 2005, 2006, 2007 Lyonel Vincent\n<tt>lyonel@ezix.org</tt>\n\n<span foreground=\"blue\"><u>http://www.ezix.org/</u></span>");
+  aboutext = gtk_label_new ("<big><b>GTK+ front-end for <tt>lshw</tt></b></big>\n\n\302\251 2004-2008 Lyonel Vincent\n<tt>lyonel@ezix.org</tt>\n\n<span foreground=\"blue\"><u>http://www.ezix.org/</u></span>");
   gtk_widget_show (aboutext);
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), aboutext, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (aboutext), TRUE);
