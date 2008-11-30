@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.370 2008/08/29 19:13:24 gowdy Exp $
+# $Id: usb.ids,v 1.371 2008/09/21 11:26:37 gowdy Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -1948,7 +1948,7 @@
 	c03f  UltraX Optical Mouse
 	c040  Corded Tilt-Wheel Mouse
 	c041  G5 Laser Mouse
-	c043  MX320 Laser Mouse
+	c043  MX320/MX400 Laser Mouse
 	c044  LX3 Optical Mouse
 	c045  Optical Mouse
 	c046  RX1000 Laser Mouse
@@ -5324,8 +5324,8 @@
 	2000  MC3090 Rugged Mobile Computer
 	200d  MC70 Rugged Mobile Computer
 05e1  Syntek Semiconductor Co., Ltd
-	0500  DC-112X
-	0501  WebCam, Chipset DC-1125 similar to 174f:a311 - Asus F2F, F2J, F3J, F3T, G1, Z53JA
+	0500  DC-112X WebCam
+	0501  DC-1125 WebCam
 	0890  STK011 Camera
 	0892  STK013 Camera
 	0895  STK016 Camera
@@ -8961,6 +8961,7 @@
 0c59  Dong Guan Shinko Wire Co., Ltd
 0c5a  TRS International Mfg., Inc.
 0c5e  Xytronix Research & Design
+0c60  Apogee Electronics Corp.
 0c62  Chant Sincere Co., Ltd
 0c63  Toko, Inc.
 0c64  Signality System Engineering Co., Ltd
@@ -11462,6 +11463,7 @@
 	022a  PCTV 160e
 	022b  PCTV 71e
 	0232  PCTV 170e
+	0237  PCTV nano stick
 	0300  Studio Linx Video input cable (NTSC)
 	0301  Studio Linx Video input cable (PAL)
 	0302  Dazzle DVC120
