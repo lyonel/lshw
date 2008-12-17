@@ -1,8 +1,8 @@
 #
 #	List of PCI ID's
 #
-#	Version: 2008.11.20
-#	Date:    2008-11-20 03:15:02
+#	Version: 2008.12.14
+#	Date:    2008-12-14 03:15:01
 #
 #	Maintained by Martin Mares <mj@ucw.cz> and other volunteers from the
 #	PCI ID Project at http://pciids.sf.net/.
@@ -1047,6 +1047,7 @@
 		1028 0223  PowerEdge R905 Embedded ATI ES1000
 		1028 0225  PowerEdge T105 Embedded ATI ES1000
 		1028 023c  PowerEdge R200 Embedded ATI ES1000
+		103c 1304  Integrity iLO2 Advanced KVM VGA [AD307A]
 		15d9 8680  X7DVL-E-O motherboard
 		8086 3476  S5000PSLSATA Server Board
 	515f  ES1000
@@ -1113,6 +1114,7 @@
 	554b  R423 UK [Radeon X800SE (PCIE)]
 	554c  Radeon X800 XTP (R430) (PCIE)
 	554d  R430 [Radeon X800 XL] (PCIe)
+		1458 2124  GV-R80L256V-B (AGP)
 	554e  Radeon X800 SE (R430) (PCIE)
 	554f  R430 [Radeon X800 (PCIE)]
 	5550  R423 [FireGL V7100]
@@ -1123,6 +1125,7 @@
 	5569  R423 UI [Radeon X800PRO (PCIE)] (Secondary)
 	556b  Radeon R423 UK (PCIE) [X800 SE] (Secondary)
 	556d  R430 [Radeon X800 XL] (PCIe) (Secondary)
+		1458 2125  GV-R80L256V-B (AGP)
 	556f  R430 [Radeon X800] (PCIE) (Secondary)
 	5571  R423GL-SE [FireGL V5100 (PCIE)] (Secondary)
 	564a  M26 [Mobility FireGL V5000]
@@ -1474,8 +1477,10 @@
 	944c  RV770 LE [Radeon HD 4800 Series]
 	945a  M98 XT [Mobility Radeon HD 4870]
 	9480  M96 [Mobility Radeon HD 4650]
+	9489  M96 XT [Mobility FireGL V5725]
 	9490  RV730XT [Radeon HD 4670]
 	9498  RV730 PRO [Radeon HD 4650]
+	949f  RV730 [FirePro V5700]
 	94c1  RV610 [Radeon HD 2400 XT]
 		1028 0211  Optiplex 755
 		1028 0d02  Optiplex 755
@@ -1499,6 +1504,7 @@
 	9519  RV670 [FireStream 9170]
 	9540  RV710 [Radeon HD 4550]
 	954f  RV710 [Radeon HD 4350]
+	9552  M92 LP [Mobility Radeon HD 4300 Series]
 	9553  M92 [Mobility Radeon HD 4500 Series]
 	9559  Mobility Radeon HD 3600 Series
 	9581  M76 [Radeon Mobility HD 2600 Series]
@@ -1533,6 +1539,7 @@
 	9612  RS780M/RS780MN [Radeon HD 3200 Graphics]
 	9613  RS780MC [Radeon HD 3100 Graphics]
 	9614  Radeon HD 3300 Graphics
+	9616  760G [Radeon 3000]
 	aa00  R600 Audio Device [Radeon HD 2900 Series]
 	aa08  RV630/M76 audio device [Radeon HD 2600 Series]
 	aa10  RV610 audio device [Radeon HD 2400 PRO]
@@ -2528,6 +2535,8 @@
 	002d  PCI to C-bus Bridge
 	0035  USB
 		1033 0035  Hama USB 2.0 CardBus
+		103c 1293  USB add-in card
+		103c 1294  USB 2.0 add-in card
 		1179 0001  USB
 		12ee 7000  Root Hub
 		14c2 0105  PTI-205N USB 2.0 Host Controller
@@ -2837,6 +2846,8 @@
 		103c 3245  Smart Array P410i
 		103c 3247  Smart Array P411
 		103c 3249  Smart Array P812
+		103c 324a  HP Smart Array 712m (Mezzanine RAID controller)
+		103c 324b  Smart Array P711m (Mezzanine RAID controller)
 # Will present virtual install media as mass storage, keyboard/mouse from console session, etc.
 	3300  Proliant iLO2 virtual USB controller
 	3301  iLO3 Serial Port
@@ -3282,6 +3293,7 @@
 	3012  ColdFusion 3e Chipset Memory Controller Hub
 	3017  Unassigned Hitachi Shared FC Device 3017
 	301d  PCIe-to-PCIe Bridge with Virtualization IO Assist Feature
+	3020  FIVE-EX based Fibre Channel to PCIe HBA
 	3505  SH7751 PCI Controller (PCIC)
 	350e  SH7751R PCI Controller (PCIC)
 1055  Efar Microsystems
@@ -3452,7 +3464,10 @@
 		105a 8603  SuperTrak EX8658
 		105a 8604  SuperTrak EX8650
 		105a 8610  SuperTrak EX8650M
+		105a a600  SuperTrak EX12650
 		105a b600  SuperTrak EX16650
+		105a b601  SuperTrak EX16654
+		105a b602  SuperTrak EX16658
 	c350  80333 [SuperTrak EX12350]
 	e350  80333 [SuperTrak EX24350]
 105b  Foxconn International, Inc.
@@ -5073,6 +5088,7 @@
 		105b 0c43  Winfast NF3250K8AA
 		1462 7030  K8N Neo-FSR v2.0
 		147b 1c0b  NF8 Mainboard
+		f849 00e5  Motherboard (one of many)
 	00e6  CK8S Ethernet Controller
 	00e7  CK8S USB Controller
 		1043 813f  K8N-E
@@ -5831,6 +5847,7 @@
 	0623  GeForce 9600 GS
 	063a  Quadro FX 2700M
 	0640  GeForce 9500 GT
+	0641  D9M-20 [GeForce 9400 GT]
 	0647  GeForce 9600M GT
 	0648  GeForce 9600M GS
 	0649  GeForce 9600M GT
@@ -6203,6 +6220,7 @@
 		1458 e000  GA-EP45-DS5 Motherboard
 		1462 238c  Onboard RTL8111b on MSI P965 Platinum Mainboard
 		1462 368c  K9AG Neo2
+		1849 8168  A770CrossFire motherboard
 	8169  RTL-8169 Gigabit Ethernet
 		1025 0079  Aspire 5024WLMi
 		1259 c107  CG-LAPCIGT
@@ -6248,6 +6266,7 @@
 10f0  Peritek Corporation
 10f1  Tyan Computer
 	2865  Tyan Thunder K8E S2865
+	5300  Tyan S5380 Mainboard
 10f2  Achme Computer, Inc.
 10f3  Alaris, Inc.
 10f4  S-MOS Systems, Inc.
@@ -6314,7 +6333,7 @@
 		1102 002c  X-Fi XtremeGamer FATAL1TY PRO
 		1102 1003  X-Fi XtremeMusic
 	0006  [SB Live! Value] EMU10k1X
-	0007  SB Audigy LS
+	0007  CA0106 Soundblaster
 		1102 0007  SBLive! 24bit
 		1102 1001  SB0310 Audigy LS
 		1102 1002  SB0312 Audigy LS
@@ -10349,11 +10368,11 @@
 	000b  T210 Protocol Engine
 	000c  T204 Protocol Engine
 	0022  10GbE Ethernet Adapter
-	0030  T310 10GbE Single Port Protocol Engine Ethernet Adapter
+	0030  T310 10GbE Single Port Adapter
 		103c 705e  PCIe 10GBase-SR [AD386A]
-	0031  T320 10GbE Dual Port Protocol Engine Ethernet Adapter
-	0032  T302 1GbE Dual Port Protocol Engine Ethernet adapter
-	0033  T304 1GbE Quad Port Protocol Engine Ethernet adapter
+	0031  T320 10GbE Dual Port Adapter
+	0032  T302 1GbE Dual Port Adapter
+	0033  T304 1GbE Quad Port Adapter
 1426  Storage Technology Corp.
 1427  Better On-Line Solutions
 1428  Edec Co Ltd
@@ -10779,6 +10798,7 @@
 	164a  NetXtreme II BCM5706 Gigabit Ethernet
 		103c 3070  NC380T PCI Express Dual Port Multifunction Gigabit Server Adapter
 		103c 3101  NC370T MultifuNCtion Gigabit Server Adapter
+		103c 3106  NC370i Multifunction Gigabit Server Adapter
 	164c  NetXtreme II BCM5708 Gigabit Ethernet
 		1028 01f0  PowerEdge R900 Broadcom NetXtreme II BCM5708
 		1028 0205  PowerEdge 2970 Broadcom NetXtreme II BCM5708
@@ -10946,6 +10966,7 @@
 	1713  NetLink BCM5906M Fast Ethernet PCI Express
 		1028 01f3  Inspiron 1420
 		1028 0209  XPS M1330
+		103c 30c0  Compaq 6710b
 	3352  BCM3352
 	3360  BCM3360
 	4210  BCM4210 iLine10 HomePNA 2.0
@@ -11699,6 +11720,8 @@
 	0740  Virtual Machine Communication Interface
 	0770  Abstract USB2 EHCI Controller
 	0790  PCI bridge
+	07b0  VMXNET3 Ethernet Adapter
+	07c0  PVSCSI SCSI Controller
 	0801  Virtual Machine Interface
 		15ad 0800  Hypervisor ROM Interface
 15ae  Amersham Pharmacia Biotech
@@ -11982,6 +12005,7 @@
 	0027  AR9160 802.11abgn Wireless PCI Adapter
 	0029  AR922X Wireless Network Adapter
 	002a  AR928X Wireless Network Adapter (PCI-Express)
+	002b  AR9285 Wireless Network Adapter (PCI-Express)
 	0033  11a/b/g/n Wireless LAN Mini-PCI Express Adapter
 	0207  AR5210
 	1014  AR5212 802.11abg NIC
@@ -12170,6 +12194,7 @@
 179c  Data Patterns
 	0557  DP-PCI-557 [PCI 1553B]
 	0566  DP-PCI-566 [Intelligent PCI 1553B]
+	1152  DP-cPCI-1152 (8–channel Isolated ADC Module)
 	5031  DP-CPCI-5031-Synchro Module
 	5121  DP-CPCI-5121-IP Carrier
 	5211  DP-CPCI-5211-IP Carrier
@@ -12548,8 +12573,11 @@
 	1975  DVG64 family
 1969  Attansic Technology Corp.
 	1026  L1 Gigabit Ethernet Adapter
+		1043 8304  P5KPL-CM Motherboard
 	1048  L1 Gigabit Ethernet Adapter
 		1043 8226  P5KPL-VM Motherboard
+	1066  L2c Gigabit Ethernet Adapter
+	1067  L1c Gigabit Ethernet Adapter
 	2048  L2 100 Mbit Ethernet Adapter
 196a  Sensory Networks Inc.
 	0101  NodalCore C-1000 Content Classification Accelerator
@@ -12578,6 +12606,10 @@
 	2382  SD/MMC Host Controller
 	2383  MS Host Controller
 	2384  xD Host Controller
+	2386  Standard SD Host Controller
+	2387  SD/MMC Host Controller
+	2388  MS Host Controller
+	2389  xD Host Controller
 1982  Distant Early Warning Communications Inc
 	1600  OX16C954 HOST-A
 	16ff  OX16C954 HOST-B
@@ -12683,6 +12715,7 @@
 	1fa8  BYNET BIC2SE/X
 		1b3e 00a3  BYNET BIC2SX
 		1b3e 00c3  BYNET BIC2SE
+1b40  Schooner Information Technology, Inc.
 1b55  NetUP Inc.
 	2a2c  Dual DVB-S2-CI card
 1c1c  Symphony
@@ -13600,9 +13633,12 @@
 		103c 1716  NC360m Dual Port 1GbE BL-c Adapter
 	10da  82571EB Quad Port Gigabit Mezzanine Adapter
 		103c 1717  NC364m Quad Port 1GbE BL-c Adapter
+	10db  82598EB 10-Gigabit Dual Port Network Connection
 	10dd  82598EB 10 Gigabit AT CX4 Network Connection
 	10de  82567LM-3 Gigabit Network Connection
 	10df  82567LF-3 Gigabit Network Connection
+	10e1  82598EB 10-Gigabit AT Dual Port Network Connection
+		8086 a15f  10-Gigabit SR Dual Port Express Module
 	10e2  82575GB Gigabit Network Connection
 		8086 10e2  Gigabit VT Quad Port Server Adapter
 	10e5  82567LM-4 Gigabit Network Connection
@@ -13610,11 +13646,15 @@
 		8086 a01f  Gigabit EF Dual Port Server Adapter
 		8086 a02f  Gigabit EF Dual Port Server Adapter
 	10e7  82576 Gigabit Network Connection
-	10ec  10 Gigabit AT CX4 Network Connection
+	10ec  82598EB 10-Gigabit AT CX4 Network Connection
 		8086 a01f  10 Gigabit CX4 Dual Port Server Adapter
 		8086 a11f  10 Gigabit CX4 Dual Port Server Adapter
-	10f4  10 Gigabit AT Network Connection
+	10f1  82598EB 10-Gigabit AT Dual Port Network Connection
+		8086 a20f  10-Gigabit AF DA Dual Port Server Adapter
+		8086 a21f  10-Gigabit AF DA Dual Port Server Adapter
+	10f4  82598EB 10-Gigabit AT Network Connection
 		8086 106f  10 Gigabit XF LR Server Adapter
+		8086 a06f  10-Gigabit XF LR Server Adapter
 	10f5  82567LM Gigabit Network Connection
 	1107  PRO/1000 MF Server Adapter (LX)
 	1130  82815 815 Chipset Host Bridge and Memory Controller Hub
@@ -15031,6 +15071,7 @@
 		1043 1123  A6J-Q008
 		1043 13c4  Asus G2P
 		1043 8290  P5KPL-VM Motherboard
+		1043 82ea  P5KPL-CM Motherboard
 		107b 5048  E4500
 		10f7 8338  Panasonic CF-Y5 laptop
 		1179 ff10  Toshiba Satellite A100-796 audio (Realtek ALC861)
@@ -15459,28 +15500,29 @@
 	2a51  Cantiga MEI Controller
 	2a52  Cantiga PT IDER Controller
 	2a53  Cantiga AMT SOL Redirection
-	2c01  QuickPath Architecture System Address Decoder
-	2c10  QPI Link 0
-	2c11  QPI Physical 0
-	2c14  QPI Link 1
-	2c15  QPI Physical 1
-	2c18  QuickPath Memory Controller
-	2c19  QuickPath Memory Controller Target Address Decoder
-	2c1a  QuickPath Memory Controller RAS Registers
-	2c1c  QuickPath Memory Controller Test Registers
-	2c20  QuickPath Memory Controller Channel 0 Control Registers
-	2c21  QuickPath Memory Controller Channel 0 Address Registers
-	2c22  QuickPath Memory Controller Channel 0 Rank Registers
-	2c23  QuickPath Memory Controller Channel 0 Thermal Control Registers
-	2c28  QuickPath Memory Controller Channel 1 Control Registers
-	2c29  QuickPath Memory Controller Channel 1 Address Registers
-	2c2a  QuickPath Memory Controller Channel 1 Rank Registers
-	2c2b  QuickPath Memory Controller Channel 1 Thermal Control Registers
-	2c30  QuickPath Memory Controller Channel 2 Control Registers
-	2c31  QuickPath Memory Controller Channel 2 Address Registers
-	2c32  QuickPath Memory Controller Channel 2 Rank Registers
-	2c33  QuickPath Memory Controller Channel 2 Thermal Control Registers
-	2c40  QuickPath Architecture Generic Non-Core Registers
+	2c01  Core i7 QuickPath Architecture System Address Decoder
+	2c10  Core i7 QPI Link 0
+	2c11  Core i7 QPI Physical 0
+	2c14  Core i7 QPI Link 1
+	2c15  Core i7 QPI Physical 1
+	2c18  Core i7 Integrated Memory Controller
+	2c19  Core i7 Integrated Memory Controller Target Address Decoder
+	2c1a  Core i7 Integrated Memory Controller RAS Registers
+	2c1c  Core i7 Integrated Memory Controller Test Registers
+	2c20  Core i7 Integrated Memory Controller Channel 0 Control Registers
+	2c21  Core i7 Integrated Memory Controller Channel 0 Address Registers
+	2c22  Core i7 Integrated Memory Controller Channel 0 Rank Registers
+	2c23  Core i7 Integrated Memory Controller Channel 0 Thermal Control Registers
+	2c28  Core i7 Integrated Memory Controller Channel 1 Control Registers
+	2c29  Core i7 Integrated Memory Controller Channel 1 Address Registers
+	2c2a  Core i7 Integrated Memory Controller Channel 1 Rank Registers
+	2c2b  Core i7 Integrated Memory Controller Channel 1 Thermal Control Registers
+	2c30  Core i7 Integrated Memory Controller Channel 2 Control Registers
+	2c31  Core i7 Integrated Memory Controller Channel 2 Address Registers
+	2c32  Core i7 Integrated Memory Controller Channel 2 Rank Registers
+	2c33  Core i7 Integrated Memory Controller Channel 2 Thermal Control Registers
+	2c40  Core i7 QuickPath Architecture Generic Non-Core Registers
+	2c41  QuickPath Architecture Generic Non-Core Registers
 	2c50  QuickPath Architecture Generic Non-Core Registers
 	2c51  QuickPath Architecture Generic Non-Core Registers
 	2c52  QuickPath Architecture Generic Non-Core Registers
@@ -15601,9 +15643,9 @@
 	3426  X58 Routing and Protocol Layer Registers Port 0
 	3427  QuickPath Interconnect Physical and Link Layer Registers Port 1
 	3428  QuickPath Interconnect Routing and Protocol Layer Registers Port 1
-	3429  DMA Engine
-	342a  DMA Engine
-	342b  DMA Engine
+	3429  X58 Chipset QuickData Technology Device
+	342a  X58 Chipset QuickData Technology Device
+	342b  X58 Chipset QuickData Technology Device
 	342c  DMA Engine
 	342d  X58 I/O Hub I/OxAPIC Interrupt Controller
 	342e  X58 I/O Hub System Management Registers
@@ -15754,6 +15796,7 @@
 	3a1a  82801JD (ICH10D) LPC Interface Controller
 	3a20  82801JI (ICH10 Family) 4 port SATA IDE Controller
 	3a22  82801JI (ICH10 Family) SATA AHCI Controller
+		1043 82d4  P5Q Deluxe Motherboard
 		1458 b005  GA-EP45-DS5 Motherboard
 	3a25  82801JIR (ICH10R) SATA RAID Controller
 	3a26  82801JI (ICH10 Family) 2 port SATA IDE Controller
@@ -16717,6 +16760,8 @@ f1d0  AJA Video
 	efac  Xena SD-MM/SD-22-MM
 	facd  Xena HD-MM
 f5f5  F5 Networks, Inc.
+# Subsystem ID for PATA controller on nForce motherboard
+f849  ASRock Incorporation (Wrong ID)
 fa57  Interagon AS
 	0001  PMC [Pattern Matching Chip]
 fab7  Fabric7 Systems, Inc.
