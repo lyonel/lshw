@@ -13,7 +13,7 @@
 #include <string.h>
 #include <libgen.h>
 
-static char *id = "@(#) $Id$";
+static const char *id = "@(#) $Id$";
 
 extern "C"
 {
@@ -442,7 +442,7 @@ static const char *guess_format(char *s)
   return LSHW_XML;
 }
 
-static char *fix_filename(char *s, char *extension)
+static char *fix_filename(char *s, const char *extension)
 {
   char *dot = strrchr(s, '.');
 
