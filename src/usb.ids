@@ -7,7 +7,7 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# $Id: usb.ids,v 1.371 2008/09/21 11:26:37 gowdy Exp $
+# $Id: usb.ids,v 1.374 2009/01/10 08:11:02 gowdy Exp $
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -180,12 +180,12 @@
 	1116  Jornada 568 Pocket PC
 	1117  LaserJet 1300n
 	1151  PSC-750xi Printer/Scanner/Copier
-	1202  Photosmart 320 Series
+	1202  Photosmart 320 series
 	1204  DeskJet 930c
 	1205  ScanJet 4500C/5550C
 	1211  officejet v60xi
 	1217  LaserJet 2300L
-	1302  Photosmart 370 Series
+	1302  Photosmart 370 series
 	1305  ScanJet 4570c
 	1311  OfficeJet V30
 	1312  Deskjet 460
@@ -193,20 +193,20 @@
 	1405  Scanjet 3670
 	1411  PSC 750
 	1424  f2105 Monitor Hub
-	1502  Photosmart 420 Series
+	1502  Photosmart 420 series
 	1504  DeskJet 920c
 	1511  PSC 750xi
 	1512  Printing Support
 	1517  color LaserJet 3500
 	1524  Smart Card Keyboard - KR
-	1602  Photosmart 330 Series
+	1602  Photosmart 330 series
 	1604  DeskJet 940c
 	1605  ScanJet 5530C Photosmart
 	1611  psc 780
 	1617  LaserJet 3015
 	161d  Wireless Rechargeable Optical Mouse (HID)
 	1624  Smart Card Keyboard - JP
-	1702  Photosmart 380 Series
+	1702  Photosmart 380 series
 	1704  deskjet 948C
 	1705  ScanJet 5590
 	1711  psc 780xi
@@ -214,7 +214,7 @@
 	1717  LaserJet 3020
 	171d  Wireless (Bluetooth + WLAN) Interface [Integrated Module]
 	1801  Inkjet P-2000U
-	1802  Photosmart 470 Series
+	1802  Photosmart 470 series
 	1804  deskjet 916C
 	1805  ScanJet 7650
 	1811  PSC 720
@@ -271,7 +271,7 @@
 	2602  Photosmart A520 series
 	2605  ScanJet 3800c
 	2611  officejet 7100 series
-	2617  Color LaserJet 2820 Series
+	2617  Color LaserJet 2820 series
 	2624  Pole Display (HP522 2 x 20 Line Display)
 	2702  Photosmart A620 series
 	2704  Deskjet 915
@@ -291,6 +291,7 @@
 	2d17  Printing Support
 	2e11  PSC 1000
 	2e17  Printing Support
+	2e24  LP2275w Monitor Hub
 	2f11  PSC 1200
 	2f17  EWS 2605dn
 	3002  photosmart P1000
@@ -321,7 +322,7 @@
 	3711  PSC 2500
 	3717  EWS UPD
 	3802  photosmart 100
-	3817  LaserJet P2015 Series
+	3817  LaserJet P2015 series
 	3902  photosmart 130
 	3a02  photosmart 7150
 	3a11  OfficeJet 5500 series
@@ -368,10 +369,10 @@
 	4e11  Photosmart 2570 series
 	4f11  Officejet 5600 (USBHUB)
 	5004  DeskJet 995c
-	5011  Photosmart 3100 Series
+	5011  Photosmart 3100 series
 	5017  EWS UPD
-	5111  Photosmart 3200 Series
-	5211  Photosmart 3300 Series
+	5111  Photosmart 3200 series
+	5211  Photosmart 3300 series
 	5311  Officejet 6300
 	5411  Officejet 4300
 	5511  Deskjet F300 series
@@ -383,7 +384,7 @@
 	5817  LaserJet M1319f MFP
 	5911  PhotoSmart C6180
 	5a11  Photosmart C7100 series
-	5b11  Officejet J2100 Series
+	5b11  Officejet J2100 series
 	5c11  Photosmart C4200 Printer series
 	5d11  Photosmart C5200 series
 	5e11  Photosmart D7400 series
@@ -443,7 +444,7 @@
 	7a17  LaserJet M3027 MFP
 	7b02  PhotoSmart M23 (PTP mode)
 	7b17  Color LaserJet CP4005
-	7c17  Color LaserJet CM6040 Series
+	7c17  Color LaserJet CM6040 series
 	7d04  Deskjet F2100 Printer series
 	7d17  Color LaserJet CM4730 MFP
 	7e04  Deskjet F4100 Printer series
@@ -454,13 +455,13 @@
 	8204  Printing Support
 	8217  LaserJet P4014
 	8317  LaserJet M9050 MFP
-	8404  Deskjet 6800 Series
+	8404  Deskjet 6800 series
 	8417  LaserJet M9040 MFP
-	8504  Deskjet 6600 Series
+	8504  Deskjet 6600 series
 	8604  Deskjet 5440
 	8704  deskjet 5900 series
-	8804  Deskjet 6980 Series
-	8904  Deskjet 6940 Series
+	8804  Deskjet 6980 series
+	8904  Deskjet 6940 series
 	9002  Photosmart M437
 	9102  Photosmart M537
 	9302  Photosmart R930 series
@@ -482,16 +483,16 @@
 	b502  photosmart 7700 series
 	b602  photosmart 7900 series
 	b702  photosmart 7900 series
-	b802  Photosmart 7400 Series
-	b902  Photosmart 7800 Series
-	ba02  Photosmart 8100 Series
-	bb02  Photosmart 8400 Series
-	bc02  Photosmart 8700 Series
+	b802  Photosmart 7400 series
+	b902  Photosmart 7800 series
+	ba02  Photosmart 8100 series
+	bb02  Photosmart 8400 series
+	bc02  Photosmart 8700 series
 	bd02  Photosmart Pro B9100 series
 	bef4  NEC Picty760
-	c002  Photosmart 7800 Series
-	c102  Photosmart 8000 Series
-	c202  Photosmart 8200 Series
+	c002  Photosmart 7800 series
+	c102  Photosmart 8000 series
+	c202  Photosmart 8200 series
 	c302  Deskjet D2300
 	c402  Photosmart D5100 series
 	c502  Photosmart D6100 series
@@ -551,6 +552,7 @@
 	5635  USB 2.0 Flash Card Reader
 	5636  USB 2.0 Storage Device
 	5637  M5637 IDE Controller
+	5667  Music player
 0403  Future Technology Devices International, Ltd
 	0000  H4SMK 7 Port Hub
 	0232  Serial Converter
@@ -913,8 +915,8 @@
 	3001  Xerox P1202 Laser Printer
 	3003  Olivetti PG L12L
 	3201  Docuprint P8ex
-	3404  SCX-5x12 Series
-	3406  MFP 830 Series
+	3404  SCX-5x12 series
+	3406  MFP 830 series
 	3407  ML-912
 	3601  InkJet Color Printer
 	3602  InkJet Color Printer
@@ -928,6 +930,7 @@
 	1002  Nomad II
 	1003  Blaster GamePad Cobra
 	1050  GamePad Cobra
+	1053  Mouse Gamer HD7600L
 	3000  SoundBlaster Extigy
 	3002  SB External Composite Device
 	3010  SoundBlaster MP3+
@@ -991,6 +994,7 @@
 	4056  Live! Cam Video IM Pro
 	4057  Live! Cam Optia
 	4058  Live! Cam Optia AF
+	4061  Live! Cam Notebook Pro [VF0400]
 	4063  Live! Cam Video IM Pro
 	4068  WebCam Live! Notebook
 	4100  Nomad Jukebox 2
@@ -1043,6 +1047,10 @@
 	0025  5610 XpressMusic (PC Suite mode)
 	0028  5610 XpressMusic (Imaging mode)
 	0042  E51 (PC Suite mode)
+	006d  N95 (Storage mode)
+	006e  N95 (Multimedia mode)
+	006f  N95 (Printing mode)
+	0070  N95 (PC Suite mode)
 	0096  N810 Internet Tablet
 	0103  ADL Flashing Engine AVALON Parent
 	0104  ADL Re-Flashing Engine Parent
@@ -1274,47 +1282,47 @@
 	007b  InkJet Color Printer
 	007c  Lexmark X1110/X1130/X1140/X1150/X1170/X1180/X1185
 	007d  Photo 3150
-	008a  4200 Series
+	008a  4200 series
 	008b  InkJet Color Printer
 	008c  to CF/SM/SD/MS Card Reader
 	008e  InkJet Color Printer
 	008f  X422
 	0093  X5250
 	0095  E220 Printer
-	0096  2200 Series
+	0096  2200 series
 	0097  P6250
-	0098  7100 Series
-	009e  P910 Series Human Interface Device
+	0098  7100 series
+	009e  P910 series Human Interface Device
 	009f  InkJet Color Printer
 	00a9  IBM Infoprint 1410 MFP
 	00ab  InkJet Color Printer
-	00b2  3300 Series
-	00b8  7300 Series
-	00b9  8300 Series
+	00b2  3300 series
+	00b8  7300 series
+	00b9  8300 series
 	00ba  InkJet Color Printer
-	00bb  2300 Series
+	00bb  2300 series
 	00bd  Printing Support
 	00be  Printing Support
 	00bf  Printing Support
-	00c0  6300 Series
-	00c1  4300 Series
+	00c0  6300 series
+	00c1  4300 series
 	00c7  Printing Support
 	00c8  Printing Support
 	00c9  Printing Support
 	00cb  Printing Support
-	00d0  9300 Series
+	00d0  9300 series
 	00d3  X340 Scanner
 	00d4  X342n Scanner
 	00d5  Printing Support
 	00d6  X340 Scanner
 	00e8  X642e
-	00e9  2400 Series
-	00f6  3400 Series
+	00e9  2400 series
+	00f6  3400 series
 	00f7  InkJet Color Printer
 	00ff  InkJet Color Printer
-	010b  2500 Series
-	010d  3500-4500 Series
-	010f  6500 Series
+	010b  2500 series
+	010d  3500-4500 series
+	010f  6500 series
 	4303  Xerox WorkCentre Pro 412
 043e  LG Electronics USA, Inc.
 	42bd  Flatron 795FT Plus Monitor
@@ -1774,6 +1782,7 @@
 	4d04  Mouse
 	4d06  Balless Mouse (HID)
 	4d15  Dell Optical Mouse
+	4d17  Optical Mouse
 	4d2a  PoPo Elixir Mouse (HID)
 	4d2b  Wireless Laser Mini Mouse (HID)
 	4d2c  PoPo Mini Pointer Mouse (HID)
@@ -1790,7 +1799,9 @@
 	0004  CyBoard Keyboard
 	0005  XX33 SmartCard Reader Keyboard
 	0010  SmartBoard XX44
+	0011  G83 (RS 6000) Keyboard
 	0023  Cymotion Master Linux Keyboard
+	002a  Wireless Mouse & Keyboard
 	002d  SmartTerminal XX44
 	003e  SmartTerminal ST-2xxx
 046b  American Megatrends, Inc.
@@ -2004,6 +2015,7 @@
 	c30d  Internet Keys
 	c30e  UltraX Keyboard (Y-BL49)
 	c30f  Logicool HID-Compliant Keyboard (106 key)
+	c312  DeLuxe 250 Keyboard
 	c315  Classic New Touch Keyboard
 	c316  HID-Compliant Keyboard
 	c401  TrackMan Marble Wheel
@@ -2021,6 +2033,7 @@
 	c509  Cordless Keyboard & Mouse
 	c50a  Cordless Mouse
 	c50b  Cordless Desktop Optical
+	c50c  Cordless Desktop S510
 	c50d  Cordless Mouse
 	c50e  MX-1000 Cordless Mouse Receiver
 	c510  Cordless Mouse
@@ -2653,6 +2666,7 @@
 	1728  MX310 ser
 	1729  MX700 ser
 	172b  MP140 ser
+	1900  CanoScan LiDE 90
 	2200  CanoScan LiDE 25
 	2201  CanoScan FB320U
 	2202  CanoScan FB620U
@@ -2749,9 +2763,9 @@
 	2679  CAPT Device
 	267a  iR2016
 	267b  iR2020
-	267d  MF7100 Series
-	2684  MF3200 Series
-	2686  MF6500 Series
+	267d  MF7100 series
+	2684  MF3200 series
+	2686  MF6500 series
 	2687  iR4530
 	2688  LBP3460
 	268c  iR C6870
@@ -2759,10 +2773,10 @@
 	268e  iR C5870
 	268f  iR 5870C EUR
 	2691  iR7105
-	26a3  MF4100 Series
-	26b0  MF4600 Series
-	26b4  MF4010 Series
-	26b5  MF4200 Series
+	26a3  MF4100 series
+	26b0  MF4600 series
+	26b4  MF4010 series
+	26b5  MF4200 series
 	3041  PowerShot S10
 	3042  CanoScan FS4000US Film Scanner
 	3043  PowerShot S20
@@ -3118,6 +3132,7 @@
 	083d  MFP Composite Device
 	083e  MFP Composite Device
 	083f  Stylus DX4450
+	0849  Stylus SX205
 04b9  Rainbow Technologies, Inc.
 	0300  SafeNet USB SuperPro/UltraPro
 	1000  iKey 1000 Token
@@ -3547,16 +3562,16 @@
 	3268  ML-1610 Mono Laser Printer
 	326c  ML-2010P Mono Laser Printer
 	3409  SCX-4216F Scanner
-	340c  SCX-5x15 Series
-	340d  SCX-6x20 Series
-	340e  MFP 560 Series
+	340c  SCX-5x15 series
+	340d  SCX-6x20 series
+	340e  MFP 560 series
 	340f  Printing Support
-	3412  SCX-4x20 Series
+	3412  SCX-4x20 series
 	3413  SCX-4100 Scanner
 	3415  Composite Device
 	3419  Composite Device
 	341a  Printing Support
-	341b  SCX-4200 Series
+	341b  SCX-4200 series
 	341c  Composite Device
 	341d  Composite Device
 	341f  Composite Device
@@ -3567,8 +3582,8 @@
 	3902  InkJet Color Printer
 	3903  Xerox WorkCentre XK50cx
 	390f  InkJet Color Printer
-	3911  SCX-1020 Series
-	5000  YP-MF Series
+	3911  SCX-1020 series
+	5000  YP-MF series
 	5001  YP-100
 	5002  YP-30
 	5003  YP-700
@@ -3660,6 +3675,7 @@
 	a124  ORITE CCD Webcam(PC370R)
 	a128  PC Camera (SN9C202 + OV7663 + EEPROM)
 	a133  Gateway Webcam
+	a136  LabTec Webcam 5500
 	a204  DSC WIA Device (1300)
 	a208  DSC WIA Device (2320)
 	a209  Labtec DC-2320
@@ -3682,6 +3698,7 @@
 	b027  Gateway USB 2.0 Webcam
 	b028  VGA UVC Webcam
 	b029  USB 2.0 1.3M UVC Webcam
+	b071  USB 2.0 2.0M UVC WebCam
 	b107  CNF7070 Webcam
 04f3  Elan Microelectronics Corp.
 	0210  AM-400 Hama Optical Mouse
@@ -3698,7 +3715,7 @@
 	0007  HL-1250 Laser Printer
 	0008  HL-1270 Laser Printer
 	0009  Printer
-	000a  P2500 Series
+	000a  P2500 series
 	000b  Printer
 	000c  Printer
 	000d  HL-1440 Laser Printer
@@ -3725,13 +3742,13 @@
 	0027  HL-2030 Laser Printer
 	0028  Printer
 	0029  Printer
-	002a  Printer
+	002a  HL-52x0 series
 	002b  Printer
 	002c  Printer
 	002d  Printer
-	0100  MFC8600/9650 Series
-	0101  MFC9600/9870 Series
-	0102  MFC9750/1200 Series
+	0100  MFC8600/9650 series
+	0101  MFC9600/9870 series
+	0102  MFC9750/1200 series
 	0104  MFC-8300J
 	0105  MFC-9600J
 	0106  MFC-7300C
@@ -3879,6 +3896,7 @@
 	2002  PTUSB Printing
 	2004  PT-2300/2310 p-Touch Laber Printer
 	2015  QL-500 P-touch label printer
+	2016  QL-550 P-touch label printer
 	2100  Card Reader Writer
 04fa  Dallas Semiconductor
 	2490  DS1490F 2-in-1 Fob, 1-Wire adapter
@@ -4271,7 +4289,7 @@
 	0184  Net MD
 	0185  Hi-MD WALKMAN
 	0186  Net MD
-	0187  Hi-MD WALKMAN
+	0187  Hi-MD MZ-NH600 WALKMAN
 	0188  Net MD
 	018a  Net MD
 	018b  Hi-MD SOUND GATE
@@ -4810,10 +4828,12 @@
 058d  Micrel Semiconductor
 058e  Tripath Technology, Inc.
 058f  Alcor Micro Corp.
+	1234  Flash Drive
 	2412  SCard R/W CSR-145
 	2802  Monterey Keyboard
 	5492  Hub
 	6232  Hi-Speed 16-in-1 Flash Card Reader/Writer
+	6254  USB Hub
 	6335  SD/MMC Card Reader
 	6360  Multimedia Card Reader
 	6361  Multimedia Card Reader
@@ -4835,7 +4855,7 @@
 	9360  8-in-1 Media Card Reader
 	9361  Multimedia Card Reader
 	9368  Multimedia Card Reader
-	9380  Flash drive
+	9380  Flash Drive
 	9382  Acer/Sweex Flash drive
 	9410  Keyboard
 	9472  Keyboard Hub
@@ -5004,6 +5024,7 @@
 	1260  iPod Nano 2.Gen
 	1261  iPod Classic
 	1290  iPhone
+	1291  iPod Touch 1.Gen
 	1292  iPhone 3G
 	1300  iPod Shuffle
 	1301  iPod Shuffle 2.Gen
@@ -5578,6 +5599,7 @@
 	a100  Acer OrbiCam
 	a101  Acer CrystalEye Webcam
 	a110  HP Webcam
+	d101  Acer CrystalEye Webcam
 064f  WIBU-Systems AG
 	0bd7  BOX/U
 	0bd8  BOX/RU
@@ -6468,6 +6490,7 @@
 	1033  MidiSport 8x8/s
 	1040  M-Audio MidiSport 2x4 Loader
 	1041  M-Audio MidiSport 2x4
+	1110  MidiSport 1x1
 	2001  M Audio Quattro
 	2002  M Audio Duo
 	2003  M Audio AudioPhile
@@ -7030,6 +7053,8 @@
 	0000  FastLane MIDI Interface
 	0001  FastLane Quad MIDI Interface
 	0002  MOTU Audio for 64 bit
+07ff  Unknown
+	00ff  Portable Hard Drive
 0801  Mag-Tek
 	0002  Mini Swipe Reader
 0802  Mako Technologies, LLC
@@ -7576,7 +7601,7 @@
 	1540  Digitex Container Flash Disk
 090b  Neurosmith
 090c  Feiya Technology Corp.
-	1000  Memory Bar
+	1000  Flash Drive
 	1132  5-in-1 Card Reader
 	b371  Silicon Motion SM371 Camera
 090d  Multiport Computer Vertriebs GmbH
@@ -7636,6 +7661,7 @@
 	010f  SIIG MobileCam
 0924  Xerox
 	23dd  DocuPrint M760 (X760_USB)
+	3ce8  Phaser 3428 Printer
 	3d5b  Phaser 6115MFP TWAIN Scanner
 	420f  WorkCentre PE220 Series
 	421f  M20 Scanner
@@ -7643,6 +7669,7 @@
 	ffef  WorkCenter M15
 	fffb  DocuPrint M750 (X750_USB)
 0925  Lakeview Research
+	0005  Gamtec.,Ltd SmartJoy PLUS Adapter
 	8101  Phidgets, Inc., 1-Motor PhidgetServo v2.0
 	8104  Phidgets, Inc., 4-Motor PhidgetServo v2.0
 	8800  WiseGroup Ltd, MP-8800 Quad Joypad
@@ -7725,6 +7752,7 @@
 	653e  USB Flash Memory
 	6540  TransMemory USB Flash Memory
 	6544  Kingston DataTraveler 2.0 USB Stick (2GB)
+	6545  Kingston DataTraveler 2.0 USB Stick (4GB)
 0931  Harmonic Data Systems, Ltd
 0932  Crescentec Corp.
 	0300  VideoAdvantage
@@ -7753,6 +7781,7 @@
 	2608  PAC7311 Trust WB-3300p 
 	260e  PAC7311 Gigaware VGA PC Camera:Trust WB-3350p:SIGMA cam 2350 
 	260f  PAC7311 SnakeCam 
+	2624  WebCam
 093b  Plextor Corp.
 	0010  Storage Adapter
 	0011  PlexWriter 40/12/40U
@@ -8073,6 +8102,7 @@
 0a5c  Broadcom Corp.
 	0201  iLine10(tm) Network Adapter
 	2000  Bluetooth Device
+	2001  Bluetooth Device
 	2009  Bluetooth Controller
 	200a  Bluetooth dongle
 	200f  Bluetooth Controller
@@ -8258,7 +8288,9 @@
 	1201  802.11b WiFi
 	1211  802.11b/g USB2 WiFi
 	1215  WLA-54L WiFi
-	1608  ONMI FAXMODEM 56K UNO (ZyXEL)
+	1602  ZyXEL Omni FaxModem 56K
+	1608  ZyXEL Omni FaxModem 56K UNO
+	1611  ZyXEL Omni FaxModem 56K Plus
 0acf  Intoto, Inc.
 0ad0  Intellix Corp.
 0ad1  Remotec Technology, Ltd
@@ -9381,6 +9413,7 @@
 	5513  MP3 Player
 	5515  MP3 Player
 	5516  MP3 Player
+	5581  Mega Sky 5580 DVB-T Tuner
 	6823  UB11B/MS-6823 802.11b Wi-Fi adapter
 	6826  IEEE 802.11g Wireless Network Adapter
 	6855  Bluetooth Device
@@ -9520,6 +9553,8 @@
 0e08  Winbest Technology Co., Ltd
 0e0c  Gesytec
 	0101  LonUSB LonTalk Network Adapter
+0e0f  VMware, Inc.
+	0002  Virtual USB Hub
 0e16  JMTek, LLC
 0e17  Walex Electronic, Ltd
 0e1b  Crewave
@@ -9653,6 +9688,7 @@
 	1008  So., Show 301 Digital Camera
 0ecd  Lite-On IT Corp.
 	1400  CD\RW 40X
+	a100  LDW-411SX DVD/CD Rewritable Drive
 0ece  TaiSol Electronics Co., Ltd
 0ecf  Phogenix Imaging, LLC
 0ed1  WinMaxGroup
@@ -9800,7 +9836,10 @@
 0fca  Research In Motion, Ltd.
 	0001  Blackberry Handheld
 0fce  Sony Ericsson Mobile Communications AB
+	00d4  C902 [MTP]
+	00d9  C702 Phone
 	1010  WMC Modem
+	10d4  C902 [PictBridge]
 	d008  V800-Vodafone 802SE WMC Modem
 	d016  K750i Phone
 	d017  K608i Phone
@@ -9810,7 +9849,9 @@
 	d041  K510i Phone
 	d042  W810i Phone
 	d046  K610i Phone
+	d0d4  C902 [Modem]
 	e042  W810i Phone
+	e0d4  C902 [Mass Storage]
 0fcf  Dynastream Innovations, Inc.
 0fd0  Tulip Computers B.V.
 0fd1  Giant Electronics Ltd.
@@ -9870,6 +9911,7 @@
 100d  Netopia, Inc.
 	3342  Cayman 3352 DSL Modem
 	3382  3380 Series Network Interface
+	6072  DSL Modem
 	cb01  Cayman 3341 Ethernet DSL Router
 1010  Fukuda Denshi Co., Ltd
 1011  Mobile Media Tech.
@@ -10347,7 +10389,8 @@
 12fd  AIN Comm. Technology Co., Ltd
 	1001  AWU2000b 802.11b Stick
 1307  Transcend Information, Inc.
-	0163  512MB USB Flash Drive
+	0163  512MB/1GB Flash Drive
+	0165  2GB/4GB Flash Drive
 	1169  TS2GJF210 JetFlash 210 2GB
 1310  Roper
 	0001  Class 1 Bluetooth Dongle
@@ -10387,6 +10430,7 @@
 	0503  USB-ML-12 HCS08/HCS12 Multilink
 136b  STEC
 1370  Swissbit
+	0323  Swissmemory cirrusWHITE
 	6828  Victorinox Flash Drive
 1371  Dick Smith Electronics
 	9022  RT2573
@@ -10503,8 +10547,9 @@
 143c  Altek Corporation
 145f  Trust
 	013d  PC Camera (SN9C201 + OV7660)
-	013f  Megapixel USB2 Auto Focus Webcam
+	013f  Megapixel Auto Focus Webcam
 	0142  WB-6250X Webcam
+	015a  WB-8300X 2MP Webcam
 1453  Radio Shack
 	4026  26-183 Serial Cable
 1456  Extending Wire & Cable Co., Ltd.
@@ -10514,7 +10559,7 @@
 	5119  OpenMoko Neo1973 u-boot cdc_acm serial port
 	5120  OpenMoko Neo1973 u-boot usbtty generic serial
 	5121  OpenMoko Neo1973 kernel mass storage (g_storage) mode
-	5122  OpenMoko Neo1973 kernel cdc_ether USB network
+	5122  OpenMoko Neo1973 / Neo Freerunner kernel cdc_ether USB network
 	5123  OpenMoko Neo1973 internal USB CSR4 module
 	5124  OpenMoko Neo1973 Bluetooth Device ID service
 1461  Staccato Communications
@@ -10525,6 +10570,8 @@
 147a  Formosa Industrial Computing, Inc.
 	e015  eHome Infrared Receiver
 	e016  eHome Infrared Receiver
+147e  Upek
+	2016  Biometric Touchchip/Touchstrip Fingerprint Sensor
 147f  Hama GmbH & Co., KG
 1484  Elsa AG [hex]
 	1746  Ecomo 19H99 Monitor
@@ -10576,6 +10623,7 @@
 1501  Pine-Tum Enterprise Co., Ltd.
 1513  Hypercom
 1516  CompUSA
+	1603  1GB Flash Drive
 	8628  128M Pen Drive
 1518  Cheshire Engineering Corp.
 	0001  HDReye High Dynamic Range Camera
@@ -10589,6 +10637,7 @@
 1529  UBIQUAM Co., Ltd.
 	3100  CDMA 1xRTT USB Modem (U-100/105/200/300/520)
 152d  JMicron Technology Corp. / JMicron USA Technology Corp.
+	2335  ATA/ATAPI Bridge
 	2338  JM20337 Hi-Speed USB to SATA & PATA Combo Bridge
 152e  LG (HLDS)
 	e001  GSA-5120D DVD-RW
@@ -10819,6 +10868,7 @@
 	7605  UAT1 Wireless Ethernet Adapter
 1669  PiKRON Ltd. [hex]
 	1001  uLan2USB Converter - PS1 protocol
+1677  China Huada Integrated Circuit Design (Group) Co., Ltd. (CIDC Group)
 1679  Total Phase
 	2001  Beagle USB 12 Protocol Analyzer
 1682  Maxwise Production Enterprise Ltd.
@@ -10833,11 +10883,11 @@
 	0002  AR5523 (no firmware)
 1690  Askey Computer Corp. [hex]
 	0101  Creative Modem Blaster DE5670
-	0102  CDC Modem Board
-	0103  Askey 1456 VQE-R3 Modem [conexant]
+	0102  V1456 VQE-R2 Modem [conexant]
+	0103  1456 VQE-R3 Modem [conexant]
 	0104  HCF V90 Data Fax RTAD Modem
 	0107  HCF V.90 Data,Fax,RTAD Modem
-	0109  Askey MagicXpress V.90 Pocket Modem [conexant]
+	0109  MagicXpress V.90 Pocket Modem [conexant]
 	0203  Voyager ADSL Modem Loader
 	0204  Voyager ADSL Modem
 	0205  DSL Modem
@@ -10891,6 +10941,10 @@
 	5533  CCU-550 CDMA EV-DO modem
 	5543  CDMA 2000 1xRTT/1xEVDO modem
 	6280  CMOTECH CDMA Technologies modem
+	6803  CNU-680 CDMA EV-DO modem
+16dc  Wiener, Plein & Baus
+	0001  CC
+	000b  VM
 16df  King Billion Electronics Co., Ltd.
 16f5  Futurelogic Inc.
 1706  BlueView Technologies, Inc.
@@ -11173,12 +11227,16 @@
 1b65  The Hong Kong Standards and Testing Centre Ltd.
 1b72  ATERGI TECHNOLOGY CO., LTD.
 1b76  Legend Silicon Corp.
+1b80  Afatech
+	c810  AF9015 BDA Device
 1b86  Dongguan Guanshang Electronics Co., Ltd.
 1b88  ShenMing Electron (Dong Guan) Co., Ltd.
 1b8c  Altium Limited
 1b8d  e-MOVE Technology Co., Ltd.
 1b8e  Amlogic, Inc.
 1b8f  MA LABS, Inc.
+1b96  N-Trig
+	0001  Duosense Transparent Electromagnetic Digitizer
 1b98  YMax Communications Corp.
 1b99  Shenzhen Yuanchuan Electronic
 1ba1  JINQ CHERN ENTERPRISE CO., LTD.
@@ -11270,6 +11328,7 @@
 1e1f  INVIA
 1e29  Festo AG & Co. KG
 	0101  CPX Adapter
+1e41  Cleverscope
 1ebb  NuCORE Technology, Inc.
 2001  D-Link Corp. [hex]
 	0001  DWL-120 WIRELESS ADAPTER
@@ -11613,6 +11672,8 @@
 	2101  SmartCard Reader Keyboard
 	2500  DRAC4 Remote Access Card
 	3010  Optical Wheel Mouse
+	3012  Optical Wheel Mouse
+	3016  Optical 5-Button Wheel Mouse
 	3200  Mouse
 	4001  Axim X5
 	4002  Axim X3
@@ -11837,7 +11898,9 @@ eb1a  eMPIA Technology, Inc.
 	2761  EeePC 701 integrated Webcam
 	2800  Terratec Cinergy 200
 	2801  GrabBeeX+ Video Encoder
-	2870  Pinnacle PCTV USB Stick
+	2870  Pinnacle PCTV Stick
+	50a3  Gadmei UTV380 TV Box
+	50a6  Gadmei UTV330 TV Box
 f003  Hewlett Packard
 	6002  PhotoSmart C500
 
