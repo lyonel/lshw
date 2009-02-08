@@ -199,6 +199,7 @@ struct ext2_super_block {
 #define EXT3_FEATURE_INCOMPAT_JOURNAL_DEV       0x0008 /* Journal device */
 #define EXT2_FEATURE_INCOMPAT_META_BG           0x0010
 #define EXT3_FEATURE_INCOMPAT_EXTENTS           0x0040
+#define EXT4_FEATURE_INCOMPAT_EXTENTS           0x0040
 #define EXT4_FEATURE_INCOMPAT_64BIT             0x0080
 #define EXT4_FEATURE_INCOMPAT_MMP               0x0100
 
@@ -308,15 +309,30 @@ static bool detect_ext2(hwNode & n, source & s)
       n.addCapability("large_files", "4GB+ files");
     if(le_long(&sb->s_feature_ro_compat) && EXT4_FEATURE_RO_COMPAT_HUGE_FILE)
       n.addCapability("huge_files", "16TB+ files");
+    if(le_long(&sb->s_feature_ro_compat) && EXT4_FEATURE_RO_COMPAT_DIR_NLINK)
+      n.addCapability("many_subdirs", "directories with 65000+ subdirs");
     if(le_long(&sb->s_feature_incompat) && EXT3_FEATURE_INCOMPAT_RECOVER)
       n.addCapability("recover", "needs recovery");
+    if(le_long(&sb->s_feature_incompat) && EXT4_FEATURE_INCOMPAT_64BIT)
+      n.addCapability("64bit", "64bit filesystem");
+    if(le_long(&sb->s_feature_incompat) && EXT4_FEATURE_INCOMPAT_EXTENTS)
+      n.addCapability("extents", "extent-based allocation");
   }
 
   if(n.isCapable("journaled"))
   {
-    n.addCapability("ext3");
-    n.setDescription("EXT3 volume");
-    n.setConfig("filesystem", "ext3");
+    if(n.isCapable("huge_files") || n.isCapable("64bit") || n.isCapable("extents") || n.isCapable("many_subdirs"))
+    {
+      n.addCapability("ext4");
+      n.setDescription("EXT4 volume");
+      n.setConfig("filesystem", "ext4");
+    }
+    else
+    {
+      n.addCapability("ext3");
+      n.setDescription("EXT3 volume");
+      n.setConfig("filesystem", "ext3");
+    }
   }
 
   return true;
