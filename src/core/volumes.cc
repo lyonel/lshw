@@ -303,25 +303,25 @@ static bool detect_ext2(hwNode & n, source & s)
       mkfstime = (time_t)le_long(&sb->s_mkfs_time);
       n.setConfig("created", datetime(mkfstime));
     }
-    if(le_long(&sb->s_feature_compat) && EXT2_FEATURE_COMPAT_EXT_ATTR)
+    if(le_long(&sb->s_feature_compat) & EXT2_FEATURE_COMPAT_EXT_ATTR)
       n.addCapability("extended_attributes", "Extended Attributes");
-    if(le_long(&sb->s_feature_ro_compat) && EXT2_FEATURE_RO_COMPAT_LARGE_FILE)
+    if(le_long(&sb->s_feature_ro_compat) & EXT2_FEATURE_RO_COMPAT_LARGE_FILE)
       n.addCapability("large_files", "4GB+ files");
-    if(le_long(&sb->s_feature_ro_compat) && EXT4_FEATURE_RO_COMPAT_HUGE_FILE)
+    if(le_long(&sb->s_feature_ro_compat) & EXT4_FEATURE_RO_COMPAT_HUGE_FILE)
       n.addCapability("huge_files", "16TB+ files");
-    if(le_long(&sb->s_feature_ro_compat) && EXT4_FEATURE_RO_COMPAT_DIR_NLINK)
-      n.addCapability("many_subdirs", "directories with 65000+ subdirs");
-    if(le_long(&sb->s_feature_incompat) && EXT3_FEATURE_INCOMPAT_RECOVER)
+    if(le_long(&sb->s_feature_ro_compat) & EXT4_FEATURE_RO_COMPAT_DIR_NLINK)
+      n.addCapability("dir_nlink", "directories with 65000+ subdirs");
+    if(le_long(&sb->s_feature_incompat) & EXT3_FEATURE_INCOMPAT_RECOVER)
       n.addCapability("recover", "needs recovery");
-    if(le_long(&sb->s_feature_incompat) && EXT4_FEATURE_INCOMPAT_64BIT)
+    if(le_long(&sb->s_feature_incompat) & EXT4_FEATURE_INCOMPAT_64BIT)
       n.addCapability("64bit", "64bit filesystem");
-    if(le_long(&sb->s_feature_incompat) && EXT4_FEATURE_INCOMPAT_EXTENTS)
+    if(le_long(&sb->s_feature_incompat) & EXT4_FEATURE_INCOMPAT_EXTENTS)
       n.addCapability("extents", "extent-based allocation");
   }
 
   if(n.isCapable("journaled"))
   {
-    if(n.isCapable("huge_files") || n.isCapable("64bit") || n.isCapable("extents") || n.isCapable("many_subdirs"))
+    if(n.isCapable("huge_files") || n.isCapable("64bit") || n.isCapable("extents") || n.isCapable("dir_nlink"))
     {
       n.addCapability("ext4");
       n.setDescription("EXT4 volume");
