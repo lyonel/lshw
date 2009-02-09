@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *id = "@(#) $Id$";
+static const char *id = "@(#) $Id$";
 
 static void printattr(const string & name, const string & value, GtkTextBuffer *buffer, GtkTextIter &iter)
 {
