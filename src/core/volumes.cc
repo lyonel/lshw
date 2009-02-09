@@ -296,7 +296,7 @@ static bool detect_ext2(hwNode & n, source & s)
     n.setConfig("lastmountpoint", hw::strip(string(sb->s_last_mounted, sizeof(sb->s_last_mounted))));
     n.setSerial(hw::strip(uuid(sb->s_uuid)));
 
-    if(le_long(&sb->s_feature_compat) && EXT3_FEATURE_COMPAT_HAS_JOURNAL)
+    if(le_long(&sb->s_feature_compat) & EXT3_FEATURE_COMPAT_HAS_JOURNAL)
     {
       n.addCapability("journaled");
       
