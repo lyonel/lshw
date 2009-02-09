@@ -361,7 +361,7 @@ bool scan_usb(hwNode & n)
   unsigned ifnum, alt, numeps;
   char driver[80+1];
 
-  if (!exists(SYSBUSUSBDEVICES) && !exists(PROCBUSUSBDEVICES))
+  if (!exists(PROCBUSUSBDEVICES))
     return false;
 
   vector < string > filenames;
@@ -372,9 +372,11 @@ bool scan_usb(hwNode & n)
   }
   filenames.clear();
 
-  usbdevices = fopen(SYSBUSUSBDEVICES, "r");
+  usbdevices = fopen(PROCBUSUSBDEVICES, "r");
+#if 0
   if(!usbdevices)
-    usbdevices = fopen(PROCBUSUSBDEVICES, "r");
+    usbdevices = fopen(SYSBUSUSBDEVICES, "r");
+#endif
 
   while(!feof(usbdevices))
   {
