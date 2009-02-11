@@ -20,10 +20,10 @@ extern "C"
 #include "support.h"
 };
 
-#define AUTOMATIC "automatic"
-#define LSHW_XML "lshw XML format"
-#define PLAIN_TEXT "plain text document"
-#define HTML "HTML document"
+#define AUTOMATIC "automatic file format"
+#define LSHW_XML "lshw XML format (.lshw,.xml)"
+#define PLAIN_TEXT "plain text document (.text, .txt)"
+#define HTML "HTML document (.html, .htm)"
 
 #define YIELD()  while(gtk_events_pending()) gtk_main_iteration()
 
