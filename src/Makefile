@@ -103,7 +103,7 @@ $(PACKAGENAME).spec: $(PACKAGENAME).spec.in
                                                                                
 release: $(PACKAGENAME).spec
 	mkdir -p ../../releases
-	svn copy .. `dirname ${PWD}`/releases/`cat ../.version`
+	svn copy ${PWD} `dirname ${PWD}`/releases/`cat ../.version`
 	svn commit `dirname ${PWD}`/releases/`cat ../.version` -m "released version "`cat ../.version`" of "$(PACKAGENAME)
 	rm -rf $(PACKAGENAME)-`cat ../.version`
 	svn export ../../releases/`cat ../.version` $(PACKAGENAME)-`cat ../.version`
