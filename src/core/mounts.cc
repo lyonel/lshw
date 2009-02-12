@@ -46,19 +46,20 @@ static bool has_device(const string & dev, hwNode & n)
 
 static string unescape(string s)
 {
-  size_t backslash;
+  size_t backslash = 0;
   string result = s;
   
-  while((backslash=result.find('\\')) != string::npos)
+  while((backslash=result.find('\\', backslash)) != string::npos)
   {
     string code = result.substr(backslash+1,3);
-    if(matches(code, "^0[0-9][0-9]$"))
+    if(matches(code, "^[0-9][0-9][0-9]$"))
     {
-      result[backslash] = (char)strtol(code.c_str(), NULL, 8);
+      result[backslash] = (char)strtol(code.c_str(), NULL, 8); // value is octal
       result.erase(backslash+1,3);
     }
+    backslash++;
   }
-  
+
   return result;
 }
 
