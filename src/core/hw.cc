@@ -1330,7 +1330,7 @@ string hwNode::asXML(unsigned level)
 
     if(uname(&un) == 0)
       out << "<!-- " << escapecomment(un.sysname) << " " << escapecomment(un.release) << " " << escapecomment(un.version) << " " << escapecomment(un.machine) << " -->" << endl;
-  #if defined(__GLIBC__)
+  #if defined(__GLIBC__) && defined(_CS_GNU_LIBC_VERSION)
     char version[PATH_MAX];
 
       if(confstr(_CS_GNU_LIBC_VERSION, version, sizeof(version))>0)
