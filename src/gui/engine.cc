@@ -21,8 +21,9 @@ extern "C"
 };
 
 #define AUTOMATIC "automatic file format"
-#define LSHW_XML "lshw XML format (.lshw,.xml)"
+#define LSHW_XML "lshw XML format (.lshw, .xml)"
 #define PLAIN_TEXT "plain text document (.text, .txt)"
+#define JSON "JavaScript Object Notation document (.json)"
 #define HTML "HTML document (.html, .htm)"
 
 #define YIELD()  while(gtk_events_pending()) gtk_main_iteration()
@@ -439,6 +440,9 @@ static const char *guess_format(char *s)
   if(!strcasecmp(".text", dot) || !strcasecmp(".txt", dot))
     return PLAIN_TEXT;
 
+  if(!strcasecmp(".json", dot))
+    return JSON;
+
   return LSHW_XML;
 }
 
@@ -514,6 +518,11 @@ void save_as(GtkWidget *mainwindow)
   gtk_file_filter_add_pattern(filter, "*.txt");
   gtk_file_filter_add_mime_type(filter, "text/plain");
   gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
+  filter = gtk_file_filter_new ();
+  gtk_file_filter_set_name(filter, JSON);
+  gtk_file_filter_add_pattern(filter, "*.json");
+  gtk_file_filter_add_mime_type(filter, "application/json");
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
 
   if(uname(&buf)==0)
     gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), buf.nodename);
@@ -546,6 +555,9 @@ void save_as(GtkWidget *mainwindow)
         else
         if(strcmp(filtername, PLAIN_TEXT)==0)
           filename = fix_filename(filename, "txt");
+        else
+        if(strcmp(filtername, JSON)==0)
+          filename = fix_filename(filename, "json");
       }
 
       if(exists(filename))		// existing file
@@ -592,6 +604,14 @@ void save_as(GtkWidget *mainwindow)
           std::ofstream out(filename);
           redirect_cout(out);
           print(*computer, false);
+          redirect_cout(out, false);
+        }
+	else
+        if(strcmp(filtername, JSON)==0)
+        {
+          std::ofstream out(filename);
+          redirect_cout(out);
+          cout << computer->asJSON() << endl;
           redirect_cout(out, false);
         }
       }
