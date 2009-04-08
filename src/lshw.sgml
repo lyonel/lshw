@@ -33,6 +33,7 @@ list hardware
 	<arg choice="opt"><option>-html</option></arg>
 	<arg choice="opt"><option>-short</option></arg>
 	<arg choice="opt"><option>-xml</option></arg>
+	<arg choice="opt"><option>-json</option></arg>
 	<arg choice="opt"><option>-businfo</option></arg>
       </group>
 	<arg choice="opt" rep="repeat"><option>-class </option><replaceable class="parameter">class</replaceable></arg>
@@ -83,6 +84,10 @@ Outputs the device tree as an HTML page.
 <varlistentry><term>-xml</term>
 <listitem><para>
 Outputs the device tree as an XML tree.
+</para></listitem></varlistentry>
+<varlistentry><term>-json</term>
+<listitem><para>
+Outputs the device tree as a JSON object (JavaScript Object Notation).
 </para></listitem></varlistentry>
 <varlistentry><term>-short</term>
 <listitem><para>
