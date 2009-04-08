@@ -211,6 +211,7 @@ class hwNode
     void fixInconsistencies();
 
     string asXML(unsigned level = 0);
+    string asJSON(unsigned level = 0);
     string asString();
   private:
 

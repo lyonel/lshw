@@ -447,6 +447,32 @@ string escape(const string & s)
   return result;
 }
 
+string escapeJSON(const string & s)
+{
+  string result = "";
+
+  for (unsigned int i = 0; i < s.length(); i++)
+    switch (s[i])
+    {
+      case '\r':
+        result += "\\r";
+        break;
+      case '\n':
+        result += "\\n";
+        break;
+      case '\t':
+        result += "\\t";
+        break;
+      case '"':
+        result += "\\\"";
+        break;
+    default:
+      result += s[i];
+  }
+
+  return result;
+}
+
 string escapecomment(const string & s)
 {
   string result = "";

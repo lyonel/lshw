@@ -68,6 +68,7 @@ char **argv)
 {
   disable("isapnp");
 
+  disable("output:json");
   disable("output:xml");
   disable("output:html");
   disable("output:hwpath");
@@ -125,6 +126,12 @@ char **argv)
     {
       disable("output:verbose");
       enable("output:quiet");
+      validoption = true;
+    }
+
+    if (strcmp(argv[1], "-json") == 0)
+    {
+      enable("output:json");
       validoption = true;
     }
 
@@ -209,6 +216,9 @@ char **argv)
       printbusinfo(computer);
     else
     {
+      if (enabled("output:json"))
+        cout << computer.asJSON() << endl;
+      else
       if (enabled("output:xml"))
         cout << computer.asXML();
       else

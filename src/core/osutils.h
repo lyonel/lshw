@@ -36,6 +36,7 @@ std::string utf8(uint16_t *s, size_t length = -1, bool forcelittleendian = false
 std::string spaces(unsigned int count, const std::string & space = " ");
 
 std::string escape(const std::string &);
+std::string escapeJSON(const std::string &);
 std::string escapecomment(const std::string &);
 
 std::string join(const std::string &, const std::string &, const std::string &);

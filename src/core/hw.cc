@@ -1305,6 +1305,275 @@ value hwNode::getHint(const string & id) const
   return This->hints[id];
 }
 
+string hwNode::asJSON(unsigned level)
+{
+  vector < string > config;
+  vector < string > resources;
+  ostringstream out;
+
+  if(!This) return "";
+
+  config = getConfigKeys();
+  resources = getResources("\" value=\"");
+
+  if(visible(getClassName()))
+  {
+    out << "{" << endl;
+    out << spaces(2*level+2) << "\"id\" : \"" << getId() << "\"," << endl;
+    out << spaces(2*level+2) << "\"class\" : \"" << getClassName() << "\"";
+
+    if (disabled())
+      out << "," << endl << spaces(2*level+2) << "\"disabled\" : true";
+    if (claimed())
+      out << "," << endl << spaces(2*level+2) << "\"claimed\" : true";
+
+    if(getHandle() != "")
+      out << "," << endl << spaces(2*level+2) << "\"handle\" : \"" << getHandle() << "\"";
+
+    if (getDescription() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"description\" : \"";
+      out << escapeJSON(getDescription());
+      out << "\"";
+    }
+
+    if (getProduct() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"product\" : \"";
+      out << escapeJSON(getProduct());
+      out << "\"";
+    }
+
+    if (getVendor() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"vendor\" : \"";
+      out << escapeJSON(getVendor());
+      out << "\"";
+    }
+
+    if (getPhysId() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"physid\" : \"";
+      out << getPhysId();
+      out << "\"";
+    }
+
+    if (getBusInfo() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"businfo\" : \"";
+      out << escapeJSON(getBusInfo());
+      out << "\"";
+    }
+
+    if (getLogicalName() != "")
+    {
+      vector<string> logicalnames = getLogicalNames();
+
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"logicalname\" : ";
+
+      if(logicalnames.size() > 1)
+      {
+        out << "[";
+        for(unsigned int i = 0; i<logicalnames.size(); i++)
+        {
+          if(i) out << ", ";
+          out << "\"" << logicalnames[i] << "\"";
+        }
+        out << "]";
+      }
+      else
+        out << "\"" << escapeJSON(getLogicalName()) << "\"";
+    }
+
+    if (getDev() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"dev\" : \"";
+      out << escapeJSON(getDev());
+      out << "\"";
+    }
+
+    if (getVersion() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"version\" : \"";
+      out << escapeJSON(getVersion());
+      out << "\"";
+    }
+
+    if (getSerial() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"serial\" : \"";
+      out << (::enabled("output:sanitize")?REMOVED:escapeJSON(getSerial()));
+      out << "\"";
+    }
+
+    if (getSlot() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"slot\" : \"";
+      out << escapeJSON(getSlot());
+      out << "\"";
+    }
+
+    if ((getSize() > 0) || (getCapacity() > 0))
+      switch (getClass())
+      {
+        case hw::memory:
+        case hw::address:
+        case hw::storage:
+        case hw::disk:
+        case hw::display:
+          out << "," << endl << spaces(2*level+2) << "\"units\" : \"bytes\"";
+          break;
+
+        case hw::processor:
+        case hw::bus:
+        case hw::system:
+          out << "," << endl << spaces(2*level+2) << "\"units\" : \"Hz\"";
+          break;
+
+        case hw::power:
+          out << "," << endl << spaces(2*level+2) << "\"units\" : \"mWh\"";
+          break;
+
+        case hw::network:
+          out << "," << endl << spaces(2*level+2) << "\"units\" : \"B/s\"";
+          break;
+
+        default:
+          break;
+      }
+
+    if (getSize() > 0)
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"size\" : ";
+      out << getSize();
+    }
+
+    if (getCapacity() > 0)
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"capacity\" : ";
+      out << getCapacity();
+    }
+
+    if (getWidth() > 0)
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"width\" : ";
+      out << getWidth();
+    }
+
+    if (getClock() > 0)
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"clock\" : ";
+      out << getClock();
+    }
+
+    if (config.size() > 0)
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"configuration\" : {" << endl;
+      for (unsigned int j = 0; j < config.size(); j++)
+      {
+        if(j) out << "," << endl;
+        out << spaces(2*level+4);
+        out << "\"" << escapeJSON(config[j]) << "\" : \"" << escapeJSON(getConfig(config[j])) << "\"";
+      }
+      out << endl << spaces(2*level+2);
+      out << "}";
+    }
+    config.clear();
+
+    splitlines(getCapabilities(), config, ' ');
+    if (config.size() > 0)
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"capabilities\" : {" << endl;
+      for (unsigned int j = 0; j < config.size(); j++)
+      {
+        if(j) out << "," << endl;
+        out << spaces(2*level+4);
+        out << "\"" << escapeJSON(config[j]) << "\" : ";
+        if (getCapabilityDescription(config[j]) == "")
+        {
+          out << "true";
+        }
+        else
+        {
+          out << "\"";
+          out << escapeJSON(getCapabilityDescription(config[j]));
+          out << "\"";
+        }
+      }
+      out << endl << spaces(2*level+2);
+      out << "}";
+    }
+    config.clear();
+
+    if (0 && resources.size() > 0)
+    {
+      out << spaces(2*level+1);
+      out << "<resources>" << endl;
+      for (unsigned int j = 0; j < resources.size(); j++)
+      {
+        out << spaces(2*level+2);
+        out << "<resource type=\"" << escapeJSON(resources[j]) << "\" />";
+        out << endl;
+      }
+      out << spaces(2*level+1);
+      out << "</resources>" << endl;
+    }
+    resources.clear();
+  }
+
+  
+  if(countChildren()>0)
+  {
+    out << "," << endl;
+    out << spaces(2*level+2) << "\"children\" : {" << endl;
+    for (unsigned int i = 0; i < countChildren(); i++)
+    {
+      if(i) out << "," << endl;
+      out << spaces(2*level+4) << "\"" << getChild(i)->getId() << "\" : " << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
+    }
+    out << endl << spaces(2*level+2) << "}";
+  }
+
+  if(visible(getClassName()))
+  {
+    out << endl << spaces(2*level);
+    out << "}";
+  }
+
+  return out.str();
+}
 
 string hwNode::asXML(unsigned level)
 {
