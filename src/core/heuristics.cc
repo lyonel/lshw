@@ -142,7 +142,7 @@ static string parsehex(const string & s)
 
   if(matches(s,"^0x[[:xdigit:]][[:xdigit:]]+$"))
   {
-    for(i=2; i<s.length(); i++)
+    for(i=2; i<s.length(); i+=2)
     {
       string c = s.substr(i,2);
       static char code[2];
@@ -152,7 +152,6 @@ static string parsehex(const string & s)
       
       if(code[0] < ' ') return s;
       result += string(code);
-      i++;
     }
    }
    else
