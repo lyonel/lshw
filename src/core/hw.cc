@@ -1166,6 +1166,8 @@ void hwNode::fixInconsistencies()
   if (getCapacity() < getSize())
     setCapacity(0);
 
+  guessProduct(*this);
+
   if(getVendor() == "")
     guessVendor(*this);
 

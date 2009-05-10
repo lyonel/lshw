@@ -8,6 +8,7 @@
 #include "sysfs.h"
 #include "osutils.h"
 
+#include <stdlib.h>
 #include <regex.h>
 
 __ID("@(#) $Id$");
@@ -133,3 +134,42 @@ bool guessVendor(hwNode & device)
   return result;
 }
 
+
+static string parsehex(const string & s)
+{
+  int i = 0;
+  string result = "";
+
+  if(matches(s,"^0x[[:xdigit:]][[:xdigit:]]+$"))
+  {
+    for(i=2; i<s.length(); i++)
+    {
+      string c = s.substr(i,2);
+      static char code[2];
+
+      code[0] = strtol(c.c_str(), NULL, 16);
+      code[1] = '\0';
+      
+      if(code[0] < ' ') return s;
+      result += string(code);
+      i++;
+    }
+   }
+   else
+     return s;
+
+  return result;
+}
+
+bool guessProduct(hwNode & device)
+{
+  string product = device.getProduct();
+
+  if(product == "")
+    return false;
+
+  device.setProduct(parsehex(product));
+
+  return true;
+}
+ 
