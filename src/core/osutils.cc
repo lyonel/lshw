@@ -426,23 +426,30 @@ string escape(const string & s)
   string result = "";
 
   for (unsigned int i = 0; i < s.length(); i++)
-    switch (s[i])
-    {
-      case '<':
-        result += "&lt;";
-        break;
-      case '>':
-        result += "&gt;";
-        break;
-      case '&':
-        result += "&amp;";
-        break;
-      case '"':
-        result += "&quot;";
-        break;
-    default:
-      result += s[i];
-  }
+    // #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+    if (s[i] == 0x9
+        || s[i] == 0xA
+        || s[i] == 0xD
+        || (s[i] >= 0x20 && s[i] <= 0xD7FF)
+        || (s[i] >= 0xE000 && s[i] <= 0xFFFD)
+        || (s[i] >= 0x10000 && s[i] <= 0x10FFFF))
+      switch (s[i])
+      {
+        case '<':
+          result += "&lt;";
+          break;
+        case '>':
+          result += "&gt;";
+          break;
+        case '&':
+          result += "&amp;";
+          break;
+        case '"':
+          result += "&quot;";
+          break;
+      default:
+        result += s[i];
+    }
 
   return result;
 }
