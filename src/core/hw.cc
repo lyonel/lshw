@@ -1868,7 +1868,7 @@ string hwNode::asXML(unsigned level)
       for (unsigned int j = 0; j < resources.size(); j++)
       {
         out << spaces(2*level+2);
-        out << "<resource type=\"" << escape(resources[j]) << "\" />";
+        out << "<resource type=\"" << resources[j] << "\" />";
         out << endl;
       }
       out << spaces(2*level+1);
