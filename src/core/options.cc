@@ -80,6 +80,8 @@ char *argv[])
     {
       vector < string > classes;
 
+      enable("output:list");
+
       if (i + 1 >= argc)
         return false;                             // -class requires an argument
 

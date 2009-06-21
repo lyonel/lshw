@@ -1315,11 +1315,18 @@ string hwNode::asJSON(unsigned level)
 
   if(!This) return "";
 
+  if(::enabled("output:list") && level==0)
+  {
+    out << "[" << endl;
+  }
+
   config = getConfigKeys();
   resources = getResources("\" value=\"");
 
   if(visible(getClassName()))
   {
+    if(!::enabled("output:list")) out << "\"" << getId() << "\" : ";
+      else out << endl;
     out << "{" << endl;
     out << spaces(2*level+2) << "\"id\" : \"" << getId() << "\"," << endl;
     out << spaces(2*level+2) << "\"class\" : \"" << getClassName() << "\"";
@@ -1558,20 +1565,31 @@ string hwNode::asJSON(unsigned level)
   
   if(countChildren()>0)
   {
-    out << "," << endl;
-    out << spaces(2*level+2) << "\"children\" : {" << endl;
+    if(!::enabled("output:list") && visible(getClassName()))
+    {
+      out << "," << endl;
+      out << spaces(2*level+2) << "\"children\" : {" << endl;
+    }
     for (unsigned int i = 0; i < countChildren(); i++)
     {
-      if(i) out << "," << endl;
-      out << spaces(2*level+4) << "\"" << getChild(i)->getId() << "\" : " << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
+      if(i && visible(getChild(i)->getClassName())) out << "," << endl;
+      out << spaces(2*level+4) << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
     }
-    out << endl << spaces(2*level+2) << "}";
+    if(!::enabled("output:list") && visible(getClassName()))
+    {
+      out << endl << spaces(2*level+2) << "}";
+    }
   }
 
   if(visible(getClassName()))
   {
     out << endl << spaces(2*level);
     out << "}";
+  }
+
+  if(::enabled("output:list") && level==0)
+  {
+    out << "]" << endl;
   }
 
   return out.str();
