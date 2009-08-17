@@ -1747,6 +1747,7 @@ string hwNode::asXML(unsigned level)
         case hw::address:
         case hw::storage:
         case hw::disk:
+        case hw::volume:
         case hw::display:
           out << " units=\"bytes\"";
           break;
@@ -1755,6 +1756,10 @@ string hwNode::asXML(unsigned level)
         case hw::bus:
         case hw::system:
           out << " units=\"Hz\"";
+          break;
+
+        case hw::network:
+          out << " units=\"bytes/s\"";
           break;
 
         case hw::power:
