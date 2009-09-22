@@ -226,5 +226,10 @@ char **argv)
     }
   }
 
+  if (geteuid() != 0)
+  {
+    fprintf(stderr, "WARNING: output may be incomplete or inaccurate, you should run this program as super-user.\n");
+  }
+
   return 0;
 }
