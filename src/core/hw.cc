@@ -1464,7 +1464,7 @@ string hwNode::asJSON(unsigned level)
           break;
 
         case hw::network:
-          out << "," << endl << spaces(2*level+2) << "\"units\" : \"B/s\"";
+          out << "," << endl << spaces(2*level+2) << "\"units\" : \"bit/s\"";
           break;
 
         default:
@@ -1759,7 +1759,7 @@ string hwNode::asXML(unsigned level)
           break;
 
         case hw::network:
-          out << " units=\"bytes/s\"";
+          out << " units=\"bit/s\"";
           break;
 
         case hw::power:

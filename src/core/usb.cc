@@ -105,9 +105,9 @@ static string usbbusinfo(unsigned bus, unsigned level, unsigned port)
 
 static string usbspeed(float speed)
 {
-  char buffer[10];
+  char buffer[15];
 
-  snprintf(buffer, sizeof(buffer), "%.1fMB/s", speed);
+  snprintf(buffer, sizeof(buffer), "%.fMbit/s", speed);
 
   return string(buffer);
 }

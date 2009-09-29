@@ -416,22 +416,22 @@ bool scan_network(hwNode & n)
           interface.addCapability("fibre", "optical fibre");
         if(ecmd.supported & SUPPORTED_10baseT_Half)
         {
-          interface.addCapability("10bt", "10MB/s");
+          interface.addCapability("10bt", "10Mbit/s");
           interface.setCapacity(10000000L);
         }
         if(ecmd.supported & SUPPORTED_10baseT_Full)
         {
-          interface.addCapability("10bt-fd", "10MB/s (full duplex)");
+          interface.addCapability("10bt-fd", "10Mbit/s (full duplex)");
           interface.setCapacity(10000000L);
         }
         if(ecmd.supported & SUPPORTED_100baseT_Half)
         {
-          interface.addCapability("100bt", "100MB/s");
+          interface.addCapability("100bt", "100Mbit/s");
           interface.setCapacity(100000000L);
         }
         if(ecmd.supported & SUPPORTED_100baseT_Full)
         {
-          interface.addCapability("100bt-fd", "100MB/s (full duplex)");
+          interface.addCapability("100bt-fd", "100Mbit/s (full duplex)");
           interface.setCapacity(100000000L);
         }
         if(ecmd.supported & SUPPORTED_1000baseT_Half)
@@ -450,15 +450,15 @@ bool scan_network(hwNode & n)
         switch(ecmd.speed)
         {
           case SPEED_10:
-            interface.setConfig("speed", "10MB/s");
+            interface.setConfig("speed", "10Mbit/s");
             interface.setSize(10000000L);
             break;
           case SPEED_100:
-            interface.setConfig("speed", "100MB/s");
+            interface.setConfig("speed", "100Mbit/s");
             interface.setSize(100000000L);
             break;
           case SPEED_1000:
-            interface.setConfig("speed", "1GB/s");
+            interface.setConfig("speed", "1Gbit/s");
             interface.setSize(1000000000L);
             break;
         }
