@@ -436,12 +436,12 @@ bool scan_network(hwNode & n)
         }
         if(ecmd.supported & SUPPORTED_1000baseT_Half)
         {
-          interface.addCapability("1000bt", "1GB/s");
+          interface.addCapability("1000bt", "1Gbit/s");
           interface.setCapacity(1000000000L);
         }
         if(ecmd.supported & SUPPORTED_1000baseT_Full)
         {
-          interface.addCapability("1000bt-fd", "1GB/s (full duplex)");
+          interface.addCapability("1000bt-fd", "1Gbit/s (full duplex)");
           interface.setCapacity(1000000000L);
         }
         if(ecmd.supported & SUPPORTED_Autoneg)
