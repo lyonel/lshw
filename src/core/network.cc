@@ -288,6 +288,8 @@ static bool isVirtual(const string & MAC)
     return true;	// VMware
   if (manufacturer == "00:1C:42")
     return true;	// Parallels
+  if (manufacturer == "0A:00:27")
+    return true;	// VirtualBox
 
   return false;
 }
