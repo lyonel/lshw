@@ -32,4 +32,8 @@
 #ifndef MANDIR
 #define MANDIR PREFIX"/share/man"
 #endif
+
+#ifndef LOCALEDIR
+#define LOCALEDIR PREFIX"/share/locale"
+#endif
 #endif

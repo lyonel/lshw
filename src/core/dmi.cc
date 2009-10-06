@@ -75,6 +75,7 @@
  */
 
 #include "version.h"
+#include "config.h"
 #include "dmi.h"
 #include "osutils.h"
 
@@ -137,18 +138,18 @@ static const char *dmi_battery_chemistry(u8 code)
 {
   static const char *chemistry[]=
   {
-    "Other",                                      /* 0x01 */
-    "Unknown",
-    "Lead Acid",
-    "Nickel Cadmium",
-    "Nickel Metal Hydride",
-    "Lithium Ion",
-    "Zinc Air",
-    "Lithium Polymer"                             /* 0x08 */
+    N_("Other"),                                      /* 0x01 */
+    N_("Unknown"),
+    N_("Lead Acid"),
+    N_("Nickel Cadmium"),
+    N_("Nickel Metal Hydride"),
+    N_("Lithium Ion"),
+    N_("Zinc Air"),
+    N_("Lithium Polymer")                             /* 0x08 */
   };
 
   if(code>=0x01 && code<=0x08)
-    return chemistry[code-0x01];
+    return _(chemistry[code-0x01]);
   return "";
 }
 
@@ -258,22 +259,22 @@ static const char *dmi_board_type(u8 data)
     "",
     "",
     "",
-    "Server Blade",
-    "Connectivitiy Switch",
-    "System Management Module",
-    "Processor Module",
-    "I/O Module",
-    "Memory Module",
-    "Daughter Board",
-    "Mother Board",
-    "Processor/Memory Module",
-    "Processor/IO Module ",
-    "Interconnect Board",
+    N_("Server Blade"),
+    N_("Connectivitiy Switch"),
+    N_("System Management Module"),
+    N_("Processor Module"),
+    N_("I/O Module"),
+    N_("Memory Module"),
+    N_("Daughter Board"),
+    N_("Motherboard"),
+    N_("Processor/Memory Module"),
+    N_("Processor/IO Module "),
+    N_("Interconnect Board"),
   };
   if (data > 0x0D)
     return "";
   else
-    return boardtypes[data];
+    return _(boardtypes[data]);
 }
 
 
@@ -1027,7 +1028,7 @@ int dmiversionmin)
             if(dm->length >= 0x0a)
               hardwarenode->setSlot(dmi_string(dm, data[0x0A]));
             hardwarenode->setHandle(handle);
-            hardwarenode->setDescription("Motherboard");
+            hardwarenode->setDescription(_("Motherboard"));
             hardwarenode->addHint("icon", string("motherboard"));
           }
           else
@@ -1127,7 +1128,7 @@ int dmiversionmin)
           else
           {
             newnode.setBusInfo("");	// blank businfo to make sure further detections can't confuse this empty CPU slot with a real CPU
-            newnode.setDescription(newnode.getDescription() + " [empty]");
+            newnode.setDescription(newnode.getDescription() + " " + _("[empty]"));
             newnode.disable();
           }
 
@@ -1161,7 +1162,7 @@ int dmiversionmin)
           }
 
           newnode.setProduct(dmi_decode_ram(data[0x0C] << 8 | data[0x0B]) +
-            " Memory Controller");
+            _(" Memory Controller"));
 
           hardwarenode->addChild(newnode);
         }
@@ -1179,7 +1180,7 @@ int dmiversionmin)
           unsigned long long capacity = 0;
           unsigned long long size = 0;
 
-          newnode.setDescription("empty memory bank");
+          newnode.setDescription(_("empty memory bank"));
           newnode.setSlot(dmi_string(dm, data[4]).c_str());
           if (data[6])
             clock = 1000000000 / data[6];         // convert value from ns to Hz
@@ -1214,7 +1215,7 @@ int dmiversionmin)
           newnode.setCapacity(capacity);
           newnode.setSize(size);
           if(newnode.getSize()==0)
-            newnode.setDescription(newnode.getDescription() + " [empty]");
+            newnode.setDescription(newnode.getDescription() + " " + _("[empty]"));
           if ((data[11] & 4) == 0)
           {
             if (data[11] & (1 << 0))
@@ -1387,7 +1388,7 @@ int dmiversionmin)
           u16 width = 0;
           char bits[10];
           string arrayhandle;
-          newnode.setDescription("empty memory bank");
+          newnode.setDescription(_("empty memory bank"));
           newnode.addHint("icon", string("memory"));
           arrayhandle = dmi_handle(data[5] << 8 | data[4]);
           strcpy(bits, "");
@@ -1456,7 +1457,7 @@ int dmiversionmin)
           newnode.setDescription(description);
           newnode.setSize(size);
           if(newnode.getSize()==0)
-            newnode.setDescription(newnode.getDescription() + " [empty]");
+            newnode.setDescription(newnode.getDescription() + " " + _("[empty]"));
           newnode.setClock(clock);
           hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
           if (memoryarray)

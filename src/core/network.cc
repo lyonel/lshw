@@ -15,6 +15,7 @@
  */
 
 #include "version.h"
+#include "config.h"
 #include "network.h"
 #include "osutils.h"
 #include "sysfs.h"
@@ -207,31 +208,31 @@ static const char *hwname(int t)
   switch (t)
   {
     case ARPHRD_ETHER:
-      return "Ethernet";
+      return _("Ethernet");
     case ARPHRD_SLIP:
-      return "SLIP";
+      return _("SLIP");
     case ARPHRD_LOOPBACK:
-      return "loopback";
+      return _("loopback");
     case ARPHRD_FDDI:
-      return "FDDI";
+      return _("FDDI");
     case ARPHRD_IEEE1394:
-      return "IEEE1394";
+      return _("IEEE1394");
     case ARPHRD_IRDA:
-      return "IRDA";
+      return _("IRDA");
     case ARPHRD_PPP:
-      return "PPP";
+      return _("PPP");
     case ARPHRD_X25:
-      return "X25";
+      return _("X25");
     case ARPHRD_TUNNEL:
-      return "IPtunnel";
+      return _("IPtunnel");
     case ARPHRD_DLCI:
-      return "Framerelay.DLCI";
+      return _("Framerelay.DLCI");
     case ARPHRD_FRAD:
-      return "Framerelay.AD";
+      return _("Framerelay.AD");
     case ARPHRD_TUNNEL6:
-      return "IP6tunnel";
+      return _("IP6tunnel");
     case ARPHRD_SIT:
-      return "IP6inIP4";
+      return _("IP6inIP4");
     default:
       return "";
   }
@@ -366,15 +367,15 @@ bool scan_network(hwNode & n)
         string hwaddr = getmac((unsigned char *) ifr.ifr_hwaddr.sa_data);
         interface.addCapability(hwname(ifr.ifr_hwaddr.sa_family));
         if (ifr.ifr_hwaddr.sa_family >= 256)
-          interface.addCapability("logical", "Logical interface");
+          interface.addCapability("logical", _("Logical interface"));
         else
-          interface.addCapability("physical", "Physical interface");
+          interface.addCapability("physical", _("Physical interface"));
         interface.setDescription(string(hwname(ifr.ifr_hwaddr.sa_family)) +
           " interface");
         interface.setSerial(hwaddr);
 
         if (isVirtual(interface.getSerial()))
-          interface.addCapability("logical", "Logical interface");
+          interface.addCapability("logical", _("Logical interface"));
       }
 
 // check for wireless extensions
@@ -382,9 +383,9 @@ bool scan_network(hwNode & n)
       strncpy(buffer, interfaces[i].c_str(), sizeof(buffer));
       if (ioctl(fd, SIOCGIWNAME, &buffer) == 0)
       {
-        interface.addCapability("wireless", "Wireless-LAN");
+        interface.addCapability("wireless", _("Wireless-LAN"));
         interface.setConfig("wireless", hw::strip(buffer + IFNAMSIZ));
-        interface.setDescription("Wireless interface");
+        interface.setDescription(_("Wireless interface"));
         interface.addHint("icon", string("wifi"));
         interface.addHint("bus.icon", string("radio"));
       }
@@ -405,15 +406,15 @@ bool scan_network(hwNode & n)
       if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
       {
         if(ecmd.supported & SUPPORTED_TP)
-          interface.addCapability("tp", "twisted pair");
+          interface.addCapability("tp", _("twisted pair"));
         if(ecmd.supported & SUPPORTED_AUI)
-          interface.addCapability("aui", "AUI");
+          interface.addCapability("aui", _("AUI"));
         if(ecmd.supported & SUPPORTED_BNC)
-          interface.addCapability("bnc", "BNC");
+          interface.addCapability("bnc", _("BNC"));
         if(ecmd.supported & SUPPORTED_MII)
-          interface.addCapability("mii", "Media Independant Interface");
+          interface.addCapability("mii", _("Media Independant Interface"));
         if(ecmd.supported & SUPPORTED_FIBRE)
-          interface.addCapability("fibre", "optical fibre");
+          interface.addCapability("fibre",_( "optical fibre"));
         if(ecmd.supported & SUPPORTED_10baseT_Half)
         {
           interface.addCapability("10bt", "10Mbit/s");
@@ -445,7 +446,7 @@ bool scan_network(hwNode & n)
           interface.setCapacity(1000000000L);
         }
         if(ecmd.supported & SUPPORTED_Autoneg)
-          interface.addCapability("autonegotiation", "Auto-negotiation");
+          interface.addCapability("autonegotiation", _("Auto-negotiation"));
 
         switch(ecmd.speed)
         {
@@ -474,19 +475,19 @@ bool scan_network(hwNode & n)
         switch(ecmd.port)
         {
           case PORT_TP:
-            interface.setConfig("port", "twisted pair");
+            interface.setConfig("port", _("twisted pair"));
             break;
           case PORT_AUI:
-            interface.setConfig("port", "AUI");
+            interface.setConfig("port", _("AUI"));
             break;
           case PORT_BNC:
-            interface.setConfig("port", "BNC");
+            interface.setConfig("port", _("BNC"));
             break;
           case PORT_MII:
-            interface.setConfig("port", "MII");
+            interface.setConfig("port", _("MII"));
             break;
           case PORT_FIBRE:
-            interface.setConfig("port", "fibre");
+            interface.setConfig("port", _("fibre"));
             break;
         }
         interface.setConfig("autonegotiation", (ecmd.autoneg == AUTONEG_DISABLE) ?  "off" : "on");
@@ -506,7 +507,7 @@ bool scan_network(hwNode & n)
       }
 
       if(sysfs::entry::byClass("net", interface.getLogicalName()).hassubdir("bridge"))
-        interface.addCapability("logical", "Logical interface");
+        interface.addCapability("logical", _("Logical interface"));
 
       if (hwNode * existing = n.findChildByBusInfo(interface.getBusInfo()))
       {

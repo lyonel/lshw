@@ -12,6 +12,10 @@
 #include <stdlib.h>
 #include <iostream>
 
+#ifndef NONLS
+#include <locale.h>
+#endif
+
 __ID("@(#) $Id$");
 
 void usage(const char *progname)
@@ -66,6 +70,14 @@ void status(const char *message)
 int main(int argc,
 char **argv)
 {
+
+#ifndef NONLS
+  setlocale (LC_ALL, "");
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (PACKAGE, "UTF-8");
+  textdomain (PACKAGE);
+#endif
+
   disable("isapnp");
 
   disable("output:json");
