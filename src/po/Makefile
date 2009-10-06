@@ -5,12 +5,19 @@ CC?=cc
 STRIP?=strip
 OBJCOPY?=objcopy
 
-all: ${PACKAGENAME}.pot
+LANGUAGES = fr
+SRCS = $(LANGUAGES:=.po)
+CATALOGS = $(LANGUAGES:=.mo)
+
+all: ${PACKAGENAME}.pot ${CATALOGS}
 
 .PHONY: ${PACKAGENAME}.pot
 ${PACKAGENAME}.pot:
 	touch $@
 	xgettext -F --no-wrap --indent --join-existing --keyword=_ -d ${PACKAGENAME} -o $@ ../*.cc ../core/*.cc ../gui/*.cc ../gui/*.c
+
+%.mo: %.po
+	msgfmt -o $@ $^
 
 install: all
 	
