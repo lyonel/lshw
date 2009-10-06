@@ -40,6 +40,10 @@ core:
 $(PACKAGENAME): core $(PACKAGENAME).o
 	$(CXX) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS)
 
+.PHONY: po
+po:
+	+make -C po all
+
 .PHONY: gui
 gui: core
 	+make -C gui all

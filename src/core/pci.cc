@@ -1,4 +1,5 @@
 #include "version.h"
+#include "config.h"
 #include "pci.h"
 #include "osutils.h"
 #include "options.h"
@@ -721,7 +722,7 @@ static bool scan_capabilities(hwNode & n, struct pci_dev &d)
         n.addCapability("agp8x", "AGP 8x");
         break;
       case PCI_CAP_ID_EXP:
-        n.addCapability("pciexpress", "PCI Express");
+        n.addCapability("pciexpress", _("PCI Express"));
         break;
       case PCI_CAP_ID_MSIX:
         n.addCapability("msix", "MSI-X");

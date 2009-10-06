@@ -17,29 +17,29 @@ __ID("@(#) $Id$");
 void usage(const char *progname)
 {
   fprintf(stderr, "Hardware Lister (lshw) - %s\n", getpackageversion());
-  fprintf(stderr, "usage: %s [-format] [-options ...]\n", progname);
-  fprintf(stderr, "       %s -version\n", progname);
+  fprintf(stderr, _("usage: %s [-format] [-options ...]\n"), progname);
+  fprintf(stderr, _("       %s -version\n"), progname);
   fprintf(stderr, "\n");
-  fprintf(stderr, "\t-version        print program version (%s)\n", getpackageversion());
-  fprintf(stderr, "\nformat can be\n");
-  fprintf(stderr, "\t-html           output hardware tree as HTML\n");
-  fprintf(stderr, "\t-xml            output hardware tree as XML\n");
-  fprintf(stderr, "\t-short          output hardware paths\n");
-  fprintf(stderr, "\t-businfo        output bus information\n");
+  fprintf(stderr, _("\t-version        print program version (%s)\n"), getpackageversion());
+  fprintf(stderr, _("\nformat can be\n"));
+  fprintf(stderr, _("\t-html           output hardware tree as HTML\n"));
+  fprintf(stderr, _("\t-xml            output hardware tree as XML\n"));
+  fprintf(stderr, _("\t-short          output hardware paths\n"));
+  fprintf(stderr, _("\t-businfo        output bus information\n"));
   if(getenv("DISPLAY") && exists(SBINDIR"/gtk-lshw"))
-    fprintf(stderr, "\t-X              use graphical interface\n");
-  fprintf(stderr, "\noptions can be\n");
+    fprintf(stderr, _("\t-X              use graphical interface\n"));
+  fprintf(stderr, _("\noptions can be\n"));
   fprintf(stderr,
-    "\t-class CLASS    only show a certain class of hardware\n");
-  fprintf(stderr, "\t-C CLASS        same as '-class CLASS'\n");
-  fprintf(stderr, "\t-c CLASS        same as '-class CLASS'\n");
+    _("\t-class CLASS    only show a certain class of hardware\n"));
+  fprintf(stderr, _("\t-C CLASS        same as '-class CLASS'\n"));
+  fprintf(stderr, _("\t-c CLASS        same as '-class CLASS'\n"));
   fprintf(stderr,
-    "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n");
+    _("\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n"));
   fprintf(stderr,
-    "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n");
-  fprintf(stderr, "\t-quiet          don't display status\n");
-  fprintf(stderr, "\t-sanitize       sanitize output (remove sensitive information like serial numbers, etc.)\n");
-  fprintf(stderr, "\t-numeric        output numeric IDs (for PCI, USB, etc.)\n");
+    _("\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n"));
+  fprintf(stderr, _("\t-quiet          don't display status\n"));
+  fprintf(stderr, _("\t-sanitize       sanitize output (remove sensitive information like serial numbers, etc.)\n"));
+  fprintf(stderr, _("\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"));
   fprintf(stderr, "\n");
 }
 
@@ -104,7 +104,7 @@ char **argv)
       if(latest)
       {
         if(strcmp(latest, getpackageversion()) != 0)
-          fprintf(stderr, "the latest version is %s\n", latest);
+          fprintf(stderr, _("the latest version is %s\n"), latest);
       }
       exit(0);
     }
@@ -200,7 +200,7 @@ char **argv)
 
   if (geteuid() != 0)
   {
-    fprintf(stderr, "WARNING: you should run this program as super-user.\n");
+    fprintf(stderr, _("WARNING: you should run this program as super-user.\n"));
   }
 
   {
@@ -228,7 +228,7 @@ char **argv)
 
   if (geteuid() != 0)
   {
-    fprintf(stderr, "WARNING: output may be incomplete or inaccurate, you should run this program as super-user.\n");
+    fprintf(stderr, _("WARNING: output may be incomplete or inaccurate, you should run this program as super-user.\n"));
   }
 
   return 0;
