@@ -6,6 +6,7 @@
 
 #include "print-gui.h"
 #include "options.h"
+#include "config.h"
 #include "version.h"
 #include "osutils.h"
 #include "stock.h"
@@ -51,7 +52,7 @@ static void printsize(long long value, const hwNode & node, const string & name,
         break;
 
       case hw::network:
-        printattr(name,decimalkilos(value)+"B/s", buffer, iter);
+        printattr(name,decimalkilos(value)+"bit/s", buffer, iter);
         break;
 
       case hw::power:
@@ -112,9 +113,9 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   if(!node.claimed() || node.disabled())
     out << "<span color=\"gray\">";
   if(node.disabled())
-    out << " DISABLED";
+    out << _(" DISABLED");
   if(!node.claimed())
-    out << " UNCLAIMED";
+    out << _(" UNCLAIMED");
   if(!node.claimed() || node.disabled())
     out << "</span>";
 
@@ -135,38 +136,38 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
 
 //out << printattr("description", node.getDescription());
-  printattr("product", node.getProduct(), buffer, iter);
-  printattr("vendor", node.getVendor(), buffer, iter);
-  printattr("bus info", node.getBusInfo(), buffer, iter);
+  printattr(_("product"), node.getProduct(), buffer, iter);
+  printattr(_("vendor"), node.getVendor(), buffer, iter);
+  printattr(_("bus info"), node.getBusInfo(), buffer, iter);
   if (node.getLogicalName() != "")
   {
     vector<string> logicalnames = node.getLogicalNames();
 
     for(unsigned int i = 0; i<logicalnames.size(); i++)
-      printattr("logical name", logicalnames[i], buffer, iter);
+      printattr(_("logical name"), logicalnames[i], buffer, iter);
   }
 
-  printattr("version", node.getVersion(), buffer, iter);
-  printattr("serial", node.getSerial(), buffer, iter);
-  printattr("slot", node.getSlot(), buffer, iter);
+  printattr(_("version"), node.getVersion(), buffer, iter);
+  printattr(_("serial"), node.getSerial(), buffer, iter);
+  printattr(_("slot"), node.getSlot(), buffer, iter);
 
   if(node.getSize() > 0)
-    printsize(node.getSize(), node, "size", buffer, iter);
+    printsize(node.getSize(), node, _("size"), buffer, iter);
   if(node.getCapacity() > 0)
-    printsize(node.getCapacity(), node, "capacity", buffer, iter);
+    printsize(node.getCapacity(), node, _("capacity"), buffer, iter);
 
   if(node.getWidth() > 0)
-    printattr("width",tostring(node.getWidth())+" bits", buffer, iter);
+    printattr(_("width"),tostring(node.getWidth())+" bits", buffer, iter);
 
   if(node.getClock() > 0)
-    printattr("clock", decimalkilos(node.getClock())+string("Hz") + ((node.getClass() == hw::memory)?(string(" (")+tostring((long long)(1.0e9 / node.getClock())) + string("ns)")):string("")), buffer, iter);
+    printattr(_("clock"), decimalkilos(node.getClock())+string("Hz") + ((node.getClass() == hw::memory)?(string(" (")+tostring((long long)(1.0e9 / node.getClock())) + string("ns)")):string("")), buffer, iter);
 
   config.clear();
   splitlines(node.getCapabilities(), config, ' ');
 
   if (config.size() > 0)
   {
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "capabilities", -1, "bold", NULL);
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, _("capabilities"), -1, "bold", NULL);
     gtk_text_buffer_insert (buffer, &iter, ":", -1);
     for(unsigned j=0; j<config.size(); j++)
     {
@@ -189,7 +190,7 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
 
   if (config.size() > 0)
   {
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "configuration", -1, "bold", NULL);
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, _("configuration"), -1, "bold", NULL);
     gtk_text_buffer_insert (buffer, &iter, ":", -1);
     for(unsigned j=0; j<config.size(); j++)
     {
@@ -205,7 +206,7 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
 
   if (config.size() > 0)
   {
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, "resources", -1, "bold", NULL);
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, _("resources"), -1, "bold", NULL);
     gtk_text_buffer_insert (buffer, &iter, ":", -1);
     for(unsigned j=0; j<config.size(); j++)
     {
@@ -217,10 +218,10 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 
   if(!node.claimed())
-    inserticon(LSHW_STOCK_DISABLED, "this device hasn't been claimed\n", buffer, iter, textview);
+    inserticon(LSHW_STOCK_DISABLED, _("this device hasn't been claimed\n"), buffer, iter, textview);
 
   if(!node.enabled())
-    inserticon(LSHW_STOCK_DISABLED, "this device has been disabled\n", buffer, iter, textview);
+    inserticon(LSHW_STOCK_DISABLED, _("this device has been disabled\n"), buffer, iter, textview);
 
   (void) &id;                                     // avoid "id defined but not used" warning
 }

@@ -332,7 +332,7 @@ int level)
           break;
 
         case hw::network:
-          cout << decimalkilos(node.getSize()) << "B/s";
+          cout << decimalkilos(node.getSize()) << "bit/s";
           if (html)
             cout << "</td></tr>";
           break;
@@ -387,7 +387,7 @@ int level)
 
         case hw::network:
           cout << decimalkilos(node.getCapacity());
-          cout << "B/s";
+          cout << "bit/s";
           if (html)
             cout << "</td></tr>";
           break;
