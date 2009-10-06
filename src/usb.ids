@@ -9,8 +9,8 @@
 #	The latest version can be obtained from
 #		http://www.linux-usb.org/usb.ids
 #
-# Version: 2009.09.07
-# Date:    2009-09-07 20:34:02
+# Version: 2009.09.17
+# Date:    2009-09-17 20:34:02
 #
 
 # Vendors, devices and interfaces. Please keep sorted.
@@ -870,6 +870,7 @@
 	00d8  WLI-U2-SG54HP
 	00d9  WLI-U2-G54HP
 	00da  WLI-U2-KG54L 802.11bg
+	0157  Buffalo External Hard Drive HD-PEU2
 0412  Award Software International
 0413  Leadtek Research, Inc.
 	1310  WinFast TV - NTSC + FM
@@ -2681,6 +2682,7 @@
 	10a8  iP6220D
 	10a9  iP6600D
 	10b6  PIXMA iP4300 Printer
+	10c2  PIXMA iP1800 Printer
 	1404  W6400PG
 	1405  W8400PG
 	150f  BIJ2350 PCL
@@ -4041,6 +4043,7 @@
 	0004  Direct Connect
 	0012  F8T012 Bluetooth Adapter
 	0013  F8T013 Bluetooth Adapter
+	0017  B8T017 Bluetooth+EDR 2.1
 	0050  F5D6050 802.11b Wireless Adapter
 	0081  F8T001v2 Bluetooth
 	0083  Bluetooth Device
@@ -4564,6 +4567,7 @@
 	0010  Graphire
 	0011  Graphire 2
 	0013  Graphire 3 4x5
+	0017  Bamboo Fun
 	0020  Intuos 4x5
 	0021  Intuos 6x8
 	0022  Intuos 9x12
@@ -5672,6 +5676,7 @@
 0642  VIA Medical Corp.
 0644  TEAC Corp.
 	0000  Floppy
+	0200  All-In-One Multi-Card Reader CA200/B/S
 	1000  CD-ROM Drive
 	800d  TASCAM Portastudio DP-01FX
 	d001  CD-R/RW Unit
@@ -5696,7 +5701,9 @@
 064e  Suyin Corp.
 	a100  Acer OrbiCam
 	a101  Acer CrystalEye Webcam
+	a102  Lenovo Webcam
 	a110  HP Webcam
+	c107  HP webcam [dv6-1190en]
 	d101  Acer CrystalEye Webcam
 064f  WIBU-Systems AG
 	0bd7  BOX/U
@@ -7020,6 +7027,7 @@
 	0002  AVerTV PVR USB/EZMaker Pro Device
 	0026  AVerTV
 	1228  MPEG-2 Capture Device (M038)
+	a309  HP DVB-T TV Tuner [HP dv6-1190en]
 	e880  MPEG-2 Capture Device (E880)
 	e882  MPEG-2 Capture Device (E882)
 07cb  Kingmax Technology, Inc.
@@ -7166,6 +7174,7 @@
 	0002  Cash Drawer I/F
 07ef  STSN
 	0001  Internet Access Device
+07f2  Microcomputer Applications, Inc.
 07f6  Circuit Assembly Corp.
 07f7  Century Corp.
 	0005  ScanLogic/Century Corporation uATA
@@ -7620,6 +7629,7 @@
 	0030  TravelDrive
 	0822  TravelDrive 2C
 	0832  Hi-Speed Mass Storage Device
+	0834  M-Disk 220
 	0998  Kingston Data Traveler2.0 Disk Driver
 	0999  Kingston Data Traveler2.0 Disk Driver
 	1000  TravelDrive 2C
@@ -8268,6 +8278,7 @@
 	2123  Bluetooth dongle
 	2130  2045 Bluetooth 2.0 USB-UHE Device with trace filter
 	2131  2045 Bluetooth 2.0 Device with trace filter
+	2150  BCM2046 Bluetooth Device
 	4500  BCM2046B1 USB 2.0 Hub (part of BCM2046 Bluetooth)
 	4502  Keyboard (Boot Interface Subclass)
 	5800  BCM5880 Secure Applications Processor
@@ -8895,7 +8906,7 @@
 	0153  Mass Storage Device
 	0156  Mass Storage Device
 	0157  Mass Storage Device
-	0158  Mass Storage Device
+	0158  USB 2.0 multicard reader
 	0161  Mass Storage Device
 	0168  Mass Storage Device
 	0169  Mass Storage Device
@@ -9728,6 +9739,7 @@
 	0004  Virtual CCID
 	0005  Virtual Mass Storage
 	0006  Virtual Keyboard
+	f80a  Smoker FX2
 0e16  JMTek, LLC
 0e17  Walex Electronic, Ltd
 0e1b  Crewave
@@ -10640,6 +10652,8 @@
 134e  Digby's Bitpile, Inc. DBA D Bit
 1357  P&E Microcomputer Systems
 	0503  USB-ML-12 HCS08/HCS12 Multilink
+1366  SEGGER
+	0101  J-Link ARM
 136b  STEC
 1370  Swissbit
 	0323  Swissmemory cirrusWHITE
@@ -11237,6 +11251,8 @@
 1772  System Level Solutions, Inc.
 1776  Arowana
 	501c  300K CMOS Camera
+177f  Sweex
+	0313  LW313 802.11n Adapter [ralink rt2770 + rt2720]
 1781  Multiple Vendors
 	083e  MetaGeek Wi-Spy
 	0938  Iguanaworks USB IR Transceiver
@@ -11364,6 +11380,7 @@
 19d2  ONDA Communication S.p.A.
 	0002  ET502HS/MT505UP ZTE MF632
 	0031  ZTE MF636
+	0064  ZTE MF627 AU
 	2000  ZTE MF627/MF628/MF628+ HSDPA
 19e1  WeiDuan Electronic Accessory (S.Z.) Co., Ltd.
 19e8  Industrial Technology Research Institute
@@ -11554,6 +11571,7 @@
 1bc5  AVIXE Technology (China) Ltd.
 1bce  Contac Cable Industrial Limited
 1bcf  Sunplus Innovation Technology Inc.
+	0007  Optical Mouse
 1bd0  Hangzhou Riyue Electronic Co., Ltd.
 1bde  P-TWO INDUSTRIES, INC.
 1bef  Shenzhen Tongyuan Network-Communication Cables Co., Ltd
@@ -11639,6 +11657,7 @@
 1e68  TrekStor GmbH & Co. KG
 	001b  DataStation maxi g.u
 1ebb  NuCORE Technology, Inc.
+1f28  Cal-Comp
 2001  D-Link Corp. [hex]
 	0001  DWL-120 WIRELESS ADAPTER
 	0201  DHN-120 10Mb Home Phoneline Adapter
