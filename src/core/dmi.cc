@@ -1684,7 +1684,7 @@ long get_efi_systab_smbios()
   long result = 0;
   vector < string > sysvars;
 
-  if (loadfile("/proc/efi/systab", sysvars))
+  if (loadfile("/sys/firmware/efi/systab", sysvars) || loadfile("/proc/efi/systab", sysvars))
     for (unsigned int i = 0; i < sysvars.size(); i++)
   {
     vector < string > variable;
