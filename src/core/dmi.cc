@@ -1019,7 +1019,7 @@ int dmiversionmin)
           node.setConfig("uuid", dmi_uuid(data + 8));
         if (dm->length >= 0x1B)
         {
-          node.setConfig("SKU", dmi_string(dm, data[0x19]));
+          node.setConfig("sku", dmi_string(dm, data[0x19]));
           node.setConfig("family", dmi_string(dm, data[0x1A]));
         }
         break;
@@ -1140,6 +1140,16 @@ int dmiversionmin)
             newnode.setBusInfo("");	// blank businfo to make sure further detections can't confuse this empty CPU slot with a real CPU
             newnode.setDescription(newnode.getDescription() + " " + _("[empty]"));
             newnode.disable();
+          }
+
+          if (dm->length >= 0x28)
+          { 
+            if (data[0x23] != 0)
+		newnode.setConfig("cores", data[0x23]);
+            if (data[0x24] != 0)
+		newnode.setConfig("enabledcores", data[0x24]);
+            if (data[0x25] != 0)
+		newnode.setConfig("threads", data[0x25]);
           }
 
           newnode.setHandle(handle);
