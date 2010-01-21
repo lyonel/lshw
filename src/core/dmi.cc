@@ -1017,6 +1017,11 @@ int dmiversionmin)
         node.setSerial(dmi_string(dm, data[7]));
         if (dm->length >= 0x19)
           node.setConfig("uuid", dmi_uuid(data + 8));
+        if (dm->length >= 0x1B)
+        {
+          node.setConfig("SKU", dmi_string(dm, data[0x19]));
+          node.setConfig("family", dmi_string(dm, data[0x1A]));
+        }
         break;
 
       case 2:
