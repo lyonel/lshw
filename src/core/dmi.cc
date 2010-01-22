@@ -1003,7 +1003,7 @@ int dmiversionmin)
             dmi_bios_features_ext(&data[0x12], dm->length - 0x12, newnode);
 
           if (release != "")
-            newnode.setVersion(newnode.getVersion() + " (" + release + ")");
+            newnode.setDate(release);
           hardwarenode->addChild(newnode);
         }
         break;

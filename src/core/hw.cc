@@ -25,7 +25,7 @@ __ID("@(#) $Id$");
 struct hwNode_i
 {
   hwClass deviceclass;
-  string id, vendor, product, version, serial, slot, handle, description,
+  string id, vendor, product, version, date, serial, slot, handle, description,
     businfo, physid, dev;
   bool enabled;
   bool claimed;
@@ -419,6 +419,21 @@ void hwNode::setVersion(const string & version)
 {
   if (This)
     This->version = strip(version);
+}
+
+string hwNode::getDate() const
+{
+  if (This)
+    return This->date;
+  else
+    return "";
+}
+
+
+void hwNode::setDate(const string & s)
+{
+  if (This)
+    This->date = strip(s);
 }
 
 

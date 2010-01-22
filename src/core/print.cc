@@ -270,6 +270,20 @@ int level)
       cout << endl;
     }
 
+    if (node.getDate() != "")
+    {
+      tab(level + 1, false);
+      if (html)
+        cout << "<tr><td class=\"first\">";
+      cout << _("date") << ": ";
+      if (html)
+        cout << "</td><td class=\"second\">";
+      cout << node.getDate();
+      if (html)
+        cout << "</td></tr>";
+      cout << endl;
+    }
+
     if (node.getSerial() != "")
     {
       tab(level + 1, false);

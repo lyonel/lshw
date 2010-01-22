@@ -130,6 +130,9 @@ class hwNode
     string getVersion() const;
     void setVersion(const string & version);
 
+    string getDate() const;
+    void setDate(const string &);
+
     string getSerial() const;
     void setSerial(const string & serial);
 
