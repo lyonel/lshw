@@ -15,6 +15,7 @@
       <xs:element name="vendor" type="xs:string"/>
       <xs:element name="physid" type="xs:string"/>
       <xs:element name="version" type="xs:string"/>
+      <xs:element name="date" type="xs:string"/>
       <xs:element name="serial" type="xs:string"/>
       <xs:element name="businfo" type="xs:string"/>
       <xs:element name="slot" type="xs:string"/>
