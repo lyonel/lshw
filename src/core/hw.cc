@@ -1432,6 +1432,15 @@ string hwNode::asJSON(unsigned level)
       out << "\"";
     }
 
+    if (getDate() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"date\" : \"";
+      out << escapeJSON(getDate());
+      out << "\"";
+    }
+
     if (getSerial() != "")
     {
       out << "," << endl;
@@ -1716,6 +1725,15 @@ string hwNode::asXML(unsigned level)
       out << "<version>";
       out << escape(getVersion());
       out << "</version>";
+      out << endl;
+    }
+
+    if (getDate() != "")
+    {
+      out << spaces(2*level+1);
+      out << "<date>";
+      out << escape(getDate());
+      out << "</date>";
       out << endl;
     }
 
