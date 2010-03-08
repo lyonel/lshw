@@ -47,13 +47,17 @@ struct hwNode_i
 string hw::strip(const string & s)
 {
   string result = s;
+  size_t i = result.find('\0');
+
+  if(i != string::npos)
+    result = result.substr(0, i);
 
   while ((result.length() > 0) && ((uint8_t)result[0] <= ' '))
     result.erase(0, 1);
   while ((result.length() > 0) && ((uint8_t)result[result.length() - 1] <= ' '))
     result.erase(result.length() - 1);
 
-  for (unsigned int i = 0; i < result.length(); i++)
+  for (i = 0; i < result.length(); i++)
     if ((uint8_t)result[i] < ' ')
     {
       result.erase(i, 1);
