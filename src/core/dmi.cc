@@ -1150,6 +1150,8 @@ int dmiversionmin)
 		newnode.setConfig("enabledcores", data[0x24]);
             if (data[0x25] != 0)
 		newnode.setConfig("threads", data[0x25]);
+            if (data[0x26] & 0x4)
+		newnode.addCapability("x86-64", "64bits extensions (x86-64)");
           }
 
           newnode.setHandle(handle);
