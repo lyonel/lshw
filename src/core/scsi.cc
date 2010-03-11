@@ -842,7 +842,7 @@ static bool scan_hosts(hwNode & node)
 
           if (!controller)
           {
-            controller = node.addChild(hwNode::hwNode("scsi", hw::storage));
+            controller = node.addChild(hwNode("scsi", hw::storage));
             if (controller)
             {
               controller->setLogicalName(host_logicalname(number));
