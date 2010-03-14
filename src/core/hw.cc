@@ -1187,9 +1187,7 @@ void hwNode::fixInconsistencies()
     setCapacity(0);
 
   guessProduct(*this);
-
-  if(getVendor() == "")
-    guessVendor(*this);
+  guessVendor(*this);
 
   if(getLogicalName() != "")
     claim();

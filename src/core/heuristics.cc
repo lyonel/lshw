@@ -6,6 +6,7 @@
 
 #include "version.h"
 #include "sysfs.h"
+#include "jedec.h"
 #include "osutils.h"
 
 #include <stdlib.h>
@@ -115,6 +116,9 @@ bool guessVendor(hwNode & device)
 {
   int i = 0;
   bool result = false;
+
+
+  device.setVendor(jedec_resolve(device.getVendor()));
 
   if(device.getVendor() != "")
     return false;
