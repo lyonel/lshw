@@ -286,61 +286,61 @@ hwNode & bios)
     return;
 
   if (data1 & (1 << 4))                           // ISA
-    bios.addCapability("ISA", "ISA bus");
+    bios.addCapability("ISA", _("ISA bus"));
   if (data1 & (1 << 5))                           // MCA
-    bios.addCapability("MCA", "MCA bus");
+    bios.addCapability("MCA", _("MCA bus"));
   if (data1 & (1 << 6))                           // EISA
-    bios.addCapability("EISA", "EISA bus");
+    bios.addCapability("EISA", _("EISA bus"));
   if (data1 & (1 << 7))                           // PCI
-    bios.addCapability("PCI", "PCI bus");
+    bios.addCapability("PCI", _("PCI bus"));
   if (data1 & (1 << 8))                           // PCMCIA
-    bios.addCapability("PCMCIA", "PCMCIA/PCCard");
+    bios.addCapability("PCMCIA", _("PCMCIA/PCCard"));
   if (data1 & (1 << 9))                           // PNP
-    bios.addCapability("PNP", "Plug-and-Play");
+    bios.addCapability("PNP", _("Plug-and-Play"));
   if (data1 & (1 << 10))                          // APM
-    bios.addCapability("APM", "Advanced Power Management");
+    bios.addCapability("APM", _("Advanced Power Management"));
   if (data1 & (1 << 11))                          // flashable BIOS
-    bios.addCapability("upgrade", "BIOS EEPROM can be upgraded");
+    bios.addCapability("upgrade", _("BIOS EEPROM can be upgraded"));
   if (data1 & (1 << 12))                          // BIOS shadowing
-    bios.addCapability("shadowing", "BIOS shadowing");
+    bios.addCapability("shadowing", _("BIOS shadowing"));
   if (data1 & (1 << 13))                          // VL-VESA
-    bios.addCapability("VESA", "VESA video extensions");
+    bios.addCapability("VESA", _("VESA video extensions"));
   if (data1 & (1 << 14))                          // ESCD
-    bios.addCapability("ESCD", "ESCD");
+    bios.addCapability("ESCD", _("ESCD"));
   if (data1 & (1 << 15))                          // boot from CD
-    bios.addCapability("cdboot", "Booting from CD-ROM/DVD");
+    bios.addCapability("cdboot", _("Booting from CD-ROM/DVD"));
   if (data1 & (1 << 16))                          // selectable boot
-    bios.addCapability("bootselect", "Selectable boot path");
+    bios.addCapability("bootselect", _("Selectable boot path"));
   if (data1 & (1 << 17))                          // BIOS ROM is socketed
-    bios.addCapability("socketedrom", "BIOS ROM is socketed");
+    bios.addCapability("socketedrom", _("BIOS ROM is socketed"));
   if (data1 & (1 << 18))                          // PCMCIA boot
-    bios.addCapability("pcmciaboot", "Booting from PCMCIA");
+    bios.addCapability("pcmciaboot", _("Booting from PCMCIA"));
   if (data1 & (1 << 19))                          // Enhanced Disk Drive
-    bios.addCapability("EDD", "Enhanced Disk Drive extensions");
+    bios.addCapability("EDD", _("Enhanced Disk Drive extensions"));
   if (data1 & (1 << 20))                          // NEC 9800 floppy
-    bios.addCapability("int13floppynec", "NEC 9800 floppy");
+    bios.addCapability("int13floppynec", _("NEC 9800 floppy"));
   if (data1 & (1 << 21))                          // Toshiba floppy
-    bios.addCapability("int13floppytoshiba", "Toshiba floppy");
+    bios.addCapability("int13floppytoshiba", _("Toshiba floppy"));
   if (data1 & (1 << 22))                          // 5.25" 360KB floppy
-    bios.addCapability("int13floppy360", "5.25\" 360KB floppy");
+    bios.addCapability("int13floppy360", _("5.25\" 360KB floppy"));
   if (data1 & (1 << 23))                          // 5.25" 1.2MB floppy
-    bios.addCapability("int13floppy1200", "5.25\" 1.2MB floppy");
+    bios.addCapability("int13floppy1200", _("5.25\" 1.2MB floppy"));
   if (data1 & (1 << 24))                          // 3.5" 720KB floppy
-    bios.addCapability("int13floppy720", "3.5\" 720KB floppy");
+    bios.addCapability("int13floppy720", _("3.5\" 720KB floppy"));
   if (data1 & (1 << 25))                          // 3.5" 2.88MB floppy
-    bios.addCapability("int13floppy2880", "3.5\" 2.88MB floppy");
+    bios.addCapability("int13floppy2880", _("3.5\" 2.88MB floppy"));
   if (data1 & (1 << 26))                          // print screen key
-    bios.addCapability("int5printscreen", "Print Screen key");
+    bios.addCapability("int5printscreen", _("Print Screen key"));
   if (data1 & (1 << 27))                          // 8042 kbd controller
-    bios.addCapability("int9keyboard", "i8042 keyboard controller");
+    bios.addCapability("int9keyboard", _("i8042 keyboard controller"));
   if (data1 & (1 << 28))                          // serial line control
-    bios.addCapability("int14serial", "INT14 serial line control");
+    bios.addCapability("int14serial", _("INT14 serial line control"));
   if (data1 & (1 << 29))                          // printer
-    bios.addCapability("int17printer", "INT17 printer control");
+    bios.addCapability("int17printer", _("INT17 printer control"));
   if (data1 & (1 << 30))                          // CGA/Mono video
-    bios.addCapability("int10video", "INT10 CGA/Mono video");
+    bios.addCapability("int10video", _("INT10 CGA/Mono video"));
   if (data1 & (1 << 31))                          // NEC PC-98
-    bios.addCapability("pc98", "NEC PC-98");
+    bios.addCapability("pc98", _("NEC PC-98"));
 }
 
 
@@ -352,30 +352,30 @@ hwNode & bios)
     return;
 
   if (data[0] & (1 << 0))                         // ACPI
-    bios.addCapability("ACPI", "ACPI");
+    bios.addCapability("ACPI", _("ACPI"));
   if (data[0] & (1 << 1))                         // USB
-    bios.addCapability("USB", "USB legacy emulation");
+    bios.addCapability("USB", _("USB legacy emulation"));
   if (data[0] & (1 << 2))                         // AGP
-    bios.addCapability("AGP", "AGP");
+    bios.addCapability("AGP", _("AGP"));
   if (data[0] & (1 << 3))                         // I2O boot
-    bios.addCapability("I2Oboot", "I2O booting");
+    bios.addCapability("I2Oboot", _("I2O booting"));
   if (data[0] & (1 << 4))                         // LS-120 boot
-    bios.addCapability("LS120boot", "Booting from LS-120");
+    bios.addCapability("LS120boot", _("Booting from LS-120"));
   if (data[0] & (1 << 5))                         // ATAPI ZIP boot
-    bios.addCapability("ZIPboot", "Booting from ATAPI ZIP");
+    bios.addCapability("ZIPboot", _("Booting from ATAPI ZIP"));
   if (data[0] & (1 << 6))                         // 1394 boot
-    bios.addCapability("IEEE1394boot", "Booting from IEEE1394 (Firewire)");
+    bios.addCapability("IEEE1394boot", _("Booting from IEEE1394 (Firewire)"));
   if (data[0] & (1 << 7))                         // smart battery
-    bios.addCapability("smartbattery", "Smart battery");
+    bios.addCapability("smartbattery", _("Smart battery"));
 
   if (len < 1)
     return;
 
   if (data[1] & (1 << 0))                         // BIOS boot specification
-    bios.addCapability("biosbootspecification", "BIOS boot specification");
+    bios.addCapability("biosbootspecification", _("BIOS boot specification"));
   if (data[1] & (1 << 1))                         // function-key initiated network service boot
     bios.addCapability("netboot",
-      "Function-key initiated network service boot");
+      _("Function-key initiated network service boot"));
 }
 
 
@@ -398,15 +398,15 @@ hwNode & n)
 //if (c & (1 << 1))
 //result += "";
   if (c & (1 << 2))
-    n.addCapability("non-burst", "Non-burst");
+    n.addCapability("non-burst", _("Non-burst"));
   if (c & (1 << 3))
-    n.addCapability("burst", "Burst");
+    n.addCapability("burst", _("Burst"));
   if (c & (1 << 4))
-    n.addCapability("pipeline-burst", "Pipeline burst");
+    n.addCapability("pipeline-burst", _("Pipeline burst"));
   if (c & (1 << 5))
-    n.addCapability("synchronous", "Synchronous");
+    n.addCapability("synchronous", _("Synchronous"));
   if (c & (1 << 6))
-    n.addCapability("asynchronous", "Asynchronous");
+    n.addCapability("asynchronous", _("Asynchronous"));
 }
 
 
@@ -422,10 +422,10 @@ u8 cachetype = 0)
   switch ((config >> 5) & 3)
   {
     case 0:
-      n.addCapability("internal", "Internal");
+      n.addCapability("internal", _("Internal"));
       break;
     case 1:
-      n.addCapability("external", "External");
+      n.addCapability("external", _("External"));
       break;
   }
   snprintf(buffer, sizeof(buffer), "L%d ", (config & 7) + 1);
@@ -434,28 +434,28 @@ u8 cachetype = 0)
   switch ((config >> 8) & 3)
   {
     case 0:
-      n.addCapability("write-through", "Write-trough");
+      n.addCapability("write-through", _("Write-trough"));
       break;
     case 1:
-      n.addCapability("write-back", "Write-back");
+      n.addCapability("write-back", _("Write-back"));
       break;
     case 2:
-      n.addCapability("varies", "Varies With Memory Address");
+      n.addCapability("varies", _("Varies With Memory Address"));
       break;
   }
 
-  result += "cache";
+  result += _("cache");
 
   switch (cachetype)
   {
     case 3:
-      n.addCapability("instruction", "Instruction cache");
+      n.addCapability("instruction", _("Instruction cache"));
       break;
     case 4:
-      n.addCapability("data", "Data cache");
+      n.addCapability("data", _("Data cache"));
       break;
     case 5:
-      n.addCapability("unified", "Unified cache");
+      n.addCapability("unified", _("Unified cache"));
       break;
   }
 
@@ -470,27 +470,27 @@ static const char *dmi_memory_array_location(u8 num)
     "",                                           /* 0x00 */
     "",
     "",
-    "System board or motherboard",
-    "ISA add-on card",
-    "EISA add-on card",
-    "PCI add-on card",
-    "MCA add-on card",
-    "PCMCIA add-on card",
-    "Proprietary add-on card",
-    "NuBus",                                      /* 0x0A , master.mif says 16 */
+    N_("System board or motherboard"),
+    N_("ISA add-on card"),
+    N_("EISA add-on card"),
+    N_("PCI add-on card"),
+    N_("MCA add-on card"),
+    N_("PCMCIA add-on card"),
+    N_("Proprietary add-on card"),
+    N_("NuBus"),                                      /* 0x0A , master.mif says 16 */
   };
   static const char *jp_memory_array_location[] =
   {
-    "PC-98/C20 add-on card",                      /* 0xA0 */
-    "PC-98/C24 add-on card",
-    "PC-98/E add-on card",
-    "PC-98/Local bus add-on card",
-    "PC-98/Card slot add-on card",                /* 0xA4, from master.mif */
+    N_("PC-98/C20 add-on card"),                      /* 0xA0 */
+    N_("PC-98/C24 add-on card"),
+    N_("PC-98/E add-on card"),
+    N_("PC-98/Local bus add-on card"),
+    N_("PC-98/Card slot add-on card"),                /* 0xA4, from master.mif */
   };
   if (num <= 0x0A)
-    return memory_array_location[num];
+    return _(memory_array_location[num]);
   if (num >= 0xA0 && num < 0xA4)
-    return jp_memory_array_location[num];
+    return _(jp_memory_array_location[num]);
   return "";
 }
 
@@ -502,23 +502,23 @@ static const char *dmi_memory_device_form_factor(u8 num)
     "",
     "",
     "",
-    " SIMM",
-    " SIP",
-    " Chip",
-    " DIP",
-    " ZIP",
-    " Proprietary Card",
-    " DIMM",
-    " TSOP",
-    " Row of chips",
-    " RIMM",
-    " SODIMM",
-    " SRIMM",
-    " FB-DIMM",
+    N_(" SIMM"),
+    N_(" SIP"),
+    N_(" Chip"),
+    N_(" DIP"),
+    N_(" ZIP"),
+    N_(" Proprietary Card"),
+    N_(" DIMM"),
+    N_(" TSOP"),
+    N_(" Row of chips"),
+    N_(" RIMM"),
+    N_(" SODIMM"),
+    N_(" SRIMM"),
+    N_(" FB-DIMM"),
   };
   if (num > 0x0F)
     return "";
-  return memory_device_form_factor[num];
+  return _(memory_device_form_factor[num]);
 }
 
 
@@ -529,24 +529,24 @@ static const char *dmi_memory_device_type(u8 num)
     "",                                           /* 0x00 */
     "",
     "",
-    " DRAM",
-    " EDRAM",
-    " VRAM",
-    " SRAM",
-    " RAM",
-    " ROM",
-    " FLASH",
-    " EEPROM",
-    " FEPROM",
-    " EPROM",
-    " CDRAM",
-    " 3DRAM",
-    " SDRAM",
-    " SGRAM",
-    " RDRAM",
-    " DDR",                                       /* 0x12 */
-    " DDR2",                                      /* 0x13 */
-    " DDR2 FB-DIMM",                              /* 0x14 */
+    N_(" DRAM"),
+    N_(" EDRAM"),
+    N_(" VRAM"),
+    N_(" SRAM"),
+    N_(" RAM"),
+    N_(" ROM"),
+    N_(" FLASH"),
+    N_(" EEPROM"),
+    N_(" FEPROM"),
+    N_(" EPROM"),
+    N_(" CDRAM"),
+    N_(" 3DRAM"),
+    N_(" SDRAM"),
+    N_(" SGRAM"),
+    N_(" RDRAM"),
+    N_(" DDR"),                                       /* 0x12 */
+    N_(" DDR2"),                                      /* 0x13 */
+    N_(" DDR2 FB-DIMM"),                              /* 0x14 */
     "",
     "",
     "",
@@ -555,7 +555,7 @@ static const char *dmi_memory_device_type(u8 num)
   };
   if (num > 0x19)
     return "";
-  return memory_device_type[num];
+  return _(memory_device_type[num]);
 }
 
 
@@ -564,25 +564,25 @@ static string dmi_memory_device_detail(u16 v)
   string result = "";
 
   if (v & (1 << 3))
-    result += " Fast-paged";
+    result += " " + string(_("Fast-paged"));
   if (v & (1 << 4))
-    result += " Static column";
+    result += " " + string(_("Static column"));
   if (v & (1 << 5))
-    result += " Pseudo-static";
+    result += " " + string(_("Pseudo-static"));
   if (v & (1 << 6))
-    result += " RAMBUS";
+    result += " " + string(_("RAMBUS"));
   if (v & (1 << 7))
-    result += " Synchronous";
+    result += " " + string(_("Synchronous"));
   if (v & (1 << 8))
-    result += " CMOS";
+    result += " " + string(_("CMOS"));
   if (v & (1 << 9))
-    result += " EDO";
+    result += " " + string(_("EDO"));
   if (v & (1 << 10))
-    result += " Window DRAM";
+    result += " " + string(_("Window DRAM"));
   if (v & (1 << 11))
-    result += " Cache DRAM";
+    result += " " + string(_("Cache DRAM"));
   if (v & (1 << 12))
-    result += " Non-volatile";
+    result += " " + string(_("Non-volatile"));
 
   return result;
 }
@@ -595,34 +595,34 @@ void dmi_chassis(u8 code, hwNode & n)
     "", "", NULL,                                 /* 0x00 */
     "", "", NULL,
     "", "", NULL,
-    "desktop", "Desktop Computer", "desktopcomputer",
-    "low-profile", "Low Profile Desktop Computer", "desktopcomputer",
-    "pizzabox", "Pizza Box Computer", "pizzabox",
-    "mini-tower", "Mini Tower Computer", "towercomputer",
-    "tower", "Tower Computer", "towercomputer",
-    "portable", "Portable Computer", "laptop",
-    "laptop", "Laptop", "laptop",
-    "notebook", "Notebook", "laptop",
-    "handheld", "Hand Held Computer", "pda",
-    "docking", "Docking Station", NULL,
-    "all-in-one", "All In One", NULL,
-    "sub-notebook", "Sub Notebook", "laptop",
-    "space-saving", "Space-saving Computer", NULL,
-    "lunchbox", "Lunch Box Computer", NULL,
-    "server", "System", "server",
-    "expansion", "Expansion Chassis", NULL,
-    "sub", "Sub Chassis", NULL,
-    "bus-expansion", "Bus Expansion Chassis", NULL,
-    "peripheral", "Peripheral Chassis", NULL,
-    "raid", "RAID Chassis", "md",
-    "rackmount", "Rack Mount Chassis", "rackmount",
-    "sealed", "Sealed-case PC", NULL,
-    "multi-system", "Multi-system", "cluster"     /* 0x19 */
+    "desktop", N_("Desktop Computer"), "desktopcomputer",
+    "low-profile", N_("Low Profile Desktop Computer"), "desktopcomputer",
+    "pizzabox", N_("Pizza Box Computer"), "pizzabox",
+    "mini-tower", N_("Mini Tower Computer"), "towercomputer",
+    "tower", N_("Tower Computer"), "towercomputer",
+    "portable", N_("Portable Computer"), "laptop",
+    "laptop", N_("Laptop"), "laptop",
+    "notebook", N_("Notebook"), "laptop",
+    "handheld", N_("Hand Held Computer"), "pda",
+    "docking", N_("Docking Station"), NULL,
+    "all-in-one", N_("All In One"), NULL,
+    "sub-notebook", N_("Sub Notebook"), "laptop",
+    "space-saving", N_("Space-saving Computer"), NULL,
+    "lunchbox", N_("Lunch Box Computer"), NULL,
+    "server", N_("System"), "server",
+    "expansion", N_("Expansion Chassis"), NULL,
+    "sub", N_("Sub Chassis"), NULL,
+    "bus-expansion", N_("Bus Expansion Chassis"), NULL,
+    "peripheral", N_("Peripheral Chassis"), NULL,
+    "raid", N_("RAID Chassis"), "md",
+    "rackmount", N_("Rack Mount Chassis"), "rackmount",
+    "sealed", N_("Sealed-case PC"), NULL,
+    "multi-system", N_("Multi-system"), "cluster"     /* 0x19 */
   };
 
   if(code <= 0x19)
   {
-    if(n.getDescription()=="") n.setDescription(chassis_type[1+3*code]);
+    if(n.getDescription()=="") n.setDescription(_(chassis_type[1+3*code]));
 
     if(code >= 3)
     {
@@ -990,7 +990,7 @@ int dmiversionmin)
           newnode.setSize(16 * (0x10000 - (data[7] << 8 | data[6])));
 //newnode.setPhysId(16 * (data[7] << 8 | data[6]));
           newnode.setPhysId(dm->handle);
-          newnode.setDescription("BIOS");
+          newnode.setDescription(_("BIOS"));
           newnode.addHint("icon", string("chip"));
           newnode.claim();
 
@@ -1020,6 +1020,7 @@ int dmiversionmin)
         if (dm->length >= 0x1B)
         {
           node.setConfig("sku", dmi_string(dm, data[0x19]));
+	  node.setProduct(node.getProduct() + " (" + dmi_string(dm, data[0x19]) + ")");
           node.setConfig("family", dmi_string(dm, data[0x1A]));
         }
         break;
@@ -1091,7 +1092,7 @@ int dmiversionmin)
           newnode.claim();
           newnode.setBusInfo(cpubusinfo(currentcpu++));
           newnode.setSlot(dmi_string(dm, data[4]));
-          newnode.setDescription("CPU");
+          newnode.setDescription(_("CPU"));
           newnode.addHint("icon", string("cpu"));
           newnode.setProduct(dmi_processor_family(data[6]));
           newnode.setVersion(dmi_string(dm, data[0x10]));
@@ -1364,25 +1365,25 @@ int dmiversionmin)
           switch (data[5])
           {
             case 0x03:
-              description = "System Memory";
+              description = _("System Memory");
               newnode.claim();
               newnode.addHint("icon", string("memory"));
               break;
             case 0x04:
-              description = "Video Memory";
+              description = _("Video Memory");
               break;
             case 0x05:
-              description = "Flash Memory";
+              description = _("Flash Memory");
               break;
             case 0x06:
-              description = "NVRAM";
+              description = _("NVRAM");
               break;
             case 0x07:
-              description = "Cache Memory";
+              description = _("Cache Memory");
               newnode.addHint("icon", string("memory"));
               break;
             default:
-              description = "Generic Memory";
+              description = _("Generic Memory");
               newnode.addHint("icon", string("memory"));
           }
 
@@ -1628,8 +1629,8 @@ int dmiversionmin)
           hwNode oob("remoteaccess", hw::system);
 
           oob.setVendor(dmi_string(dm, data[0x04]));
-          if(data[0x05] & 0x2) oob.addCapability("outbound", "make outbound connections");
-          if(data[0x05] & 0x1) oob.addCapability("inbound", "receive inbound connections");
+          if(data[0x05] & 0x2) oob.addCapability("outbound", _("make outbound connections"));
+          if(data[0x05] & 0x1) oob.addCapability("inbound", _("receive inbound connections"));
           node.addChild(oob);
         }
         break;

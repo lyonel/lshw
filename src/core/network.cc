@@ -419,22 +419,22 @@ bool scan_network(hwNode & n)
           interface.addCapability("fibre",_( "optical fibre"));
         if(ecmd.supported & SUPPORTED_10baseT_Half)
         {
-          interface.addCapability("10bt", "10Mbit/s");
+          interface.addCapability("10bt", _("10Mbit/s"));
           interface.setCapacity(10000000L);
         }
         if(ecmd.supported & SUPPORTED_10baseT_Full)
         {
-          interface.addCapability("10bt-fd", "10Mbit/s (full duplex)");
+          interface.addCapability("10bt-fd", _("10Mbit/s (full duplex)"));
           interface.setCapacity(10000000L);
         }
         if(ecmd.supported & SUPPORTED_100baseT_Half)
         {
-          interface.addCapability("100bt", "100Mbit/s");
+          interface.addCapability("100bt", _("100Mbit/s"));
           interface.setCapacity(100000000L);
         }
         if(ecmd.supported & SUPPORTED_100baseT_Full)
         {
-          interface.addCapability("100bt-fd", "100Mbit/s (full duplex)");
+          interface.addCapability("100bt-fd", _("100Mbit/s (full duplex)"));
           interface.setCapacity(100000000L);
         }
         if(ecmd.supported & SUPPORTED_1000baseT_Half)
@@ -444,7 +444,7 @@ bool scan_network(hwNode & n)
         }
         if(ecmd.supported & SUPPORTED_1000baseT_Full)
         {
-          interface.addCapability("1000bt-fd", "1Gbit/s (full duplex)");
+          interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
           interface.setCapacity(1000000000L);
         }
         if(ecmd.supported & SUPPORTED_Autoneg)
@@ -477,19 +477,19 @@ bool scan_network(hwNode & n)
         switch(ecmd.port)
         {
           case PORT_TP:
-            interface.setConfig("port", _("twisted pair"));
+            interface.setConfig("port", "twisted pair");
             break;
           case PORT_AUI:
-            interface.setConfig("port", _("AUI"));
+            interface.setConfig("port", "AUI");
             break;
           case PORT_BNC:
-            interface.setConfig("port", _("BNC"));
+            interface.setConfig("port", "BNC");
             break;
           case PORT_MII:
-            interface.setConfig("port", _("MII"));
+            interface.setConfig("port", "MII");
             break;
           case PORT_FIBRE:
-            interface.setConfig("port", _("fibre"));
+            interface.setConfig("port", "fibre");
             break;
         }
         interface.setConfig("autonegotiation", (ecmd.autoneg == AUTONEG_DISABLE) ?  "off" : "on");

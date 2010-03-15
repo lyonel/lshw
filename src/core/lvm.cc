@@ -10,6 +10,7 @@
  */
 
 #include "version.h"
+#include "config.h"
 #include "lvm.h"
 #include "osutils.h"
 #include <string.h>
@@ -128,7 +129,7 @@ bool scan_lvm(hwNode & n, source & s)
 
       memcpy(&pvh, sector+lh.offset_xl, sizeof(pvh));
       if(n.getDescription()=="")
-        n.setDescription("Linux LVM Physical Volume");
+        n.setDescription(_("Linux LVM Physical Volume"));
       n.addCapability("lvm2");
       n.setSerial(uuid(pvh.pv_uuid));
       if(n.getCapacity()==0)

@@ -1,4 +1,5 @@
 #include "version.h"
+#include "config.h"
 #include "cpuid.h"
 #include <stdio.h>
 #include <string.h>
@@ -280,7 +281,7 @@ int cpunumber = 0)
     cpu->setVersion(buffer);
 
     if(ecx & (1 << 5))
-      cpu->addCapability("vmx", "CPU virtualization (Vanderpool)");
+      cpu->addCapability("vmx", _("CPU virtualization (Vanderpool)"));
 
 /* Hyper-Threading Technology */
     if (flags & (1 << 28))
@@ -293,11 +294,11 @@ int cpunumber = 0)
       cpu->setConfig("id", buff);
 
       hwNode logicalcpu("logicalcpu", hw::processor);
-      logicalcpu.setDescription("Logical CPU");
-      logicalcpu.addCapability("logical", "Logical CPU");
+      logicalcpu.setDescription(_("Logical CPU"));
+      logicalcpu.addCapability("logical", _("Logical CPU"));
       logicalcpu.setWidth(cpu->getWidth());
       logicalcpu.claim();
-      cpu->addCapability("ht", "HyperThreading");
+      cpu->addCapability("ht", _("HyperThreading"));
 
       if(nr_ht>1)
         for(unsigned int i=0; i< nr_ht; i++)
@@ -361,14 +362,14 @@ int cpunumber = 0)
       {
         l1->setSize(l1cache);
         if (l1->getDescription() == "")
-          l1->setDescription("L1 cache");
+          l1->setDescription(_("L1 cache"));
       }
       else
       {
         hwNode cache("cache",
           hw::memory);
         cache.setSize(l1cache);
-        cache.setDescription("L1 cache");
+        cache.setDescription(_("L1 cache"));
 
         cpu->addChild(cache);
       }
@@ -379,14 +380,14 @@ int cpunumber = 0)
         {
           l2->setSize(l2cache);
           if (l2->getDescription() == "")
-            l2->setDescription("L2 cache");
+            l2->setDescription(_("L2 cache"));
         }
         else
         {
           hwNode cache("cache",
             hw::memory);
           cache.setSize(l2cache);
-          cache.setDescription("L2 cache");
+          cache.setDescription(_("L2 cache"));
 
           cpu->addChild(cache);
         }
@@ -462,7 +463,7 @@ int cpunumber = 0)
       hwNode newl1("cache",
         hw::memory);
 
-      newl1.setDescription("L1 cache");
+      newl1.setDescription(_("L1 cache"));
       newl1.setSize(l1cache);
 
       cpu->addChild(newl1);
@@ -474,7 +475,7 @@ int cpunumber = 0)
       hwNode newl2("cache",
         hw::memory);
 
-      newl2.setDescription("L2 cache");
+      newl2.setDescription(_("L2 cache"));
       newl2.setSize(l2cache);
 
       if (l2cache)

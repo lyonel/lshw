@@ -7,6 +7,7 @@
 #define _FILE_OFFSET_BITS 64
 
 #include "version.h"
+#include "config.h"
 #include "volumes.h"
 #include "blockio.h"
 #include "lvm.h"
@@ -304,19 +305,19 @@ static bool detect_ext2(hwNode & n, source & s)
       n.setConfig("created", datetime(mkfstime));
     }
     if(le_long(&sb->s_feature_compat) & EXT2_FEATURE_COMPAT_EXT_ATTR)
-      n.addCapability("extended_attributes", "Extended Attributes");
+      n.addCapability("extended_attributes", _("Extended Attributes"));
     if(le_long(&sb->s_feature_ro_compat) & EXT2_FEATURE_RO_COMPAT_LARGE_FILE)
-      n.addCapability("large_files", "4GB+ files");
+      n.addCapability("large_files", _("4GB+ files"));
     if(le_long(&sb->s_feature_ro_compat) & EXT4_FEATURE_RO_COMPAT_HUGE_FILE)
-      n.addCapability("huge_files", "16TB+ files");
+      n.addCapability("huge_files", _("16TB+ files"));
     if(le_long(&sb->s_feature_ro_compat) & EXT4_FEATURE_RO_COMPAT_DIR_NLINK)
-      n.addCapability("dir_nlink", "directories with 65000+ subdirs");
+      n.addCapability("dir_nlink", _("directories with 65000+ subdirs"));
     if(le_long(&sb->s_feature_incompat) & EXT3_FEATURE_INCOMPAT_RECOVER)
-      n.addCapability("recover", "needs recovery");
+      n.addCapability("recover", _("needs recovery"));
     if(le_long(&sb->s_feature_incompat) & EXT4_FEATURE_INCOMPAT_64BIT)
-      n.addCapability("64bit", "64bit filesystem");
+      n.addCapability("64bit", _("64bit filesystem"));
     if(le_long(&sb->s_feature_incompat) & EXT4_FEATURE_INCOMPAT_EXTENTS)
-      n.addCapability("extents", "extent-based allocation");
+      n.addCapability("extents", _("extent-based allocation"));
   }
 
   if(n.isCapable("journaled"))
@@ -324,13 +325,13 @@ static bool detect_ext2(hwNode & n, source & s)
     if(n.isCapable("huge_files") || n.isCapable("64bit") || n.isCapable("extents") || n.isCapable("dir_nlink"))
     {
       n.addCapability("ext4");
-      n.setDescription("EXT4 volume");
+      n.setDescription(_("EXT4 volume"));
       n.setConfig("filesystem", "ext4");
     }
     else
     {
       n.addCapability("ext3");
-      n.setDescription("EXT3 volume");
+      n.setDescription(_("EXT3 volume"));
       n.setConfig("filesystem", "ext3");
     }
   }
@@ -359,7 +360,7 @@ static bool detect_luks(hwNode & n, source & s)
   luks_version = be_short(buffer+6);
   if(luks_version<1) return false;                 // weird LUKS version
 
-  n.addCapability("encrypted", "Encrypted volume");
+  n.addCapability("encrypted", _("Encrypted volume"));
   n.setConfig("version", luks_version);
   n.setConfig("cipher", hw::strip(std::string(buffer+8, 32)));
   n.setConfig("mode", hw::strip(std::string(buffer+40, 32)));
@@ -631,9 +632,9 @@ static bool detect_hfsx(hwNode & n, source & s)
   if(vol->finderInfo[0])
     n.addCapability("bootable");
   if(vol->finderInfo[3])
-    n.addCapability("macos", "Contains a bootable Mac OS installation");
+    n.addCapability("macos", _("Contains a bootable Mac OS installation"));
   if(vol->finderInfo[5])
-    n.addCapability("osx", "Contains a bootable Mac OS X installation");
+    n.addCapability("osx", _("Contains a bootable Mac OS X installation"));
   if(vol->finderInfo[0] && (vol->finderInfo[0] == vol->finderInfo[3]))
     n.setConfig("boot", "macos");
   if(vol->finderInfo[0] && (vol->finderInfo[0] == vol->finderInfo[5]))
@@ -1070,9 +1071,9 @@ bool scan_volume(hwNode & n, source & s)
       n.addCapability(fs_types[i].id, fs_types[i].description);
       if(n.getConfig("filesystem") == "")
         n.setConfig("filesystem", fs_types[i].id);
-      n.addCapability("initialized", "initialized volume");
+      n.addCapability("initialized", _("initialized volume"));
       if(n.getDescription()=="")
-        n.setDescription(string(fs_types[i].description) + " volume");
+        n.setDescription(string(fs_types[i].description) + " "+string(_("volume")));
       return true;
     }
     i++;

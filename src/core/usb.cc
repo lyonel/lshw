@@ -8,6 +8,7 @@
 #endif
 
 #include "version.h"
+#include "config.h"
 #include "usb.h"
 #include "osutils.h"
 #include "heuristics.h"
@@ -161,112 +162,112 @@ static bool setUSBClass(hwNode & device, unsigned cls, unsigned sub, unsigned pr
   {
     case USB_CLASS_AUDIO:
       device.setClass(hw::multimedia);
-      device.setDescription("Audio device");
+      device.setDescription(_("Audio device"));
       switch(sub)
       {
         case USB_SC_AUDIOCONTROL:
-          device.addCapability("audio-control", "Control device");
+          device.addCapability("audio-control", _("Control device"));
           break;
         case USB_SC_AUDIOMIDISTREAMING:
-          device.addCapability("midi", "MIDI");
+          device.addCapability("midi", _("MIDI"));
         case USB_SC_AUDIOSTREAMING:
-          device.addCapability("audio-streaming", "Audio streaming");
+          device.addCapability("audio-streaming", _("Audio streaming"));
           break;
       }
       break;
     case USB_CLASS_COMM:
       device.setClass(hw::communication);
-      device.setDescription("Communication device");
+      device.setDescription(_("Communication device"));
       if(sub == USB_SC_COMMMODEM)
       {
-        device.setDescription("Modem");
-        if((prot>=1) && (prot<=6)) device.addCapability("atcommands", "AT (Hayes) compatible");
+        device.setDescription(_("Modem"));
+        if((prot>=1) && (prot<=6)) device.addCapability("atcommands", _("AT (Hayes) compatible"));
       }
-      if(sub==USB_SC_COMMETHERNET) device.addCapability("ethernet", "Ethernet networking");
-      if(sub==USB_SC_COMMOBEX) device.addCapability("obex", "OBEX networking");
+      if(sub==USB_SC_COMMETHERNET) device.addCapability("ethernet", _("Ethernet networking"));
+      if(sub==USB_SC_COMMOBEX) device.addCapability("obex", _("OBEX networking"));
       break;
     case USB_CLASS_HID:
       device.setClass(hw::input);
-      device.setDescription("Human interface device");
+      device.setDescription(_("Human interface device"));
       if((sub==USB_SC_HIDNONE)||(sub==USB_SC_HIDBOOT))
       {
         switch(prot)
         {
           case USB_PROT_HIDKBD:
-            device.setDescription("Keyboard");
+            device.setDescription(_("Keyboard"));
             break;
           case USB_PROT_HIDMOUSE:
-            device.setDescription("Mouse");
+            device.setDescription(_("Mouse"));
             break;
         }
       }
       break;
     case USB_CLASS_PRINTER:
       device.setClass(hw::printer);
-      device.setDescription("Printer");
+      device.setDescription(_("Printer"));
       device.addHint("icon", string("printer"));
       if(sub==USB_SC_PRINTER)
       {
         switch(prot)
         {
           case USB_PROT_PRINTERUNIDIR:
-            device.addCapability("unidirectional", "Unidirectional");
+            device.addCapability("unidirectional", _("Unidirectional"));
             break;
           case USB_PROT_PRINTERBIDIR:
-            device.addCapability("bidirectional", "Bidirectional");
+            device.addCapability("bidirectional", _("Bidirectional"));
             break;
           case USB_PROT_PRINTER1284:
-            device.addCapability("ieee1284.4", "IEEE 1284.4 compatible bidirectional");
+            device.addCapability("ieee1284.4", _("IEEE 1284.4 compatible bidirectional"));
             break;
         }
       }
       break;
     case USB_CLASS_MASS_STORAGE:
       device.setClass(hw::storage);
-      device.setDescription("Mass storage device");
+      device.setDescription(_("Mass storage device"));
       switch(sub)
       {
         case USB_SC_STORAGERBC:
-          device.addCapability("flash", "RBC (typically Flash) mass storage");
+          device.addCapability("flash", _("RBC (typically Flash) mass storage"));
           break;
         case USB_SC_STORAGEATAPI:
-          device.addCapability("atapi", "SFF-8020i, MMC-2 (ATAPI)");
+          device.addCapability("atapi", _("SFF-8020i, MMC-2 (ATAPI)"));
           break;
         case USB_SC_STORAGEFLOPPY:
-          device.addCapability("floppy", "Floppy (UFI)");
+          device.addCapability("floppy", _("Floppy (UFI)"));
           break;
         case USB_SC_STORAGESCSI:
-          device.addCapability("scsi", "SCSI");
+          device.addCapability("scsi", _("SCSI"));
           break;
       }
       break;
     case USB_CLASS_HUB:
       device.setClass(hw::bus);
-      device.setDescription("USB hub");
+      device.setDescription(_("USB hub"));
       break;
     case USB_CLASS_DATA:
       device.setClass(hw::generic);
       break;
     case USB_CLASS_SMARTCARD:
       device.setClass(hw::generic);
-      device.setDescription("Smart card reader");
+      device.setDescription(_("Smart card reader"));
       break;
     case USB_CLASS_VIDEO:
       device.setClass(hw::multimedia);
-      device.setDescription("Video");
+      device.setDescription(_("Video"));
       break;
     case USB_CLASS_WIRELESS:
       device.setClass(hw::communication);
-      device.setDescription("Wireless interface");
+      device.setDescription(_("Wireless interface"));
       if((sub==USB_SC_WIRELESSRADIO) && (prot==USB_PROT_BLUETOOTH))
       {
-        device.setDescription("Bluetooth wireless interface");
-        device.addCapability("bluetooth", "Bluetooth wireless radio");
+        device.setDescription(_("Bluetooth wireless interface"));
+        device.addCapability("bluetooth", _("Bluetooth wireless radio"));
         device.addHint("icon", string("bluetooth"));
       }
       break;
     default:
-      device.setDescription("Generic USB device");
+      device.setDescription(_("Generic USB device"));
       return false;
   }
 

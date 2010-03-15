@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: @(#) $Id$\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 12:00+0200\n"
-"PO-Revision-Date: $Date$\n"
+"POT-Creation-Date: 2009-10-08 14:02+0200\n"
+"PO-Revision-Date: 2009-10-08 14:06+0100\n"
 "Last-Translator: Lyonel Vincent <lyonel@ezix.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -816,6 +816,7 @@ msgid "Wireless-LAN"
 msgstr "Réseau sans fil"
 
 #: ../core/network.cc:390
+#: ../core/usb.cc:261
 msgid "Wireless interface"
 msgstr "Interface réseau sans fil"
 
@@ -992,6 +993,170 @@ msgstr "Description"
 msgid "Bus info"
 msgstr "Bus info"
 
+#: ../core/usb.cc:165
+msgid "Audio device"
+msgstr "Périphérique audio"
+
+#: ../core/usb.cc:169
+msgid "Control device"
+msgstr ""
+
+#: ../core/usb.cc:172
+msgid "MIDI"
+msgstr "MIDI"
+
+#: ../core/usb.cc:174
+msgid "Audio streaming"
+msgstr ""
+
+#: ../core/usb.cc:180
+msgid "Communication device"
+msgstr ""
+
+#: ../core/usb.cc:183
+msgid "Modem"
+msgstr "Modem"
+
+#: ../core/usb.cc:184
+msgid "AT (Hayes) compatible"
+msgstr ""
+
+#: ../core/usb.cc:186
+msgid "Ethernet networking"
+msgstr ""
+
+#: ../core/usb.cc:187
+msgid "OBEX networking"
+msgstr ""
+
+#: ../core/usb.cc:191
+msgid "Human interface device"
+msgstr ""
+
+#: ../core/usb.cc:197
+msgid "Keyboard"
+msgstr "Clavier"
+
+#: ../core/usb.cc:200
+msgid "Mouse"
+msgstr "Souris"
+
+#: ../core/usb.cc:207
+msgid "Printer"
+msgstr "Imprimante"
+
+#: ../core/usb.cc:214
+msgid "Unidirectional"
+msgstr ""
+
+#: ../core/usb.cc:217
+msgid "Bidirectional"
+msgstr "Bidirectionnel"
+
+#: ../core/usb.cc:220
+msgid "IEEE 1284.4 compatible bidirectional"
+msgstr ""
+
+#: ../core/usb.cc:227
+msgid "Mass storage device"
+msgstr "Périphérique de stockage de masse"
+
+#: ../core/usb.cc:231
+msgid "RBC (typically Flash) mass storage"
+msgstr ""
+
+#: ../core/usb.cc:234
+msgid "SFF-8020i, MMC-2 (ATAPI)"
+msgstr ""
+
+#: ../core/usb.cc:237
+msgid "Floppy (UFI)"
+msgstr ""
+
+#: ../core/usb.cc:240
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../core/usb.cc:246
+msgid "USB hub"
+msgstr ""
+
+#: ../core/usb.cc:253
+msgid "Smart card reader"
+msgstr "Lecteur de carte à puce"
+
+#: ../core/usb.cc:257
+msgid "Video"
+msgstr "Vidéo"
+
+#: ../core/usb.cc:264
+msgid "Bluetooth wireless interface"
+msgstr "Interface sans fil Bluetooth"
+
+#: ../core/usb.cc:265
+msgid "Bluetooth wireless radio"
+msgstr ""
+
+#: ../core/usb.cc:270
+msgid "Generic USB device"
+msgstr "Périphérique USB générique"
+
+#: ../core/volumes.cc:308
+msgid "Extended Attributes"
+msgstr "Attributs Étendus"
+
+#: ../core/volumes.cc:310
+msgid "4GB+ files"
+msgstr ""
+
+#: ../core/volumes.cc:312
+msgid "16TB+ files"
+msgstr ""
+
+#: ../core/volumes.cc:314
+msgid "directories with 65000+ subdirs"
+msgstr ""
+
+#: ../core/volumes.cc:316
+msgid "needs recovery"
+msgstr ""
+
+#: ../core/volumes.cc:318
+msgid "64bit filesystem"
+msgstr "système de fichiers 64 bits"
+
+#: ../core/volumes.cc:320
+msgid "extent-based allocation"
+msgstr ""
+
+#: ../core/volumes.cc:328
+msgid "EXT4 volume"
+msgstr ""
+
+#: ../core/volumes.cc:334
+msgid "EXT3 volume"
+msgstr ""
+
+#: ../core/volumes.cc:363
+msgid "Encrypted volume"
+msgstr ""
+
+#: ../core/volumes.cc:635
+msgid "Contains a bootable Mac OS installation"
+msgstr ""
+
+#: ../core/volumes.cc:637
+msgid "Contains a bootable Mac OS X installation"
+msgstr ""
+
+#: ../core/volumes.cc:1074
+msgid "initialized volume"
+msgstr ""
+
+#: ../core/volumes.cc:1076
+msgid "volume"
+msgstr ""
+
 #: ../gui/print-gui.cc:193
 msgid "configuration"
 msgstr "configuration"
@@ -1121,8 +1286,6 @@ msgstr "ATTENTION: ce programme devrait être lancé en tant que super-utilisate
 msgid "WARNING: output may be incomplete or inaccurate, you should run this program as super-user.\n"
 msgstr "ATTENTION: les informations sont potentiellement incomplètes ou erronées, vous devriez lancer ce programme en tant que super-utilisateur.\n"
 
-#~ msgid "MII"
-#~ msgstr "MII"
 #~ msgid "fibre"
 #~ msgstr "fibre"
 #~ msgid "Mother Board"

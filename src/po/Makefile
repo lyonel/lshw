@@ -14,7 +14,7 @@ ${PACKAGENAME}.pot: POTFILES
 	xgettext -F --no-wrap --indent --keyword=_ --keyword=N_ -d ${PACKAGENAME} -o $@ -f POTFILES
 
 %.mo: %.po
-	msgfmt -o $@ $^
+	msgfmt -v -o $@ $^
 
 install: all
 	
