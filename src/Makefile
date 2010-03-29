@@ -24,7 +24,7 @@ ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 LDSTATIC=-static
-LIBS=-llshw -lresolv
+LIBS=-llshw -lresolv -lsqlite3
 
 DATAFILES = pci.ids usb.ids oui.txt manuf.txt
 

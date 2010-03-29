@@ -216,6 +216,8 @@ class hwNode
     string asXML(unsigned level = 0);
     string asJSON(unsigned level = 0);
     string asString();
+
+    bool dump(const string & filename, bool recurse = true);
   private:
 
     void setId(const string & id);

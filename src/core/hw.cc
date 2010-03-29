@@ -5,6 +5,8 @@
 #include "config.h"
 #include "options.h"
 #include "heuristics.h"
+#include "dump.h"
+#include "db.h"
 #include <cstring>
 #include <vector>
 #include <map>
@@ -2328,6 +2330,21 @@ bool value::defined() const
 {
   if(!This) return false;
   if(This->type==nil) return false;
+
+  return true;
+}
+
+bool hwNode::dump(const string & filename, bool recurse)
+{
+  try {
+    sqlite::database db(filename);
+
+    ::dump(*this, db, "", recurse);
+  }
+  catch(exception & e)
+  {
+    return false;
+  }
 
   return true;
 }

@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <wchar.h>
+#include <sys/utsname.h>
 #ifndef MINOR
 #include <linux/kdev_t.h>
 #endif
@@ -748,4 +749,80 @@ string kilobytes(unsigned long long value)
   out << "iB";
 
   return out.str();
+}
+
+string operating_system()
+{
+  vector<string> osinfo;
+  struct utsname u;
+  string os = "";
+
+  if(loadfile("/etc/lsb-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/lsb_release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/arch-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/arklinux-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/aurox-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/conectiva-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/debian_version", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/fedora-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/gentoo-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/linuxppc-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/mandrake-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/mandriva-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/novell-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/pld-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/redhat-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/slackware-version", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/sun-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/SuSE-release", osinfo))
+    os = osinfo[0];
+  else if(loadfile("/etc/yellowdog-release", osinfo))
+    os = osinfo[0];
+
+  if(uname(&u) != 0) return "";
+
+  os += (os == ""?"":" ; ") + string(u.sysname)+" "+string(u.release);
+
+#if defined(__GLIBC__) && defined(_CS_GNU_LIBC_VERSION)
+  char version[PATH_MAX];
+
+      if(confstr(_CS_GNU_LIBC_VERSION, version, sizeof(version))>0)
+        os += " ; "+string(version);
+#endif
+
+  return os;
+}
+
+string platform()
+{
+  string p = "";
+  struct utsname u;
+
+#ifdef __i386__
+  p = "i386";
+#endif
+
+  if(uname(&u) != 0)
+    return p;
+  else
+    return p + (p!=""?"/":"") + string(u.machine);
 }
