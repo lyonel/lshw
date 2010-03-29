@@ -76,6 +76,16 @@ char *argv[])
 
       remove_option_argument(i, argc, argv);
     }
+    else if (option == "-save")
+    {
+      if (i + 1 >= argc)
+        return false;                             // -save requires an argument
+
+      //enable(argv[i + 1]);
+      enable("output:db");
+
+      remove_option_argument(i, argc, argv);
+    }
     else if ( (option == "-class") || (option == "-C") || (option == "-c"))
     {
       vector < string > classes;

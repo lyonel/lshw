@@ -208,6 +208,7 @@ class hwNode
 
     void addHint(const string &, const hw::value &);
     hw::value getHint(const string &) const;
+    vector<string> getHints() const;
 
     void merge(const hwNode & node);
 

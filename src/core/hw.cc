@@ -1327,6 +1327,20 @@ value hwNode::getHint(const string & id) const
   return This->hints[id];
 }
 
+vector < string > hwNode::getHints() const
+{
+  vector < string > result;
+
+  if (!This)
+    return result;
+
+  for (map < string, value >::iterator i = This->hints.begin();
+    i != This->hints.end(); i++)
+  result.push_back(i->first);
+
+  return result;
+}
+
 string hwNode::asJSON(unsigned level)
 {
   vector < string > config;
@@ -2313,7 +2327,7 @@ string value::asString() const
   switch(This->type)
   {
     case hw::integer:
-      return "0";
+      return "0x"+tohex(This->ll);
     case hw::text:
       return This->s;
     case hw::boolean:

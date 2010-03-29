@@ -2,6 +2,11 @@
 #include "version.h"
 #include "osutils.h"
 
+#include <time.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+
 using namespace std;
 using namespace sqlite;
 
@@ -40,6 +45,9 @@ static bool createtables(database & db)
     db.execute("CREATE TABLE IF NOT EXISTS logicalnames(logicalname TEXT NOT NULL, node TEXT NOT NULL COLLATE NOCASE)");
     db.execute("CREATE TABLE IF NOT EXISTS capabilities(capability TEXT NOT NULL COLLATE NOCASE, node TEXT NOT NULL COLLATE NOCASE, description TEXT, UNIQUE (capability,node))");
     db.execute("CREATE TABLE IF NOT EXISTS configuration(config TEXT NOT NULL COLLATE NOCASE, node TEXT NOT NULL COLLATE NOCASE, value TEXT, UNIQUE (config,node))");
+    db.execute("CREATE TABLE IF NOT EXISTS hints(hint TEXT NOT NULL COLLATE NOCASE, node TEXT NOT NULL COLLATE NOCASE, value TEXT, UNIQUE (hint,node))");
+    db.execute("CREATE VIEW IF NOT EXISTS unclaimed AS SELECT * FROM nodes WHERE NOT claimed");
+    db.execute("CREATE VIEW IF NOT EXISTS disabled AS SELECT * FROM nodes WHERE NOT enabled");
     db.execute("COMMIT");
   }
   catch(exception & e)
@@ -114,6 +122,33 @@ bool dump(hwNode & n, database & db, const string & path, bool recurse)
       stm.bind(3, n.getConfig(keys[i]));
       stm.execute();
     }
+
+    stm.prepare("INSERT OR REPLACE INTO hints (hint,node,value) VALUES(?,?,?)");
+    keys = n.getHints();
+    for(i=0; i<keys.size(); i++)
+    {
+      stm.reset();
+      stm.bind(1, keys[i]);
+      stm.bind(2, mypath);
+      stm.bind(3, n.getHint(keys[i]).asString());
+      stm.execute();
+    }
+
+    stm.reset();
+    stm.bind(1,"run.root");
+    stm.bind(2,"");
+    stm.bind(3,(long long int)(geteuid() == 0));
+    stm.execute();
+    stm.reset();
+    stm.bind(1,"run.time");
+    stm.bind(2,"");
+    stm.bind(3,(long long int)time(NULL));
+    stm.execute();
+    stm.reset();
+    stm.bind(1,"run.language");
+    stm.bind(2,"");
+    stm.bind(3,getenv("LANG"));
+    stm.execute();
 
     db.execute("COMMIT");
 
