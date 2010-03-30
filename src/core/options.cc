@@ -14,6 +14,8 @@
 #include <string>
 #include <map>
 
+#include <stdlib.h>
+
 using namespace std;
 
 __ID("@(#) $Id$");
@@ -76,12 +78,12 @@ char *argv[])
 
       remove_option_argument(i, argc, argv);
     }
-    else if (option == "-save")
+    else if (option == "-dump")
     {
       if (i + 1 >= argc)
-        return false;                             // -save requires an argument
+        return false;                             // -dump requires an argument
 
-      //enable(argv[i + 1]);
+      setenv("OUTFILE", argv[i + 1], 1);
       enable("output:db");
 
       remove_option_argument(i, argc, argv);
