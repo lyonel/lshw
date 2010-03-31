@@ -18,13 +18,13 @@ export DATADIR
 CXX?=c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
-CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
+CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS) $(shell pkg-config --cflags sqlite3)
 LDFLAGS=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 LDSTATIC=-static
-LIBS=-llshw -lresolv -lsqlite3
+LIBS=-llshw -lresolv $(shell pkg-config --libs sqlite3)
 
 DATAFILES = pci.ids usb.ids oui.txt manuf.txt
 

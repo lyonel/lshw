@@ -46,6 +46,7 @@ static bool createtables(database & db)
     db.execute("CREATE TABLE IF NOT EXISTS capabilities(capability TEXT NOT NULL COLLATE NOCASE, node TEXT NOT NULL COLLATE NOCASE, description TEXT, UNIQUE (capability,node))");
     db.execute("CREATE TABLE IF NOT EXISTS configuration(config TEXT NOT NULL COLLATE NOCASE, node TEXT NOT NULL COLLATE NOCASE, value TEXT, UNIQUE (config,node))");
     db.execute("CREATE TABLE IF NOT EXISTS hints(hint TEXT NOT NULL COLLATE NOCASE, node TEXT NOT NULL COLLATE NOCASE, value TEXT, UNIQUE (hint,node))");
+    db.execute("CREATE TABLE IF NOT EXISTS resources(node TEXT NOT NULL COLLATE NOCASE, type TEXT NOT NULL COLLATE NOCASE, resource TEXT NOT NULL, UNIQUE(node,type,resource))");
     db.execute("CREATE VIEW IF NOT EXISTS unclaimed AS SELECT * FROM nodes WHERE NOT claimed");
     db.execute("CREATE VIEW IF NOT EXISTS disabled AS SELECT * FROM nodes WHERE NOT enabled");
     db.execute("COMMIT");
@@ -120,6 +121,19 @@ bool dump(hwNode & n, database & db, const string & path, bool recurse)
       stm.bind(1, keys[i]);
       stm.bind(2, mypath);
       stm.bind(3, n.getConfig(keys[i]));
+      stm.execute();
+    }
+
+    stm.prepare("INSERT OR IGNORE INTO resources (type,node,resource) VALUES(?,?,?)");
+    keys = n.getResources(":");
+    for(i=0; i<keys.size(); i++)
+    {
+      string type = keys[i].substr(0, keys[i].find_first_of(':'));
+      string resource = keys[i].substr(keys[i].find_first_of(':')+1);
+      stm.reset();
+      stm.bind(1, type);
+      stm.bind(2, mypath);
+      stm.bind(3, resource);
       stm.execute();
     }
 
