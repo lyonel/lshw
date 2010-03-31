@@ -1,8 +1,8 @@
 #
 #	List of PCI ID's
 #
-#	Version: 2010.03.22
-#	Date:    2010-03-22 03:15:02
+#	Version: 2010.03.27
+#	Date:    2010-03-27 03:15:01
 #
 #	Maintained by Martin Mares <mj@ucw.cz> and other volunteers from the
 #	PCI ID Project at http://pciids.sf.net/.
@@ -4461,6 +4461,7 @@
 	8533  PEX 8533 32-lane, 6-port PCI Express Switch
 	8547  PEX 8547 48-lane, 3-port PCI Express Switch
 	8548  PEX 8548 48-lane, 9-port PCI Express Switch
+	8624  PEX 8624 24-lane, 6-Port PCI Express Gen 2 (5.0 GT/s) Switch [ExpressLane]
 	8647  PEX 8647 48-Lane, 3-Port PCI Express Gen 2 (5.0 GT/s) Switch
 	9016  PLX 9016 8-port serial controller
 	9030  PCI9030 32-bit 33MHz PCI <-> IOBus Bridge
@@ -6665,8 +6666,10 @@
 		16ec 011f  USR997903
 		1734 1091  D2030-A1
 		a0a0 0449  AK86-L motherboard
+	8172  RTL8192SE Wireless LAN Controller
 	8180  RTL8180L 802.11b MAC
 	8185  RTL-8185 IEEE 802.11a/b/g Wireless LAN Controller
+	8192  RTL8192E Wireless LAN Controller
 	8197  SmartLAN56 56K Modem
 	8199  RTL8187SE Wireless LAN Controller
 10ed  Ascii Corporation
@@ -14904,6 +14907,7 @@
 	1517  82599ES 10 Gigabit Network Connection
 		1137 006a  UCS CNA M61KR-I Intel Converged Network Adapter
 	1518  82576NS SerDes Gigabit Network Connection
+	1525  82567V-4 Gigabit Network Connection
 	1526  82576 Gigabit Network Connection
 		8086 a05c  Gigabit ET2 Quad Port Server Adapter
 		8086 a06c  Gigabit ET2 Quad Port Server Adapter
@@ -14991,6 +14995,33 @@
 	1c3d  Cougar Point KT Controller
 	1c42  Cougar Point LPC Controller
 	1c43  Cougar Point LPC Controller
+	1c44  Cougar Point LPC Controller
+	1c45  Cougar Point LPC Controller
+	1c46  Cougar Point LPC Controller
+	1c47  Cougar Point LPC Controller
+	1c48  Cougar Point LPC Controller
+	1c49  Cougar Point LPC Controller
+	1c4a  Cougar Point LPC Controller
+	1c4b  Cougar Point LPC Controller
+	1c4c  Cougar Point LPC Controller
+	1c4d  Cougar Point LPC Controller
+	1c4e  Cougar Point LPC Controller
+	1c4f  Cougar Point LPC Controller
+	1c50  Cougar Point LPC Controller
+	1c51  Cougar Point LPC Controller
+	1c52  Cougar Point LPC Controller
+	1c53  Cougar Point LPC Controller
+	1c54  Cougar Point LPC Controller
+	1c55  Cougar Point LPC Controller
+	1c56  Cougar Point LPC Controller
+	1c57  Cougar Point LPC Controller
+	1c58  Cougar Point LPC Controller
+	1c59  Cougar Point LPC Controller
+	1c5a  Cougar Point LPC Controller
+	1c5b  Cougar Point LPC Controller
+	1c5c  Cougar Point LPC Controller
+	1c5d  Cougar Point LPC Controller
+	1c5f  Cougar Point LPC Controller
 	2410  82801AA ISA Bridge (LPC)
 	2411  82801AA IDE Controller
 	2412  82801AA USB Controller
@@ -16272,6 +16303,7 @@
 		103c 30d9  Presario C700
 		104d 9005  Vaio VGN-FZ260E
 		17aa 20a7  ThinkPad T61
+		e4bf cc47  CCG-RUMBA
 	282a  Mobile 82801 SATA RAID Controller
 	2830  82801H (ICH8 Family) USB UHCI Controller #1
 		1025 0121  Acer Aspire 5920G
@@ -16359,6 +16391,7 @@
 		103c 30d9  Presario C700
 		1043 81ec  P5B
 		104d 9005  Vaio VGN-FZ260E
+		104d 9008  Vaio VGN-SZ79SN_C
 		1462 7235  P965 Neo MS-7235 mainboard
 		17aa 20a9  ThinkPad T61
 		e4bf cc47  CCG-RUMBA
@@ -16398,6 +16431,7 @@
 		14f1 5051  Presario C700
 		17aa 20ac  ThinkPad T61
 		8384 7616  Dell Vostro 1400
+		e4bf cc47  CCG-RUMBA
 	284f  82801H (ICH8 Family) Thermal Reporting Device
 	2850  82801HBM/HEM (ICH8M/ICH8M-E) IDE Controller
 		1025 0121  Aspire 5920G
@@ -16413,6 +16447,7 @@
 		1028 0211  Optiplex 755
 	2916  82801IR (ICH9R) LPC Interface Controller
 	2917  ICH9M-E LPC Interface Controller
+		e4bf cc4d  CCM-BOOGIE
 	2918  82801IB (ICH9) LPC Interface Controller
 		1028 0236  PowerEdge R610 82801IB (ICH9) LPC Interface Controller
 	2919  ICH9M LPC Interface Controller
@@ -17353,6 +17388,7 @@
 		8086 1011  ThinkPad R60e/X60s
 		8086 1014  PRO/Wireless 3945BG Network Connection
 	4229  PRO/Wireless 4965 AG or AGN [Kedron] Network Connection
+		8086 1100  Vaio VGN-SZ79SN_C
 	422b  Centrino Ultimate-N 6300
 		8086 1101  Centrino Ultimate-N 6300 3x3 AGN
 		8086 1121  Centrino Ultimate-N 6300 3x3 AGN
