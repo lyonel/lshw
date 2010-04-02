@@ -69,7 +69,7 @@ bool dump(hwNode & n, database & db, const string & path, bool recurse)
     statement stm(db, "INSERT OR REPLACE INTO nodes (id,class,product,vendor,description,size,capacity,width,version,serial,enabled,claimed,slot,clock,businfo,physid,path,parent,dev) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     string mypath = path+(path=="/"?"":"/")+n.getPhysId();
 
-    db.execute("BEGIN TRANSACTION");
+    if(path == "") db.execute("BEGIN TRANSACTION");
 
     stm.bind(1, n.getId());
     stm.bind(2, n.getClassName());
@@ -164,11 +164,11 @@ bool dump(hwNode & n, database & db, const string & path, bool recurse)
     stm.bind(3,getenv("LANG"));
     stm.execute();
 
-    db.execute("COMMIT");
-
     if(recurse)
       for(i=0; i<n.countChildren(); i++)
         dump(*(n.getChild(i)), db, mypath, recurse);
+
+    if(path == "") db.execute("COMMIT");
   }
   catch(exception & e)
   {
