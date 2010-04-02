@@ -13,7 +13,6 @@ using namespace sqlite;
 static bool createtables(database & db)
 {
   try {
-    db.execute("BEGIN TRANSACTION");
     db.execute("CREATE TABLE IF NOT EXISTS META(key TEXT PRIMARY KEY COLLATE NOCASE, value BLOB)");
     statement stm(db, "INSERT OR IGNORE INTO META (key,value) VALUES(?,?)");
 
@@ -49,7 +48,6 @@ static bool createtables(database & db)
     db.execute("CREATE TABLE IF NOT EXISTS resources(node TEXT NOT NULL COLLATE NOCASE, type TEXT NOT NULL COLLATE NOCASE, resource TEXT NOT NULL, UNIQUE(node,type,resource))");
     db.execute("CREATE VIEW IF NOT EXISTS unclaimed AS SELECT * FROM nodes WHERE NOT claimed");
     db.execute("CREATE VIEW IF NOT EXISTS disabled AS SELECT * FROM nodes WHERE NOT enabled");
-    db.execute("COMMIT");
   }
   catch(exception & e)
   {
@@ -68,8 +66,6 @@ bool dump(hwNode & n, database & db, const string & path, bool recurse)
     unsigned i = 0;
     statement stm(db, "INSERT OR REPLACE INTO nodes (id,class,product,vendor,description,size,capacity,width,version,serial,enabled,claimed,slot,clock,businfo,physid,path,parent,dev) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     string mypath = path+(path=="/"?"":"/")+n.getPhysId();
-
-    if(path == "") db.execute("BEGIN TRANSACTION");
 
     stm.bind(1, n.getId());
     stm.bind(2, n.getClassName());
@@ -167,12 +163,9 @@ bool dump(hwNode & n, database & db, const string & path, bool recurse)
     if(recurse)
       for(i=0; i<n.countChildren(); i++)
         dump(*(n.getChild(i)), db, mypath, recurse);
-
-    if(path == "") db.execute("COMMIT");
   }
   catch(exception & e)
   {
-    cerr << "EXCEPTION: " << e.what() << endl;
     return false;
   }
 

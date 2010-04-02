@@ -2353,7 +2353,9 @@ bool hwNode::dump(const string & filename, bool recurse)
   try {
     sqlite::database db(filename);
 
+    db.execute("BEGIN TRANSACTION");
     ::dump(*this, db, "", recurse);
+    db.execute("COMMIT");
   }
   catch(exception & e)
   {
