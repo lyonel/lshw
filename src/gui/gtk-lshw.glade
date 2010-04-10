@@ -240,6 +240,7 @@
 
 			      <child>
 				<widget class="GtkTreeView" id="treeview1">
+				  <property name="tooltip" translatable="yes">Click to select and double-click to navigate</property>
 				  <property name="width_request">128</property>
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
@@ -274,6 +275,7 @@
 
 			      <child>
 				<widget class="GtkTreeView" id="treeview2">
+				  <property name="tooltip" translatable="yes">Click to select and double-click to navigate</property>
 				  <property name="width_request">128</property>
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
@@ -308,6 +310,7 @@
 
 			      <child>
 				<widget class="GtkTreeView" id="treeview3">
+				  <property name="tooltip" translatable="yes">Click to select and double-click to navigate</property>
 				  <property name="width_request">128</property>
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>

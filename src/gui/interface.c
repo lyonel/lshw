@@ -182,6 +182,7 @@ create_lshw (void)
   gtk_widget_show (treeview1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow10), treeview1);
   gtk_widget_set_size_request (treeview1, 128, -1);
+  gtk_tooltips_set_tip (tooltips, treeview1, "Click to select and double-click to navigate", NULL);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview1), FALSE);
 
   scrolledwindow11 = gtk_scrolled_window_new (NULL, NULL);
@@ -195,6 +196,7 @@ create_lshw (void)
   gtk_widget_show (treeview2);
   gtk_container_add (GTK_CONTAINER (scrolledwindow11), treeview2);
   gtk_widget_set_size_request (treeview2, 128, -1);
+  gtk_tooltips_set_tip (tooltips, treeview2, "Click to select and double-click to navigate", NULL);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview2), FALSE);
 
   scrolledwindow12 = gtk_scrolled_window_new (NULL, NULL);
@@ -208,6 +210,7 @@ create_lshw (void)
   gtk_widget_show (treeview3);
   gtk_container_add (GTK_CONTAINER (scrolledwindow12), treeview3);
   gtk_widget_set_size_request (treeview3, 128, -1);
+  gtk_tooltips_set_tip (tooltips, treeview3, "Click to select and double-click to navigate", NULL);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview3), FALSE);
 
   vbox2 = gtk_vbox_new (FALSE, 0);
