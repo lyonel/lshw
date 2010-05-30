@@ -120,7 +120,7 @@ Don't display status.
 </para></listitem></varlistentry>
 <varlistentry><term>-sanitize</term>
 <listitem><para>
-Remove potentially sensible information from output (IP addresses, serial numbers, etc.).
+Remove potentially sensitive information from output (IP addresses, serial numbers, etc.).
 </para></listitem></varlistentry>
 <varlistentry><term>-numeric</term>
 <listitem><para>
