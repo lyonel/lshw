@@ -2,7 +2,7 @@ PACKAGENAME:=lshw
 export PACKAGENAME
 SNAPSHOT=0.$(shell cat .timestamp)
 
-SQLITE=1
+SQLITE=0
 
 DESTDIR?=/
 PREFIX?=/usr
