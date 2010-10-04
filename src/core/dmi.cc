@@ -76,6 +76,7 @@
 
 #include "version.h"
 #include "config.h"
+#include "options.h"
 #include "dmi.h"
 #include "osutils.h"
 
@@ -176,6 +177,9 @@ static string dmi_uuid(u8 * p)
 
   if (!valid)
     return "";
+
+  if(::enabled("output:sanitize"))
+    return string(REMOVED);
 
   snprintf(buffer, sizeof(buffer),
     "%02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X",
