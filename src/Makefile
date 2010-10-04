@@ -2,6 +2,8 @@ PACKAGENAME:=lshw
 export PACKAGENAME
 SNAPSHOT=0.$(shell cat .timestamp)
 
+SQLITE=1
+
 DESTDIR?=/
 PREFIX?=/usr
 SBINDIR=$(PREFIX)/sbin
@@ -14,17 +16,28 @@ export PREFIX
 export SBINDIR
 export MANDIR
 export DATADIR
+export SQLITE
 
 CXX?=c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
-CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS) $(shell pkg-config --cflags sqlite3)
+CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
+ifeq ($(SQLITE), 1)
+	CXXFLAGS+= -DSQLITE $(shell pkg-config --cflags sqlite3)
+endif
 LDFLAGS=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 LDSTATIC=-static
-LIBS=-llshw -lresolv $(shell pkg-config --libs sqlite3)
+LIBS=-llshw -lresolv
+ifeq ($(SQLITE), 1)
+	LIBS+= $(shell pkg-config --libs sqlite3)
+endif
+
+export CXXFLAGS
+export LIBS
+export LDFLAGS
 
 DATAFILES = pci.ids usb.ids oui.txt manuf.txt
 

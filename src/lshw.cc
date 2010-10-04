@@ -33,7 +33,9 @@ void usage(const char *progname)
   if(getenv("DISPLAY") && exists(SBINDIR"/gtk-lshw"))
     fprintf(stderr, _("\t-X              use graphical interface\n"));
   fprintf(stderr, _("\noptions can be\n"));
+#ifdef SQLITE
   fprintf(stderr, _("\t-dump OUTFILE   save hardware tree to a file\n"));
+#endif
   fprintf(stderr, _("\t-class CLASS    only show a certain class of hardware\n"));
   fprintf(stderr, _("\t-C CLASS        same as '-class CLASS'\n"));
   fprintf(stderr, _("\t-c CLASS        same as '-class CLASS'\n"));

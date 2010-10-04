@@ -2350,6 +2350,7 @@ bool value::defined() const
 
 bool hwNode::dump(const string & filename, bool recurse)
 {
+#ifdef SQLITE
   try {
     sqlite::database db(filename);
 
@@ -2361,6 +2362,9 @@ bool hwNode::dump(const string & filename, bool recurse)
   {
     return false;
   }
+#else
+  return false;
+#endif
 
   return true;
 }

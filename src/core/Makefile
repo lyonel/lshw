@@ -3,12 +3,15 @@ PACKAGENAME?=lshw
 CXX=c++
 INCLUDES=
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
-CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
+CXXFLAGS?=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 LDFLAGS=
 LDSTATIC=
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o mounts.o smp.o abi.o jedec.o db.o dump.o
+OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o mounts.o smp.o abi.o jedec.o dump.o
+ifeq ($(SQLITE), 1)
+	OBJS+= db.o
+endif
 SRCS = $(OBJS:.o=.cc)
 
 all: lib$(PACKAGENAME).a

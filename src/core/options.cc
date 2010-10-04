@@ -78,6 +78,7 @@ char *argv[])
 
       remove_option_argument(i, argc, argv);
     }
+#ifdef SQLITE
     else if (option == "-dump")
     {
       if (i + 1 >= argc)
@@ -88,6 +89,7 @@ char *argv[])
 
       remove_option_argument(i, argc, argv);
     }
+#endif
     else if ( (option == "-class") || (option == "-C") || (option == "-c"))
     {
       vector < string > classes;

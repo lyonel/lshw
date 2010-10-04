@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+#ifdef SQLITE
+
 using namespace std;
 using namespace sqlite;
 
@@ -172,3 +174,4 @@ bool dump(hwNode & n, database & db, const string & path, bool recurse)
   return true;
 }
 
+#endif
