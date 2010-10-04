@@ -87,6 +87,7 @@ install: all
 	$(INSTALL) -m 0644 $(PACKAGENAME).1 $(DESTDIR)/$(MANDIR)/man1
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
 	$(INSTALL) -m 0644 $(DATAFILES) $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)
+	make -C po install
 
 install-gui: gui
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)

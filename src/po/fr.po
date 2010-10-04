@@ -899,7 +899,7 @@ msgstr "identifiant matériel"
 #: ../core/print.cc:231
 #: ../gui/print-gui.cc:141
 msgid "bus info"
-msgstr "bus info"
+msgstr "information bus"
 
 #: ../core/print.cc:249
 #: ../gui/print-gui.cc:147
