@@ -761,6 +761,8 @@ string operating_system()
     os = osinfo[0];
   else if(loadfile("/etc/lsb_release", osinfo))
     os = osinfo[0];
+  else if(loadfile("/etc/system-release", osinfo))
+    os = osinfo[0];
   else if(loadfile("/etc/release", osinfo))
     os = osinfo[0];
   else if(loadfile("/etc/arch-release", osinfo))
