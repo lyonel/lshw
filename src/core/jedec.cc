@@ -80,6 +80,7 @@ string jedec_resolve(const string & s)
 
   if(matches(result, "^0x"))
     result.erase(0, 2);
+  if(!matches(result, "^[0-9a-fA-F]+$")) return s;
 
   for(int i=0; jedec_id[i]; i+=2) {
     if(matches(result, "^" + string(jedec_id[i]), REG_ICASE)) return string(jedec_id[i+1]);
