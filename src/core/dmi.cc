@@ -118,6 +118,15 @@ static const char *dmi_hardware_security_status(u8 code)
   return status[code & 0x03];
 }
 
+static int checksum(const u8 *buf, size_t len)
+{
+  u8 sum = 0;
+  size_t a;
+
+  for (a = 0; a < len; a++)
+    sum += buf[a];
+  return (sum == 0);
+}
 
 static string dmi_battery_voltage(u16 code)
 {
@@ -1775,7 +1784,7 @@ bool scan_dmi(hwNode & n)
       smmajver = buf[6];
       smminver = buf[7];
     }
-    else if (memcmp(buf, "_DMI_", 5) == 0)
+    else if (smmajver && (memcmp(buf, "_DMI_", 5) == 0) && checksum(buf, 0x0F))
     {
       u16 num = buf[13] << 8 | buf[12];
       u16 len = buf[7] << 8 | buf[6];
