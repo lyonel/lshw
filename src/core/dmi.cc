@@ -1762,7 +1762,7 @@ bool scan_dmi(hwNode & n)
   }
 
   fp -= 16;
-  while (efi || (fp < 0xFFFFF))
+  while (efi || (fp < 0xFFFE0))
   {
     fp += 16;
     mmoffset = fp % getpagesize();
