@@ -10,14 +10,14 @@ GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)
 INCLUDES=-I../core $(GTKINCLUDES)
 CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 CFLAGS=$(CXXFLAGS) $(DEFINES)
-GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
+GTKLIBS=$(shell pkg-config gtk+-2.0 gmodule-2.0 --libs)
 LIBS=-L../core -llshw -lresolv -lsqlite3 $(GTKLIBS)
 LDFLAGS=
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 
-OBJS = gtk-lshw.o interface.o support.o callbacks.o engine.o print-gui.o stock.o
+OBJS = gtk-lshw.o callbacks.o engine.o print-gui.o stock.o
 SRCS = $(OBJS:.o=.c)
 
 all: gtk-$(PACKAGENAME)
@@ -42,7 +42,7 @@ install: all
 	$(STRIP) gtk-$(PACKAGENAME)
 	
 clean:
-	rm -f $(OBJS) gtk-$(PACKAGENAME) gtk-lshw.glade.bak gtk-lshw.gladep.bak interface.c.bak interface.h.bak callbacks.c.bak callbacks.h.bak Makefile.bak
+	rm -f $(OBJS) gtk-$(PACKAGENAME) gtk-lshw.glade.bak gtk-lshw.gladep.bak callbacks.c.bak callbacks.h.bak Makefile.bak
 
 depend:
 	@makedepend -Y $(SRCS) 2> /dev/null > /dev/null
@@ -50,8 +50,6 @@ depend:
 
 # DO NOT DELETE
 
-gtk-lshw.o: interface.h support.h stock.h engine.h
-interface.o: callbacks.h interface.h support.h
-support.o: support.h
-callbacks.o: callbacks.h interface.h support.h engine.h
+gtk-lshw.o: stock.h engine.h
+callbacks.o: callbacks.h support.h engine.h
 stock.o: stock.h

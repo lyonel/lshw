@@ -5,17 +5,17 @@
 #include <gtk/gtk.h>
 
 #include "callbacks.h"
-#include "interface.h"
 #include "support.h"
 #include "version.h"
 #include "engine.h"
 #include <string.h>
 
-static GtkWidget *about = NULL;
+extern GtkWidget *about;
 extern GtkWidget *mainwindow;
 
 static char *id = "@(#) $Id$";
 
+G_MODULE_EXPORT
 void
 refresh_display                        (GtkMenuItem     *menuitem,
 gpointer         user_data)
@@ -24,29 +24,31 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_about1_activate                     (GtkMenuItem     *menuitem,
 gpointer         user_data)
 {
-  if(!GTK_IS_WIDGET(about))
+  if(GTK_IS_WIDGET(about))
   {
-    about = create_aboutlshw();
     gtk_widget_show(about);
   }
 }
 
 
+G_MODULE_EXPORT
 void
 on_aboutclose_activate          (GtkButton       *button,
 gpointer         user_data)
 {
   if(GTK_IS_WIDGET(about))
   {
-    gtk_widget_destroy(about);
+    gtk_widget_hide(about);
   }
 }
 
 
+G_MODULE_EXPORT
 void
 on_version_realize                     (GtkWidget       *widget,
 gpointer         user_data)
@@ -83,6 +85,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_treeview1_row_activated             (GtkTreeView     *treeview,
 GtkTreePath     *path,
@@ -93,6 +96,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_treeview2_row_activated             (GtkTreeView     *treeview,
 GtkTreePath     *path,
@@ -103,6 +107,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_treeview3_row_activated             (GtkTreeView     *treeview,
 GtkTreePath     *path,
@@ -113,6 +118,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_treeview1_cursor_changed            (GtkTreeView     *treeview,
 gpointer         user_data)
@@ -121,6 +127,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_treeview2_cursor_changed            (GtkTreeView     *treeview,
 gpointer         user_data)
@@ -129,6 +136,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_treeview3_cursor_changed            (GtkTreeView     *treeview,
 gpointer         user_data)
@@ -139,6 +147,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 go_up                                  (GtkToolButton   *toolbutton,
 gpointer         user_data)
@@ -147,6 +156,7 @@ gpointer         user_data)
 }
 
 
+G_MODULE_EXPORT
 void
 on_lshw_map                            (GtkWidget       *widget,
 gpointer         user_data)
@@ -154,6 +164,7 @@ gpointer         user_data)
   refresh(mainwindow);
 }
 
+G_MODULE_EXPORT
 void
 on_save_activate                       (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
@@ -162,6 +173,7 @@ on_save_activate                       (GtkMenuItem     *menuitem,
 }
 
 
+G_MODULE_EXPORT
 void
 on_savebutton_clicked                  (GtkToolButton   *toolbutton,
                                         gpointer         user_data)

@@ -36,6 +36,11 @@ static hwNode *selected3 = NULL;
 static GtkWidget *statusbar = NULL;
 
 extern GtkWidget *mainwindow;
+extern GtkWidget *list1, *list2, *list3;
+extern GtkWidget *description;
+extern GtkWidget *go_up_button;
+extern GtkWidget *save_button;
+extern GtkWidget *statusbar;
 
 enum
 {
@@ -209,7 +214,6 @@ static void create_tags (GtkTextBuffer *buffer)
 
 static void display(GtkWidget * mainwindow)
 {
-  GtkWidget * description = lookup_widget(mainwindow, "description");
   GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (description));
 
   gtk_text_buffer_set_text(buffer, "", -1);
@@ -247,22 +251,14 @@ void refresh(GtkWidget *mainwindow)
 {
   hwNode computer("computer", hw::system);
   static bool lock = false;
-  GtkWidget * description = lookup_widget(mainwindow, "description");
-  GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
-  GtkWidget * save_button = lookup_widget(mainwindow, "savebutton");
-  GtkWidget * menu = lookup_widget(mainwindow, "menu");
-  GtkWidget * save_menuitem = lookup_widget(menu, "save");
+  //GtkWidget * menu = lookup_widget(mainwindow, "menu");
+  //GtkWidget * save_menuitem = lookup_widget(menu, "save");
 
   if(lock) return;
 
   lock = true;
   gtk_widget_set_sensitive(save_button, FALSE);
-  gtk_widget_set_sensitive(save_menuitem, FALSE);
-
-  GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
-  GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
-  GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
-  statusbar = lookup_widget(mainwindow, "statusbar");
+  //gtk_widget_set_sensitive(save_menuitem, FALSE);
 
   populate_sublist(list1, NULL);
   populate_sublist(list2, NULL);
@@ -279,7 +275,7 @@ void refresh(GtkWidget *mainwindow)
 
   gtk_widget_set_sensitive(go_up_button, FALSE);
   gtk_widget_set_sensitive(save_button, TRUE);
-  gtk_widget_set_sensitive(save_menuitem, TRUE);
+  //gtk_widget_set_sensitive(save_menuitem, TRUE);
 
   selected1 = NULL;
   selected2 = NULL;
@@ -299,8 +295,6 @@ void change_selection(unsigned list, GtkTreeView *treeview)
   GtkTreeSelection *selection;
   GtkTreeModel *model;
   GtkTreeIter   iter;
-  GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
-  GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
 
   model = gtk_tree_view_get_model(treeview);
 
@@ -341,10 +335,6 @@ void browse(unsigned list, GtkTreeView *treeview)
   GtkTreeModel     *model;
   GtkTreeIter       iter;
   hwNode *n = NULL;
-  GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
-  GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
-  GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
-  GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
 
   selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
   if (gtk_tree_selection_get_selected(selection, &model, &iter))
@@ -400,11 +390,6 @@ void browse(unsigned list, GtkTreeView *treeview)
 
 void go_back(GtkWidget *mainwindow)
 {
-  GtkWidget * list1 = lookup_widget(mainwindow, "treeview1");
-  GtkWidget * list2 = lookup_widget(mainwindow, "treeview2");
-  GtkWidget * list3 = lookup_widget(mainwindow, "treeview3");
-  GtkWidget * go_up_button = lookup_widget(mainwindow, "upbutton");
-
   if(selected1 && (find_parent(selected1, &container)!= &container))
   {
     selected3 = selected2;
