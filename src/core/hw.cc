@@ -1654,6 +1654,10 @@ string hwNode::asXML(unsigned level)
   #endif
     if (geteuid() != 0)
       out << _("<!-- WARNING: not running as root -->") << endl;
+
+    if(::enabled("output:list"))
+      out << "<list>" << endl;
+
   }
 
   if(visible(getClassName()))
@@ -1928,6 +1932,10 @@ string hwNode::asXML(unsigned level)
     out << spaces(2*level);
     out << "</node>" << endl;
   }
+
+  if((level==0) && ::enabled("output:list"))
+    out << "</list>" << endl;
+
 
   return out.str();
 }

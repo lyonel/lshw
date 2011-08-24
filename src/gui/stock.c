@@ -5,6 +5,16 @@
 
 static char *id = "@(#) $Id$";
 
+GtkWidget *mainwindow = NULL;
+GtkWidget *about = NULL;
+GtkWidget *list1 = NULL;
+GtkWidget *list2 = NULL;
+GtkWidget *list3 = NULL;
+GtkWidget *description = NULL;
+GtkWidget *go_up_button = NULL;
+GtkWidget *save_button = NULL;
+GtkWidget *statusbar = NULL;
+
 static struct StockIcon
 {
   const char *name;
@@ -48,7 +58,7 @@ static struct StockIcon
 };
 
 static gchar *
-find_file(const char *base)
+find_file(const char *base, const char *dir)
 {
   char *filename;
   char *basedir;
@@ -57,9 +67,9 @@ find_file(const char *base)
     return NULL;
 
   if((basedir = getenv("BASEDIR")))
-    filename = g_build_filename(basedir, "artwork", base, NULL);
+    filename = g_build_filename(basedir, dir, base, NULL);
   else
-    filename = g_build_filename(DATADIR, "lshw", "artwork", base, NULL);
+    filename = g_build_filename(DATADIR, "lshw", dir, base, NULL);
 
   if (!g_file_test(filename, G_FILE_TEST_EXISTS))
   {
@@ -99,7 +109,7 @@ lshw_gtk_stock_init(void)
     GtkIconSet *iconset;
     gchar *filename;
 
-      filename = find_file(stock_icons[i].filename);
+      filename = find_file(stock_icons[i].filename, "artwork");
 
       if (filename == NULL)
         continue;
@@ -124,4 +134,45 @@ lshw_gtk_stock_init(void)
   g_object_unref(G_OBJECT(icon_factory));
 
   (void) &id;                                     /* avoid "id defined but not used" warning */
+}
+
+void lshw_ui_init(void)
+{
+  GError *error = NULL;
+  GtkBuilder *builder = NULL;
+  GdkPixbuf *icon = NULL;
+  gchar *uiname = NULL;
+
+  mainwindow = NULL;
+
+  builder = gtk_builder_new();
+  uiname = find_file("gtk-lshw.ui", "ui");
+  if( ! gtk_builder_add_from_file( builder, uiname?uiname:"gtk-lshw.ui", &error ) )
+  {
+    g_warning( "%s", error->message );
+    g_free( error );
+  }
+  g_free(uiname);
+
+  mainwindow = GTK_WIDGET( gtk_builder_get_object( builder, "mainwindow" ) );
+  about = GTK_WIDGET( gtk_builder_get_object( builder, "aboutlshw" ) );
+  list1 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview1"));
+  list2 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview2"));
+  list3 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview3"));
+  description = GTK_WIDGET(gtk_builder_get_object( builder, "description"));
+  go_up_button = GTK_WIDGET(gtk_builder_get_object( builder, "upbutton"));
+  save_button = GTK_WIDGET(gtk_builder_get_object( builder, "savebutton"));
+  statusbar = GTK_WIDGET(gtk_builder_get_object( builder, "statusbar"));
+  gtk_builder_connect_signals( builder, mainwindow );
+  g_object_unref( G_OBJECT( builder ) );
+
+  icon = gtk_widget_render_icon(GTK_WIDGET(mainwindow),
+    "lshw-logo",
+    GTK_ICON_SIZE_DIALOG,
+    NULL);
+  if(GDK_IS_PIXBUF(icon))
+  {
+    gtk_window_set_icon(GTK_WINDOW(mainwindow), icon);
+    gtk_window_set_default_icon(icon);
+  }
 }

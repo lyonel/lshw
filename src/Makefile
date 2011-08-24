@@ -106,6 +106,8 @@ install-gui: gui
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
 	$(INSTALL) -m 0755 gui/gtk-$(PACKAGENAME) $(DESTDIR)/$(SBINDIR)
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
+	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/ui
+	$(INSTALL) -m 0644 gui/*.ui $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/ui
 	$(INSTALL) -m 0644 gui/artwork/*.svg $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
 	
 clean:

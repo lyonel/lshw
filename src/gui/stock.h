@@ -46,8 +46,6 @@
 #define LSHW_ICON_SIZE_LOGO        "lshw-icon-size-logo"
 #define LSHW_DEFAULT_ICON_SIZE        40
 
-/**
- * Sets up the lshw stock repository.
- */
 void lshw_gtk_stock_init(void);
+void lshw_ui_init(void);
 #endif                                            /* _STOCK_H_ */
