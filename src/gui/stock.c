@@ -5,6 +5,8 @@
 
 static char *id = "@(#) $Id$";
 
+#define UIFILE "gtk-lshw.ui"
+
 GtkWidget *mainwindow = NULL;
 GtkWidget *about = NULL;
 GtkWidget *list1 = NULL;
@@ -146,11 +148,18 @@ void lshw_ui_init(void)
   mainwindow = NULL;
 
   builder = gtk_builder_new();
-  uiname = find_file("gtk-lshw.ui", "ui");
-  if( ! gtk_builder_add_from_file( builder, uiname?uiname:"gtk-lshw.ui", &error ) )
+  uiname = find_file(UIFILE, "ui");
+  if(!uiname)
   {
-    g_warning( "%s", error->message );
+    g_critical( "Could not find UI file: %s", UIFILE );
+    return;
+  }
+  if(!gtk_builder_add_from_file(builder, uiname, &error))
+  {
+    g_critical( "Could not create UI: %s", error->message );
     g_free( error );
+    g_object_unref( G_OBJECT( builder ) );
+    return;
   }
   g_free(uiname);
 
