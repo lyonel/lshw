@@ -20,7 +20,6 @@ main (int argc, char *argv[])
   textdomain (PACKAGE);
 #endif
 
-  gtk_set_locale ();
   gtk_init (&argc, &argv);
 
   if(geteuid() != 0)
