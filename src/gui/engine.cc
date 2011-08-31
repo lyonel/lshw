@@ -33,7 +33,6 @@ static hwNode *displayed = NULL;
 static hwNode *selected1 = NULL;
 static hwNode *selected2 = NULL;
 static hwNode *selected3 = NULL;
-static GtkWidget *statusbar = NULL;
 
 extern GtkWidget *mainwindow;
 extern GtkWidget *list1, *list2, *list3;
