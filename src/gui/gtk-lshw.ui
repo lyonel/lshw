@@ -114,8 +114,9 @@
     <signal name="delete-event" handler="gtk_main_quit" swapped="no"/>
     <signal name="map" handler="on_lshw_map" after="yes" swapped="no"/>
     <child>
-      <object class="GtkVBox" id="vbox1">
+      <object class="GtkBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="can_focus">False</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
@@ -322,7 +323,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox1">
+          <object class="GtkBox" id="hbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -330,7 +331,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
-                  <object class="GtkHBox" id="hbox3">
+                  <object class="GtkBox" id="hbox3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -347,7 +348,6 @@
                             <property name="tooltip_text" translatable="yes">Click to select and double-click to navigate</property>
                             <property name="headers_visible">False</property>
                             <property name="search_column">0</property>
-                            <property name="enable_grid_lines">horizontal</property>
                             <signal name="cursor-changed" handler="on_treeview1_cursor_changed" swapped="no"/>
                             <signal name="row-activated" handler="on_treeview1_row_activated" swapped="no"/>
                             <child internal-child="selection">
@@ -375,7 +375,6 @@
                             <property name="tooltip_text" translatable="yes">Click to select and double-click to navigate</property>
                             <property name="headers_visible">False</property>
                             <property name="search_column">0</property>
-                            <property name="enable_grid_lines">horizontal</property>
                             <signal name="cursor-changed" handler="on_treeview2_cursor_changed" swapped="no"/>
                             <signal name="row-activated" handler="on_treeview2_row_activated" swapped="no"/>
                             <child internal-child="selection">
@@ -403,7 +402,6 @@
                             <property name="tooltip_text" translatable="yes">Click to select and double-click to navigate</property>
                             <property name="headers_visible">False</property>
                             <property name="search_column">0</property>
-                            <property name="enable_grid_lines">horizontal</property>
                             <signal name="cursor-changed" handler="on_treeview3_cursor_changed" swapped="no"/>
                             <signal name="row-activated" handler="on_treeview3_row_activated" swapped="no"/>
                             <child internal-child="selection">
