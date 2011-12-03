@@ -777,7 +777,7 @@ static bool detect_gpt(source & s, hwNode & n)
       source spart = s;
       if(p.PartitionTypeGUID == "C12A7328-F81F-11D2-BA4B-00A0C93EC93B")
       {
-        partition.setDescription("EFI System partition");
+        partition.setDescription("System partition");
         partition.setVendor("EFI");
         partition.addCapability("boot");
       }
@@ -798,41 +798,41 @@ static bool detect_gpt(source & s, hwNode & n)
       else
       if(p.PartitionTypeGUID == "0657FD6D-A4AB-43C4-84E5-0933C84B4F4F")
       {
-        partition.setDescription("Linux Swap partition");
+        partition.setDescription("swap partition");
         partition.setVendor("Linux");
         partition.addCapability("nofs");
       }
       else
       if(p.PartitionTypeGUID == "A19D880F-05FC-4D3B-A006-743F0F84911E")
       {
-        partition.setDescription("Linux RAID partition");
+        partition.setDescription("RAID partition");
         partition.setVendor("Linux");
         partition.addCapability("multi");
       }
       else
       if(p.PartitionTypeGUID == "E6D6D379-F507-44C2-A23C-238F2A3DF928")
       {
-        partition.setDescription("Linux LVM Physical Volume");
+        partition.setDescription("LVM Physical Volume");
         partition.setVendor("Linux");
         partition.addCapability("multi");
       }
       else
       if(p.PartitionTypeGUID == "8DA63339-0007-60C0-C436-083AC8230908")
       {
-        partition.setDescription("Linux reserved partition");
+        partition.setDescription("reserved partition");
         partition.setVendor("Linux");
         partition.addCapability("nofs");
       }
       else
       if(p.PartitionTypeGUID == "75894C1E-3AEB-11D3-B7C1-7B03A0000000")
       {
-        partition.setDescription("HP-UX data partition");
+        partition.setDescription("data partition");
         partition.setVendor("HP-UX");
       }
       else
       if(p.PartitionTypeGUID == "E2A1E728-32E3-11D6-A682-7B03A0000000")
       {
-        partition.setDescription("HP-UX service partition");
+        partition.setDescription("service partition");
         partition.setVendor("HP-UX");
         partition.addCapability("nofs");
         partition.addCapability("boot");
@@ -846,20 +846,20 @@ static bool detect_gpt(source & s, hwNode & n)
       else
       if(p.PartitionTypeGUID == "6A898CC3-1DD2-11B2-99A6-080020736631")
       {
-        partition.setDescription("Apple ZFS partition");
+        partition.setDescription("ZFS partition");
         partition.setVendor("Mac OS X");
       }
       else
       if(p.PartitionTypeGUID == "52414944-0000-11AA-AA11-00306543ECAC")
       {
-        partition.setDescription("Apple RAID partition");
+        partition.setDescription("RAID partition");
         partition.setVendor("Mac OS X");
         partition.addCapability("multi");
       }
       else
       if(p.PartitionTypeGUID == "52414944-5F4F-11AA-AA11-00306543ECAC")
       {
-        partition.setDescription("Apple RAID partition (offline)");
+        partition.setDescription("RAID partition (offline)");
         partition.setVendor("Mac OS X");
         partition.addCapability("multi");
         partition.addCapability("offline");
@@ -874,7 +874,7 @@ static bool detect_gpt(source & s, hwNode & n)
       else
       if(p.PartitionTypeGUID == "5265636F-7665-11AA-AA11-00306543ECAC")
       {
-        partition.setDescription("Apple TV recovery");
+        partition.setDescription("recovery partition");
         partition.setVendor("Apple TV");
         partition.addCapability("nofs");
       }
@@ -888,64 +888,64 @@ static bool detect_gpt(source & s, hwNode & n)
       else
       if(p.PartitionTypeGUID == "426F6F74-0000-11AA-AA11-00306543ECAC")
       {
-        partition.setDescription("Apple boot partition");
+        partition.setDescription("boot partition");
         partition.setVendor("Mac OS X");
         partition.addCapability("boot");
       }
       else
       if(p.PartitionTypeGUID == "55465300-0000-11AA-AA11-00306543ECAC")
       {
-        partition.setDescription("Apple UFS partition");
+        partition.setDescription("UFS partition");
         partition.setVendor("Mac OS X");
       }
       else
       if(p.PartitionTypeGUID == "516E7CB4-6ECF-11D6-8FF8-00022D09712B")
       {
-        partition.setDescription("FreeBSD data partition");
+        partition.setDescription("data partition");
         partition.setVendor("FreeBSD");
       }
       else
       if(p.PartitionTypeGUID == "516E7CB6-6ECF-11D6-8FF8-00022D09712B")
       {
-        partition.setDescription("FreeBSD UFS partition");
+        partition.setDescription("UFS partition");
         partition.setVendor("FreeBSD");
       }
       else
       if(p.PartitionTypeGUID == "516E7CBA-6ECF-11D6-8FF8-00022D09712B")
       {
-        partition.setDescription("FreeBSD ZFS partition");
+        partition.setDescription("ZFS partition");
         partition.setVendor("FreeBSD");
       }
       else
       if(p.PartitionTypeGUID == "516E7CB8-6ECF-11D6-8FF8-00022D09712B")
       {
-        partition.setDescription("FreeBSD Vinum Volume Manager partition");
+        partition.setDescription("Vinum Volume Manager partition");
         partition.setVendor("FreeBSD");
       }
       else
       if(p.PartitionTypeGUID == "516E7CB5-6ECF-11D6-8FF8-00022D09712B")
       {
-        partition.setDescription("FreeBSD swap partition");
+        partition.setDescription("swap partition");
         partition.setVendor("FreeBSD");
         partition.addCapability("nofs");
       }
       else
       if(p.PartitionTypeGUID == "83BD6B9D-7F41-11DC-BE0B-001560B84F0F")
       {
-        partition.setDescription("FreeBSD boot partition");
+        partition.setDescription("boot partition");
         partition.setVendor("FreeBSD");
         partition.addCapability("boot");
       }
       else
       if(p.PartitionTypeGUID == "EBD0A0A2-B9E5-4433-87C0-68B6B72699C7")
       {
-        partition.setDescription("Windows data partition");
+        partition.setDescription("data partition");
         partition.setVendor("Microsoft Windows");
       }
       else
       if(p.PartitionTypeGUID == "DE94BBA4-06D1-4D40-A16A-BFD50179D6AC")
       {
-        partition.setDescription("Windows recovery environment");
+        partition.setDescription("recovery environment");
         partition.setVendor("Microsoft Windows");
         partition.addCapability("boot");
       }
@@ -958,21 +958,21 @@ static bool detect_gpt(source & s, hwNode & n)
       else
       if(p.PartitionTypeGUID == "5808C8AA-7E8F-42E0-85D2-E1E90434CFB3")
       {
-        partition.setDescription("Windows LDM configuration");
+        partition.setDescription("LDM configuration");
         partition.setVendor("Microsoft Windows");
         partition.addCapability("nofs");
       }
       else
       if(p.PartitionTypeGUID == "AF9B60A0-1431-4F62-BC68-3311714A69AD")
       {
-        partition.setDescription("Windows LDM data partition");
+        partition.setDescription("LDM data partition");
         partition.setVendor("Microsoft Windows");
         partition.addCapability("multi");
       }
       else
       if(p.PartitionTypeGUID == "E3C9E316-0B5C-4DB8-817D-F92DF00215AE")
       {
-        partition.setDescription("Microsoft reserved partition");
+        partition.setDescription("reserved partition");
         partition.setVendor("Microsoft Windows");
         partition.addCapability("nofs");
       }
