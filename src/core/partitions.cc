@@ -846,8 +846,8 @@ static bool detect_gpt(source & s, hwNode & n)
       else
       if(p.PartitionTypeGUID == "6A898CC3-1DD2-11B2-99A6-080020736631")
       {
-        partition.setDescription("ZFS partition");
-        partition.setVendor("Mac OS X");
+        partition.setDescription("OS X ZFS partition or Solaris /usr partition");
+        partition.setVendor("Solaris");
       }
       else
       if(p.PartitionTypeGUID == "52414944-0000-11AA-AA11-00306543ECAC")
@@ -940,41 +940,115 @@ static bool detect_gpt(source & s, hwNode & n)
       if(p.PartitionTypeGUID == "EBD0A0A2-B9E5-4433-87C0-68B6B72699C7")
       {
         partition.setDescription("data partition");
-        partition.setVendor("Microsoft Windows");
+        partition.setVendor("Windows");
       }
       else
       if(p.PartitionTypeGUID == "DE94BBA4-06D1-4D40-A16A-BFD50179D6AC")
       {
         partition.setDescription("recovery environment");
-        partition.setVendor("Microsoft Windows");
+        partition.setVendor("Windows");
         partition.addCapability("boot");
       }
       else
       if(p.PartitionTypeGUID == "37AFFC90-EF7D-4E96-91C3-2D7AE055B174")
       {
         partition.setDescription("IBM GPFS partition");
-        partition.setVendor("Microsoft Windows");
+        partition.setVendor("Windows");
       }
       else
       if(p.PartitionTypeGUID == "5808C8AA-7E8F-42E0-85D2-E1E90434CFB3")
       {
         partition.setDescription("LDM configuration");
-        partition.setVendor("Microsoft Windows");
+        partition.setVendor("Windows");
         partition.addCapability("nofs");
       }
       else
       if(p.PartitionTypeGUID == "AF9B60A0-1431-4F62-BC68-3311714A69AD")
       {
         partition.setDescription("LDM data partition");
-        partition.setVendor("Microsoft Windows");
+        partition.setVendor("Windows");
         partition.addCapability("multi");
       }
       else
       if(p.PartitionTypeGUID == "E3C9E316-0B5C-4DB8-817D-F92DF00215AE")
       {
         partition.setDescription("reserved partition");
-        partition.setVendor("Microsoft Windows");
+        partition.setVendor("Windows");
         partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == "FE3A2A5D-4F32-41A7-B725-ACCC3285A309")
+      {
+        partition.setDescription("kernel");
+        partition.setVendor("ChromeOS");
+      }
+      else
+      if(p.PartitionTypeGUID == "3CB8E202-3B7E-47DD-8A3C-7FF2A13CFCEC")
+      {
+        partition.setDescription("root filesystem");
+        partition.setVendor("ChromeOS");
+      }
+      else
+      if(p.PartitionTypeGUID == "2E0A753D-9E48-43B0-8337-B15192CB1B5E")
+      {
+        partition.setDescription("reserved");
+        partition.setVendor("ChromeOS");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A82CB45-1DD2-11B2-99A6-080020736631")
+      {
+        partition.setDescription("boot partition");
+        partition.setVendor("Solaris");
+        partition.addCapability("boot");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A85CF4D-1DD2-11B2-99A6-080020736631")
+      {
+        partition.setDescription("root partition");
+        partition.setVendor("Solaris");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A87C46F-1DD2-11B2-99A6-080020736631")
+      {
+        partition.setDescription("swap partition");
+        partition.setVendor("Solaris");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A8B642B-1DD2-11B2-99A6-080020736631")
+      {
+        partition.setDescription("backup partition");
+        partition.setVendor("Solaris");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A8EF2E9-1DD2-11B2-99A6-080020736631")
+      {
+        partition.setDescription("/var partition");
+        partition.setVendor("Solaris");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A90BA39-1DD2-11B2-99A6-080020736631")
+      {
+        partition.setDescription("/home partition");
+        partition.setVendor("Solaris");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A9283A5-1DD2-11B2-99A6-080020736631")
+      {
+        partition.setDescription("alternate sector");
+        partition.setVendor("Solaris");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == "6A945A3B-1DD2-11B2-99A6-080020736631" ||
+         p.PartitionTypeGUID == "6A9630D1-1DD2-11B2-99A6-080020736631" ||
+         p.PartitionTypeGUID == "6A980767-1DD2-11B2-99A6-080020736631" ||
+         p.PartitionTypeGUID == "6A96237F-1DD2-11B2-99A6-080020736631" ||
+         p.PartitionTypeGUID == "6A8D2AC7-1DD2-11B2-99A6-080020736631"
+        )
+      {
+        partition.setDescription("reserved partition");
+        partition.setVendor("Solaris");
       }
       else
         partition.setDescription("EFI partition");
