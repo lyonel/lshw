@@ -1051,6 +1051,46 @@ static bool detect_gpt(source & s, hwNode & n)
         partition.setVendor("Solaris");
       }
       else
+      if(p.PartitionTypeGUID == "49F48D32-B10E-11DC-B99B-0019D1879648")
+      {
+        partition.setDescription("swap partition");
+        partition.setVendor("NetBSD");
+        partition.addCapability("nofs");
+      }
+      else
+      if(p.PartitionTypeGUID == "49F48D5A-B10E-11DC-B99B-0019D1879648")
+      {
+        partition.setDescription("FFS partition");
+        partition.setVendor("NetBSD");
+      }
+      else
+      if(p.PartitionTypeGUID == "49F48D82-B10E-11DC-B99B-0019D1879648")
+      {
+        partition.setDescription("LFS partition");
+        partition.setVendor("NetBSD");
+      }
+      else
+      if(p.PartitionTypeGUID == "49F48DAA-B10E-11DC-B99B-0019D1879648")
+      {
+        partition.setDescription("RAID partition");
+        partition.setVendor("NetBSD");
+        partition.addCapability("multi");
+      }
+      else
+      if(p.PartitionTypeGUID == "2DB519C4-B10F-11DC-B99B-0019D1879648")
+      {
+        partition.setDescription("concatenated partition");
+        partition.setVendor("NetBSD");
+        partition.addCapability("multi");
+      }
+      else
+      if(p.PartitionTypeGUID == "2DB519EC-B10F-11DC-B99B-0019D1879648")
+      {
+        partition.setDescription("encrypted partition");
+        partition.setVendor("NetBSD");
+        partition.addCapability("encrypted");
+      }
+      else
         partition.setDescription("EFI partition");
       partition.setPhysId(i+1);
       partition.setCapacity(BLOCKSIZE * (p.EndingLBA - p.StartingLBA));
