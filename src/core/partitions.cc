@@ -1091,6 +1091,12 @@ static bool detect_gpt(source & s, hwNode & n)
         partition.addCapability("encrypted");
       }
       else
+      if(p.PartitionTypeGUID == "42465331-3ba3-10f1-802a-4861696b7521")		// is it really used ?
+      {
+        partition.setDescription("BeFS partition");
+        partition.setVendor("Haiku");
+      }
+      else
         partition.setDescription("EFI partition");
       partition.setPhysId(i+1);
       partition.setCapacity(BLOCKSIZE * (p.EndingLBA - p.StartingLBA));
