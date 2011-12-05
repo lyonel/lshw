@@ -1157,7 +1157,7 @@ bool scan_pci(hwNode & n)
             {
               while(!feof(resource))
               {
-                uint64_t start, end, flags;
+                unsigned long long start, end, flags;
 
                 start = end = flags = 0;
 
