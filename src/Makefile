@@ -91,7 +91,7 @@ oui.txt:
 	wget http://standards.ieee.org/regauth/oui/oui.txt
 
 manuf.txt:
-	wget http://www.ethereal.com/distribution/manuf.txt
+	wget -O $@ http://anonsvn.wireshark.org/wireshark/trunk/manuf
 
 install: all
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
