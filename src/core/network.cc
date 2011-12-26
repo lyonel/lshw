@@ -305,7 +305,7 @@ bool scan_network(hwNode & n)
 
   int fd = socket(PF_INET, SOCK_DGRAM, 0);
 
-  if (fd > 0)
+  if (fd >= 0)
   {
     struct ifreq ifr;
     struct ethtool_drvinfo drvinfo;
