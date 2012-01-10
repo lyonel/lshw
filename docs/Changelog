@@ -1,3 +1,10 @@
+* lshw B.02.16
+  bug fixes
+  code cleanup
+  improved support for GPT-partitioned disks
+  report physical sector size of hard disks
+  rewrote GTK2 GUI for increased flexibility (use external UI file)
+  updated data files
 * lshw B.02.15
   experimental SQLite support
   bug fixes
