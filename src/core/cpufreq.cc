@@ -69,7 +69,7 @@ bool scan_cpufreq(hwNode & node)
       cur = 1000*(unsigned long long)get_long("scaling_cur_freq");
       cpu->addCapability("cpufreq", "CPU Frequency scaling");
       if(cur) cpu->setSize(cur);
-      if(max>cpu->getCapacity()) cpu->setCapacity(cur);
+      if(max>cpu->getCapacity()) cpu->setCapacity(max);
       popd();
     }
     i++;
