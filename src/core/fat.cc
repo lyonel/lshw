@@ -141,7 +141,7 @@ bool scan_fat(hwNode & n, source & id)
 	uint32_t cluster_count;
 	uint64_t root_start_sect;
 	uint32_t start_data_sct;
-	uint8_t *buf;
+	uint8_t *buf = NULL;
 	uint32_t buf_size;
 	uint8_t *label = NULL;
 	uint32_t next_cluster;
@@ -233,62 +233,64 @@ valid:
 //		strcpy(id->type_version, "FAT32");
 //		goto fat32;
 //	}
-	if (cluster_count >= FAT16_MAX)
-		goto fat32;
-
-	/* the label may be an attribute in the root directory */
-	root_start_sect = reserved_sct + fat_size_sct;
-
-	buf_size = dir_entries * sizeof(struct vfat_dir_entry);
-	buf = (uint8_t*)malloc(buf_size);
-	if(!readlogicalblocks(id, buf, root_start_sect, buf_size / sector_size_bytes))
-		goto found;
-
-	label = get_attr_volume_id((struct vfat_dir_entry*) buf, dir_entries);
-
-	if (label != NULL && memcmp(label, "NO NAME    ", 11) != 0) {
-		n.setConfig("label", hw::strip(string((char*)label, 11)));
-	} else if (memcmp(vs.type.fat.label, "NO NAME    ", 11) != 0) {
-		n.setConfig("label", hw::strip(string((char*)vs.type.fat.label, 11)));
-	}
-	goto found;
-
-fat32:
-	/* FAT32 root dir is a cluster chain like any other directory */
-	/* FIXME: we actually don't bother checking the whole chain */
-	/* --> the volume label is assumed to be within the first cluster (usually 128 entries)*/
-	buf_size = vs.sectors_per_cluster * sector_size_bytes;
-	buf = (uint8_t*)malloc(buf_size);
-	root_cluster = le_long(&vs.type.fat32.root_cluster);
-	start_data_sct = reserved_sct + fat_size_sct;
-	id.blocksize = sector_size_bytes;
-
-	next_cluster = root_cluster;
+	if (cluster_count < FAT16_MAX)
 	{
-		uint32_t next_off_sct;
-		uint64_t next_off;
-		int count;
 
-		next_off_sct = (next_cluster - 2) * vs.sectors_per_cluster;
-		next_off = start_data_sct + next_off_sct;
+		/* the label may be an attribute in the root directory */
+		root_start_sect = reserved_sct + fat_size_sct;
 
-		/* get cluster */
-		if(!readlogicalblocks(id, buf, next_off, vs.sectors_per_cluster))
-			goto found;
+		buf_size = dir_entries * sizeof(struct vfat_dir_entry);
+		buf = (uint8_t*)malloc(buf_size);
+		if(!readlogicalblocks(id, buf, root_start_sect, buf_size / sector_size_bytes))
+			goto end;
 
-		dir = (struct vfat_dir_entry*) buf;
-		count = buf_size / sizeof(struct vfat_dir_entry);
+		label = get_attr_volume_id((struct vfat_dir_entry*) buf, dir_entries);
 
-		label = get_attr_volume_id(dir, count);
+		if (label != NULL && memcmp(label, "NO NAME    ", 11) != 0) {
+			n.setConfig("label", hw::strip(string((char*)label, 11)));
+		} else if (memcmp(vs.type.fat.label, "NO NAME    ", 11) != 0) {
+			n.setConfig("label", hw::strip(string((char*)vs.type.fat.label, 11)));
+		}
 	}
 
-	if (label != NULL && memcmp(label, "NO NAME    ", 11) != 0) {
-		n.setConfig("label", hw::strip(string((char*)label, 11)));
-	} else if (memcmp(vs.type.fat32.label, "NO NAME    ", 11) != 0) {
-		n.setConfig("label", hw::strip(string((char*)vs.type.fat.label, 11)));
+	else {
+		/* FAT32 root dir is a cluster chain like any other directory */
+		/* FIXME: we actually don't bother checking the whole chain */
+		/* --> the volume label is assumed to be within the first cluster (usually 128 entries)*/
+		buf_size = vs.sectors_per_cluster * sector_size_bytes;
+		buf = (uint8_t*)malloc(buf_size);
+		root_cluster = le_long(&vs.type.fat32.root_cluster);
+		start_data_sct = reserved_sct + fat_size_sct;
+		id.blocksize = sector_size_bytes;
+
+		next_cluster = root_cluster;
+		{
+			uint32_t next_off_sct;
+			uint64_t next_off;
+			int count;
+
+			next_off_sct = (next_cluster - 2) * vs.sectors_per_cluster;
+			next_off = start_data_sct + next_off_sct;
+
+			/* get cluster */
+			if(!readlogicalblocks(id, buf, next_off, vs.sectors_per_cluster))
+				goto end;
+
+			dir = (struct vfat_dir_entry*) buf;
+			count = buf_size / sizeof(struct vfat_dir_entry);
+
+			label = get_attr_volume_id(dir, count);
+		}
+
+		if (label != NULL && memcmp(label, "NO NAME    ", 11) != 0) {
+			n.setConfig("label", hw::strip(string((char*)label, 11)));
+		} else if (memcmp(vs.type.fat32.label, "NO NAME    ", 11) != 0) {
+			n.setConfig("label", hw::strip(string((char*)vs.type.fat.label, 11)));
+		}
 	}
 
-found:
+end:
+	if(buf) free(buf);
 	return true;
 }
 
