@@ -11,6 +11,7 @@
 #include "volumes.h"
 #include "blockio.h"
 #include "lvm.h"
+#include "fat.h"
 #include "osutils.h"
 #include <stdio.h>
 #include <sys/types.h>
@@ -504,6 +505,7 @@ static bool detect_fat(hwNode & n, source & s)
   n.setSerial(dos_serial(serial));
   n.setDescription("");
 
+  scan_fat(n, fatvolume);
   return true;
 }
 
