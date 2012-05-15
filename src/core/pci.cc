@@ -519,10 +519,7 @@ static bool load_pcidb()
       parse_pcidb(lines);
   }
 
-  if (lines.size() == 0)
-    return false;
-
-  return true;
+  return (pci_devices.size() > 0);
 }
 
 
