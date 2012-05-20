@@ -66,6 +66,13 @@ string value)
       cpu->setVersion(value);
     if (id == "cpu")
       cpu->setProduct(value);
+    if (id == "clock")
+    {
+      double frequency = 0.0;
+
+      frequency = atof(value.c_str());
+      cpu->setSize((unsigned long long) (frequency * 1E6));
+    }
   }
 }
 #endif
