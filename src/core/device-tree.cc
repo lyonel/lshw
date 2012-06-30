@@ -520,15 +520,15 @@ bool scan_device_tree(hwNode & n)
     core = n.getChild("core");
   }
 
-  n.setProduct(get_string(DEVICETREE "/model"));
+  n.setProduct(get_string(DEVICETREE "/model", n.getProduct()));
   n.addHint("icon", string("motherboard"));
 
-  n.setSerial(get_string(DEVICETREE "/serial-number"));
+  n.setSerial(get_string(DEVICETREE "/serial-number", n.getSerial()));
   if (n.getSerial() == "")
     n.setSerial(get_string(DEVICETREE "/system-id"));
   fix_serial_number(n);
 
-  n.setVendor(get_string(DEVICETREE "/copyright"));
+  n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
 
   get_apple_model(n);
 
