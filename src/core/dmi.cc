@@ -1039,7 +1039,8 @@ int dmiversionmin)
         if (dm->length >= 0x1B)
         {
           node.setConfig("sku", dmi_string(dm, data[0x19]));
-	  node.setProduct(node.getProduct() + " (" + dmi_string(dm, data[0x19]) + ")");
+	  if (dmi_string(dm, data[0x19]) != "")
+	    node.setProduct(node.getProduct() + " (" + dmi_string(dm, data[0x19]) + ")");
           node.setConfig("family", dmi_string(dm, data[0x1A]));
         }
         break;
