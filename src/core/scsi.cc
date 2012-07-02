@@ -195,10 +195,10 @@ static const char *devices[] =
   "/dev/sr*",
   "/dev/cd*",
   "/dev/dvd*",
-  "/dev/st*",
   "/dev/nst*",
   "/dev/nosst*",
-  "/dev/tape*",
+  "/dev/ntape*",
+  "/dev/nrtape*",
   NULL
 };
 
