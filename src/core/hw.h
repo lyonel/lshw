@@ -124,8 +124,14 @@ class hwNode
     string getVendor() const;
     void setVendor(const string & vendor);
 
+    string getSubsysVendor() const;
+    void setSubsysVendor(const string & subsysvendor);
+
     string getProduct() const;
     void setProduct(const string & product);
+
+    string getSubsysProduct() const;
+    void setSubsysProduct(const string & subsysproduct);
 
     string getVersion() const;
     void setVersion(const string & version);

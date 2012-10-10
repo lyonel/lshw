@@ -28,7 +28,7 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, date, serial, slot, handle, description,
-    businfo, physid, dev, modalias;
+    businfo, physid, dev, modalias, subsysvendor, subsysproduct;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -396,6 +396,22 @@ void hwNode::setVendor(const string & vendor)
 }
 
 
+string hwNode::getSubsysVendor() const
+{
+  if (This)
+    return This->subsysvendor;
+  else
+    return "";
+}
+
+
+void hwNode::setSubsysVendor(const string & subsysvendor)
+{
+  if (This)
+    This->subsysvendor = strip(subsysvendor);
+}
+
+
 string hwNode::getProduct() const
 {
   if (This)
@@ -409,6 +425,22 @@ void hwNode::setProduct(const string & product)
 {
   if (This)
     This->product = strip(product);
+}
+
+
+string hwNode::getSubsysProduct() const
+{
+  if (This)
+    return This->subsysproduct;
+  else
+    return "";
+}
+
+
+void hwNode::setSubsysProduct(const string & subsysproduct)
+{
+  if (This)
+    This->subsysproduct = strip(subsysproduct);
 }
 
 
@@ -1727,6 +1759,24 @@ string hwNode::asXML(unsigned level)
       out << "<physid>";
       out << getPhysId();
       out << "</physid>";
+      out << endl;
+    }
+
+    if (getSubsysProduct() != "")
+    {
+      out << spaces(2*level+1);
+      out << "<subsysproduct>";
+      out << escape(getSubsysProduct());
+      out << "</subsysproduct>";
+      out << endl;
+    }
+
+    if (getSubsysVendor() != "")
+    {
+      out << spaces(2*level+1);
+      out << "<subsysvendor>";
+      out << escape(getSubsysVendor());
+      out << "</subsysvendor>";
       out << endl;
     }
 
