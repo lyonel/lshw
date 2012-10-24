@@ -26,7 +26,7 @@
 #include <dirent.h>
 
 #define PROCBUSUSBDEVICES "/proc/bus/usb/devices"
-#define SYSBUSUSBDEVICES "/sys/bus/usb/devices"
+#define SYSKERNELDEBUGUSBDEVICES "/sys/kernel/debug/usb/devices"
 #define USBID_PATH DATADIR"/usb.ids:/usr/share/lshw/usb.ids:/usr/local/share/usb.ids:/usr/share/usb.ids:/etc/usb.ids:/usr/share/hwdata/usb.ids:/usr/share/misc/usb.ids"
 
 #define USB_CLASS_PER_INTERFACE         0         /* for DeviceClass */
@@ -362,7 +362,7 @@ bool scan_usb(hwNode & n)
   unsigned ifnum, alt, numeps;
   char driver[80+1];
 
-  if (!exists(PROCBUSUSBDEVICES))
+  if (!exists(SYSKERNELDEBUGUSBDEVICES) && !exists(PROCBUSUSBDEVICES))
     return false;
 
   vector < string > filenames;
@@ -373,11 +373,9 @@ bool scan_usb(hwNode & n)
   }
   filenames.clear();
 
-  usbdevices = fopen(PROCBUSUSBDEVICES, "r");
-#if 0
+  usbdevices = fopen(SYSKERNELDEBUGUSBDEVICES, "r");
   if(!usbdevices)
-    usbdevices = fopen(SYSBUSUSBDEVICES, "r");
-#endif
+    usbdevices = fopen(PROCBUSUSBDEVICES, "r");
 
   while(!feof(usbdevices))
   {
