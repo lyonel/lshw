@@ -464,6 +464,10 @@ bool scan_network(hwNode & n)
             interface.setConfig("speed", "1Gbit/s");
             interface.setSize(1000000000L);
             break;
+          case SPEED_10000:
+            interface.setConfig("speed", "10Gbit/s");
+            interface.setSize(10000000000L);
+            break;
         }
         switch(ecmd.duplex)
         {
