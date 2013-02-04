@@ -49,6 +49,11 @@ bool scan_disk(hwNode & n)
   if(physsectsize)
     n.setConfig("sectorsize", physsectsize);
 
+  if (ioctl(fd, BLKSSZGET, &sectsize) < 0)
+    sectsize = 0;
+  if (sectsize)
+    n.setConfig("logicalsectorsize", sectsize);
+
   if (n.getSize() == 0)
   {
     if(ioctl(fd, BLKGETSIZE64, &bytes) == 0)
@@ -59,11 +64,10 @@ bool scan_disk(hwNode & n)
     {
       if (ioctl(fd, BLKGETSIZE, &size) != 0)
         size = 0;
-      if (ioctl(fd, BLKSSZGET, &sectsize) != 0)
-        sectsize = 0;
-
-      if ((size > 0) && (sectsize > 0))
+      
+      if ((size > 0) && (sectsize > 0)){
         n.setSize((unsigned long long) size * (unsigned long long) sectsize);
+      }
     }
   }
 
