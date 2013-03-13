@@ -29,7 +29,7 @@
 
 __ID("@(#) $Id$");
 
-#define SG_X "/dev/sg%d"
+#define SG_X "/dev/sg*"
 #define SG_MAJOR 21
 
 #ifndef SCSI_IOCTL_GET_PCI
@@ -653,10 +653,9 @@ static bool atapi(const hwNode & n)
 }
 
 
-static bool scan_sg(int sg,
-hwNode & n)
+static void scan_sg(hwNode & n)
 {
-  char buffer[20];
+  int sg;
   int fd = -1;
   My_sg_scsi_id m_id;
   char slot_name[64];                             // should be 16 but some 2.6 kernels require 32 bytes
@@ -665,22 +664,30 @@ hwNode & n)
   hwNode *parent = NULL;
   int emulated = 0;
   bool ghostdeventry = false;
+  size_t j;
+  glob_t entries;
 
-  snprintf(buffer, sizeof(buffer), SG_X, sg);
+  if(glob(SG_X, 0, NULL, &entries) == 0)
+  {
+    for(j=0; j < entries.gl_pathc; j++)
+    {
+      sg = strtol(strpbrk(entries.gl_pathv[j], "0123456789"), NULL, 10);
 
-  ghostdeventry = !exists(buffer);
+      ghostdeventry = !exists(entries.gl_pathv[j]);
 
-  if(ghostdeventry) mknod(buffer, (S_IFCHR | S_IREAD), MKDEV(SG_MAJOR, sg));
-  fd = open(buffer, OPEN_FLAG | O_NONBLOCK);
-  if(ghostdeventry) unlink(buffer);
+      if(ghostdeventry)
+        mknod(entries.gl_pathv[j], (S_IFCHR | S_IREAD), MKDEV(SG_MAJOR, sg));
+      fd = open(entries.gl_pathv[j], OPEN_FLAG | O_NONBLOCK);
+      if(ghostdeventry)
+        unlink(entries.gl_pathv[j]);
   if (fd < 0)
-    return false;
+        continue;
 
   memset(&m_id, 0, sizeof(m_id));
   if (ioctl(fd, SG_GET_SCSI_ID, &m_id) < 0)
   {
     close(fd);
-    return true;                                  // we failed to get info but still hope we can continue
+        continue;        // we failed to get info but still hope we can continue
   }
 
   emulated = 0;
@@ -773,11 +780,8 @@ hwNode & n)
   if (!parent)
     parent = n.addChild(hwNode("scsi", hw::storage));
 
-  if (!parent)
+  if (parent)
   {
-    close(fd);
-    return true;
-  }
 
   if(parent->getBusInfo() == "")
     parent->setBusInfo(guessBusInfo(hw::strip(slot_name)));
@@ -789,10 +793,12 @@ hwNode & n)
     parent->addCapability("emulated", "Emulated device");
   }
   parent->addChild(device);
+  }
 
   close(fd);
-
-  return true;
+    }
+    globfree(&entries);
+  }
 }
 
 
@@ -889,12 +895,9 @@ static bool scan_hosts(hwNode & node)
 
 bool scan_scsi(hwNode & n)
 {
-  int i = 0;
-
   scan_devices();
 
-  while (scan_sg(i, n))
-    i++;
+  scan_sg(n);
 
   scan_hosts(n);
 
