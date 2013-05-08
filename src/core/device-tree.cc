@@ -193,7 +193,8 @@ static void scan_devtree_cpu(hwNode & core)
       struct dirent **cachelist;
       int ncache;
 
-      if (hw::strip(get_string(basepath + "/device_type")) != "cpu")
+      if (exists(basepath + "/device_type") &&
+        hw::strip(get_string(basepath + "/device_type")) != "cpu")
         break;                                    // oops, not a CPU!
 
       cpu.setProduct(get_string(basepath + "/name"));
