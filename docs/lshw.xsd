@@ -10,42 +10,42 @@
 
   <xs:complexType name="nodeinfo">
     <xs:sequence>
-      <xs:element name="description" type="xs:string"/>
-      <xs:element name="product" type="xs:string"/>
-      <xs:element name="vendor" type="xs:string"/>
-      <xs:element name="physid" type="xs:string"/>
-      <xs:element name="version" type="xs:string"/>
-      <xs:element name="date" type="xs:string"/>
-      <xs:element name="serial" type="xs:string"/>
-      <xs:element name="businfo" type="xs:string"/>
-      <xs:element name="slot" type="xs:string"/>
-      <xs:element name="size" type="measured"/>
-      <xs:element name="capacity" type="measured"/>
-      <xs:element name="clock" type="measured"/>
-      <xs:element name="width" type="measured"/>
-      <xs:element name="configuration" type="configinfo"/>
-      <xs:element name="capabilities" type="capinfo"/>
-      <xs:element name="resources" type="resinfo"/>
-      <xs:element name="node" type="nodeinfo" maxOccurs="unbounded" />
+      <xs:element name="description" type="xs:string" minOccurs="0" />
+      <xs:element name="product" type="xs:string" minOccurs="0" />
+      <xs:element name="vendor" type="xs:string" minOccurs="0" />
+      <xs:element name="physid" type="xs:string" minOccurs="0" />
+      <xs:element name="version" type="xs:string" minOccurs="0" />
+      <xs:element name="date" type="xs:string" minOccurs="0" />
+      <xs:element name="serial" type="xs:string" minOccurs="0" />
+      <xs:element name="businfo" type="xs:string" minOccurs="0" />
+      <xs:element name="slot" type="xs:string" minOccurs="0" />
+      <xs:element name="size" type="measured" minOccurs="0" />
+      <xs:element name="capacity" type="measured" minOccurs="0" />
+      <xs:element name="clock" type="measured" minOccurs="0" />
+      <xs:element name="width" type="measured" minOccurs="0" />
+      <xs:element name="configuration" type="configinfo" minOccurs="0" />
+      <xs:element name="capabilities" type="capinfo" minOccurs="0" />
+      <xs:element name="resources" type="resinfo" minOccurs="0" />
+      <xs:element name="node" type="nodeinfo" maxOccurs="unbounded" minOccurs="0" />
     </xs:sequence>
-    <xs:attribute name="id" type="xs:string" />
-    <xs:attribute name="handle" type="xs:string" />
-    <xs:attribute name="class" type="xs:string" />
-    <xs:attribute name="claimed" type="xs:boolean" />
-    <xs:attribute name="disabled" type="xs:boolean" />
+    <xs:attribute name="id" type="xs:string" minOccurs="0" />
+    <xs:attribute name="handle" type="xs:string" minOccurs="0" />
+    <xs:attribute name="class" type="xs:string" minOccurs="0" />
+    <xs:attribute name="claimed" type="xs:boolean" minOccurs="0" />
+    <xs:attribute name="disabled" type="xs:boolean" minOccurs="0" />
   </xs:complexType>
 
   <xs:complexType name="measured">
     <xs:simpleContent>
       <xs:extension base="xs:decimal">
-        <xs:attribute name="units" type="xs:string" />
+        <xs:attribute name="units" type="xs:string" minOccurs="0" />
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
 
   <xs:complexType name="configinfo">
     <xs:sequence>
-      <xs:element name="setting" type="configentry" maxOccurs="unbounded" />
+      <xs:element name="setting" type="configentry" maxOccurs="unbounded" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
 
@@ -60,7 +60,7 @@
 
   <xs:complexType name="capinfo">
     <xs:sequence>
-      <xs:element name="capability" type="capentry" maxOccurs="unbounded" />
+      <xs:element name="capability" type="capentry" maxOccurs="unbounded" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
 
