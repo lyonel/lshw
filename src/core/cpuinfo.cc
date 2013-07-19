@@ -77,6 +77,62 @@ string value)
 }
 #endif
 
+#ifdef __s390x__
+
+static void cpuinfo_s390x(hwNode & node,
+string id,
+string value)
+{
+  if (id.substr(0, string("processor").size())=="processor")
+    currentcpu++;
+
+  hwNode *cpu = getcpu(node, currentcpu);
+
+  if (cpu)
+  {
+    cpu->addHint("logo", string("s390x"));
+    cpu->claim(true);
+    if (id == "vendor_id")
+    {
+      if (value == "IBM/S390")
+        value = "IBM";
+      cpu->setVendor(value);
+    }
+
+    if (id == "features")
+      while (value.length() > 0)
+    {
+      size_t pos = value.find(' ');
+      string capability = (pos==string::npos)?value:value.substr(0, pos);
+
+      cpu->addCapability(capability);
+
+      if (pos == string::npos)
+        value = "";
+      else
+        value = hw::strip(value.substr(pos));
+    }
+
+    /*AS: many thanks to Martin Schwidefsky for sharing the descriptions
+     of the feature flags
+    */
+    cpu->describeCapability("esan3", "ESA new instructions 3 (N3)");
+    cpu->describeCapability("zarch", "x/Architecture (64-bit) mode)");
+    cpu->describeCapability("stfle", "store facility list extended instruction");
+    cpu->describeCapability("msa", "message security assist facility");
+    cpu->describeCapability("ldisp", "long displacement facility");
+    cpu->describeCapability("eimm", "extended immediate facility");
+    cpu->describeCapability("dfp", "decimal floating point facility");
+    cpu->describeCapability("edat", "enhanced DAT facility");
+    cpu->describeCapability("etf3eh", "ETF3 enhancement facility");
+    cpu->describeCapability("highgprs", "support for 64-bit registers for 31-bit programs");
+    cpu->describeCapability("te", "transactional/constraint transactional execution facilities");
+
+  }
+}
+#endif
+
+
 #ifdef __ia64__
 static void cpuinfo_ia64(hwNode & node,
 string id,
@@ -422,6 +478,9 @@ bool scan_cpuinfo(hwNode & n)
 #endif
 #ifdef __powerpc__
         cpuinfo_ppc(n, id, value);
+#endif
+#ifdef __s390x__
+        cpuinfo_s390x(n, id, value);
 #endif
 #ifdef __hppa__
         cpuinfo_hppa(n, id, value);
