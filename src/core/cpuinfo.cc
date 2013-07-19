@@ -113,7 +113,21 @@ string value)
         value = hw::strip(value.substr(pos));
     }
 
-    /* TODO: description for the capabilities*/
+    /*AS: many thanks to Martin Schwidefsky for sharing the descriptions
+     of the feature flags
+    */
+    cpu->describeCapability("esan3", "ESA new instructions 3 (N3)");
+    cpu->describeCapability("zarch", "x/Architecture (64-bit) mode)");
+    cpu->describeCapability("stfle", "store facility list extended instruction");
+    cpu->describeCapability("msa", "message security assist facility");
+    cpu->describeCapability("ldisp", "long displacement facility");
+    cpu->describeCapability("eimm", "extended immediate facility");
+    cpu->describeCapability("dfp", "decimal floating point facility");
+    cpu->describeCapability("edat", "enhanced DAT facility");
+    cpu->describeCapability("etf3eh", "ETF3 enhancement facility");
+    cpu->describeCapability("highgprs", "support for 64-bit registers for 31-bit programs");
+    cpu->describeCapability("te", "transactional/constraint transactional execution facilities");
+
   }
 }
 #endif
