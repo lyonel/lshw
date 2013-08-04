@@ -98,7 +98,7 @@ http://gui.lshw.org/
 %{_sbindir}/lshw
 %doc %{_mandir}/man?/*
 %{_datadir}/lshw/
-%{_datadir}/locale/*/
+%{_datadir}/locale/*/*/*
 
 %if %{!?_without_gui:1}0
 %files gui
