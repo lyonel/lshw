@@ -263,6 +263,26 @@ hwNode & device)
   if (device.isCapable("removable"))
     device.setCapacity(0);                        // we'll first have to make sure we have a disk
 
+  //if(pidentity[168] && (pidentity[168] & 0xfff8) == 0) {
+    switch(pidentity[168]) {
+                case 1:
+                        device.setConfig("size", "5.25 inch");
+                        break;
+                case 2:
+                        device.setConfig("size", "3.5 inch");
+                        break;
+                case 3:
+                        device.setConfig("size", "2.5 inch");
+                        break;
+                case 4:
+                        device.setConfig("size", "1.8 inch");
+                        break;
+                case 5:
+                        device.setConfig("size", "less than 1.8 inch");
+                        break;
+                }
+  //}
+
   if (device.isCapable("cdrom"))
     scan_cdrom(device);
   else
