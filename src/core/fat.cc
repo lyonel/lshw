@@ -81,6 +81,7 @@ struct vfat_super_block {
 			uint8_t dummy2[164];
 			uint8_t pmagic[2];
 		} __attribute__((__packed__)) fat32;
+		char sector[512];	// to make sure the whole struct is at least 512 bytes long
 	} __attribute__((__packed__)) type;
 } __attribute__((__packed__));
 
