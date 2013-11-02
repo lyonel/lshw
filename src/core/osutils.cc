@@ -641,7 +641,7 @@ string utf8(uint16_t * s, ssize_t length, bool forcelittleendian)
 // U+FFFD replacement character
 #define REPLACEMENT  "\357\277\275"
 
-string utf8_sanitize(const string & s)
+string utf8_sanitize(const string & s, bool autotruncate)
 {
   unsigned int i = 0;
   unsigned int remaining = 0;
@@ -664,6 +664,7 @@ string utf8_sanitize(const string & s)
         }
         else		// invalid sequence (truncated)
         {
+          if(autotruncate) return result;
           emit = REPLACEMENT;
           emit += s[i];
           remaining = 0;
@@ -695,7 +696,10 @@ string utf8_sanitize(const string & s)
           emit = s[i];
         }
         else
+        {
+          if(autotruncate) return result;
           emit = REPLACEMENT;	// invalid character
+        }
 
         break;
     }
