@@ -1,0 +1,96 @@
+<?xml version="1.0" standalone="yes" ?>
+<list>
+  <node id="cpu" claimed="true" class="processor" handle="">
+   <product>Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz</product>
+   <vendor>Intel Corp.</vendor>
+   <physid>1</physid>
+   <businfo>cpu@0</businfo>
+   <width units="bits">64</width>
+   <capabilities>
+    <capability id="fpu" >mathematical co-processor</capability>
+    <capability id="fpu_exception" >FPU exceptions reporting</capability>
+    <capability id="wp" />
+    <capability id="vme" >virtual mode extensions</capability>
+    <capability id="de" >debugging extensions</capability>
+    <capability id="pse" >page size extensions</capability>
+    <capability id="tsc" >time stamp counter</capability>
+    <capability id="msr" >model-specific registers</capability>
+    <capability id="pae" >4GB+ memory addressing (Physical Address Extension)</capability>
+    <capability id="mce" >machine check exceptions</capability>
+    <capability id="cx8" >compare and exchange 8-byte</capability>
+    <capability id="apic" >on-chip advanced programmable interrupt controller (APIC)</capability>
+    <capability id="sep" >fast system calls</capability>
+    <capability id="mtrr" >memory type range registers</capability>
+    <capability id="pge" >page global enable</capability>
+    <capability id="mca" >machine check architecture</capability>
+    <capability id="cmov" >conditional move instruction</capability>
+    <capability id="pat" >page attribute table</capability>
+    <capability id="pse36" >36-bit page size extensions</capability>
+    <capability id="clflush" />
+    <capability id="dts" >debug trace and EMON store MSRs</capability>
+    <capability id="acpi" >thermal control (ACPI)</capability>
+    <capability id="mmx" >multimedia extensions (MMX)</capability>
+    <capability id="fxsr" >fast floating point save/restore</capability>
+    <capability id="sse" >streaming SIMD extensions (SSE)</capability>
+    <capability id="sse2" >streaming SIMD extensions (SSE2)</capability>
+    <capability id="ss" >self-snoop</capability>
+    <capability id="ht" >HyperThreading</capability>
+    <capability id="tm" >thermal interrupt and status</capability>
+    <capability id="pbe" >pending break event</capability>
+    <capability id="syscall" >fast system calls</capability>
+    <capability id="nx" >no-execute bit (NX)</capability>
+    <capability id="rdtscp" />
+    <capability id="x86-64" >64bits extensions (x86-64)</capability>
+    <capability id="constant_tsc" />
+    <capability id="arch_perfmon" />
+    <capability id="pebs" />
+    <capability id="bts" />
+    <capability id="rep_good" />
+    <capability id="nopl" />
+    <capability id="xtopology" />
+    <capability id="nonstop_tsc" />
+    <capability id="aperfmperf" />
+    <capability id="eagerfpu" />
+    <capability id="pni" />
+    <capability id="pclmulqdq" />
+    <capability id="dtes64" />
+    <capability id="monitor" />
+    <capability id="ds_cpl" />
+    <capability id="vmx" />
+    <capability id="smx" />
+    <capability id="est" />
+    <capability id="tm2" />
+    <capability id="ssse3" />
+    <capability id="cx16" />
+    <capability id="xtpr" />
+    <capability id="pdcm" />
+    <capability id="pcid" />
+    <capability id="sse4_1" />
+    <capability id="sse4_2" />
+    <capability id="x2apic" />
+    <capability id="popcnt" />
+    <capability id="tsc_deadline_timer" />
+    <capability id="aes" />
+    <capability id="xsave" />
+    <capability id="avx" />
+    <capability id="f16c" />
+    <capability id="rdrand" />
+    <capability id="lahf_lm" />
+    <capability id="ida" />
+    <capability id="arat" />
+    <capability id="epb" />
+    <capability id="xsaveopt" />
+    <capability id="pln" />
+    <capability id="pts" />
+    <capability id="dtherm" />
+    <capability id="tpr_shadow" />
+    <capability id="vnmi" />
+    <capability id="flexpriority" />
+    <capability id="ept" />
+    <capability id="vpid" />
+    <capability id="fsgsbase" />
+    <capability id="smep" />
+    <capability id="erms" />
+   </capabilities>
+  </node>
+</list>

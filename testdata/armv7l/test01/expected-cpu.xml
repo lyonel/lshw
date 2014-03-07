@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes" ?>
+<list>
+  <node id="cpu" claimed="true" class="processor" handle="">
+   <physid>1</physid>
+   <businfo>cpu@0</businfo>
+  </node>
+</list>

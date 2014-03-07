@@ -31,6 +31,10 @@ It currently supports DMI (x86 and EFI only), OpenFirmware device tree
 	$ make
 	$ make gui
 
+ * To run the tests (needs `fakechroot (>=2.17)` and `fakeroot` to be installed):
+
+        $ make check
+
  * the lshw home page is http://lshw.org/
  * send bug reports, requests for help, feature requests, comments, etc. to
    bugs@ezix.org.  The author can be contacted directly (lyonel@ezix.org)
