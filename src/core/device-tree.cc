@@ -14,6 +14,7 @@
 #include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <arpa/inet.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -48,7 +49,7 @@ static unsigned long get_long(const string & path)
     close(fd);
   }
 
-  return result;
+  return ntohl(result);
 }
 
 
