@@ -14,7 +14,7 @@
 #include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <arpa/inet.h>
+#include <endian.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -49,7 +49,10 @@ static unsigned long get_long(const string & path)
     close(fd);
   }
 
-  return ntohl(result);
+  if(sizeof(result) == sizeof(uint64_t))
+    return be64toh(result);
+  else
+    return be32toh(result);
 }
 
 
