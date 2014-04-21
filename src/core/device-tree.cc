@@ -233,6 +233,7 @@ static void scan_devtree_cpu(hwNode & core)
         hwNode cache("cache",
           hw::memory);
 
+        cache.claim();
         cache.setDescription("L1 Cache");
         cache.setSize(get_long(basepath + "/d-cache-size"));
         if (cache.getSize() > 0)
@@ -254,6 +255,7 @@ static void scan_devtree_cpu(hwNode & core)
             hw::strip(get_string(cachebase + "/device_type")) != "l2-cache")
             break;                                // oops, not a cache!
 
+          cache.claim();
           cache.setDescription("L2 Cache");
           cache.setSize(get_long(cachebase + "/d-cache-size"));
           cache.setClock(get_long(cachebase + "/clock-frequency"));
