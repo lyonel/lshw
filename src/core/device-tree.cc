@@ -24,7 +24,7 @@
 
 __ID("@(#) $Id$");
 
-#define DIMMINFOSIZE 0x80
+#define DIMMINFOSIZE 0x100
 typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
 
 struct dimminfo
@@ -342,8 +342,8 @@ static void scan_devtree_memory(hwNode & core)
       {
         for (unsigned int i = 0; i < slotnames.size(); i++)
         {
-          unsigned long base = 0;
-          unsigned long size = 0;
+          uint64_t base = 0;
+          uint64_t size = 0;
           hwNode bank("bank",
             hw::memory);
 
@@ -355,21 +355,91 @@ static void scan_devtree_memory(hwNode & core)
           else
             base = 0;
 
+          base = be64toh(base);
+          size = be64toh(size);
+
           if (fd >= 0)
           {
             dimminfo_buf dimminfo;
-
-            if (read(fd, &dimminfo, sizeof(dimminfo)) > 0)
+	    
+            if (read(fd, &dimminfo, 0x80) == 0x80)
             {
+
+              /* Read entire SPD eeprom */
+              if (dimminfo[2] >= 9) /* DDR3 */
+              {
+                read(fd, &dimminfo[0x80], (64 << ((dimminfo[0] & 0x70) >> 4)));
+              } else if (dimminfo[0] < 15) { /* DDR 2 */
+                read(fd, &dimminfo[0x80], (1 << (dimminfo[1]) ));
+              }
+
               if (size > 0)
               {
                 char dimmversion[20];
+                unsigned char mfg_loc_offset;
+                unsigned char rev_offset1;
+                unsigned char rev_offset2;
+                unsigned char year_offset;
+                unsigned char week_offset;
+                unsigned char partno_offset;
+                unsigned char ver_offset;
+
+                if (dimminfo[2] >= 9) {
+                  mfg_loc_offset = 0x77;
+                  rev_offset1 = 0x92;
+                  rev_offset2 = 0x93;
+                  year_offset = 0x78;
+                  week_offset = 0x79;
+                  partno_offset = 0x80;
+                  ver_offset = 0x01;
+
+                  switch ((dimminfo[0x8] >> 3) & 0x3) // DDR3 error detection and correction scheme
+                  {
+                    case 0x00:
+                      bank.setConfig("errordetection", "none");
+                      break;
+                    case 0x01:
+                      bank.addCapability("ecc");
+                      bank.setConfig("errordetection", "ecc");
+                      break;
+                  }
+                } else {
+                  mfg_loc_offset = 0x48;
+                  rev_offset1 = 0x5b;
+                  rev_offset2 = 0x5c;
+                  year_offset = 0x5d;
+                  week_offset = 0x5e;
+                  partno_offset = 0x49;
+                  ver_offset = 0x3e;
+
+                  switch (dimminfo[0xb] & 0x3) // DDR2 error detection and correction scheme
+                  {
+                    case 0x00:
+                      bank.setConfig("errordetection", "none");
+                      break;
+                    case 0x01:
+                      bank.addCapability("parity");
+                      bank.setConfig("errordetection", "parity");
+                      break;
+                    case 0x02:
+                    case 0x03:
+                      bank.addCapability("ecc");
+                      bank.setConfig("errordetection", "ecc");
+                      break;
+                  }
+                }
                 snprintf(dimmversion, sizeof(dimmversion),
-                  "%02X%02X,%02X %02X,%02X", dimminfo[0x5b],
-                  dimminfo[0x5c], dimminfo[0x5d], dimminfo[0x5e],
-                  dimminfo[0x48]);
-                bank.setSerial(string((char *) &dimminfo + 0x49, 18));
+                  "%02X%02X,%02X %02X,%02X", dimminfo[rev_offset1],
+                  dimminfo[rev_offset2], dimminfo[year_offset], dimminfo[week_offset],
+                  dimminfo[mfg_loc_offset]);
+                bank.setSerial(string((char *) &dimminfo[partno_offset], 18));
                 bank.setVersion(dimmversion);
+
+                int version = dimminfo[ver_offset];
+                char buff[32];
+
+                snprintf(buff, sizeof(buff), "spd-%d.%d", (version & 0xF0) >> 4, version & 0x0F);
+                bank.addCapability(buff);
               }
             }
           }
