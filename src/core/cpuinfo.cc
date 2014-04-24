@@ -131,6 +131,67 @@ string value)
 }
 #endif
 
+#ifdef __arm__
+static void cpuinfo_arm(hwNode & node,
+                        string id,
+                        string value)
+{
+
+  if (id.substr(0, string("processor").size())=="processor")
+    currentcpu++;
+
+  hwNode *cpu = getcpu(node, currentcpu);
+  if (cpu)
+    {
+      cpu->addHint("logo", string("arm"));
+      if (id == "model name" && node.getDescription() == "")
+        node.setDescription(value);
+      cpu->claim(true);
+      if (id == "Features")
+        {
+          while (value.length() > 0)
+            {
+              size_t pos = value.find(' ');
+              string capability = (pos==string::npos)?value:value.substr(0, pos);
+              cpu->addCapability(capability);
+              if (pos == string::npos)
+                value = "";
+              else
+                value = hw::strip(value.substr(pos));
+            }
+        }
+      /* With help from:
+         http://infocenter.arm.com/help/index.jsp
+         http://unix.stackexchange.com/questions/43539/what-do-the-flags-in-proc-cpuinfo-mean
+         http://en.wikipedia.org/wiki/ARM_architecture
+      */
+      cpu->describeCapability("swp", "Swap instruction");
+      cpu->describeCapability("swpb", "Swap Byte instruction");
+      cpu->describeCapability("half", "Unknown");
+      cpu->describeCapability("thumb", "Thumb instruction set");
+      cpu->describeCapability("26bit", "26-bit Model");
+      cpu->describeCapability("fastmult", "Fast Multiplication");
+      cpu->describeCapability("fpa", "Floating point accelerator");
+      cpu->describeCapability("vfp", "VFP (vector floating point instructions)");
+      cpu->describeCapability("vfpv3", "VFP version 3");
+      cpu->describeCapability("vfpv3d16", "VFP version 3 with 16 64-bit FPU registers");
+      cpu->describeCapability("vfpv4", "VFP version 4");
+      cpu->describeCapability("vfpd32", "Unknown");
+      cpu->describeCapability("edsp", "DSP extensions");
+      cpu->describeCapability("java", "Jazelle (Java bytecode accelerator)");
+      cpu->describeCapability("thumbee", "Thumb Execution Environment");
+      cpu->describeCapability("neon", "NEON aka MPE - Media Processing Engine");
+      cpu->describeCapability("tls", "TLS register");
+      cpu->describeCapability("iwmmxt", "SIMD instructions");
+      cpu->describeCapability("crunch", "MaverickCrunch coprocessor");
+      cpu->describeCapability("idiva", "SDIV and UDIV hardware division in ARM mode");
+      cpu->describeCapability("idivt", "SDIV and UDIV hardware division in Thumb mode");
+      cpu->describeCapability("lpae", "Large Physical Address Extension architecture");
+      cpu->describeCapability("evtstrm", "Unknown");
+    }
+}
+#endif
+
 #ifdef __ia64__
 static void cpuinfo_ia64(hwNode & node,
 string id,
@@ -488,6 +549,10 @@ bool scan_cpuinfo(hwNode & n)
 #endif
 #ifdef __ia64__
         cpuinfo_ia64(n, id, value);
+#endif
+
+#ifdef __arm__
+        cpuinfo_arm(n, id, value);
 #endif
       }
     }
