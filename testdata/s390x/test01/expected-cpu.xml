@@ -1,7 +1,35 @@
 <?xml version="1.0" standalone="yes" ?>
 <list>
-  <node id="cpu" claimed="true" class="processor" handle="">
+  <node id="cpu:0" claimed="true" class="processor" handle="">
+   <vendor>IBM/S390</vendor>
    <physid>1</physid>
    <businfo>cpu@0</businfo>
+   <capabilities>
+    <capability id="esan3" >ESA new instructions 3 (N3)</capability>
+    <capability id="zarch" >x/Architecture (64-bit) mode)</capability>
+    <capability id="stfle" >store facility list extended instruction</capability>
+    <capability id="msa" >message security assist facility</capability>
+    <capability id="ldisp" >long displacement facility</capability>
+    <capability id="eimm" >extended immediate facility</capability>
+    <capability id="dfp" >decimal floating point facility</capability>
+    <capability id="etf3eh" >ETF3 enhancement facility</capability>
+    <capability id="highgprs" >support for 64-bit registers for 31-bit programs</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:1" claimed="true" class="processor" handle="">
+   <vendor>IBM/S390</vendor>
+   <physid>2</physid>
+   <businfo>cpu@1</businfo>
+   <capabilities>
+    <capability id="esan3" >ESA new instructions 3 (N3)</capability>
+    <capability id="zarch" >x/Architecture (64-bit) mode)</capability>
+    <capability id="stfle" >store facility list extended instruction</capability>
+    <capability id="msa" >message security assist facility</capability>
+    <capability id="ldisp" >long displacement facility</capability>
+    <capability id="eimm" >extended immediate facility</capability>
+    <capability id="dfp" >decimal floating point facility</capability>
+    <capability id="etf3eh" >ETF3 enhancement facility</capability>
+    <capability id="highgprs" >support for 64-bit registers for 31-bit programs</capability>
+   </capabilities>
   </node>
 </list>
