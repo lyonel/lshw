@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes" ?>
+<list>
+  <node id="disk" claimed="true" class="disk" handle="">
+   <description>DASD Device</description>
+   <product>3390/0c</product>
+   <vendor>IBM</vendor>
+   <physid>0</physid>
+   <logicalname>/dev/dasda</logicalname>
+  </node>
+</list>
