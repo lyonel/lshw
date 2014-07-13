@@ -481,9 +481,9 @@ hwNode & node)
   memset(rsp_buff, 0, sizeof(rsp_buff));
   if (do_inq(sg_fd, 0, 1, 0x80, rsp_buff, MX_ALLOC_LEN, 0))
   {
-    len = rsp_buff[3];
-    if (len > 0)
-      node.setSerial(hw::strip(string(rsp_buff + 4, len)));
+    char _len = rsp_buff[3];
+    if (_len > 0)
+      node.setSerial(hw::strip(string(rsp_buff + 4, _len)));
   }
 
   memset(rsp_buff, 0, sizeof(rsp_buff));
