@@ -9,6 +9,7 @@
  *
  */
 
+#include <errno.h>
 #include "version.h"
 #include "device-tree.h"
 #include "osutils.h"
@@ -287,6 +288,49 @@ static void scan_devtree_cpu(hwNode & core)
     }
     free(namelist);
   }
+}
+
+static void scan_devtree_memory_powernv(hwNode & core)
+{
+  struct dirent **namelist;
+  hwNode *memory = core.getChild("memory");
+  int n;
+
+  pushd(DEVICETREE "/vpd");
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+  if (n < 0)
+    return;
+  for (int i = 0; i < n; i++)
+  {
+    string basepath;
+    unsigned long size = 0;
+    string sizestr;
+
+    if (strncmp(namelist[i]->d_name, "ms-dimm@", 8) == 0)
+    {
+      hwNode bank("bank", hw::memory);
+
+      if (!memory)
+        memory = core.addChild(hwNode("memory", hw::memory));
+
+      basepath = string(DEVICETREE "/vpd/") + string(namelist[i]->d_name);
+      bank.setSerial(get_string(basepath + string("/serial-number")));
+      bank.setProduct(get_string(basepath + string("/part-number")) + " FRU#" + get_string(basepath + string("/fru-number")));
+      bank.setDescription(get_string(basepath + string("/description")));
+      bank.setSlot(get_string(basepath + string("/ibm,loc-code")));
+      sizestr = get_string(basepath + string("/size"));
+      errno = 0;
+      size = strtoul(sizestr.c_str(), NULL, 10);
+      if (!errno)
+        bank.setSize(size*1024*1024);
+      bank.addHint("icon", string("memory"));
+
+      memory->addChild(bank);
+    }
+    free(namelist[i]);
+  }
+  free(namelist);
 }
 
 
@@ -608,22 +652,29 @@ bool scan_device_tree(hwNode & n)
   if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
   {
     n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
-    n.setDescription(get_string(DEVICETREE "/model-name"));
+    n.setProduct(get_string(DEVICETREE "/model-name"));
+    if (core)
+    {
+      core->addHint("icon", string("board"));
+      scan_devtree_root(*core);
+      scan_devtree_memory_powernv(*core);
+      scan_devtree_cpu(*core);
+      n.addCapability("powernv", "Non-virtualized");
+      n.addCapability("opal", "OPAL firmware");
+    }
   }
   else
   {
     n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
     get_apple_model(n);
-  }
-
-  if (core)
-  {
-    core->addHint("icon", string("board"));
-    scan_devtree_root(*core);
-    scan_devtree_bootrom(*core);
-    scan_devtree_memory(*core);
-    scan_devtree_cpu(*core);
-    core->addCapability(get_string(DEVICETREE "/compatible"));
+    if (core)
+    {
+      core->addHint("icon", string("board"));
+      scan_devtree_root(*core);
+      scan_devtree_bootrom(*core);
+      scan_devtree_memory(*core);
+      scan_devtree_cpu(*core);
+    }
   }
 
   return true;
