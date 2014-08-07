@@ -605,9 +605,16 @@ bool scan_device_tree(hwNode & n)
     n.setSerial(get_string(DEVICETREE "/system-id"));
   fix_serial_number(n);
 
-  n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
-
-  get_apple_model(n);
+  if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
+  {
+    n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
+    n.setDescription(get_string(DEVICETREE "/model-name"));
+  }
+  else
+  {
+    n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
+    get_apple_model(n);
+  }
 
   if (core)
   {
