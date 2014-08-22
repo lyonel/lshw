@@ -1,0 +1,75 @@
+<?xml version="1.0" standalone="yes" ?>
+<list>
+  <node id="cpu:0" claimed="true" class="processor" handle="">
+   <physid>1</physid>
+   <businfo>cpu@0</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:1" claimed="true" class="processor" handle="">
+   <physid>2</physid>
+   <businfo>cpu@1</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:2" claimed="true" class="processor" handle="">
+   <physid>3</physid>
+   <businfo>cpu@2</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:3" claimed="true" class="processor" handle="">
+   <physid>4</physid>
+   <businfo>cpu@3</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:4" claimed="true" class="processor" handle="">
+   <physid>5</physid>
+   <businfo>cpu@4</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:5" claimed="true" class="processor" handle="">
+   <physid>6</physid>
+   <businfo>cpu@5</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:6" claimed="true" class="processor" handle="">
+   <physid>7</physid>
+   <businfo>cpu@6</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+  <node id="cpu:7" claimed="true" class="processor" handle="">
+   <physid>8</physid>
+   <businfo>cpu@7</businfo>
+   <capabilities>
+    <capability id="fp" >Floating point instructions</capability>
+    <capability id="asimd" >Advanced SIMD</capability>
+    <capability id="evtstrm" >Event stream</capability>
+   </capabilities>
+  </node>
+</list>

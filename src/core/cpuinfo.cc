@@ -192,6 +192,59 @@ static void cpuinfo_arm(hwNode & node,
 }
 #endif
 
+#ifdef __aarch64__
+static vector <string> aarch64_features;
+static string aarch64_processor_name;
+static void cpuinfo_aarch64(hwNode & node,
+                        string id,
+                        string value)
+{
+
+  if (id.substr(0, string("processor").size())=="processor")
+    currentcpu++;
+
+  if (id.substr(0, string("Processor").size())=="Processor")
+    aarch64_processor_name = value;
+
+  if (id == "Features")
+    {
+      while (value.length() > 0)
+        {
+          size_t pos = value.find(' ');
+          string capability = (pos==string::npos)?value:value.substr(0, pos);
+          aarch64_features.push_back(capability);
+          if (pos == string::npos)
+            value = "";
+          else
+            value = hw::strip(value.substr(pos));
+        }
+      for(int i=0; i<=currentcpu; i++)
+        {
+          hwNode *cpu = getcpu(node, i);
+          if (cpu)
+            {
+              cpu->addHint("logo", string("aarch64"));
+              if (node.getDescription() == "")
+                node.setDescription(aarch64_processor_name);
+              cpu->claim(true);
+              for(int i=0; i < aarch64_features.size(); i++)
+                {
+                  cpu->addCapability(aarch64_features[i]);
+                  cpu->describeCapability("fp", "Floating point instructions");
+                  cpu->describeCapability("asimd", "Advanced SIMD");
+                  cpu->describeCapability("evtstrm", "Event stream");
+                  cpu->describeCapability("aes", "AES instructions");
+                  cpu->describeCapability("pmull", "PMULL instruction");
+                  cpu->describeCapability("sha1", "SHA1 instructions");
+                  cpu->describeCapability("sha2", "SHA2 instructions");
+                  cpu->describeCapability("crc32", "CRC extension");
+                }
+            }
+        }
+    }
+}
+#endif
+
 #ifdef __ia64__
 static void cpuinfo_ia64(hwNode & node,
 string id,
@@ -554,6 +607,10 @@ bool scan_cpuinfo(hwNode & n)
 #ifdef __arm__
         cpuinfo_arm(n, id, value);
 #endif
+#ifdef __aarch64__
+        cpuinfo_aarch64(n, id, value);
+#endif
+
       }
     }
   }
