@@ -1,3 +1,8 @@
+* lshw B.02.17
+  bug fixes
+  code cleanup
+  improved support for FAT-formatted disks
+  updated data files 
 * lshw B.02.16
   bug fixes
   code cleanup
