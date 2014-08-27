@@ -1,0 +1,6 @@
+*.o
+/src/lshw
+/src/core/liblshw.a
+/src/manpage.links
+/src/manpage.log
+/src/manpage.refs
