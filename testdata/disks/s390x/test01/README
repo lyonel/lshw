@@ -1,0 +1,2 @@
+Test data for reading device type and vendor from DASD disks. The size
+cannot be tested, since that involves ioctl() calls to the actual devices.

@@ -8,3 +8,6 @@ version.cpe: .version
 	echo -n cpe:/a:ezix:$(PACKAGENAME): > $@
 	cat $^ >> $@
 
+check:	all
+	./run-tests.sh
+

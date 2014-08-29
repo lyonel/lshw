@@ -1,0 +1,8 @@
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install fakechroot fakeroot docbook-utils
+
+language: cpp
+compiler:
+  - gcc
+script: make && make check

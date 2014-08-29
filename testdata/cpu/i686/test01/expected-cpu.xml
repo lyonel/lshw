@@ -1,0 +1,64 @@
+<?xml version="1.0" standalone="yes" ?>
+<list>
+  <node id="cpu" claimed="true" class="processor" handle="">
+   <product>Intel(R) Atom(TM) CPU N550   @ 1.50GHz</product>
+   <vendor>Intel Corp.</vendor>
+   <physid>1</physid>
+   <businfo>cpu@0</businfo>
+   <version>6.2.3</version>
+   <serial>0000-0623-0000-0000-0000-0000</serial>
+   <size units="Hz">3600000000</size>
+   <width units="bits">64</width>
+   <capabilities>
+    <capability id="fpu" >mathematical co-processor</capability>
+    <capability id="fpu_exception" >FPU exceptions reporting</capability>
+    <capability id="wp" />
+    <capability id="vme" >virtual mode extensions</capability>
+    <capability id="de" >debugging extensions</capability>
+    <capability id="pse" >page size extensions</capability>
+    <capability id="tsc" >time stamp counter</capability>
+    <capability id="msr" >model-specific registers</capability>
+    <capability id="pae" >4GB+ memory addressing (Physical Address Extension)</capability>
+    <capability id="mce" >machine check exceptions</capability>
+    <capability id="cx8" >compare and exchange 8-byte</capability>
+    <capability id="apic" >on-chip advanced programmable interrupt controller (APIC)</capability>
+    <capability id="sep" >fast system calls</capability>
+    <capability id="mtrr" >memory type range registers</capability>
+    <capability id="pge" >page global enable</capability>
+    <capability id="mca" >machine check architecture</capability>
+    <capability id="cmov" >conditional move instruction</capability>
+    <capability id="pat" >page attribute table</capability>
+    <capability id="clflush" />
+    <capability id="dts" >debug trace and EMON store MSRs</capability>
+    <capability id="acpi" >thermal control (ACPI)</capability>
+    <capability id="mmx" >multimedia extensions (MMX)</capability>
+    <capability id="fxsr" >fast floating point save/restore</capability>
+    <capability id="sse" >streaming SIMD extensions (SSE)</capability>
+    <capability id="sse2" >streaming SIMD extensions (SSE2)</capability>
+    <capability id="ss" >self-snoop</capability>
+    <capability id="ht" >HyperThreading</capability>
+    <capability id="tm" >thermal interrupt and status</capability>
+    <capability id="pbe" >pending break event</capability>
+    <capability id="nx" >no-execute bit (NX)</capability>
+    <capability id="x86-64" >64bits extensions (x86-64)</capability>
+    <capability id="constant_tsc" />
+    <capability id="arch_perfmon" />
+    <capability id="pebs" />
+    <capability id="bts" />
+    <capability id="aperfmperf" />
+    <capability id="pni" />
+    <capability id="dtes64" />
+    <capability id="monitor" />
+    <capability id="ds_cpl" />
+    <capability id="est" />
+    <capability id="tm2" />
+    <capability id="ssse3" />
+    <capability id="cx16" />
+    <capability id="xtpr" />
+    <capability id="pdcm" />
+    <capability id="movbe" />
+    <capability id="lahf_lm" />
+    <capability id="dtherm" />
+   </capabilities>
+  </node>
+</list>
