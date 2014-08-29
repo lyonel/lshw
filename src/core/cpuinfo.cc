@@ -101,10 +101,6 @@ string value)
   if (id == "vendor_id")
     s390x_vendor = value;
 
-  if (id.substr(0, string("processor").size())=="processor")
-    currentcpu++;
-
-  hwNode *cpu = getcpu(node, currentcpu);
   if (cpu)
     {
       cpu->addHint("logo", string("s390x"));
@@ -245,6 +241,40 @@ static void cpuinfo_aarch64(hwNode & node,
 }
 #endif
 
+=======
+
+  if (cpu)
+  {
+    cpu->addHint("logo", string("s390"));
+    cpu->claim(true);
+    if (id == "vendor_id")
+    {
+      if (value == "IBM/S390")
+        value = "IBM";
+      cpu->setVendor(value);
+    }
+
+    if (id == "features")
+      while (value.length() > 0)
+    {
+      size_t pos = value.find(' ');
+      string capability = (pos==string::npos)?value:value.substr(0, pos);
+
+      cpu->addCapability(capability);
+
+      if (pos == string::npos)
+        value = "";
+      else
+        value = hw::strip(value.substr(pos));
+    }
+
+    /* TODO: description for the capabilities*/
+  }
+}
+#endif
+
+
+>>>>>>> 72ef031c619ae640a1071216dbcc3d58e6280a3a
 #ifdef __ia64__
 static void cpuinfo_ia64(hwNode & node,
 string id,
