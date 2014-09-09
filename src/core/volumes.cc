@@ -8,6 +8,7 @@
 
 #include "version.h"
 #include "config.h"
+#include "options.h"
 #include "volumes.h"
 #include "blockio.h"
 #include "lvm.h"
@@ -276,10 +277,13 @@ static bool detect_ext2(hwNode & n, source & s)
   ext2_version = le_short(&sb->s_rev_level);
   n.setVersion(tostring(ext2_version)+"."+tostring(le_short(&sb->s_minor_rev_level)));
 
-  mtime = (time_t)le_long(&sb->s_mtime);
-  n.setConfig("mounted", datetime(mtime));
-  wtime = (time_t)le_long(&sb->s_wtime);
-  n.setConfig("modified", datetime(wtime));
+  if (enabled("output:time"))
+  {
+    mtime = (time_t)le_long(&sb->s_mtime);
+    n.setConfig("mounted", datetime(mtime));
+    wtime = (time_t)le_long(&sb->s_wtime);
+    n.setConfig("modified", datetime(wtime));
+  }
 
   if(ext2_version >= 1)
   {
@@ -646,7 +650,8 @@ static bool detect_hfsx(hwNode & n, source & s)
   fscktime = (time_t)(be_long(&vol->checkedDate) - HFSTIMEOFFSET);
   wtime = (time_t)(be_long(&vol->modifyDate) - HFSTIMEOFFSET);
   n.setConfig("created", datetime(mkfstime, false));	// creation time uses local time
-  n.setConfig("checked", datetime(fscktime));
+  if (enabled("output:time"))
+    n.setConfig("checked", datetime(fscktime));
   n.setConfig("modified", datetime(wtime));
 
   return true;
