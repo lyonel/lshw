@@ -420,6 +420,7 @@ hwNode & extpart)
       if(analyse_dospart(spart, pte[0].flags, pte[0].type, partition))
       {
         guess_logicalname(spart, extpart, lastlogicalpart, partition);
+	scan_volume(partition, spart);
         extpart.addChild(partition);
         lastlogicalpart++;
       }
