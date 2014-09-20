@@ -78,46 +78,168 @@ string value)
 #endif
 
 #ifdef __s390x__
-
-static void cpuinfo_s390(hwNode & node,
+static vector <string> s390x_features;
+static string s390x_vendor;
+static void cpuinfo_s390x(hwNode & node,
 string id,
 string value)
 {
+  if (id == "features")
+    {
+      while (value.length() > 0)
+        {
+          size_t pos = value.find(' ');
+          string capability = (pos==string::npos)?value:value.substr(0, pos);
+          s390x_features.push_back(capability);
+          if (pos == string::npos)
+            value = "";
+          else
+            value = hw::strip(value.substr(pos));
+        }
+    }
+
+  if (id == "vendor_id")
+    s390x_vendor = value;
+
+  if (cpu)
+    {
+      cpu->addHint("logo", string("s390x"));
+      cpu->claim(true);
+      cpu->setVendor(s390x_vendor);
+
+      for(int i=0; i < s390x_features.size(); i++)
+        cpu->addCapability(s390x_features[i]);
+      /* many thanks to Martin Schwidefsky for communicating the descriptions
+         of the feature flags
+      */
+      cpu->describeCapability("esan3", "ESA new instructions 3 (N3)");
+      cpu->describeCapability("zarch", "x/Architecture (64-bit) mode)");
+      cpu->describeCapability("stfle", "store facility list extended instruction");
+      cpu->describeCapability("msa", "message security assist facility");
+      cpu->describeCapability("ldisp", "long displacement facility");
+      cpu->describeCapability("eimm", "extended immediate facility");
+      cpu->describeCapability("dfp", "decimal floating point facility");
+      cpu->describeCapability("edat", "enhanced DAT facility");
+      cpu->describeCapability("etf3eh", "ETF3 enhancement facility");
+      cpu->describeCapability("highgprs", "support for 64-bit registers for 31-bit programs");
+      cpu->describeCapability("te", "transactional/constraint transactional execution facilities");
+    }
+}
+#endif
+
+#ifdef __arm__
+static void cpuinfo_arm(hwNode & node,
+                        string id,
+                        string value)
+{
+
   if (id.substr(0, string("processor").size())=="processor")
     currentcpu++;
 
   hwNode *cpu = getcpu(node, currentcpu);
-
   if (cpu)
-  {
-    cpu->addHint("logo", string("s390"));
-    cpu->claim(true);
-    if (id == "vendor_id")
     {
-      if (value == "IBM/S390")
-        value = "IBM";
-      cpu->setVendor(value);
+      cpu->addHint("logo", string("arm"));
+      if (id == "model name" && node.getDescription() == "")
+        node.setDescription(value);
+      cpu->claim(true);
+      if (id == "Features")
+        {
+          while (value.length() > 0)
+            {
+              size_t pos = value.find(' ');
+              string capability = (pos==string::npos)?value:value.substr(0, pos);
+              cpu->addCapability(capability);
+              if (pos == string::npos)
+                value = "";
+              else
+                value = hw::strip(value.substr(pos));
+            }
+        }
+      /* With help from:
+         http://infocenter.arm.com/help/index.jsp
+         http://unix.stackexchange.com/questions/43539/what-do-the-flags-in-proc-cpuinfo-mean
+         http://en.wikipedia.org/wiki/ARM_architecture
+      */
+      cpu->describeCapability("swp", "Swap instruction");
+      cpu->describeCapability("swpb", "Swap Byte instruction");
+      cpu->describeCapability("half", "Unknown");
+      cpu->describeCapability("thumb", "Thumb instruction set");
+      cpu->describeCapability("26bit", "26-bit Model");
+      cpu->describeCapability("fastmult", "Fast Multiplication");
+      cpu->describeCapability("fpa", "Floating point accelerator");
+      cpu->describeCapability("vfp", "VFP (vector floating point instructions)");
+      cpu->describeCapability("vfpv3", "VFP version 3");
+      cpu->describeCapability("vfpv3d16", "VFP version 3 with 16 64-bit FPU registers");
+      cpu->describeCapability("vfpv4", "VFP version 4");
+      cpu->describeCapability("vfpd32", "Unknown");
+      cpu->describeCapability("edsp", "DSP extensions");
+      cpu->describeCapability("java", "Jazelle (Java bytecode accelerator)");
+      cpu->describeCapability("thumbee", "Thumb Execution Environment");
+      cpu->describeCapability("neon", "NEON aka MPE - Media Processing Engine");
+      cpu->describeCapability("tls", "TLS register");
+      cpu->describeCapability("iwmmxt", "SIMD instructions");
+      cpu->describeCapability("crunch", "MaverickCrunch coprocessor");
+      cpu->describeCapability("idiva", "SDIV and UDIV hardware division in ARM mode");
+      cpu->describeCapability("idivt", "SDIV and UDIV hardware division in Thumb mode");
+      cpu->describeCapability("lpae", "Large Physical Address Extension architecture");
+      cpu->describeCapability("evtstrm", "Unknown");
     }
-
-    if (id == "features")
-      while (value.length() > 0)
-    {
-      size_t pos = value.find(' ');
-      string capability = (pos==string::npos)?value:value.substr(0, pos);
-
-      cpu->addCapability(capability);
-
-      if (pos == string::npos)
-        value = "";
-      else
-        value = hw::strip(value.substr(pos));
-    }
-
-    /* TODO: description for the capabilities*/
-  }
 }
 #endif
 
+#ifdef __aarch64__
+static vector <string> aarch64_features;
+static string aarch64_processor_name;
+static void cpuinfo_aarch64(hwNode & node,
+                        string id,
+                        string value)
+{
+
+  if (id.substr(0, string("processor").size())=="processor")
+    currentcpu++;
+
+  if (id.substr(0, string("Processor").size())=="Processor")
+    aarch64_processor_name = value;
+
+  if (id == "Features")
+    {
+      while (value.length() > 0)
+        {
+          size_t pos = value.find(' ');
+          string capability = (pos==string::npos)?value:value.substr(0, pos);
+          aarch64_features.push_back(capability);
+          if (pos == string::npos)
+            value = "";
+          else
+            value = hw::strip(value.substr(pos));
+        }
+      for(int i=0; i<=currentcpu; i++)
+        {
+          hwNode *cpu = getcpu(node, i);
+          if (cpu)
+            {
+              cpu->addHint("logo", string("aarch64"));
+              if (node.getDescription() == "")
+                node.setDescription(aarch64_processor_name);
+              cpu->claim(true);
+              for(int i=0; i < aarch64_features.size(); i++)
+                {
+                  cpu->addCapability(aarch64_features[i]);
+                  cpu->describeCapability("fp", "Floating point instructions");
+                  cpu->describeCapability("asimd", "Advanced SIMD");
+                  cpu->describeCapability("evtstrm", "Event stream");
+                  cpu->describeCapability("aes", "AES instructions");
+                  cpu->describeCapability("pmull", "PMULL instruction");
+                  cpu->describeCapability("sha1", "SHA1 instructions");
+                  cpu->describeCapability("sha2", "SHA2 instructions");
+                  cpu->describeCapability("crc32", "CRC extension");
+                }
+            }
+        }
+    }
+}
+#endif
 
 #ifdef __ia64__
 static void cpuinfo_ia64(hwNode & node,
@@ -466,7 +588,7 @@ bool scan_cpuinfo(hwNode & n)
         cpuinfo_ppc(n, id, value);
 #endif
 #ifdef __s390x__
-        cpuinfo_s390(n, id, value);
+        cpuinfo_s390x(n, id, value);
 #endif
 #ifdef __hppa__
         cpuinfo_hppa(n, id, value);
@@ -477,6 +599,14 @@ bool scan_cpuinfo(hwNode & n)
 #ifdef __ia64__
         cpuinfo_ia64(n, id, value);
 #endif
+
+#ifdef __arm__
+        cpuinfo_arm(n, id, value);
+#endif
+#ifdef __aarch64__
+        cpuinfo_aarch64(n, id, value);
+#endif
+
       }
     }
   }
