@@ -1465,6 +1465,12 @@ int dmiversionmin)
 
 // size
           u = data[13] << 8 | data[12];
+          if(u == 0x7fff) {
+             unsigned long long extendsize = (data[0x1f] << 24) | (data[0x1e] << 16) | (data[0x1d] << 8) | data[0x1c];
+             extendsize &= 0x7fffffffUL;
+             size = extendsize * 1024ULL * 1024ULL;
+          }
+	  else
           if (u != 0xffff)
             size = (1024ULL * (u & 0x7fff) * ((u & 0x8000) ? 1 : 1024ULL));
           description += string(dmi_memory_device_form_factor(data[14]));
