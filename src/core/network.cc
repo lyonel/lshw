@@ -432,32 +432,37 @@ bool scan_network(hwNode & n)
         if(ecmd.supported & SUPPORTED_10baseT_Half)
         {
           interface.addCapability("10bt", _("10Mbit/s"));
-          interface.setCapacity(10000000L);
+          interface.setCapacity(10000000ULL);
         }
         if(ecmd.supported & SUPPORTED_10baseT_Full)
         {
           interface.addCapability("10bt-fd", _("10Mbit/s (full duplex)"));
-          interface.setCapacity(10000000L);
+          interface.setCapacity(10000000ULL);
         }
         if(ecmd.supported & SUPPORTED_100baseT_Half)
         {
           interface.addCapability("100bt", _("100Mbit/s"));
-          interface.setCapacity(100000000L);
+          interface.setCapacity(100000000ULL);
         }
         if(ecmd.supported & SUPPORTED_100baseT_Full)
         {
           interface.addCapability("100bt-fd", _("100Mbit/s (full duplex)"));
-          interface.setCapacity(100000000L);
+          interface.setCapacity(100000000ULL);
         }
         if(ecmd.supported & SUPPORTED_1000baseT_Half)
         {
           interface.addCapability("1000bt", "1Gbit/s");
-          interface.setCapacity(1000000000L);
+          interface.setCapacity(1000000000ULL);
         }
         if(ecmd.supported & SUPPORTED_1000baseT_Full)
         {
           interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
-          interface.setCapacity(1000000000L);
+          interface.setCapacity(1000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseT_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
         }
         if(ecmd.supported & SUPPORTED_Autoneg)
           interface.addCapability("autonegotiation", _("Auto-negotiation"));
@@ -466,19 +471,19 @@ bool scan_network(hwNode & n)
         {
           case SPEED_10:
             interface.setConfig("speed", "10Mbit/s");
-            interface.setSize(10000000L);
+            interface.setSize(10000000ULL);
             break;
           case SPEED_100:
             interface.setConfig("speed", "100Mbit/s");
-            interface.setSize(100000000L);
+            interface.setSize(100000000ULL);
             break;
           case SPEED_1000:
             interface.setConfig("speed", "1Gbit/s");
-            interface.setSize(1000000000L);
+            interface.setSize(1000000000ULL);
             break;
           case SPEED_10000:
             interface.setConfig("speed", "10Gbit/s");
-            interface.setSize(10000000000L);
+            interface.setSize(10000000000ULL);
             break;
         }
         switch(ecmd.duplex)
