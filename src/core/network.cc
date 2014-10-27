@@ -326,6 +326,7 @@ bool scan_network(hwNode & n)
 
     for (unsigned int i = 0; i < interfaces.size(); i++)
     {
+      hwNode *existing;
       hwNode interface("network",
         hw::network);
 
@@ -532,7 +533,10 @@ bool scan_network(hwNode & n)
       if(sysfs::entry::byClass("net", interface.getLogicalName()).hassubdir("bridge"))
         interface.addCapability("logical", _("Logical interface"));
 
-      if (hwNode * existing = n.findChildByBusInfo(interface.getBusInfo()))
+      existing = n.findChildByBusInfo(interface.getBusInfo());
+      // Multiple NICs can exist on one PCI function.
+      // Only merge if MACs also match.
+      if (existing && (existing->getSerial() == "" || interface.getSerial() == existing->getSerial()))
       {
         existing->merge(interface);
         if(interface.getDescription()!="")
