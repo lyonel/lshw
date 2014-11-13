@@ -15,7 +15,7 @@
 #include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <endian.h>
+#include <arpa/inet.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -37,6 +37,8 @@ struct dimminfo
 
 #define DEVICETREE "/proc/device-tree"
 
+#define ntohll(x) (((uint64_t)(ntohl((uint32_t)((x << 32) >> 32))) << 32) | ntohl(((uint32_t)(x >> 32))))  
+
 static unsigned long get_long(const string & path)
 {
   unsigned long result = 0;
@@ -51,9 +53,9 @@ static unsigned long get_long(const string & path)
   }
 
   if(sizeof(result) == sizeof(uint64_t))
-    return be64toh(result);
+    return ntohll(result);
   else
-    return be32toh(result);
+    return ntohl(result);
 }
 
 
