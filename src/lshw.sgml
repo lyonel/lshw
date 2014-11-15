@@ -264,7 +264,7 @@ Don't use DMI to detect hardware.
 <refsect1><title>OTHER INFO</title>
 <para>
 The webpage for <application>lshw</application> is at 
-<ulink url="http://lshw.org/"></ulink></para>
+<ulink url="http://lshw.ezix.org/"></ulink></para>
 </refsect1>
 
 </refentry>

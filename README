@@ -31,7 +31,7 @@ It currently supports DMI (x86 and EFI only), OpenFirmware device tree
 	$ make
 	$ make gui
 
- * the lshw home page is http://lshw.org/
+ * the lshw home page is http://lshw.ezix.org/
  * send bug reports, requests for help, feature requests, comments, etc. to
    bugs@ezix.org.  The author can be contacted directly (lyonel@ezix.org)
    Please make sure you include enough information in your bug report: XML out-
