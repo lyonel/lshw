@@ -142,14 +142,16 @@ bool scan_fat(hwNode & n, source & id)
 	uint32_t cluster_count;
 	uint64_t root_start_sect;
 	uint32_t start_data_sct;
-	uint8_t *buf = NULL;
+	vector<uint8_t> buf;
 	uint32_t buf_size;
 	uint8_t *label = NULL;
 	uint32_t next_cluster;
 
-
-	if(!readlogicalblocks(id, &vs, 0, 1))
+        if(id.blocksize < sizeof(vs))
+                return false;
+	if(!readlogicalblocks(id, buf, 0, 1))
 		return false;
+        memcpy(&vs, &buf[0], sizeof(vs));
 
 	/* believe only that's fat, don't trust the version
 	 * the cluster_count will tell us
@@ -241,11 +243,10 @@ valid:
 		root_start_sect = reserved_sct + fat_size_sct;
 
 		buf_size = dir_entries * sizeof(struct vfat_dir_entry);
-		buf = (uint8_t*)malloc(buf_size);
 		if(!readlogicalblocks(id, buf, root_start_sect, buf_size / sector_size_bytes))
 			goto end;
 
-		label = get_attr_volume_id((struct vfat_dir_entry*) buf, dir_entries);
+		label = get_attr_volume_id((struct vfat_dir_entry*) &buf[0], dir_entries);
 
 		if (label != NULL && memcmp(label, "NO NAME    ", 11) != 0) {
 			n.setConfig("label", hw::strip(string((char*)label, 11)));
@@ -259,7 +260,6 @@ valid:
 		/* FIXME: we actually don't bother checking the whole chain */
 		/* --> the volume label is assumed to be within the first cluster (usually 128 entries)*/
 		buf_size = vs.sectors_per_cluster * sector_size_bytes;
-		buf = (uint8_t*)malloc(buf_size);
 		root_cluster = le_long(&vs.type.fat32.root_cluster);
 		start_data_sct = reserved_sct + fat_size_sct;
 		id.blocksize = sector_size_bytes;
@@ -277,7 +277,7 @@ valid:
 			if(!readlogicalblocks(id, buf, next_off, vs.sectors_per_cluster))
 				goto end;
 
-			dir = (struct vfat_dir_entry*) buf;
+			dir = (struct vfat_dir_entry*) &buf[0];
 			count = buf_size / sizeof(struct vfat_dir_entry);
 
 			label = get_attr_volume_id(dir, count);
@@ -291,7 +291,6 @@ valid:
 	}
 
 end:
-	if(buf) free(buf);
 	return true;
 }
 

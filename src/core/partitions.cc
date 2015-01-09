@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/ioctl.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
@@ -32,6 +33,9 @@
 __ID("@(#) $Id$");
 
 #define LIFBLOCKSIZE 256
+#ifndef BLKSSZGET
+#define BLKSSZGET  _IO(0x12,104)                  /* get block device sector size */
+#endif
 
 struct maptypes
 {
@@ -311,7 +315,7 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   if(dev>=0)
   {
     source spart = s;
-    unsigned char buffer1[BLOCKSIZE], buffer2[BLOCKSIZE];
+    vector<unsigned char> buffer1(s.blocksize), buffer2(s.blocksize);
 
     spart.offset = 0;
     spart.fd = dev;
@@ -327,7 +331,7 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
 
     close(dev);
 
-    if(memcmp(buffer1, buffer2, BLOCKSIZE)==0)
+    if(memcmp(&buffer1[0], &buffer2[0], s.blocksize)==0)
     {
       partition.claim();
       if(s.diskname!="")
@@ -350,13 +354,13 @@ static bool is_extended(unsigned char type)
 
 static bool read_dospartition(source & s, unsigned short i, dospartition & p)
 {
-  static unsigned char buffer[BLOCKSIZE];
+  vector<unsigned char> buffer(s.blocksize);
   unsigned char flags = 0;
 
   if(readlogicalblocks(s, buffer, 0, 1)!=1)       // read the first sector
     return false;
 
-  if(le_short(buffer+510)!=0xaa55)                // wrong magic number
+  if(le_short(&buffer[510])!=0xaa55)                // wrong magic number
     return false;
 
   flags = buffer[446 + i*16];
@@ -366,8 +370,8 @@ static bool read_dospartition(source & s, unsigned short i, dospartition & p)
 
   p.flags = flags;
   p.type = buffer[446 + i*16 + 4];
-  p.start = s.blocksize*(unsigned long long)le_long(buffer + 446 + i*16 + 8);
-  p.size = s.blocksize*(unsigned long long)le_long(buffer + 446 + i*16 + 12);
+  p.start = s.blocksize*(unsigned long long)le_long(&buffer[446 + i*16 + 8]);
+  p.size = s.blocksize*(unsigned long long)le_long(&buffer[446 + i*16 + 12]);
 
   return true;
 }
@@ -687,7 +691,7 @@ bool operator ==(const efi_guid_t & guid1, const string & guid2)
 
 static bool detect_gpt(source & s, hwNode & n)
 {
-  static uint8_t buffer[BLOCKSIZE];
+  vector<uint8_t> buffer(s.blocksize);
   static gpth gpt_header;
   uint32_t i = 0;
   char gpt_version[8];
@@ -701,7 +705,7 @@ static bool detect_gpt(source & s, hwNode & n)
   if(readlogicalblocks(s, buffer, GPT_PMBR_LBA, 1)!=1)
     return false;
 
-  if(le_short(buffer+510)!=0xaa55)                // wrong magic number
+  if(le_short(&buffer[510])!=0xaa55)                // wrong magic number
     return false;
 
   for(i=0; i<4; i++)
@@ -716,26 +720,26 @@ static bool detect_gpt(source & s, hwNode & n)
   if(readlogicalblocks(s, buffer, GPT_PRIMARY_HEADER_LBA, 1)!=1)
     return false;                                 // (partition table header)
 
-  gpt_header.Signature = le_longlong(buffer);
-  gpt_header.Revision = be_long(buffer + 0x8);    // big endian so that 1.0 -> 0x100
-  gpt_header.HeaderSize = le_long(buffer + 0xc);
-  gpt_header.HeaderCRC32 = le_long(buffer + 0x10);
-  gpt_header.MyLBA = le_longlong(buffer + 0x18);
-  gpt_header.AlternateLBA = le_longlong(buffer + 0x20);
-  gpt_header.FirstUsableLBA = le_longlong(buffer + 0x28);
-  gpt_header.LastUsableLBA = le_longlong(buffer + 0x30);
-  gpt_header.DiskGUID = read_efi_guid(buffer + 0x38);
-  gpt_header.PartitionEntryLBA = le_longlong(buffer + 0x48);
-  gpt_header.NumberOfPartitionEntries = le_long(buffer + 0x50);
-  gpt_header.SizeOfPartitionEntry = le_long(buffer + 0x54);
-  gpt_header.PartitionEntryArrayCRC32 = le_long(buffer + 0x58);
+  gpt_header.Signature = le_longlong(&buffer[0]);
+  gpt_header.Revision = be_long(&buffer[0x8]);    // big endian so that 1.0 -> 0x100
+  gpt_header.HeaderSize = le_long(&buffer[0xc]);
+  gpt_header.HeaderCRC32 = le_long(&buffer[0x10]);
+  gpt_header.MyLBA = le_longlong(&buffer[0x18]);
+  gpt_header.AlternateLBA = le_longlong(&buffer[0x20]);
+  gpt_header.FirstUsableLBA = le_longlong(&buffer[0x28]);
+  gpt_header.LastUsableLBA = le_longlong(&buffer[0x30]);
+  gpt_header.DiskGUID = read_efi_guid(&buffer[0x38]);
+  gpt_header.PartitionEntryLBA = le_longlong(&buffer[0x48]);
+  gpt_header.NumberOfPartitionEntries = le_long(&buffer[0x50]);
+  gpt_header.SizeOfPartitionEntry = le_long(&buffer[0x54]);
+  gpt_header.PartitionEntryArrayCRC32 = le_long(&buffer[0x58]);
 
                                                   // zero-out the CRC32 before re-calculating it
-  memset(buffer + 0x10, 0, sizeof(gpt_header.HeaderCRC32));
+  memset(&buffer[0x10], 0, sizeof(gpt_header.HeaderCRC32));
   if(gpt_header.Signature != GPT_HEADER_SIGNATURE)
     return false;
 
-  if(efi_crc32(buffer, 92) != gpt_header.HeaderCRC32)
+  if(efi_crc32(&buffer[0], 92) != gpt_header.HeaderCRC32)
     return false;                                 // check CRC32
 
   snprintf(gpt_version, sizeof(gpt_version), "%d.%02d", (gpt_header.Revision >> 8), (gpt_header.Revision & 0xff));
@@ -746,13 +750,13 @@ static bool detect_gpt(source & s, hwNode & n)
   n.setHandle("GUID:" + tostring(gpt_header.DiskGUID));
   n.addHint("guid", tostring(gpt_header.DiskGUID));
 
-  partitions = (uint8_t*)malloc(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + BLOCKSIZE);
+  partitions = (uint8_t*)malloc(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + s.blocksize);
   if(!partitions)
     return false;
-  memset(partitions, 0, gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + BLOCKSIZE);
+  memset(partitions, 0, gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + s.blocksize);
   readlogicalblocks(s, partitions,
     gpt_header.PartitionEntryLBA,
-    (gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry)/BLOCKSIZE + 1);
+    (gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry)/s.blocksize + 1);
 
   for(i=0; i<gpt_header.NumberOfPartitionEntries; i++)
   {
@@ -1100,7 +1104,7 @@ static bool detect_gpt(source & s, hwNode & n)
       else
         partition.setDescription("EFI partition");
       partition.setPhysId(i+1);
-      partition.setCapacity(BLOCKSIZE * (p.EndingLBA - p.StartingLBA));
+      partition.setCapacity(s.blocksize * (p.EndingLBA - p.StartingLBA));
       partition.addHint("type", tostring(p.PartitionTypeGUID));
       partition.addHint("guid", tostring(p.PartitionGUID));
       partition.setSerial(tostring(p.PartitionGUID));
@@ -1138,7 +1142,7 @@ static bool detect_gpt(source & s, hwNode & n)
 
 static bool detect_dosmap(source & s, hwNode & n)
 {
-  static unsigned char buffer[BLOCKSIZE];
+  vector<unsigned char> buffer(s.blocksize);
   int i = 0;
   unsigned char flags;
   unsigned char type;
@@ -1152,10 +1156,10 @@ static bool detect_dosmap(source & s, hwNode & n)
   if(readlogicalblocks(s, buffer, 0, 1)!=1)       // read the first sector
     return false;
 
-  if(le_short(buffer+510)!=0xaa55)                // wrong magic number
+  if(le_short(&buffer[510])!=0xaa55)                // wrong magic number
     return false;
 
-  signature=le_long(buffer+440);
+  signature=le_long(&buffer[440]);
   if(signature == 0xffffffffL)
     signature = 0;
   if(signature)
@@ -1174,8 +1178,8 @@ static bool detect_dosmap(source & s, hwNode & n)
 
     flags = buffer[446 + i*16];
     type = buffer[446 + i*16 + 4];
-    start = le_long(buffer + 446 + i*16 + 8);
-    size = le_long(buffer + 446 + i*16 + 12);
+    start = le_long(&buffer[446 + i*16 + 8]);
+    size = le_long(&buffer[446 + i*16 + 12]);
 
     if(flags!=0 && flags!=0x80)                   // inconsistency: partition is either bootable or non-bootable
       return false;
@@ -1204,7 +1208,7 @@ static bool detect_dosmap(source & s, hwNode & n)
 
 static bool detect_macmap(source & s, hwNode & n)
 {
-  static unsigned char buffer[BLOCKSIZE];
+  vector<unsigned char> buffer(s.blocksize);
   unsigned long count = 0, i = 0;
   unsigned long long start = 0, size = 0;
   string type = "";
@@ -1215,10 +1219,10 @@ static bool detect_macmap(source & s, hwNode & n)
   if(readlogicalblocks(s, buffer, 1, 1)!=1)       // read the second sector
     return false;
 
-  if(be_short(buffer)!=0x504d)                    // wrong magic number
+  if(be_short(&buffer[0])!=0x504d)                    // wrong magic number
     return false;
 
-  count = be_long(buffer+4);
+  count = be_long(&buffer[4]);
 
   for (i = 1; i <= count; i++)
   {
@@ -1227,11 +1231,11 @@ static bool detect_macmap(source & s, hwNode & n)
     if((i>1) && readlogicalblocks(s, buffer, i, 1)!=1)
       return false;
 
-    if(be_short(buffer)!=0x504d) continue;        // invalid map entry
+    if(be_short(&buffer[0])!=0x504d) continue;        // invalid map entry
 
-    start = be_long(buffer + 8);
-    size = be_long(buffer + 12);
-    type = hw::strip(string((char*)buffer +  48, 32));
+    start = be_long(&buffer[8]);
+    size = be_long(&buffer[12]);
+    type = hw::strip(string((char*)&buffer[48], 32));
 
     partition.setPhysId(i);
     partition.setCapacity(size * s.blocksize);
@@ -1271,7 +1275,7 @@ static bool detect_macmap(source & s, hwNode & n)
 
 static bool detect_lif(source & s, hwNode & n)
 {
-  static unsigned char buffer[LIFBLOCKSIZE];
+  vector<unsigned char> buffer(LIFBLOCKSIZE);
   source lifvolume;
   unsigned long dir_start = 0, dir_length = 0;
   unsigned lif_version = 0;
@@ -1287,29 +1291,29 @@ static bool detect_lif(source & s, hwNode & n)
   if(readlogicalblocks(lifvolume, buffer, 0, 1)!=1)
     return false;
 
-  if(be_short(buffer)!=0x8000)                    // wrong magic number
+  if(be_short(&buffer[0])!=0x8000)                    // wrong magic number
     return false;
 
-  dir_start = be_long(buffer+8);
-  dir_length = be_long(buffer+16);
-  lif_version = be_short(buffer+20);
+  dir_start = be_long(&buffer[8]);
+  dir_length = be_long(&buffer[16]);
+  lif_version = be_short(&buffer[20]);
 
   if(dir_start<2) return false;                   // blocks 0 and 1 are reserved
   if(dir_length<1) return false;                  // no directory to read from
   if(lif_version<1) return false;                 // weird LIF version
 
-  ipl_addr = be_long(buffer+240);                 // byte address of IPL on media
-  ipl_length = be_long(buffer+244);               // size of boot code
-  ipl_entry = be_long(buffer+248);                // boot code entry point
+  ipl_addr = be_long(&buffer[240]);                 // byte address of IPL on media
+  ipl_length = be_long(&buffer[244]);               // size of boot code
+  ipl_entry = be_long(&buffer[248]);                // boot code entry point
 
 #if 0
-  fprintf(stderr, "system: %x\n", be_short(buffer+12));
+  fprintf(stderr, "system: %x\n", be_short(&buffer[12]));
   fprintf(stderr, "start of directory: %ld\n", dir_start);
   fprintf(stderr, "length of directory: %ld\n", dir_length);
   fprintf(stderr, "lif version: %x\n", lif_version);
-  fprintf(stderr, "tracks per surface: %ld\n", be_long(buffer+24));
-  fprintf(stderr, "number of surfaces: %ld\n", be_long(buffer+28));
-  fprintf(stderr, "blocks per track: %ld\n", be_long(buffer+32));
+  fprintf(stderr, "tracks per surface: %ld\n", be_long(&buffer[24]));
+  fprintf(stderr, "number of surfaces: %ld\n", be_long(&buffer[28]));
+  fprintf(stderr, "blocks per track: %ld\n", be_long(&buffer[32]));
   fprintf(stderr, "ipl addr: %ld\n", ipl_addr);
   fprintf(stderr, "ipl length: %ld\n", ipl_length);
   fprintf(stderr, "ipl entry point: %lx\n", ipl_entry);
@@ -1322,7 +1326,7 @@ static bool detect_lif(source & s, hwNode & n)
 
 static bool detect_luks(source & s, hwNode & n)
 {
-  static char buffer[BLOCKSIZE];
+  vector<char> buffer(BLOCKSIZE);
   source luksvolume;
   unsigned luks_version = 0;
 
@@ -1332,12 +1336,12 @@ static bool detect_luks(source & s, hwNode & n)
   if(readlogicalblocks(luksvolume, buffer, 0, 1)!=1)
     return false;
 
-  if(memcmp(buffer, "LUKS", 4) != 0)                    // wrong magic number
+  if(memcmp(&buffer[0], "LUKS", 4) != 0)                    // wrong magic number
     return false;
-  if(be_short(buffer+4) != 0xbabe)
+  if(be_short(&buffer[4]) != 0xbabe)
     return false;
 
-  luks_version = be_short(buffer+6);
+  luks_version = be_short(&buffer[6]);
   if(luks_version<1)
     return false;                 // weird LUKS version
   else
@@ -1356,6 +1360,7 @@ bool scan_partitions(hwNode & n)
   int i = 0;
   source s;
   int fd = open(n.getLogicalName().c_str(), O_RDONLY | O_NONBLOCK);
+  int secsize;
   hwNode * medium = NULL;
 
   if (fd < 0)
@@ -1378,6 +1383,8 @@ bool scan_partitions(hwNode & n)
   s.offset = 0;
   s.blocksize = BLOCKSIZE;
   s.size = medium->getSize();
+  if (ioctl(fd, BLKSSZGET, &secsize) == 0)
+    s.blocksize = secsize;
 
   while(map_types[i].id)
   {
