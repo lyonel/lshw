@@ -565,7 +565,7 @@ unsigned long long le_longlong(const void * from)
 }
 
 
-int open_dev(dev_t dev, const string & name)
+int open_dev(dev_t dev, int dev_type, const string & name)
 {
   static const char *paths[] =
   {
@@ -581,7 +581,7 @@ int open_dev(dev_t dev, const string & name)
       snprintf(fn, sizeof(fn), "%s/lshw-%d", *p, getpid());
     else
       snprintf(fn, sizeof(fn), "%s", name.c_str());
-    if ((mknod(fn, (S_IFCHR | S_IREAD), dev) == 0) || (errno == EEXIST))
+    if ((mknod(fn, (dev_type | S_IREAD), dev) == 0) || (errno == EEXIST))
     {
       fd = open(fn, O_RDONLY);
       if(name=="") unlink(fn);

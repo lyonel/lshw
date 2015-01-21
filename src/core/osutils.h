@@ -57,7 +57,7 @@ unsigned long le_long(const void *);
 unsigned long long be_longlong(const void *);
 unsigned long long le_longlong(const void *);
 
-int open_dev(dev_t dev, const std::string & name="");
+int open_dev(dev_t dev, int dev_type, const std::string & name="");
 
 std::string platform();
 std::string operating_system();

@@ -304,9 +304,9 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   if(!S_ISBLK(buf.st_mode)) return false;
 
   if(s.diskname!="")
-    dev = open_dev(buf.st_rdev + n, s.diskname+string(name));
+    dev = open_dev(buf.st_rdev + n, S_IFBLK, s.diskname+string(name));
   else
-    dev = open_dev(buf.st_rdev + n, disk.getLogicalName()+string(name));
+    dev = open_dev(buf.st_rdev + n, S_IFBLK, disk.getLogicalName()+string(name));
 
   if(dev>=0)
   {

@@ -1061,7 +1061,7 @@ bool scan_pcmcialegacy(hwNode & n)
   memset(fd, 0, sizeof(fd));
   for (i = 0; i < MAX_SOCK; i++)
   {
-    fd[i] = open_dev((dev_t) ((major << 8) + i));
+    fd[i] = open_dev((dev_t) ((major << 8) + i), S_IFCHR);
 
     if (fd[i] >= 0)
     {
