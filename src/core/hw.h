@@ -189,6 +189,9 @@ class hwNode
     string getLogicalName() const;
     void setLogicalName(const string &);
 
+    string getModalias() const;
+    void setModalias(const string & modalias);
+
     string getDev() const;
     void setDev(const string &);
 

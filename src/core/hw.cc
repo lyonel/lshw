@@ -28,7 +28,7 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, date, serial, slot, handle, description,
-    businfo, physid, dev;
+    businfo, physid, dev, modalias;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -121,6 +121,7 @@ const string & product, const string & version)
   This->description = string("");
   This->businfo = string("");
   This->physid = string("");
+  This->modalias = string("");
   This->dev = string("");
 }
 
@@ -1043,6 +1044,22 @@ void hwNode::setLogicalName(const string & name)
 }
 
 
+string hwNode::getModalias() const
+{
+  if (This)
+    return This->modalias;
+  else
+    return "";
+}
+
+
+void hwNode::setModalias(const string & modalias)
+{
+  if (This)
+    This->modalias = strip(modalias);
+}
+
+
 string hwNode::getDev() const
 {
   if (This)
@@ -1432,6 +1449,15 @@ string hwNode::asJSON(unsigned level)
         out << "\"" << escapeJSON(getLogicalName()) << "\"";
     }
 
+    if (getModalias() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"modalias\" : \"";
+      out << escapeJSON(getModalias());
+      out << "\"";
+    }
+
     if (getDev() != "")
     {
       out << "," << endl;
@@ -1730,6 +1756,15 @@ string hwNode::asXML(unsigned level)
         out << "</logicalname>";
         out << endl;
       }
+    }
+
+    if (getModalias() != "")
+    {
+      out << spaces(2*level+1);
+      out << "<modalias>";
+      out << escape(getModalias());
+      out << "</modalias>";
+      out << endl;
     }
 
     if (getDev() != "")
