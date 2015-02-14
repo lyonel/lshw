@@ -622,7 +622,7 @@ hwNode *hwNode::getChild(const string & id)
   }
 
   for (unsigned int i = 0; i < This->children.size(); i++)
-    if (This->children[i].getId() == baseid)
+    if (This->children[i].getId() == cleanupId(baseid))
   {
     if (path == "")
       return &(This->children[i]);
