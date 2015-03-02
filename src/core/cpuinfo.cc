@@ -438,7 +438,7 @@ string value)
       cpu->setVendor(value);
     }
     if (id == "model name")
-      if(cpu->getProduct() == "") cpu->setProduct(value);
+      cpu->setProduct(value);
 //if ((id == "cpu MHz") && (cpu->getSize() == 0))
 //{
 //cpu->setSize((long long) (1000000L * atof(value.c_str())));
