@@ -401,8 +401,8 @@ static void scan_devtree_memory(hwNode & core)
           else
             base = 0;
 
-          base = be64toh(base);
-          size = be64toh(size);
+          base = ntohll(base);
+          size = ntohll(size);
 
           if (fd >= 0)
           {
