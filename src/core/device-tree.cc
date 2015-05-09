@@ -9,6 +9,7 @@
  *
  */
 
+#include <algorithm>
 #include <errno.h>
 #include "version.h"
 #include "device-tree.h"
@@ -36,6 +37,7 @@ struct dimminfo
 };
 
 #define DEVICETREE "/proc/device-tree"
+#define DEVICETREEVPD  "/proc/device-tree/vpd/"
 
 #define ntohll(x) (((uint64_t)(ntohl((uint32_t)((x << 32) >> 32))) << 32) | ntohl(((uint32_t)(x >> 32))))  
 
@@ -292,46 +294,80 @@ static void scan_devtree_cpu(hwNode & core)
   }
 }
 
+void add_memory_bank(string name, string path, hwNode & core)
+{
+  struct dirent **dirlist;
+  string product;
+  int n;
+
+  pushd(path + name);
+  if(name.substr(0, 7) == "ms-dimm")
+  {
+    replace(name.begin(), name.end(), '@', ':');
+    hwNode *memory = core.getChild("memory");
+
+    hwNode bank("bank", hw::memory);
+    bank.claim(true);
+    bank.addHint("icon", string("memory"));
+
+    if(!memory)
+      memory = core.addChild(hwNode("memory", hw::memory));
+
+    if(exists("serial-number"))
+      bank.setSerial(get_string("serial-number"));
+
+    product = get_string("part-number");
+    if(exists("fru-number"))
+    {
+      product += " FRU#" + get_string("fru-number");
+    }
+    if(product != "")
+      bank.setProduct(product);
+
+    if(exists("description"))
+      bank.setDescription(get_string("description"));
+    if(exists("ibm,loc-code"))
+      bank.setSlot(get_string("ibm,loc-code"));
+    if(unsigned long size = get_number("size"))
+      bank.setSize(size*1024*1024);
+
+    memory->addChild(bank);
+  }
+
+  n = scandir(".", &dirlist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    add_memory_bank(dirlist[i]->d_name, path + name + "/", core);
+    free(dirlist[i]);
+  }
+  free(dirlist);
+}
+
+
 static void scan_devtree_memory_powernv(hwNode & core)
 {
   struct dirent **namelist;
-  hwNode *memory = core.getChild("memory");
   int n;
+  string path = DEVICETREEVPD;
 
-  pushd(DEVICETREE "/vpd");
+  pushd(DEVICETREEVPD);
   n = scandir(".", &namelist, selectdir, alphasort);
   popd();
+
   if (n < 0)
     return;
+
   for (int i = 0; i < n; i++)
   {
-    string basepath;
-    unsigned long size = 0;
-    string sizestr;
-
-    if (strncmp(namelist[i]->d_name, "ms-dimm@", 8) == 0)
-    {
-      hwNode bank("bank", hw::memory);
-
-      if (!memory)
-        memory = core.addChild(hwNode("memory", hw::memory));
-
-      basepath = string(DEVICETREE "/vpd/") + string(namelist[i]->d_name);
-      bank.setSerial(get_string(basepath + string("/serial-number")));
-      bank.setProduct(get_string(basepath + string("/part-number")) + " FRU#" + get_string(basepath + string("/fru-number")));
-      bank.setDescription(get_string(basepath + string("/description")));
-      bank.setSlot(get_string(basepath + string("/ibm,loc-code")));
-      sizestr = get_string(basepath + string("/size"));
-      errno = 0;
-      size = strtoul(sizestr.c_str(), NULL, 10);
-      if (!errno)
-        bank.setSize(size*1024*1024);
-      bank.addHint("icon", string("memory"));
-
-      memory->addChild(bank);
-    }
+    add_memory_bank(namelist[i]->d_name, path, core);
     free(namelist[i]);
   }
+
   free(namelist);
 }
 
