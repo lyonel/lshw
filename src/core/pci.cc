@@ -812,6 +812,8 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
         host.setDescription(get_class_description(dclass, progif));
         host.setVendor(get_device_description(d.vendor_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+"]":""));
         host.setProduct(get_device_description(d.vendor_id, d.device_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+":"+tohex(d.device_id)+"]":""));
+        host.setSubsysVendor(get_device_description(subsys_v)+(enabled("output:numeric")?" ["+tohex(subsys_v)+"]":""));
+        host.setSubsysProduct(get_device_description(subsys_v, subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
         host.setHandle(pci_bushandle(d.bus, d.domain));
         host.setVersion(revision);
         addHints(host, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
