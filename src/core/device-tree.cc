@@ -303,7 +303,6 @@ void add_memory_bank(string name, string path, hwNode & core)
   pushd(path + name);
   if(name.substr(0, 7) == "ms-dimm")
   {
-    replace(name.begin(), name.end(), '@', ':');
     hwNode *memory = core.getChild("memory");
 
     hwNode bank("bank", hw::memory);
