@@ -314,7 +314,7 @@ void add_memory_bank(string name, string path, hwNode & core)
       memory = core.addChild(hwNode("memory", hw::memory));
 
     if(exists("serial-number"))
-      bank.setSerial(get_string("serial-number"));
+      bank.setSerial(hw::strip(get_string("serial-number")));
 
     product = get_string("part-number");
     if(exists("fru-number"))
@@ -322,12 +322,12 @@ void add_memory_bank(string name, string path, hwNode & core)
       product += " FRU#" + get_string("fru-number");
     }
     if(product != "")
-      bank.setProduct(product);
+      bank.setProduct(hw::strip(product));
 
     if(exists("description"))
-      bank.setDescription(get_string("description"));
+      bank.setDescription(hw::strip(get_string("description")));
     if(exists("ibm,loc-code"))
-      bank.setSlot(get_string("ibm,loc-code"));
+      bank.setSlot(hw::strip(get_string("ibm,loc-code")));
     if(unsigned long size = get_number("size"))
       bank.setSize(size*1024*1024);
 
