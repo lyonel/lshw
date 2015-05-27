@@ -729,6 +729,9 @@ bool scan_device_tree(hwNode & n)
   }
   else if(matches(get_string(DEVICETREE "/compatible"), "qemu,pseries"))
   {
+    if ( exists(DEVICETREE "/host-serial") )
+      n.setSerial(get_string(DEVICETREE "/host-serial"));
+
     n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
     n.setDescription("pSeries Guest");
 
