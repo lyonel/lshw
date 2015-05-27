@@ -734,6 +734,9 @@ bool scan_device_tree(hwNode & n)
     if ( exists(DEVICETREE "/host-serial") )
       n.setSerial(get_string(DEVICETREE "/host-serial"));
 
+    if ( exists( DEVICETREE "/vm,uuid") )
+      n.setConfig("uuid", get_string(DEVICETREE "/vm,uuid"));
+
     n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
 
     if ( exists(DEVICETREE "/hypervisor/compatible") ) {
