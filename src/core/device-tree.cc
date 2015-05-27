@@ -727,6 +727,19 @@ bool scan_device_tree(hwNode & n)
       n.addCapability("opal", "OPAL firmware");
     }
   }
+  else if(matches(get_string(DEVICETREE "/compatible"), "qemu,pseries"))
+  {
+    n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
+    n.setDescription("pSeries Guest");
+
+    if (core)
+    {
+      core->addHint("icon", string("board"));
+      scan_devtree_root(*core);
+      scan_devtree_cpu(*core);
+      core->addCapability("qemu,pseries");
+    }
+  }
   else
   {
     n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
