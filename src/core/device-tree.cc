@@ -729,10 +729,26 @@ bool scan_device_tree(hwNode & n)
   }
   else if(matches(get_string(DEVICETREE "/compatible"), "qemu,pseries"))
   {
+    string product;
+
     if ( exists(DEVICETREE "/host-serial") )
       n.setSerial(get_string(DEVICETREE "/host-serial"));
 
     n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
+
+    if ( exists(DEVICETREE "/hypervisor/compatible") ) {
+      product = get_string(DEVICETREE "/hypervisor/compatible");
+      product = product.substr(0, product.size()-1);
+    }
+
+    if ( exists(DEVICETREE "/host-model") ) {
+      product += " Model# ";
+      product += get_string(DEVICETREE "/host-model");
+    }
+
+    if (product != "")
+      n.setProduct(product);
+
     n.setDescription("pSeries Guest");
 
     if (core)
