@@ -1991,6 +1991,19 @@ string hwNode::asXML(unsigned level)
       out << "</resources>" << endl;
     }
     resources.clear();
+
+    vector < string > hints = getHints();
+    if (hints.size() > 0) {
+      out << spaces(2*level+1);
+      out << "<hints>" << endl;
+      for(unsigned int i=0; i<hints.size(); i++) {
+        out << spaces(2*level+2);
+        out << "<hint name=\"" << hints[i] << "\" " << "value=\"" << getHint(hints[i]).asString() << "\" />";
+        out << endl;
+      }
+      out << spaces(2*level+1);
+      out << "</hints>" << endl;
+    }
   }
 
   for (unsigned int i = 0; i < countChildren(); i++)
