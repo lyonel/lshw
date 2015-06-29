@@ -103,6 +103,8 @@ __ID("@(#) $Id$");
 #define PCI_CLASS_STORAGE_FLOPPY     0x0102
 #define PCI_CLASS_STORAGE_IPI        0x0103
 #define PCI_CLASS_STORAGE_RAID       0x0104
+#define PCI_CLASS_STORAGE_SATA       0x0106
+#define PCI_CLASS_STORAGE_SAS        0x0107
 #define PCI_CLASS_STORAGE_OTHER      0x0180
 
 #define PCI_BASE_CLASS_NETWORK       0x02
@@ -332,6 +334,12 @@ static const char *get_class_name(unsigned int c)
       return "scsi";
     case PCI_CLASS_STORAGE_IDE:
       return "ide";
+    case PCI_CLASS_STORAGE_RAID:
+      return "raid";
+    case PCI_CLASS_STORAGE_SATA:
+      return "sata";
+    case PCI_CLASS_STORAGE_SAS:
+      return "sas";
     case PCI_CLASS_BRIDGE_HOST:
       return "host";
     case PCI_CLASS_BRIDGE_ISA:
