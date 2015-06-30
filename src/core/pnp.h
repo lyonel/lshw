@@ -7,4 +7,6 @@
 const char * vendorname(const char * id);
 
 hw::hwClass pnp_class(const string & pnpid);
+
+bool scan_pnp(hwNode &);
 #endif

@@ -298,6 +298,20 @@ entry entry::parent() const
   return e;
 }
 
+string entry::string_attr(const string & name, const string & def) const
+{
+  return hw::strip(get_string(This->devpath + "/" + name, def));
+}
+
+
+vector < string > entry::multiline_attr(const string & name) const
+{
+  vector < string > lines;
+  loadfile(This->devpath + "/" + name, lines);
+  return lines;
+}
+
+
 string entry::modalias() const
 {
   return get_string(This->devpath+"/modalias");

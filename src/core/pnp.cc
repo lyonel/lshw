@@ -8,6 +8,7 @@
  */
 #include "version.h"
 #include "pnp.h"
+#include "sysfs.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -148,4 +149,44 @@ hw::hwClass pnp_class(const string & pnpid)
     return hw::communication;                     // modems
 
   return hw::generic;
+}
+
+bool scan_pnp(hwNode & n)
+{
+  vector < sysfs::entry > entries = sysfs::entries_by_bus("pnp");
+
+  if (entries.empty())
+    return false;
+
+  hwNode *core = n.getChild("core");
+  if (!core)
+  {
+    n.addChild(hwNode("core", hw::bus));
+    core = n.getChild("core");
+  }
+
+  for (vector < sysfs::entry >::iterator it = entries.begin();
+      it != entries.end(); ++it)
+  {
+    const sysfs::entry & e = *it;
+
+    vector < string > pnpids = e.multiline_attr("id");
+    if (pnpids.empty())
+      continue;
+    // devices can report multiple PnP IDs, just pick the first
+    string pnpid = pnpids[0];
+
+    hwNode device("pnp" + e.name(), pnp_class(pnpid));
+    device.addCapability("pnp");
+    string driver = e.driver();
+    if (!driver.empty())
+      device.setConfig("driver", driver);
+    string vendor = vendorname(pnpid.c_str());
+    if (!vendor.empty())
+      device.setVendor(vendor);
+    device.claim();
+
+    core->addChild(device);
+  }
+  return true;
 }

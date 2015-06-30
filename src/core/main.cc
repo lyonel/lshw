@@ -32,6 +32,7 @@
 #include "spd.h"
 #include "network.h"
 #include "isapnp.h"
+#include "pnp.h"
 #include "fb.h"
 #include "usb.h"
 #include "sysfs.h"
@@ -101,6 +102,9 @@ bool scan_system(hwNode & system)
     status("ISA PnP");
     if (enabled("isapnp"))
       scan_isapnp(computer);
+    status("PnP (sysfs)");
+    if (enabled("pnp"))
+      scan_pnp(computer);
     status("PCMCIA");
     if (enabled("pcmcia"))
       scan_pcmcia(computer);

@@ -37,7 +37,7 @@ hw.o: hw.h osutils.h version.h config.h options.h heuristics.h
 main.o: hw.h print.h version.h options.h mem.h dmi.h cpuinfo.h cpuid.h
 main.o: device-tree.h pci.h pcmcia.h pcmcia-legacy.h ide.h scsi.h spd.h
 main.o: network.h isapnp.h fb.h usb.h sysfs.h display.h parisc.h cpufreq.h
-main.o: ideraid.h mounts.h smp.h abi.h dasd.h virtio.h
+main.o: ideraid.h mounts.h smp.h abi.h dasd.h virtio.h pnp.h
 print.o: print.h hw.h options.h version.h osutils.h config.h
 mem.o: version.h config.h mem.h hw.h
 dmi.o: version.h config.h dmi.h hw.h osutils.h
@@ -56,7 +56,7 @@ spd.o: version.h spd.h hw.h osutils.h
 network.o: version.h config.h network.h hw.h osutils.h sysfs.h options.h
 network.o: heuristics.h
 isapnp.o: version.h isapnp.h hw.h pnp.h
-pnp.o: version.h pnp.h hw.h
+pnp.o: version.h pnp.h hw.h sysfs.h
 fb.o: version.h fb.h hw.h
 options.o: version.h options.h osutils.h
 usb.o: version.h usb.h hw.h osutils.h heuristics.h options.h
