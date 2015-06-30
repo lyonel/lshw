@@ -16,16 +16,19 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <map>
+#include <iostream>
 
 __ID("@(#) $Id$");
 
 using namespace std;
 
 #define PNPVENDORS_PATH DATADIR"/pnp.ids:/usr/share/lshw/pnp.ids:/usr/share/hwdata/pnp.ids"
+#define PNPID_PATH DATADIR"/pnpid.txt:/usr/share/lshw/pnpid.txt:/usr/share/hwdata/pnpid.txt"
 
 static bool pnpdb_loaded = false;
 
 static map < string, string > pnp_vendors;
+static map < string, string > pnp_ids;
 
 static void parse_pnp_vendors(const vector < string > & lines)
 {
@@ -47,6 +50,29 @@ static void parse_pnp_vendors(const vector < string > & lines)
   }
 }
 
+static void parse_pnp_ids(const vector < string > & lines)
+{
+  for (vector < string >::const_iterator it = lines.begin();
+      it != lines.end(); ++it)
+  {
+    const string & line = *it;
+    if (line.length() < 1 || line.at(0) == ';')
+      continue;
+    if (line.length() < 9 || line.at(7) != '\t')
+      continue;
+    string id = line.substr(0, 7);
+    id[0] = toupper(id[0]);
+    id[1] = toupper(id[1]);
+    id[2] = toupper(id[2]);
+    id[3] = tolower(id[3]);
+    id[4] = tolower(id[4]);
+    id[5] = tolower(id[5]);
+    id[6] = tolower(id[6]);
+    string desc = line.substr(8);
+    pnp_ids[id] = desc;
+  }
+}
+
 static void load_pnpdb()
 {
   vector < string > lines;
@@ -58,6 +84,15 @@ static void load_pnpdb()
     lines.clear();
     if (loadfile(filenames[i], lines))
       parse_pnp_vendors(lines);
+  }
+
+  filenames.clear();
+  splitlines(PNPID_PATH, filenames, ':');
+  for (int i = filenames.size() - 1; i >= 0; i--)
+  {
+    lines.clear();
+    if (loadfile(filenames[i], lines))
+      parse_pnp_ids(lines);
   }
 
   pnpdb_loaded = true;
@@ -75,6 +110,16 @@ string pnp_vendorname(const string & id)
   return "";
 }
 
+string pnp_description(const string & id)
+{
+  if (!pnpdb_loaded)
+    load_pnpdb();
+
+  map < string, string >::const_iterator lookup = pnp_ids.find(id);
+  if (lookup != pnp_ids.end())
+    return lookup->second;
+  return "";
+}
 
 hw::hwClass pnp_class(const string & pnpid)
 {
@@ -153,6 +198,14 @@ bool scan_pnp(hwNode & n)
     string vendor = pnp_vendorname(pnpid);
     if (!vendor.empty())
       device.setVendor(vendor);
+    string name = e.string_attr("name");
+    string description = pnp_description(pnpid);
+    if (!name.empty())
+      device.setProduct(name);
+    else if (!description.empty())
+      device.setProduct(description);
+    else
+      device.setProduct("PnP device " + pnpid);
     device.claim();
 
     core->addChild(device);

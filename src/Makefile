@@ -39,7 +39,7 @@ export CXXFLAGS
 export LIBS
 export LDFLAGS
 
-DATAFILES = pci.ids usb.ids oui.txt manuf.txt pnp.ids
+DATAFILES = pci.ids usb.ids oui.txt manuf.txt pnp.ids pnpid.txt
 
 all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 
@@ -95,6 +95,9 @@ manuf.txt:
 
 pnp.ids:
 	wget https://git.fedorahosted.org/cgit/hwdata.git/plain/pnp.ids
+
+pnpid.txt:
+	wget http://www-pc.uni-regensburg.de/hardware/TECHNIK/PCI_PNP/pnpid.txt
 
 install: all
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
