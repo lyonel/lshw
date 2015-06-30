@@ -9,100 +9,69 @@
 #include "version.h"
 #include "pnp.h"
 #include "sysfs.h"
+#include "osutils.h"
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <map>
 
 __ID("@(#) $Id$");
 
-static const char *pnp_vendors[] =
-{
-  "ABP", "Advansys",
-  "ACC", "Accton",
-  "ACE", "Accton",
-  "ACR", "Acer",
-  "ADP", "Adaptec",
-  "ADV", "AMD",
-  "AIR", "AIR",
-  "AMI", "AMI",
-  "ASU", "ASUS",
-  "ATI", "ATI",
-  "ATK", "Allied Telesyn",
-  "AZT", "Aztech",
-  "BAN", "Banya",
-  "BRI", "Boca Research",
-  "BUS", "Buslogic",
-  "CCI", "Cache Computers Inc.",
-  "CHA", "Chase",
-  "CMD", "CMD Technology, Inc.",
-  "COG", "Cogent",
-  "CPQ", "Compaq",
-  "CRS", "Crescendo",
-  "CSC", "Crystal",
-  "CSI", "CSI",
-  "CTL", "Creative Labs",
-  "DBI", "Digi",
-  "DEC", "Digital Equipment",
-  "DEL", "Dell",
-  "DBK", "Databook",
-  "EGL", "Eagle Technology",
-  "ELS", "ELSA",
-  "ESS", "ESS",
-  "FAR", "Farallon",
-  "FDC", "Future Domain",
-  "HWP", "Hewlett-Packard",
-  "IBM", "IBM",
-  "INT", "Intel",
-  "ISA", "Iomega",
-  "MDG", "Madge",
-  "MDY", "Microdyne",
-  "MET", "Metheus",
-  "MIC", "Micronics",
-  "MLX", "Mylex",
-  "NEC", "NEC",
-  "NVL", "Novell",
-  "OLC", "Olicom",
-  "PRO", "Proteon",
-  "RII", "Racal",
-  "RTL", "Realtek",
-  "SCM", "SCM",
-  "SEC", "SAMSUNG",
-  "SKD", "SysKonnect",
-  "SMC", "SMC",
-  "SNI", "Siemens Nixdorf",
-  "STL", "Stallion Technologies",
-  "SUP", "SupraExpress",
-  "SVE", "SVEC",
-  "TCC", "Thomas-Conrad",
-  "TCI", "Tulip",
-  "TCM", "3Com",
-  "TCO", "Thomas-Conrad",
-  "TEC", "Tecmar",
-  "TRU", "Truevision",
-  "TOS", "Toshiba",
-  "TYN", "Tyan",
-  "UBI", "Ungermann-Bass",
-  "USC", "UltraStor",
-  "VDM", "Vadem",
-  "VMI", "Vermont",
-  "WDC", "Western Digital",
-  "ZDS", "Zeos",
-  NULL, NULL
-};
+using namespace std;
 
-const char *vendorname(const char *id)
-{
-  int i = 0;
-  if (id == NULL)
-    return "";
+#define PNPVENDORS_PATH DATADIR"/pnp.ids:/usr/share/lshw/pnp.ids:/usr/share/hwdata/pnp.ids"
 
-  while (pnp_vendors[i])
+static bool pnpdb_loaded = false;
+
+static map < string, string > pnp_vendors;
+
+static void parse_pnp_vendors(const vector < string > & lines)
+{
+  for (vector < string >::const_iterator it = lines.begin();
+      it != lines.end(); ++it)
   {
-    if (strncmp(pnp_vendors[i], id, strlen(pnp_vendors[i])) == 0)
-      return pnp_vendors[i + 1];
-    i += 2;
+    const string & line = *it;
+    if (line.length() < 5 || line.at(3) != '\t')
+      continue;
+    string id = line.substr(0, 3);
+    id[0] = toupper(id[0]);
+    id[1] = toupper(id[1]);
+    id[2] = toupper(id[2]);
+    string name = line.substr(4);
+    // Microsoft is not really the manufacturer of all PNP devices
+    if (id == "PNP")
+      continue;
+    pnp_vendors[id] = name;
+  }
+}
+
+static void load_pnpdb()
+{
+  vector < string > lines;
+  vector < string > filenames;
+
+  splitlines(PNPVENDORS_PATH, filenames, ':');
+  for (int i = filenames.size() - 1; i >= 0; i--)
+  {
+    lines.clear();
+    if (loadfile(filenames[i], lines))
+      parse_pnp_vendors(lines);
   }
 
+  pnpdb_loaded = true;
+}
+
+string pnp_vendorname(const string & id)
+{
+  if (!pnpdb_loaded)
+    load_pnpdb();
+
+  string vendorid = id.substr(0, 3);
+  map < string, string >::const_iterator lookup = pnp_vendors.find(vendorid);
+  if (lookup != pnp_vendors.end())
+    return lookup->second;
   return "";
 }
 
@@ -181,7 +150,7 @@ bool scan_pnp(hwNode & n)
     string driver = e.driver();
     if (!driver.empty())
       device.setConfig("driver", driver);
-    string vendor = vendorname(pnpid.c_str());
+    string vendor = pnp_vendorname(pnpid);
     if (!vendor.empty())
       device.setVendor(vendor);
     device.claim();

@@ -1020,7 +1020,7 @@ static int isapnp_build_device_list(hwNode & n)
 
     card.setPhysId(csn);
     card.
-      setVendor(vendorname
+      setVendor(pnp_vendorname
       (isapnp_parse_card_id
       ((header[1] << 8) | header[0],
       (header[3] << 8) | header[2])));

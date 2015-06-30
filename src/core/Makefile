@@ -56,7 +56,7 @@ spd.o: version.h spd.h hw.h osutils.h
 network.o: version.h config.h network.h hw.h osutils.h sysfs.h options.h
 network.o: heuristics.h
 isapnp.o: version.h isapnp.h hw.h pnp.h
-pnp.o: version.h pnp.h hw.h sysfs.h
+pnp.o: version.h pnp.h hw.h sysfs.h osutils.h
 fb.o: version.h fb.h hw.h
 options.o: version.h options.h osutils.h
 usb.o: version.h usb.h hw.h osutils.h heuristics.h options.h

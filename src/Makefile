@@ -39,7 +39,7 @@ export CXXFLAGS
 export LIBS
 export LDFLAGS
 
-DATAFILES = pci.ids usb.ids oui.txt manuf.txt
+DATAFILES = pci.ids usb.ids oui.txt manuf.txt pnp.ids
 
 all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 
@@ -92,6 +92,9 @@ oui.txt:
 
 manuf.txt:
 	wget -O $@ http://anonsvn.wireshark.org/wireshark/trunk/manuf
+
+pnp.ids:
+	wget https://git.fedorahosted.org/cgit/hwdata.git/plain/pnp.ids
 
 install: all
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(SBINDIR)
