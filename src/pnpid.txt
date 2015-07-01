@@ -539,6 +539,8 @@ IBM001D	YMF289B Sound Chip (Yamaha)
 IBM001E	Lightning/Terlingua Support Processor
 IBM001F	Terlingua Mini-SP
 IBM0034	IBM Thinkpad Infrared Port
+IBM0057	IBM ThinkPad UltraNav Pointing Device
+IBM0071	IBM ThinkPad Fast Infrared Port
 IBM198E	IBM G41/G50
 IBM1990	IBM G70
 IBM1991	IBM G200
@@ -848,6 +850,7 @@ INT1071	Intel Audio/Video Board Device 1
 INT1080	Intel Audio/ISDN Board
 INT1201	Intel TokenExpress 32bit EISA 16/4
 INT31A0	Intel Xxpress-Premium Motherboard
+IPI0001	IPMI Controller
 ISA0000	Standard I/O Card (2xSerial, 1xParallel)
 ISA0001	Standard VGA Card
 ISA0002	Sound Card
@@ -1046,6 +1049,7 @@ NOK00D2	NOKIA 445R
 NOK00D8	NOKIA 445X
 NOK01A0	NOKIA 447Xavc
 NOK01C0	NOKIA 445Xavc
+NSC1100	NSC Trusted Platform Module
 NSC8400	National Semiconductor NF3500 Network Adapter
 NVL0701	Novel EISA NE3200 Ethernet
 NVL0702	Novell/Anthem NE3200T
@@ -1142,6 +1146,7 @@ PNP0004	Cyrix SLiC MP interrupt controller
 PNP0100	AT Timer
 PNP0101	EISA Timer
 PNP0102	MCA Timer
+PNP0103	High Precision Event Timer
 PNP0200	AT DMA Controller
 PNP0201	EISA DMA Controller
 PNP0202	MCA DMA Controller
@@ -1226,6 +1231,7 @@ PNP0A03	PCI Bus
 PNP0A04	VESA/VL Bus
 PNP0A05	Generic ACPI Bus
 PNP0A06	Generic ACPI Extended-IO Bus (EIO bus)
+PNP0A08	PCI Express Root Bridge
 PNP0B00	AT Real-Time Clock
 PNP0C00	Plug and Play BIOS
 PNP0C01	System Board
