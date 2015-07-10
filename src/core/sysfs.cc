@@ -146,6 +146,9 @@ static string sysfstobusinfo(const string & path)
       return "virtio@" + name;
   }
 
+  if (bustype == "vio")
+    return string("vio@") + basename(path.c_str());
+
   return "";
 }
 

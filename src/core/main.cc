@@ -42,6 +42,7 @@
 #include "ideraid.h"
 #include "mounts.h"
 #include "virtio.h"
+#include "vio.h"
 #include "smp.h"
 #include "abi.h"
 #include "dasd.h"
@@ -114,6 +115,9 @@ bool scan_system(hwNode & system)
     status("Virtual I/O (VIRTIO) devices");
     if (enabled("virtio"))
       scan_virtio(computer);
+    status("IBM Virtual I/O (VIO)");
+    if (enabled("vio"))
+      scan_vio(computer);
     status("kernel device tree (sysfs)");
     if (enabled("sysfs"))
       scan_sysfs(computer);

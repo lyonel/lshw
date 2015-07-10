@@ -8,7 +8,7 @@ LDFLAGS=
 LDSTATIC=
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o dasd.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o mounts.o smp.o abi.o jedec.o dump.o fat.o virtio.o
+OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o dasd.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o mounts.o smp.o abi.o jedec.o dump.o fat.o virtio.o vio.o
 ifeq ($(SQLITE), 1)
 	OBJS+= db.o
 endif
@@ -37,7 +37,7 @@ hw.o: hw.h osutils.h version.h config.h options.h heuristics.h
 main.o: hw.h print.h version.h options.h mem.h dmi.h cpuinfo.h cpuid.h
 main.o: device-tree.h pci.h pcmcia.h pcmcia-legacy.h ide.h scsi.h spd.h
 main.o: network.h isapnp.h fb.h usb.h sysfs.h display.h parisc.h cpufreq.h
-main.o: ideraid.h mounts.h smp.h abi.h dasd.h virtio.h pnp.h
+main.o: ideraid.h mounts.h smp.h abi.h dasd.h virtio.h pnp.h vio.h
 print.o: print.h hw.h options.h version.h osutils.h config.h
 mem.o: version.h config.h mem.h hw.h
 dmi.o: version.h config.h dmi.h hw.h osutils.h
@@ -77,3 +77,4 @@ abi.o: version.h abi.h hw.h osutils.h
 jedec.o: jedec.h
 dasd.o: dasd.h disk.h hw.h osutils.h
 virtio.o: version.h hw.h sysfs.h disk.h virtio.h
+vio.o: version.h hw.h sysfs.h vio.h
