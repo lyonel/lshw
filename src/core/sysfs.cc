@@ -149,6 +149,17 @@ static string sysfstobusinfo(const string & path)
   if (bustype == "vio")
     return string("vio@") + basename(path.c_str());
 
+  if (bustype == "ccw")
+    return string("ccw@") + basename(path.c_str());
+
+  if (bustype == "ccwgroup")
+  {
+    // just report businfo for the first device in the group
+    // because the group doesn't really fit into lshw's tree model
+    string firstdev = realpath(path + "/cdev0");
+    return sysfstobusinfo(firstdev);
+  }
+
   return "";
 }
 

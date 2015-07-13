@@ -45,7 +45,7 @@
 #include "vio.h"
 #include "smp.h"
 #include "abi.h"
-#include "dasd.h"
+#include "s390.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -132,8 +132,9 @@ bool scan_system(hwNode & system)
     status("SCSI");
     if (enabled("scsi"))
       scan_scsi(computer);
-    if (enabled("dasd"))
-      scan_dasd(computer);
+    status("S/390 devices");
+    if (enabled("s390"))
+      scan_s390_devices(computer);
     if (enabled("mounts"))
       scan_mounts(computer);
     status("Network interfaces");
