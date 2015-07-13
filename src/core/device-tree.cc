@@ -981,8 +981,9 @@ static void add_memory_bank(string name, string path, hwNode & core)
   if(!memory)
     memory = core.addChild(hwNode("memory", hw::memory));
 
-  pushd(path + name);
-  if(name.substr(0, 7) == "ms-dimm")
+  pushd(path + "/" + name);
+  if(name.substr(0, 7) == "ms-dimm" ||
+     name.substr(0, 18) == "IBM,memory-module@")
   {
     hwNode bank("bank", hw::memory);
     bank.claim(true);
@@ -999,12 +1000,24 @@ static void add_memory_bank(string name, string path, hwNode & core)
     if(product != "")
       bank.setProduct(hw::strip(product));
 
+    string description = "DIMM";
+    string package = hw::strip(get_string("ibm,mem-package"));
+    if (!package.empty())
+      description = package;
+    string memtype = hw::strip(get_string("ibm,mem-type"));
+    if (!memtype.empty())
+      description += " " + memtype;
     if(exists("description"))
-      bank.setDescription(hw::strip(get_string("description")));
+      description = hw::strip(get_string("description"));
+    bank.setDescription(description);
+
     if(exists("ibm,loc-code"))
       bank.setSlot(hw::strip(get_string("ibm,loc-code")));
-    if(unsigned long size = get_number("size"))
-      bank.setSize(size*1024*1024);
+    unsigned long size = get_number("size") * 1024 * 1024;
+    if (exists("ibm,size"))
+      size = get_u32("ibm,size");
+    if (size > 0)
+      bank.setSize(size);
 
     memory->addChild(bank);
   } else if(name.substr(0, 4) == "dimm") {
@@ -1026,7 +1039,7 @@ static void add_memory_bank(string name, string path, hwNode & core)
 
   for (int i = 0; i < n; i++)
   {
-    add_memory_bank(dirlist[i]->d_name, path + name + "/", core);
+    add_memory_bank(dirlist[i]->d_name, path + "/" + name, core);
     free(dirlist[i]);
   }
   free(dirlist);
@@ -1056,6 +1069,30 @@ static void scan_devtree_memory_powernv(hwNode & core)
 }
 
 
+// older POWER hardware
+static void scan_devtree_memory_ibm(hwNode & core)
+{
+  struct dirent **namelist;
+  pushd(DEVICETREE);
+  int n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    if (strncmp(namelist[i]->d_name, "memory-controller@", 18) == 0)
+    {
+      add_memory_bank(namelist[i]->d_name, DEVICETREE, core);
+    }
+    free(namelist[i]);
+  }
+  free(namelist);
+}
+
+
+// Apple and ARM
 static void scan_devtree_memory(hwNode & core)
 {
   int currentmc = -1;                             // current memory controller
@@ -1338,6 +1375,7 @@ bool scan_device_tree(hwNode & n)
       core->addHint("icon", string("board"));
       scan_devtree_root(*core);
       scan_devtree_cpu_power(*core);
+      scan_devtree_memory_ibm(*core);
       scan_devtree_memory_powernv(*core);
       scan_devtree_firmware_powernv(*core);
       n.addCapability("powernv", "Non-virtualized");
