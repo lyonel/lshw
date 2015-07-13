@@ -39,7 +39,7 @@ main.o: device-tree.h pci.h pcmcia.h pcmcia-legacy.h ide.h scsi.h spd.h
 main.o: network.h isapnp.h fb.h usb.h sysfs.h display.h parisc.h cpufreq.h
 main.o: ideraid.h mounts.h smp.h abi.h s390.h virtio.h pnp.h vio.h
 print.o: print.h hw.h options.h version.h osutils.h config.h
-mem.o: version.h config.h mem.h hw.h
+mem.o: version.h config.h mem.h hw.h sysfs.h
 dmi.o: version.h config.h dmi.h hw.h osutils.h
 device-tree.o: version.h device-tree.h hw.h osutils.h
 cpuinfo.o: version.h cpuinfo.h hw.h osutils.h

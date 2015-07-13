@@ -15,6 +15,7 @@ namespace sysfs
 
       static entry byBus(string devbus, string devname);
       static entry byClass(string devclass, string devname);
+      static entry byPath(string path);
 
       entry & operator =(const entry &);
       entry(const entry &);
@@ -30,6 +31,7 @@ namespace sysfs
       entry parent() const;
       string name_in_class(const string &) const;
       string string_attr(const string & name, const string & def = "") const;
+      unsigned long long hex_attr(const string & name, unsigned long long def = 0) const;
       vector < string > multiline_attr(const string & name) const;
 
       struct entry_i * This;

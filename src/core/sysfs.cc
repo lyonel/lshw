@@ -239,6 +239,13 @@ entry entry::byClass(string devclass, string devname)
 }
 
 
+entry entry::byPath(string path)
+{
+  entry e(fs.path + "/devices" + path);
+  return e;
+}
+
+
 entry::entry(const string & devpath)
 {
   This = new entry_i;
@@ -315,6 +322,15 @@ entry entry::parent() const
 string entry::string_attr(const string & name, const string & def) const
 {
   return hw::strip(get_string(This->devpath + "/" + name, def));
+}
+
+
+unsigned long long entry::hex_attr(const string & name, unsigned long long def) const
+{
+  string val = string_attr(name, "");
+  if (val.empty())
+    return def;
+  return strtoull(val.c_str(), NULL, 16);
 }
 
 
