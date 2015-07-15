@@ -1223,7 +1223,7 @@ int dmiversionrev)
                 newnode.setConfig("threads", data[0x25]);
             }
             if (data[0x26] & 0x4)
-              newnode.addCapability("x86-64", "64bits extensions (x86-64)");
+              newnode.addCapability("lm", _("64-bit capable"));
           }
 
           newnode.setHandle(handle);
