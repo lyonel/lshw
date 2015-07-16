@@ -200,6 +200,16 @@ static void cpuinfo_aarch64(hwNode & node,
                         string value)
 {
 
+  /*
+   * If we already have CPU info extracted from SMBIOS, ignore /proc/cpuinfo 
+   * entirely. This is because the kernel's /proc/cpuinfo output on aarch64 
+   * does not distinguish between cores and physical processors (every core is 
+   * treated as a separate processor) so we may end up creating too many CPU 
+   * nodes.
+   */
+  if (getcpu(node)->getHandle().compare(0, 4, "DMI:") == 0)
+    return;
+
   if (id.substr(0, string("processor").size())=="processor")
     currentcpu++;
 
