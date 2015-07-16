@@ -82,7 +82,9 @@
 
 #include <map>
 #include <vector>
+#include <fstream>
 
+#include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -92,11 +94,13 @@
 
 __ID("@(#) $Id$");
 
+#define SYSFSDMI "/sys/firmware/dmi/tables"
+
 static int currentcpu = 0;
 
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
 
 struct dmi_header
 {
@@ -174,7 +178,7 @@ static string cpubusinfo(int cpu)
 }
 
 
-static string dmi_uuid(u8 * p)
+static string dmi_uuid(const u8 * p)
 {
   unsigned int i = 0;
   bool valid = false;
@@ -357,7 +361,7 @@ hwNode & bios)
 }
 
 
-static void dmi_bios_features_ext(u8 * data,
+static void dmi_bios_features_ext(const u8 * data,
 int len,
 hwNode & bios)
 {
@@ -932,42 +936,21 @@ static string dmi_handle(u16 handle)
 }
 
 
-static void dmi_table(int fd,
-u32 base,
+static void dmi_table(const u8 *buf,
 int len,
-int num,
 hwNode & node,
 int dmiversionmaj,
 int dmiversionmin)
 {
-  unsigned char *buf = (unsigned char *) malloc(len);
   struct dmi_header *dm;
   hwNode *hardwarenode = NULL;
-  u8 *data;
+  const u8 *data;
   int i = 0;
   string handle;
-  u32 mmoffset = 0;
-  void *mmp = NULL;
 
   if (len == 0)
 // no data
     return;
-
-  if (buf == NULL)
-// memory exhausted
-    return;
-
-  mmoffset = base % getpagesize();
-
-  mmp = mmap(0, mmoffset + len, PROT_READ, MAP_SHARED, fd, base - mmoffset);
-  if (mmp == MAP_FAILED)
-  {
-    free(buf);
-    return;
-  }
-  memcpy(buf, (u8 *) mmp + mmoffset, len);
-
-  munmap(mmp, mmoffset + len);
 
   data = buf;
   while (data + sizeof(struct dmi_header) <= (u8 *) buf + len)
@@ -1276,7 +1259,7 @@ int dmiversionmin)
         {
           hwNode newnode("cache",
             hw::memory);
-          int level;
+	  int level;
 
           newnode.setSlot(dmi_string(dm, data[4]));
           u = data[6] << 8 | data[5];
@@ -1291,6 +1274,7 @@ int dmiversionmin)
           if (!(u & (1 << 7)))
             newnode.disable();
 
+          newnode.setConfig("level", level);
           newnode.setSize(dmi_cache_size(data[9] | data[10] << 8));
           newnode.setCapacity(dmi_cache_size(data[7] | (data[8] << 8)));
           if ((dm->length > 0x0F) && (data[0x0F] != 0))
@@ -1719,10 +1703,76 @@ int dmiversionmin)
     data += 2;
     i++;
   }
-  free(buf);
 }
 
 
+static bool smbios_entry_point(const u8 *buf, size_t len,
+    hwNode & n, u16 & dmimaj, u16 & dmimin,
+    u16 & table_len, u32 & table_base)
+{
+  if (len < 31 || memcmp(buf, "_SM_", 4) != 0)
+    return false;
+
+  u8 smmajver = buf[6];
+  u8 smminver = buf[7];
+
+  buf += 16;
+  if (smmajver && (memcmp(buf, "_DMI_", 5) == 0) && checksum(buf, 0x0F))
+  {
+    table_len = buf[7] << 8 | buf[6];
+    table_base = buf[11] << 24 | buf[10] << 16 | buf[9] << 8 | buf[8];
+    dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
+    dmimin = buf[14] ? buf[14] & 0x0F : smminver;
+
+    char buffer[20];
+    snprintf(buffer, sizeof(buffer), "%d.%d", smmajver, smminver);
+    n.addCapability("smbios-"+string(buffer), "SMBIOS version "+string(buffer));
+    snprintf(buffer, sizeof(buffer), "%d.%d", dmimaj, dmimin);
+    n.addCapability("dmi-"+string(buffer), "DMI version "+string(buffer));
+
+    return true;
+  }
+
+  return false;
+}
+
+
+static bool scan_dmi_sysfs(hwNode & n)
+{
+  if (!exists(SYSFSDMI "/smbios_entry_point") || !exists(SYSFSDMI "/DMI"))
+    return false;
+
+  u16 table_len = 0;
+  u32 table_base = 0;
+  u16 dmimaj = 0, dmimin = 0;
+
+  ifstream ep_stream(SYSFSDMI "/smbios_entry_point",
+      ifstream::in | ifstream::binary | ifstream::ate);
+  ifstream::pos_type ep_len = ep_stream.tellg();
+  vector < u8 > ep_buf(ep_len);
+  ep_stream.seekg(0, ifstream::beg);
+  ep_stream.read((char *)ep_buf.data(), ep_len);
+  if (!ep_stream)
+    return false;
+  if (!smbios_entry_point(ep_buf.data(), ep_len, n,
+        dmimaj, dmimin, table_len, table_base))
+    return false;
+
+  ifstream dmi_stream(SYSFSDMI "/DMI",
+      ifstream::in | ifstream::binary | ifstream::ate);
+  ifstream::pos_type dmi_len = dmi_stream.tellg();
+  vector < u8 > dmi_buf(dmi_len);
+  dmi_stream.seekg(0, ifstream::beg);
+  dmi_stream.read((char *)dmi_buf.data(), dmi_len);
+  if (!dmi_stream)
+    return false;
+  dmi_table(dmi_buf.data(), dmi_len, n, dmimaj, dmimin);
+
+  return true;
+}
+
+
+#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__)
 long get_efi_systab_smbios()
 {
   long result = 0;
@@ -1745,26 +1795,17 @@ long get_efi_systab_smbios()
 }
 
 
-bool scan_dmi(hwNode & n)
+static bool scan_dmi_devmem(hwNode & n)
 {
-  unsigned char buf[20];
+  unsigned char buf[31];
   int fd = open("/dev/mem",
     O_RDONLY);
   long fp = get_efi_systab_smbios();
   u32 mmoffset = 0;
   void *mmp = NULL;
   bool efi = true;
-  u8 smmajver = 0, smminver = 0;
   u16 dmimaj = 0, dmimin = 0;
-  currentcpu = 0;
 
-#if defined(__arm__) || defined (__hppa__)  || defined (__s390x__)
-  return false;		// SMBIOS not supported on PA-RISC, S/390 and ARM machines
-#endif
-
-  if (sizeof(u8) != 1 || sizeof(u16) != 2 || sizeof(u32) != 4)
-// compiler incompatibility
-    return false;
   if (fd == -1)
     return false;
 
@@ -1791,38 +1832,42 @@ bool scan_dmi(hwNode & n)
       close(fd);
       return false;
     }
-    else if (memcmp(buf, "_SM_", 4) == 0)
+    u16 len;
+    u32 base;
+    if (smbios_entry_point(buf, sizeof(buf), n, dmimaj, dmimin, len, base))
     {
-// SMBIOS
-      smmajver = buf[6];
-      smminver = buf[7];
+      u8 *dmi_buf = (u8 *)malloc(len);
+      mmoffset = base % getpagesize();
+      mmp = mmap(0, mmoffset + len, PROT_READ, MAP_SHARED, fd, base - mmoffset);
+      if (mmp == MAP_FAILED)
+      {
+        free(dmi_buf);
+        return false;
+      }
+      memcpy(dmi_buf, (u8 *) mmp + mmoffset, len);
+      munmap(mmp, mmoffset + len);
+      dmi_table(dmi_buf, len, n, dmimaj, dmimin);
+      free(dmi_buf);
+      break;
     }
-    else if (smmajver && (memcmp(buf, "_DMI_", 5) == 0) && checksum(buf, 0x0F))
-    {
-      u16 num = buf[13] << 8 | buf[12];
-      u16 len = buf[7] << 8 | buf[6];
-      u32 base = buf[11] << 24 | buf[10] << 16 | buf[9] << 8 | buf[8];
-      dmimaj = buf[14] ? buf[14] >> 4 : smmajver;
-      dmimin = buf[14] ? buf[14] & 0x0F : smminver;
-      dmi_table(fd, base, len, num, n, dmimaj, dmimin);
 
-      if (efi)
-        break;                                    // we don't need to search the memory for EFI systems
-    }
+    if (efi)
+      break;                                    // we don't need to search the memory for EFI systems
   }
   close(fd);
-  if (smmajver != 0)
-  {
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%d.%d", smmajver, smminver);
-    n.addCapability("smbios-"+string(buffer), "SMBIOS version "+string(buffer));
-  }
-  if (dmimaj != 0)
-  {
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%d.%d", dmimaj, dmimin);
-    n.addCapability("dmi-"+string(buffer), "DMI version "+string(buffer));
-  }
 
   return true;
+}
+#endif // defined(__i386__) || defined(__x86_64__) || defined(__ia64__)
+
+
+bool scan_dmi(hwNode & n)
+{
+  if (scan_dmi_sysfs(n))
+    return true;
+#if defined(__i386__) || defined(__x86_64__) || defined(__ia64__)
+  if (scan_dmi_devmem(n))
+    return true;
+#endif
+  return false;
 }
