@@ -1438,39 +1438,52 @@ int dmiversionrev)
       case 16:
 // Physical Memory Array
         {
-          hwNode newnode("memory",
-            hw::memory);
-          string id = "";
+          string id = "memory";
           string description = "";
+          bool claim = false, memory_icon = false;
           switch (data[0x05])
           {
             case 0x03:
               description = _("System Memory");
-              newnode.claim();
-              newnode.addHint("icon", string("memory"));
+              claim = true;
+              memory_icon = true;
               break;
             case 0x04:
+              id = "videomemory";
               description = _("Video Memory");
               break;
             case 0x05:
+              id = "flash";
               description = _("Flash Memory");
               break;
             case 0x06:
+              id = "nvram";
               description = _("NVRAM");
               break;
             case 0x07:
+              id = "cache";
               description = _("Cache Memory");
-              newnode.addHint("icon", string("memory"));
+              memory_icon = true;
               break;
             default:
               description = _("Generic Memory");
-              newnode.addHint("icon", string("memory"));
+              memory_icon = true;
           }
-
+          if (id == "memory" && hardwarenode->getChild("memory"))
+          {
+            // we don't want multiple "System memory" nodes,
+            // so just ignore this one
+            break;
+          }
+          hwNode newnode(id, hw::memory);
           newnode.setHandle(handle);
           newnode.setPhysId(dm->handle);
           newnode.setDescription(description);
           newnode.setSlot(dmi_memory_array_location(data[0x04]));
+          if (memory_icon)
+            newnode.addHint("icon", string("memory"));
+          if (claim)
+            newnode.claim();
           switch (data[0x06])
           {
             case 0x04:
@@ -1598,16 +1611,17 @@ int dmiversionrev)
             newnode.setDescription(newnode.getDescription() + " " + _("[empty]"));
           newnode.setClock(clock);
           hwNode *memoryarray = hardwarenode->findChildByHandle(arrayhandle);
-          if (memoryarray)
-            memoryarray->addChild(newnode);
-          else
+          if (!memoryarray)
+            memoryarray = hardwarenode->getChild("memory");
+          if (!memoryarray)
           {
             hwNode ramnode("memory",
               hw::memory);
-            ramnode.addChild(newnode);
             ramnode.addHint("icon", string("memory"));
             hardwarenode->addChild(ramnode);
+            memoryarray = hardwarenode->getChild("memory");
           }
+          memoryarray->addChild(newnode);
         }
         break;
       case 18:
