@@ -186,6 +186,33 @@ string sysfs_getbusinfo(const entry & e)
 }
 
 
+string sysfs_getmodalias(const entry & e)
+{
+  if(e.This->devclass != "") {
+    string modaliaspath =
+      fs.path + string("/class/") + e.This->devclass + string("/") + e.This->devname + "/device/modalias";
+
+    if(exists(modaliaspath)) {
+      return get_string(modaliaspath);
+    }
+
+    string ueventpath =
+      fs.path + string("/class/") + e.This->devclass + string("/") + e.This->devname + "/device/uevent";
+
+    if(exists(ueventpath)) {
+      string uevent = get_string(ueventpath);
+      size_t modalias_pos = uevent.find("MODALIAS=");
+      if (modalias_pos != string::npos) {
+        size_t modalias_pos2 = uevent.find(modalias_pos, '\n');
+        return uevent.substr(modalias_pos+9, modalias_pos2-modalias_pos+9);
+      }
+    }
+  }
+
+  return "";
+}
+
+
 static string finddevice(const string & name, const string & root = "")
 {
   struct dirent **namelist;

@@ -1146,6 +1146,11 @@ bool scan_pci(hwNode & n)
           device->claim();
         }
 
+        if(exists(string(devices[i]->d_name)+"/modalias")) {
+          string modalias = get_string(string(devices[i]->d_name)+"/modalias");
+          device->setModalias(modalias);
+        }
+
         if(exists(resourcename))
         {
             FILE*resource = fopen(resourcename.c_str(), "r");

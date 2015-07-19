@@ -35,5 +35,6 @@ namespace sysfs
 bool scan_sysfs(hwNode & n);
 
 std::string sysfs_getbusinfo(const sysfs::entry &);
+std::string sysfs_getmodalias(const sysfs::entry &);
 std::string sysfs_finddevice(const string &name);
 #endif
