@@ -20,6 +20,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <arpa/inet.h>
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
@@ -39,11 +41,13 @@ struct dimminfo
 #define DEVICETREE "/proc/device-tree"
 #define DEVICETREEVPD  "/proc/device-tree/vpd/"
 
-#define ntohll(x) (((uint64_t)(ntohl((uint32_t)((x << 32) >> 32))) << 32) | ntohl(((uint32_t)(x >> 32))))  
-
-static unsigned long get_long(const string & path)
+/*
+ * Integer properties in device tree are usually represented as a single 
+ * "u32 cell" which is an unsigned 32-bit big-endian integer.
+ */
+static uint32_t get_u32(const string & path)
 {
-  unsigned long result = 0;
+  uint32_t result = 0;
   int fd = open(path.c_str(), O_RDONLY);
 
   if (fd >= 0)
@@ -54,12 +58,60 @@ static unsigned long get_long(const string & path)
     close(fd);
   }
 
-  if(sizeof(result) == sizeof(uint64_t))
-    return ntohll(result);
-  else
-    return ntohl(result);
+  return ntohl(result);
 }
 
+static uint64_t read_int(FILE *f, size_t length = 4)
+{
+  vector < uint8_t > bytes(length);
+  uint64_t result = 0;
+  if (fread(bytes.data(), length, 1, f) != 1)
+    return 0;
+  for (size_t i = 0; i < length; i ++)
+  {
+    result += ((uint64_t) bytes[length - i - 1]) << (i * 8);
+  }
+  return result;
+}
+
+/*
+ * The reg property is an array of (address, size) pairs. The length of the 
+ * address and size are determined by the #address-cells and #size-cells 
+ * properties on the parent node, measured in number of "cells" which are 
+ * 32 bits wide. The address and size are in big-endian byte order.
+ */
+struct reg_entry {
+  uint64_t address;
+  uint64_t size;
+};
+static vector < reg_entry > get_reg_property(const string & node)
+{
+  vector < reg_entry > result;
+
+  uint32_t num_address_cells = get_u32(node + "/../#address-cells") || 1;
+  uint32_t num_size_cells = get_u32(node + "/../#size-cells") || 1;
+  if (num_address_cells > 2 || num_size_cells > 2)
+    return result;
+
+  FILE *f = fopen((node + "/reg").c_str(), "r");
+  if (f == NULL)
+    return result;
+
+  while (true)
+  {
+    reg_entry entry = {0};
+    entry.address = read_int(f, num_address_cells * 4);
+    if (feof(f))
+      break;
+    entry.size = read_int(f, num_size_cells * 4);
+    if (feof(f))
+      break;
+    result.push_back(entry);
+  }
+
+  fclose(f);
+  return result;
+}
 
 static vector < string > get_strings(const string & path,
 unsigned int offset = 0)
@@ -104,7 +156,7 @@ unsigned int offset = 0)
 
 static void scan_devtree_root(hwNode & core)
 {
-  core.setClock(get_long(DEVICETREE "/clock-frequency"));
+  core.setClock(get_u32(DEVICETREE "/clock-frequency"));
 }
 
 
@@ -115,8 +167,6 @@ static void scan_devtree_bootrom(hwNode & core)
     hwNode bootrom("firmware",
       hw::memory);
     string upgrade = "";
-    unsigned long base = 0;
-    unsigned long size = 0;
 
     bootrom.setProduct(get_string(DEVICETREE "/rom/boot-rom/model"));
     bootrom.setDescription("BootROM");
@@ -130,20 +180,11 @@ static void scan_devtree_bootrom(hwNode & core)
       bootrom.addCapability(upgrade);
     }
 
-    int fd = open(DEVICETREE "/rom/boot-rom/reg", O_RDONLY);
-    if (fd >= 0)
+    vector < reg_entry > regs = get_reg_property(DEVICETREE "/rom/boot-rom");
+    if (!regs.empty())
     {
-      if(read(fd, &base, sizeof(base)) == sizeof(base))
-      {
-        if(read(fd, &size, sizeof(size)) != sizeof(size))
-          size = 0;
-      }
-      else
-        base = 0;
-
-      bootrom.setPhysId(base);
-      bootrom.setSize(size);
-      close(fd);
+      bootrom.setPhysId(regs[0].address);
+      bootrom.setSize(regs[0].size);
     }
 
     bootrom.claim();
@@ -210,12 +251,12 @@ static void scan_devtree_cpu(hwNode & core)
       cpu.setDescription("CPU");
       cpu.claim();
       cpu.setBusInfo(cpubusinfo(currentcpu++));
-      cpu.setSize(get_long(basepath + "/clock-frequency"));
-      cpu.setClock(get_long(basepath + "/bus-frequency"));
+      cpu.setSize(get_u32(basepath + "/clock-frequency"));
+      cpu.setClock(get_u32(basepath + "/bus-frequency"));
       if (exists(basepath + "/altivec"))
         cpu.addCapability("altivec");
 
-      version = get_long(basepath + "/cpu-version");
+      version = get_u32(basepath + "/cpu-version");
       if (version != 0)
       {
         int minor = version & 0x00ff;
@@ -240,7 +281,7 @@ static void scan_devtree_cpu(hwNode & core)
 
         cache.claim();
         cache.setDescription("L1 Cache");
-        cache.setSize(get_long(basepath + "/d-cache-size"));
+        cache.setSize(get_u32(basepath + "/d-cache-size"));
         if (cache.getSize() > 0)
           cpu.addChild(cache);
       }
@@ -262,8 +303,8 @@ static void scan_devtree_cpu(hwNode & core)
 
           cache.claim();
           cache.setDescription("L2 Cache");
-          cache.setSize(get_long(cachebase + "/d-cache-size"));
-          cache.setClock(get_long(cachebase + "/clock-frequency"));
+          cache.setSize(get_u32(cachebase + "/d-cache-size"));
+          cache.setClock(get_u32(cachebase + "/clock-frequency"));
 
           if (exists(cachebase + "/cache-unified"))
             cache.setDescription(cache.getDescription() + " (unified)");
@@ -272,7 +313,7 @@ static void scan_devtree_cpu(hwNode & core)
             hwNode icache = cache;
             cache.setDescription(cache.getDescription() + " (data)");
             icache.setDescription(icache.getDescription() + " (instruction)");
-            icache.setSize(get_long(cachebase + "/i-cache-size"));
+            icache.setSize(get_u32(cachebase + "/i-cache-size"));
 
             if (icache.getSize() > 0)
               cpu.addChild(icache);
@@ -383,7 +424,7 @@ static void scan_devtree_memory(hwNode & core)
     vector < string > slotnames;
     vector < string > dimmtypes;
     vector < string > dimmspeeds;
-    string reg;
+    vector < reg_entry > regs;
     string dimminfo;
 
     snprintf(buffer, sizeof(buffer), "%d", currentmc);
@@ -392,10 +433,10 @@ static void scan_devtree_memory(hwNode & core)
     else
       mcbase = string(DEVICETREE "/memory");
     slotnames =
-      get_strings(mcbase + string("/slot-names"), sizeof(unsigned long));
+      get_strings(mcbase + string("/slot-names"), 4);
     dimmtypes = get_strings(mcbase + string("/dimm-types"));
     dimmspeeds = get_strings(mcbase + string("/dimm-speeds"));
-    reg = mcbase + string("/reg");
+    regs = get_reg_property(mcbase);
     dimminfo = mcbase + string("/dimm-info");
 
     if (slotnames.size() == 0)
@@ -417,27 +458,15 @@ static void scan_devtree_memory(hwNode & core)
     if (memory)
     {
       int fd = open(dimminfo.c_str(), O_RDONLY);
-      int fd2 = open(reg.c_str(), O_RDONLY);
 
-      if (fd2 >= 0)
+      if (regs.size() == slotnames.size())
       {
         for (unsigned int i = 0; i < slotnames.size(); i++)
         {
-          uint64_t base = 0;
-          uint64_t size = 0;
+          uint64_t base = regs[i].address;
+          uint64_t size = regs[i].size;
           hwNode bank("bank",
             hw::memory);
-
-          if(read(fd2, &base, sizeof(base)) == sizeof(base))
-          {
-            if(read(fd2, &size, sizeof(size)) != sizeof(size))
-              size = 0;
-          }
-          else
-            base = 0;
-
-          base = ntohll(base);
-          size = ntohll(size);
 
           if (fd >= 0)
           {
@@ -537,7 +566,6 @@ static void scan_devtree_memory(hwNode & core)
           bank.setSize(size);
           memory->addChild(bank);
         }
-        close(fd2);
       }
 
       if (fd >= 0)
