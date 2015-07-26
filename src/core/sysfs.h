@@ -21,19 +21,25 @@ namespace sysfs
       ~entry();
 
       bool hassubdir(const string &);
+      string name() const;
+      string businfo() const;
+      string driver() const;
+      entry parent() const;
+      string name_in_class(const string &) const;
 
       struct entry_i * This;
 
     private:
-      entry();
+      entry(const string &);
 
   };
+
+  vector < entry > entries_by_bus(const string & busname);
 
 }                                                 // namespace sysfs
 
 
 bool scan_sysfs(hwNode & n);
 
-std::string sysfs_getbusinfo(const sysfs::entry &);
 std::string sysfs_finddevice(const string &name);
 #endif

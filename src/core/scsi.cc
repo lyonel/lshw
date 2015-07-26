@@ -841,7 +841,7 @@ static bool scan_hosts(hwNode & node)
 
           if (!controller)
           {
-            string parentbusinfo = sysfs_getbusinfo(sysfs::entry::byClass("scsi_host", host_kname(number)));
+            string parentbusinfo = sysfs::entry::byClass("scsi_host", host_kname(number)).businfo();
 
             controller = node.findChildByBusInfo(parentbusinfo);
           }

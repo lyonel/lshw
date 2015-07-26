@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
-#include <libgen.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/mount.h>
@@ -24,9 +23,7 @@ using namespace sysfs;
 
 struct sysfs::entry_i
 {
-  string devclass;
-  string devbus;
-  string devname;
+  string devpath;
 };
 
 struct sysfs_t
@@ -102,7 +99,7 @@ static string sysfs_getbustype(const string & path)
   {
     devname =
       string(fs.path + "/bus/") + string(namelist[i]->d_name) +
-      "/devices/" + basename((char *) path.c_str());
+      "/devices/" + basename(path.c_str());
 
     if (samefile(devname, path))
       return string(namelist[i]->d_name);
@@ -140,49 +137,25 @@ static string sysfstobusinfo(const string & path)
   if (bustype == "ide")
     return sysfstoide(path);
 
-  return "";
-}
-
-
-static string sysfs_getbusinfo_byclass(const string & devclass, const string & devname)
-{
-  string device =
-    fs.path + string("/class/") + devclass + string("/") + devname + "/device";
-  string result = "";
-  int i = 0;
-
-  while((result == "") && (i<2))                  // device may point to /businfo or /businfo/devname
+  if (bustype == "virtio")
   {
-    if(!exists(device)) return "";
-    result = sysfstobusinfo(realpath(device));
-    device += "/../" + devname + "/..";
-    i++;
+    string name = basename(path.c_str());
+    if (name.compare(0, 6, "virtio") == 0)
+      return "virtio@" + name.substr(6);
+    else
+      return "virtio@" + name;
   }
 
-  return result;
-}
-
-
-static string sysfs_getbusinfo_bybus(const string & devbus, const string & devname)
-{
-  string device =
-    fs.path + string("/bus/") + devbus + string("/devices/") + devname;
-  char buffer[PATH_MAX + 1];
-
-  if (!realpath(device.c_str(), buffer))
-    return "";
-
-  return sysfstobusinfo(hw::strip(buffer));
-}
-
-
-string sysfs_getbusinfo(const entry & e)
-{
-  if(e.This->devclass != "")
-    return sysfs_getbusinfo_byclass(e.This->devclass, e.This->devname);
-  if(e.This->devbus != "")
-    return sysfs_getbusinfo_bybus(e.This->devbus, e.This->devname);
   return "";
+}
+
+
+string entry::businfo() const
+{
+  string result = sysfstobusinfo(This->devpath);
+  if (result.empty())
+    result = sysfstobusinfo(dirname(This->devpath));
+  return result;
 }
 
 
@@ -229,47 +202,33 @@ string sysfs_finddevice(const string & name)
 }
 
 
-string sysfs_getdriver(const string & devclass,
-const string & devname)
+string entry::driver() const
 {
-  string driverpath =
-    fs.path + string("/class/") + devclass + string("/") + devname + "/";
-  string driver = driverpath + "/driver";
-  char buffer[PATH_MAX + 1];
-  int namelen = 0;
-
-  if ((namelen = readlink(driver.c_str(), buffer, sizeof(buffer))) < 0)
+  string driverlink = This->devpath + "/driver";
+  if (!exists(driverlink))
     return "";
-
-  return string(basename(buffer));
+  return basename(readlink(driverlink).c_str());
 }
 
 
 entry entry::byBus(string devbus, string devname)
 {
-  entry e;
-
-  e.This->devbus = devbus;
-  e.This->devname = devname;
-
+  entry e(fs.path + "/bus/" + devbus + "/devices/" + devname);
   return e;
 }
 
 
 entry entry::byClass(string devclass, string devname)
 {
-  entry e;
-
-  e.This->devclass = devclass;
-  e.This->devname = devname;
-
+  entry e(fs.path + "/class/" + devclass + "/" + devname + "/device");
   return e;
 }
 
 
-entry::entry()
+entry::entry(const string & devpath)
 {
   This = new entry_i;
+  This->devpath = realpath(devpath);
 }
 
 
@@ -296,14 +255,68 @@ entry::~entry()
 
 bool entry::hassubdir(const string & s)
 {
-  if(This->devclass != "")
-    return exists(fs.path + string("/class/") + This->devclass + string("/") + This->devname + "/" + s);
-  
-  if(This->devbus != "")
-    return exists(fs.path + string("/bus/") + This->devbus + string("/devices/") + This->devname + string("/") + s);
-
-  return false;
+  return exists(This->devpath + "/" + s);
 }
+
+
+string entry::name_in_class(const string & classname) const
+{
+  string result = "";
+
+  string classdir = This->devpath + "/" + classname;
+  if (!pushd(classdir))
+    return result;
+
+  struct dirent **namelist = NULL;
+  int count = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (count < 0)
+    return result;
+
+  // there should be at most one
+  for (int i = 0; i < count; i++)
+  {
+    result = namelist[i]->d_name;
+    free(namelist[i]);
+  }
+  free(namelist);
+
+  return result;
+}
+
+
+string entry::name() const
+{
+  return basename(This->devpath.c_str());
+}
+
+
+entry entry::parent() const
+{
+  entry e(dirname(This->devpath));
+  return e;
+}
+
+
+vector < entry > sysfs::entries_by_bus(const string & busname)
+{
+  vector < entry > result;
+
+  if (!pushd(fs.path + "/bus/" + busname + "/devices"))
+    return result;
+
+  struct dirent **namelist;
+  int count;
+  count = scandir(".", &namelist, selectlink, alphasort);
+  for (int i = 0; i < count; i ++)
+  {
+    entry e = sysfs::entry::byBus(busname, namelist[i]->d_name);
+    result.push_back(e);
+  }
+  return result;
+}
+
 
 bool scan_sysfs(hwNode & n)
 {

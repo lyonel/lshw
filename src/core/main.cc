@@ -40,6 +40,7 @@
 #include "cpufreq.h"
 #include "ideraid.h"
 #include "mounts.h"
+#include "virtio.h"
 #include "smp.h"
 #include "abi.h"
 #include "dasd.h"
@@ -106,6 +107,9 @@ bool scan_system(hwNode & system)
     status("PCMCIA");
     if (enabled("pcmcia-legacy"))
       scan_pcmcialegacy(computer);
+    status("Virtual I/O (VIRTIO) devices");
+    if (enabled("virtio"))
+      scan_virtio(computer);
     status("kernel device tree (sysfs)");
     if (enabled("sysfs"))
       scan_sysfs(computer);

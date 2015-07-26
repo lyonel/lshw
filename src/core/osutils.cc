@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libgen.h>
 #include <regex.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -410,6 +411,18 @@ string realpath(const string & path)
     return string(buffer);
   else
     return path;
+}
+
+
+string dirname(const string & path)
+{
+  size_t len = path.length();
+  char *buffer = new char[len + 1];
+  path.copy(buffer, len);
+  buffer[len] = '\0';
+  string result = dirname(buffer);
+  delete buffer;
+  return result;
 }
 
 
