@@ -14,6 +14,7 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <scsi/sg.h>
 #include <scsi/scsi.h>
@@ -439,7 +440,7 @@ static u_int16_t decode_word(void *ptr)
 static bool do_inquiry(int sg_fd,
 hwNode & node)
 {
-  char rsp_buff[MX_ALLOC_LEN + 1];
+  uint8_t rsp_buff[MX_ALLOC_LEN + 1];
   int k;
   unsigned int len;
 
@@ -469,11 +470,11 @@ hwNode & node)
   if (rsp_buff[1] & 0x80)
     node.addCapability("removable", "support is removable");
 
-  node.setVendor(string(rsp_buff + 8, 8));
+  node.setVendor(string((char *)rsp_buff + 8, 8));
   if (len > 16)
-    node.setProduct(string(rsp_buff + 16, 16));
+    node.setProduct(string((char *)rsp_buff + 16, 16));
   if (len > 32)
-    node.setVersion(string(rsp_buff + 32, 4));
+    node.setVersion(string((char *)rsp_buff + 32, 4));
 
   if (ansiversion)
     node.setConfig("ansiversion", tostring(ansiversion));
@@ -481,9 +482,9 @@ hwNode & node)
   memset(rsp_buff, 0, sizeof(rsp_buff));
   if (do_inq(sg_fd, 0, 1, 0x80, rsp_buff, MX_ALLOC_LEN, 0))
   {
-    char _len = rsp_buff[3];
+    uint8_t _len = rsp_buff[3];
     if (_len > 0)
-      node.setSerial(hw::strip(string(rsp_buff + 4, _len)));
+      node.setSerial(hw::strip(string((char *)rsp_buff + 4, _len)));
   }
 
   memset(rsp_buff, 0, sizeof(rsp_buff));
@@ -494,14 +495,14 @@ hwNode & node)
     unsigned long long cyl = 0;
     unsigned long long sectors = 0;
     unsigned long rpm = 0;
-    u_int8_t *end = (u_int8_t *) rsp_buff + (u_int8_t) rsp_buff[0];
-    u_int8_t *p = NULL;
+    uint8_t *end = rsp_buff + rsp_buff[0];
+    uint8_t *p = NULL;
 
     if (rsp_buff[3] == 8)
       sectsize = decode_3_bytes(rsp_buff + 9);
 
-    p = (u_int8_t *) & rsp_buff[4];
-    p += (u_int8_t) rsp_buff[3];
+    p = & rsp_buff[4];
+    p += rsp_buff[3];
     while (p < end)
     {
       u_int8_t page = *p & 0x3F;
