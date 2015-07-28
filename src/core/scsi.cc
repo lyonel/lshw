@@ -453,7 +453,7 @@ hwNode & node)
 
   len = (unsigned int) rsp_buff[4] + 5;
 
-  if ((len > 36) && (len < 256))
+  if ((len >= 36) && (len < 256))
   {
     memset(rsp_buff, 0, sizeof(rsp_buff));
     if (!do_inq(sg_fd, 0, 0, 0, rsp_buff, len, 1))
