@@ -662,7 +662,6 @@ static void scan_sg(hwNode & n)
   string host = "";
   string businfo = "";
   string adapter_businfo = "";
-  hwNode *parent = NULL;
   int emulated = 0;
   bool ghostdeventry = false;
   size_t j;
@@ -701,6 +700,7 @@ static void scan_sg(hwNode & n)
       .parent().businfo();
 
   hwNode device = hwNode("generic");
+  hwNode *parent = NULL;
 
   switch (m_id.scsi_type)
   {
