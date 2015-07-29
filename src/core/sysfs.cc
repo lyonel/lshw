@@ -137,6 +137,17 @@ static string sysfstobusinfo(const string & path)
   if (bustype == "ide")
     return sysfstoide(path);
 
+  if (bustype == "usb")
+  {
+    string name = basename(path.c_str());
+    if (matches(name, "^[0-9]+-[0-9]+(\\.[0-9]+)*:[0-9]+\\.[0-9]+$"))
+    {
+      size_t colon = name.rfind(":");
+      size_t dash = name.find("-");
+      return "usb@" + name.substr(0, dash) + ":" + name.substr(dash+1, colon-dash-1);
+    }
+  }
+
   if (bustype == "virtio")
   {
     string name = basename(path.c_str());
