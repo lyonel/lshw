@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=LSHW
 Comment=HardWare LiSter
+Comment[fr]=Listeur de matériel
+Comment[es]=Listar equipamiento
 Categories=Application;System;X-Red-Hat-Base;X-Fedora;
 Icon=/usr/share/lshw/artwork/logo.svg
 Exec=/usr/bin/gtk-lshw
