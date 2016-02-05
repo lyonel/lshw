@@ -31,6 +31,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include <string>
 #include <sys/types.h>
@@ -49,9 +50,9 @@ __ID("@(#) $Id$");
 #define SIOCETHTOOL     0x8946
 #endif
 typedef unsigned long long u64;
-typedef __uint32_t u32;
-typedef __uint16_t u16;
-typedef __uint8_t u8;
+typedef uint32_t u32;
+typedef uint16_t u16;
+typedef uint8_t u8;
 
 struct ethtool_cmd
 {

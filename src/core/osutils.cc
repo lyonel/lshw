@@ -9,6 +9,7 @@
 #include <dirent.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <libgen.h>
 #include <regex.h>
@@ -509,48 +510,48 @@ string escapecomment(const string & s)
 
 unsigned short be_short(const void * from)
 {
-  __uint8_t *p = (__uint8_t*)from;
+  uint8_t *p = (uint8_t*)from;
 
-  return ((__uint16_t)(p[0]) << 8) +
-    (__uint16_t)p[1];
+  return ((uint16_t)(p[0]) << 8) +
+    (uint16_t)p[1];
 }
 
 
 unsigned short le_short(const void * from)
 {
-  __uint8_t *p = (__uint8_t*)from;
+  uint8_t *p = (uint8_t*)from;
 
-  return ((__uint16_t)(p[1]) << 8) +
-    (__uint16_t)p[0];
+  return ((uint16_t)(p[1]) << 8) +
+    (uint16_t)p[0];
 }
 
 
 unsigned long be_long(const void * from)
 {
-  __uint8_t *p = (__uint8_t*)from;
+  uint8_t *p = (uint8_t*)from;
 
-  return ((__uint32_t)(p[0]) << 24) +
-    ((__uint32_t)(p[1]) << 16) +
-    ((__uint32_t)(p[2]) << 8) +
-    (__uint32_t)p[3];
+  return ((uint32_t)(p[0]) << 24) +
+    ((uint32_t)(p[1]) << 16) +
+    ((uint32_t)(p[2]) << 8) +
+    (uint32_t)p[3];
 }
 
 
 unsigned long le_long(const void * from)
 {
-  __uint8_t *p = (__uint8_t*)from;
+  uint8_t *p = (uint8_t*)from;
 
-  return ((__uint32_t)(p[3]) << 24) +
-    ((__uint32_t)(p[2]) << 16) +
-    ((__uint32_t)(p[1]) << 8) +
-    (__uint32_t)p[0];
+  return ((uint32_t)(p[3]) << 24) +
+    ((uint32_t)(p[2]) << 16) +
+    ((uint32_t)(p[1]) << 8) +
+    (uint32_t)p[0];
 
 }
 
 
 unsigned long long be_longlong(const void * from)
 {
-  __uint8_t *p = (__uint8_t*)from;
+  uint8_t *p = (uint8_t*)from;
 
   return ((unsigned long long)(p[0]) << 56) +
     ((unsigned long long)(p[1]) << 48) +
@@ -565,7 +566,7 @@ unsigned long long be_longlong(const void * from)
 
 unsigned long long le_longlong(const void * from)
 {
-  __uint8_t *p = (__uint8_t*)from;
+  uint8_t *p = (uint8_t*)from;
 
   return ((unsigned long long)(p[7]) << 56) +
     ((unsigned long long)(p[6]) << 48) +

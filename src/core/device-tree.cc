@@ -19,6 +19,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <arpa/inet.h>
@@ -29,13 +30,13 @@
 __ID("@(#) $Id$");
 
 #define DIMMINFOSIZE 0x100
-typedef __uint8_t dimminfo_buf[DIMMINFOSIZE];
+typedef uint8_t dimminfo_buf[DIMMINFOSIZE];
 
 struct dimminfo
 {
-  __uint8_t version3;
+  uint8_t version3;
   char serial[16];
-  __uint16_t version1, version2;
+  uint16_t version1, version2;
 };
 
 #define DEVICETREE "/proc/device-tree"
