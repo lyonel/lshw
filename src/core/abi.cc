@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <limits.h>
 
 __ID("@(#) $Id: mem.cc 1352 2006-05-27 23:54:13Z ezix $");
 
@@ -19,7 +20,7 @@ __ID("@(#) $Id: mem.cc 1352 2006-05-27 23:54:13Z ezix $");
 bool scan_abi(hwNode & system)
 {
   // are we compiled as 32- or 64-bit process ?
-  system.setWidth(sysconf(_SC_LONG_BIT));
+  system.setWidth(sysconf(LONG_BIT));
 
   pushd(PROC_SYS);
 
