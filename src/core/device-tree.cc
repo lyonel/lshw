@@ -26,6 +26,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <utility>
+#include <map>
 
 __ID("@(#) $Id$");
 
@@ -340,6 +342,186 @@ static void scan_devtree_cpu(hwNode & core)
     }
     free(namelist);
   }
+}
+
+
+static void scan_devtree_cpu_power(hwNode & core)
+{
+  struct dirent **namelist;
+  int n;
+  int currentcpu=0;
+  map <uint32_t, pair<uint32_t, vector <hwNode> > > l2_caches;
+  map <uint32_t, vector <hwNode> > l3_caches;
+
+  pushd(DEVICETREE "/cpus");
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+  if (n < 0)
+    return;
+
+  for (int i = 0; i < n; i++) //first pass
+  {
+    string basepath =
+      string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
+    hwNode cache("cache", hw::memory);
+    vector <hwNode> value;
+
+    if (exists(basepath + "/device_type") &&
+      hw::strip(get_string(basepath + "/device_type")) != "cache")
+      continue;                                    // oops, not a cache!
+
+    cache.claim();
+    cache.setProduct(get_string(basepath + "/name"));
+    if (cache.getProduct () == "l2-cache")
+      cache.setDescription("L2 Cache");
+    else
+      cache.setDescription("L3 Cache");
+
+    if (hw::strip(get_string(basepath + "/status")) != "okay")
+      cache.disable();
+
+    cache.setSize(get_u32(basepath + "/d-cache-size"));
+
+    if (exists(basepath + "/cache-unified"))
+      cache.setDescription(cache.getDescription() + " (unified)");
+    else
+    {
+      hwNode icache = cache;
+      icache.claim();
+      cache.setDescription(cache.getDescription() + " (data)");
+      icache.setDescription(icache.getDescription() + " (instruction)");
+      icache.setSize(get_u32(basepath + "/i-cache-size"));
+      if (cache.disabled())
+        icache.disable();
+
+      if (icache.getSize() > 0)
+        value.insert(value.begin(), icache);
+    }
+
+    if (cache.getSize() > 0)
+      value.insert(value.begin(), cache);
+
+    if (value.size() > 0)
+    {
+      uint32_t phandle = 0;
+      if (exists(basepath + "/phandle"))
+        phandle = get_u32(basepath + "/phandle");
+      else if (exists(basepath + "/ibm,phandle")) // on pSeries LPARs
+        phandle = get_u32(basepath + "/ibm,phandle");
+
+      if (!phandle)
+        continue;
+
+      if (cache.getProduct () == "l2-cache")
+      {
+        uint32_t l3_key = 0; // 0 indicating no next level of cache
+        string nl_cache = "";
+
+        if (exists(basepath + "/l2-cache"))
+          nl_cache = "/l2-cache";
+        else if (exists(basepath + "/next-level-cache")) //on OpenPOWER systems
+          nl_cache = "/next-level-cache";
+
+        l3_key = get_u32(basepath + nl_cache);
+
+        pair <uint32_t, vector <hwNode> > p (l3_key, value);
+        l2_caches[phandle] = p;
+      }
+      else if (cache.getProduct () == "l3-cache")
+      {
+        l3_caches[phandle] = value;
+      }
+    }
+  }
+
+  for (int i = 0; i < n; i++) //second and final pass
+  {
+    string basepath =
+      string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
+    string nl_cache = "";
+    uint32_t version = 0;
+    hwNode cpu("cpu",
+      hw::processor);
+
+    if (exists(basepath + "/device_type") &&
+      hw::strip(get_string(basepath + "/device_type")) != "cpu")
+    {
+      free(namelist[i]);
+      continue;                                    // oops, not a CPU!
+    }
+
+    set_cpu(cpu, currentcpu++, basepath);
+
+    version = get_u32(basepath + "/cpu-version");
+    if (version != 0)
+    {
+      char buffer[20];
+
+      snprintf(buffer, sizeof(buffer), "%08x", version);
+      cpu.setVersion(buffer);
+    }
+
+    if (hw::strip(get_string(basepath + "/status")) != "okay")
+      cpu.disable();
+
+    if (exists(basepath + "/d-cache-size"))
+    {
+      hwNode cache("cache", hw::memory);
+      hwNode icache("cache", hw::memory);
+
+      cache.claim();
+      cache.setDescription("L1 Cache");
+      cache.setSize(get_u32(basepath + "/d-cache-size"));
+
+      if (exists(basepath + "/cache-unified"))
+        cache.setDescription(cache.getDescription() + " (unified)");
+      else
+      {
+        cache.setDescription(cache.getDescription() + " (data)");
+
+        icache.claim();
+        icache.setDescription("L1 Cache (instruction)");
+        icache.setSize(get_u32(basepath + "/i-cache-size"));
+      }
+
+      if (icache.getSize() > 0)
+        cpu.addChild(icache);
+
+      if (cache.getSize() > 0)
+        cpu.addChild(cache);
+    }
+
+    if (exists(basepath + "/l2-cache"))
+	    nl_cache = "/l2-cache";
+    else if (exists(basepath + "/next-level-cache"))
+	    nl_cache = "/next-level-cache";
+
+    if (nl_cache != "")
+    {
+      uint32_t l2_key = get_u32(basepath + nl_cache);
+      map <uint32_t, pair <uint32_t, vector <hwNode> > >::
+        const_iterator got = l2_caches.find(l2_key);
+
+      if (!(got == l2_caches.end()))
+        for (unsigned int j=0; j<(got->second).second.size(); j++)
+          cpu.addChild((got->second).second[j]);
+
+      if ((got->second).first != 0) //we have another level of cache
+      {
+        map <uint32_t, vector <hwNode> >::const_iterator got_l3 =
+          l3_caches.find ((got->second).first);
+
+        if (!(got_l3 == l3_caches.end()))
+          for (unsigned int j=0; j<(got_l3->second).size(); j++)
+            cpu.addChild((got_l3->second)[j]);
+      }
+    }
+
+    core.addChild(cpu);
+
+    free(namelist[i]);
+  }
+  free(namelist);
 }
 
 void add_memory_bank(string name, string path, hwNode & core)
@@ -728,7 +910,7 @@ bool scan_device_tree(hwNode & n)
       core->addHint("icon", string("board"));
       scan_devtree_root(*core);
       scan_devtree_memory_powernv(*core);
-      scan_devtree_cpu(*core);
+      scan_devtree_cpu_power(*core);
       n.addCapability("powernv", "Non-virtualized");
       n.addCapability("opal", "OPAL firmware");
     }
@@ -764,7 +946,7 @@ bool scan_device_tree(hwNode & n)
     {
       core->addHint("icon", string("board"));
       scan_devtree_root(*core);
-      scan_devtree_cpu(*core);
+      scan_devtree_cpu_power(*core);
       core->addCapability("qemu", "QEMU virtualization");
       core->addCapability("guest", "Virtualization guest");
     }
@@ -779,7 +961,10 @@ bool scan_device_tree(hwNode & n)
       scan_devtree_root(*core);
       scan_devtree_bootrom(*core);
       scan_devtree_memory(*core);
-      scan_devtree_cpu(*core);
+      if (exists(DEVICETREE "/ibm,lpar-capable"))
+        scan_devtree_cpu_power(*core);
+      else
+        scan_devtree_cpu(*core);
     }
   }
 
