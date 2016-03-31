@@ -464,7 +464,6 @@ static void scan_devtree_memory(hwNode & core)
       {
         for (unsigned int i = 0; i < slotnames.size(); i++)
         {
-          uint64_t base = regs[i].address;
           uint64_t size = regs[i].size;
           hwNode bank("bank",
             hw::memory);
@@ -559,7 +558,6 @@ static void scan_devtree_memory(hwNode & core)
             bank.addHint("icon", string("memory"));
           bank.setDescription("Memory bank");
           bank.setSlot(slotnames[i]);
-//bank.setPhysId(base);
           if (i < dimmtypes.size())
             bank.setDescription(dimmtypes[i]);
           if (i < dimmspeeds.size())
