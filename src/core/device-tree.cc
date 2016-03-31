@@ -1036,6 +1036,7 @@ bool scan_device_tree(hwNode & n)
   {
     n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
     n.setProduct(get_string(DEVICETREE "/model-name"));
+    n.setDescription("PowerNV");
     if (core)
     {
       core->addHint("icon", string("board"));
@@ -1093,7 +1094,10 @@ bool scan_device_tree(hwNode & n)
       scan_devtree_bootrom(*core);
       scan_devtree_memory(*core);
       if (exists(DEVICETREE "/ibm,lpar-capable"))
+      {
+        n.setDescription("pSeries LPAR");
         scan_devtree_cpu_power(*core);
+      }
       else
         scan_devtree_cpu(*core);
     }
