@@ -565,6 +565,7 @@ static void scan_devtree_cpu_power(hwNode & core)
     }
 
     set_cpu(cpu, currentcpu++, basepath);
+    cpu.setReg(get_u32(basepath + "/reg"));
 
     version = get_u32(basepath + "/cpu-version");
     if (version != 0)
