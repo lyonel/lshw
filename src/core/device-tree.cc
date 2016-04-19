@@ -221,6 +221,22 @@ static string cpubusinfo(int cpu)
 }
 
 
+static void set_cpu(hwNode & cpu, int currentcpu, const string & basepath)
+{
+  cpu.setProduct(get_string(basepath + "/name"));
+  cpu.setDescription("CPU");
+  cpu.claim();
+  cpu.setBusInfo(cpubusinfo(currentcpu));
+  cpu.setSize(get_u32(basepath + "/clock-frequency"));
+  cpu.setClock(get_u32(basepath + "/bus-frequency"));
+  if (exists(basepath + "/altivec"))
+    cpu.addCapability("altivec");
+
+  if (exists(basepath + "/performance-monitor"))
+    cpu.addCapability("performance-monitor");
+}
+
+
 static void scan_devtree_cpu(hwNode & core)
 {
   struct dirent **namelist;
@@ -248,14 +264,7 @@ static void scan_devtree_cpu(hwNode & core)
         hw::strip(get_string(basepath + "/device_type")) != "cpu")
         break;                                    // oops, not a CPU!
 
-      cpu.setProduct(get_string(basepath + "/name"));
-      cpu.setDescription("CPU");
-      cpu.claim();
-      cpu.setBusInfo(cpubusinfo(currentcpu++));
-      cpu.setSize(get_u32(basepath + "/clock-frequency"));
-      cpu.setClock(get_u32(basepath + "/bus-frequency"));
-      if (exists(basepath + "/altivec"))
-        cpu.addCapability("altivec");
+      set_cpu(cpu, currentcpu++, basepath);
 
       version = get_u32(basepath + "/cpu-version");
       if (version != 0)
@@ -267,13 +276,10 @@ static void scan_devtree_cpu(hwNode & core)
         snprintf(buffer, sizeof(buffer), "%lx.%d.%d",
           (version & 0xffff0000) >> 16, major, minor);
         cpu.setVersion(buffer);
-
       }
+
       if (hw::strip(get_string(basepath + "/state")) != "running")
         cpu.disable();
-
-      if (exists(basepath + "/performance-monitor"))
-        cpu.addCapability("performance-monitor");
 
       if (exists(basepath + "/d-cache-size"))
       {
