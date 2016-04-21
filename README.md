@@ -9,6 +9,9 @@ It currently supports DMI (x86 and EFI only), OpenFirmware device tree
 (PowerPC only), PCI/AGP, ISA PnP (x86), CPUID (x86), IDE/ATA/ATAPI, PCMCIA
 (only tested on x86), USB and SCSI.
 
+Installation
+------------
+
  1. Requirements
    - Linux 2.4.x, 2.6.x or 3.x (2.2.x might work, though)
    - a PA-RISC-, Alpha-, IA-64- (Itanium-), PowerPC-, ARM- or x86- based machine
