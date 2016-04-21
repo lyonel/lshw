@@ -234,9 +234,9 @@ static string datetime(time_t timestamp, bool utc = true)
 
 static bool detect_ext2(hwNode & n, source & s)
 {
-  static char buffer[EXT2_DEFAULT_BLOCK_SIZE];
+  vector<char> buffer(EXT2_DEFAULT_BLOCK_SIZE);
   source ext2volume;
-  ext2_super_block *sb = (ext2_super_block*)buffer;
+  ext2_super_block *sb;
   uint32_t ext2_version = 0;
   time_t mtime, wtime, mkfstime;
   unsigned long long blocksize = EXT2_DEFAULT_BLOCK_SIZE;
@@ -246,6 +246,7 @@ static bool detect_ext2(hwNode & n, source & s)
 
   if(readlogicalblocks(ext2volume, buffer, 1, 1)!=1) // read the second block
     return false;
+  sb = (ext2_super_block*)&buffer[0];
 
   if(le_short(&sb->s_magic) != EXT2_SUPER_MAGIC)	// wrong magic number
     return false;
@@ -346,7 +347,7 @@ static bool detect_ext2(hwNode & n, source & s)
 
 static bool detect_luks(hwNode & n, source & s)
 {
-  static char buffer[BLOCKSIZE];
+  vector<char> buffer(BLOCKSIZE);
   source luksvolume;
   unsigned luks_version = 0;
 
@@ -357,22 +358,22 @@ static bool detect_luks(hwNode & n, source & s)
   if(readlogicalblocks(luksvolume, buffer, 0, 1)!=1)
     return false;
 
-  if(memcmp(buffer, "LUKS", 4) != 0)                    // wrong magic number
+  if(memcmp(&buffer[0], "LUKS", 4) != 0)                // wrong magic number
     return false;
-  if(be_short(buffer+4) != 0xbabe)
+  if(be_short(&buffer[4]) != 0xbabe)
     return false;
 
-  luks_version = be_short(buffer+6);
+  luks_version = be_short(&buffer[6]);
   if(luks_version<1) return false;                 // weird LUKS version
 
   n.addCapability("encrypted", _("Encrypted volume"));
   n.setConfig("version", luks_version);
-  n.setConfig("cipher", hw::strip(std::string(buffer+8, 32)));
-  n.setConfig("mode", hw::strip(std::string(buffer+40, 32)));
-  n.setConfig("hash", hw::strip(std::string(buffer+72, 32)));
-  n.setConfig("bits", 8*be_long(buffer+108));
-  n.setWidth(8*be_long(buffer+108));
-  n.setSerial(hw::strip(std::string(buffer+168, 40)));
+  n.setConfig("cipher", hw::strip(std::string(&buffer[8], 32)));
+  n.setConfig("mode", hw::strip(std::string(&buffer[40], 32)));
+  n.setConfig("hash", hw::strip(std::string(&buffer[72], 32)));
+  n.setConfig("bits", 8*be_long(&buffer[108]));
+  n.setWidth(8*be_long(&buffer[108]));
+  n.setSerial(hw::strip(std::string(&buffer[168], 40)));
   n.setCapacity(luksvolume.size);
   n.setSize(luksvolume.size);
   return true;
@@ -382,7 +383,7 @@ static bool detect_luks(hwNode & n, source & s)
 
 static bool detect_reiserfs(hwNode & n, source & s)
 {
-  static char buffer[REISERFSBLOCKSIZE];
+  vector<char> buffer(REISERFSBLOCKSIZE);
   source reiserfsvolume;
   string magic;
   long long blocksize = 0;
@@ -393,21 +394,21 @@ static bool detect_reiserfs(hwNode & n, source & s)
   if(readlogicalblocks(reiserfsvolume, buffer, 0x10, 1)!=1)
     return false;
 
-  magic = hw::strip(string(buffer+52, 10));
+  magic = hw::strip(string(&buffer[52], 10));
   if(magic != "ReIsEr2Fs" && magic != "ReIsErFs" && magic != "ReIsEr3Fs")                    // wrong magic
     return false;
 
-  n.setConfig("label", hw::strip(string(buffer + 0x64, 16)));
+  n.setConfig("label", hw::strip(string(&buffer[0x64], 16)));
 
-  blocksize = le_short(buffer+44);
-  n.setSize(le_long(buffer)*blocksize);
+  blocksize = le_short(&buffer[44]);
+  n.setSize(le_long(&buffer[0])*blocksize);
 
-  if(le_long(buffer+20) != 0)
+  if(le_long(&buffer[20]) != 0)
     n.addCapability("journaled");
 
-  n.setSerial(hw::strip(uuid((uint8_t*)buffer+0x54)));
+  n.setSerial(hw::strip(uuid((uint8_t*)&buffer[0x54])));
 
-  switch(le_long(buffer+64))
+  switch(le_long(&buffer[64]))
   {
     case 1:
 	n.setConfig("hash", "tea");
@@ -419,7 +420,7 @@ static bool detect_reiserfs(hwNode & n, source & s)
 	n.setConfig("hash", "r5");
   }
 
-  switch(le_short(buffer+50))
+  switch(le_short(&buffer[50]))
   {
     case 1:
 	n.setConfig("state", "clean");
@@ -436,7 +437,7 @@ static bool detect_reiserfs(hwNode & n, source & s)
   if(magic == "ReIsEr2Fs")
     n.setVersion("3.6");
   if(magic == "ReIsEr3Fs")
-    n.setVersion("nonstandard " + tostring(le_short(buffer+72)));
+    n.setVersion("nonstandard " + tostring(le_short(&buffer[72])));
 
   n.setCapacity(reiserfsvolume.size);
   return true;
@@ -453,7 +454,7 @@ static string dos_serial(unsigned long serial)
 
 static bool detect_fat(hwNode & n, source & s)
 {
-  static char buffer[BLOCKSIZE];
+  vector<char> buffer(BLOCKSIZE);
   source fatvolume;
   string magic, label;
   unsigned long long bytes_per_sector = 512;
@@ -469,22 +470,22 @@ static bool detect_fat(hwNode & n, source & s)
   if(readlogicalblocks(fatvolume, buffer, 0, 1)!=1)
     return false;
 
-  if(be_short(buffer+0x1fe) != 0x55aa)		// no "boot" signature
+  if(be_short(&buffer[0x1fe]) != 0x55aa)		// no "boot" signature
     return false;
 
-  magic = hw::strip(string(buffer+0x52, 8));
+  magic = hw::strip(string(&buffer[0x52], 8));
   if(magic != "FAT32")
-    magic = hw::strip(string(buffer+0x36, 8));
+    magic = hw::strip(string(&buffer[0x36], 8));
   if(magic != "FAT12" && magic != "FAT16" && magic != "FAT32")                    // wrong magic
     return false;
 
-  n.setVendor(hw::strip(string(buffer+0x3, 8)));
+  n.setVendor(hw::strip(string(&buffer[0x3], 8)));
   n.setVersion(magic);
 
-  bytes_per_sector = le_short(buffer+0xb);
-  reserved_sectors = le_short(buffer+0xe);
-  hidden_sectors = le_short(buffer+0x1c);
-  size = le_long(buffer+0x20);
+  bytes_per_sector = le_short(&buffer[0xb]);
+  reserved_sectors = le_short(&buffer[0xe]);
+  hidden_sectors = le_short(&buffer[0x1c]);
+  size = le_long(&buffer[0x20]);
   size -= reserved_sectors + hidden_sectors;
   size *= bytes_per_sector;
   n.setSize(size);
@@ -494,13 +495,13 @@ static bool detect_fat(hwNode & n, source & s)
 
   if(magic == "FAT32")
   {
-    label = hw::strip(std::string(buffer+0x47, 11));
-    serial = le_long(buffer+0x43);
+    label = hw::strip(std::string(&buffer[0x47], 11));
+    serial = le_long(&buffer[0x43]);
   }
   else
   {
-    label = hw::strip(std::string(buffer+0x2b, 11));
-    serial = le_long(buffer+0x27);
+    label = hw::strip(std::string(&buffer[0x2b], 11));
+    serial = le_long(&buffer[0x27]);
   }
 
   if(label != "NO NAME" && label != "")
@@ -584,10 +585,10 @@ enum {
 
 static bool detect_hfsx(hwNode & n, source & s)
 {
-  static char buffer[HFSBLOCKSIZE];
+  vector<char> buffer(HFSBLOCKSIZE);
   source hfsvolume;
   string magic;
-  HFSPlusVolumeHeader *vol = (HFSPlusVolumeHeader*)buffer;
+  HFSPlusVolumeHeader *vol;
   uint16_t version = 0;
   uint32_t attributes = 0;
   time_t mkfstime, fscktime, wtime;
@@ -598,8 +599,9 @@ static bool detect_hfsx(hwNode & n, source & s)
                                                   // read the second block
   if(readlogicalblocks(hfsvolume, buffer, 1, 1)!=1)
     return false;
+  vol = (HFSPlusVolumeHeader*)&buffer[0];
 
-  magic = hw::strip(string(buffer, 2));
+  magic = hw::strip(string(&buffer[0], 2));
   if((magic != "H+") && (magic != "HX"))		// wrong signature
     return false;
 
@@ -607,7 +609,7 @@ static bool detect_hfsx(hwNode & n, source & s)
   if(version >= 5)
     n.addCapability("hfsx");
 
-  magic = hw::strip(string(buffer+8, 4));
+  magic = hw::strip(string(&buffer[8], 4));
   if(magic == "10.0")
     n.setVendor("Mac OS X");
   if(magic == "8.10")
@@ -704,10 +706,10 @@ struct HFSMasterDirectoryBlock
 
 static bool detect_hfs(hwNode & n, source & s)
 {
-  static char buffer[HFSBLOCKSIZE];
+  vector<char> buffer(HFSBLOCKSIZE);
   source hfsvolume;
   string magic;
-  HFSMasterDirectoryBlock *vol = (HFSMasterDirectoryBlock*)buffer;
+  HFSMasterDirectoryBlock *vol;
   uint16_t attributes = 0;
   time_t mkfstime, dumptime, wtime;
 
@@ -717,8 +719,9 @@ static bool detect_hfs(hwNode & n, source & s)
                                                   // read the second block
   if(readlogicalblocks(hfsvolume, buffer, 1, 1)!=1)
     return false;
+  vol = (HFSMasterDirectoryBlock*)&buffer[0];
 
-  magic = hw::strip(string(buffer, 2));
+  magic = hw::strip(string(&buffer[0], 2));
   if((magic != "BD"))		// wrong signature
     return false;
 
@@ -876,7 +879,7 @@ static time_t ntfs2utc(int64_t ntfs_time)
 
 static bool detect_ntfs(hwNode & n, source & s)
 {
-  static char buffer[BLOCKSIZE];
+  vector<char> buffer(BLOCKSIZE);
   source ntfsvolume;
   string magic, serial, name, version;
   unsigned long long bytes_per_sector = 512;
@@ -901,24 +904,24 @@ static bool detect_ntfs(hwNode & n, source & s)
   if(readlogicalblocks(ntfsvolume, buffer, 0, 1)!=1)
     return false;
 
-  if(be_short(buffer+0x1fe) != 0x55aa)		// no "boot" signature
+  if(be_short(&buffer[0x1fe]) != 0x55aa)		// no "boot" signature
     return false;
 
-  magic = hw::strip(string(buffer+3, 8));
+  magic = hw::strip(string(&buffer[3], 8));
   if(magic != "NTFS")				// wrong magic
     return false;
 
-  bytes_per_sector = le_short(buffer+0xb);
-  sectors_per_cluster = le_short(buffer+0xd);
-  reserved_sectors = le_short(buffer+0xe);
-  hidden_sectors = le_short(buffer+0x1c);
-  size = le_long(buffer+0x28);
+  bytes_per_sector = le_short(&buffer[0xb]);
+  sectors_per_cluster = le_short(&buffer[0xd]);
+  reserved_sectors = le_short(&buffer[0xe]);
+  hidden_sectors = le_short(&buffer[0x1c]);
+  size = le_long(&buffer[0x28]);
   size -= reserved_sectors + hidden_sectors;
   size *= bytes_per_sector;
 
-  serial = dos_serial(le_long(buffer+0x48));
+  serial = dos_serial(le_long(&buffer[0x48]));
 
-  mft = le_longlong(buffer+0x30);
+  mft = le_longlong(&buffer[0x30]);
   clusters_per_mft_record = (char)buffer[0x40];
   if(clusters_per_mft_record < 0)
     mft_record_size = 1 << -clusters_per_mft_record;
@@ -932,11 +935,10 @@ static bool detect_ntfs(hwNode & n, source & s)
   ntfsvolume = s;
   ntfsvolume.offset += mft * bytes_per_sector * sectors_per_cluster; // point to $MFT
   ntfsvolume.blocksize = mft_record_size;
-  // FIXME mft_record_size<=sizeof(buffer)
   if(readlogicalblocks(ntfsvolume, buffer, MFT_VOLUME, 1)!=1)	// read $Volume
     return false;
 
-  entry = (mft_entry*)buffer;
+  entry = (mft_entry*)&buffer[0];
   if(strncmp(entry->magic, "FILE", 4) != 0)
     return false;
 
@@ -946,7 +948,7 @@ static bool detect_ntfs(hwNode & n, source & s)
 
     while(offset < mft_record_size)
     {
-       attr = (attr_entry*)(buffer+offset);
+       attr = (attr_entry*)(&buffer[offset]);
 
        if(attr->type == AT_END)
          break;
@@ -955,18 +957,18 @@ static bool detect_ntfs(hwNode & n, source & s)
          switch(le_long(&attr->type))
          {
            case AT_STANDARD_INFORMATION:
-             info = (stdinfo*)(buffer+offset+le_short(&attr->value_offset));
+             info = (stdinfo*)(&buffer[offset+le_short(&attr->value_offset)]);
              break;
            case AT_VOLUME_INFORMATION:
-             vi = (volinfo*)(buffer+offset+le_short(&attr->value_offset));
+             vi = (volinfo*)(&buffer[offset+le_short(&attr->value_offset)]);
              vi->flags = le_short(&vi->flags);
              version = tostring(vi->major_ver) + "." + tostring(vi->minor_ver);
              break;
            case AT_OBJECT_ID:
-             guid = uuid((uint8_t*)buffer+offset+le_short(&attr->value_offset));
+             guid = uuid((uint8_t*)&buffer[offset+le_short(&attr->value_offset)]);
              break;
            case AT_VOLUME_NAME:
-             name = utf8((uint16_t*)(buffer+offset+le_short(&attr->value_offset)), le_short(&attr->value_length)/2, true);
+             name = utf8((uint16_t*)(&buffer[offset+le_short(&attr->value_offset)]), le_short(&attr->value_length)/2, true);
              break;
            }
        offset += le_short(&attr->length);
@@ -1011,7 +1013,7 @@ static bool detect_ntfs(hwNode & n, source & s)
 
 static bool detect_swap(hwNode & n, source & s)
 {
-  static char buffer[SWAPBLOCKSIZE];
+  vector<char> buffer(SWAPBLOCKSIZE);
   source swapvolume;
   unsigned long version = 0;
   unsigned long pages = 0;
@@ -1025,7 +1027,7 @@ static bool detect_swap(hwNode & n, source & s)
 
   if(readlogicalblocks(swapvolume, buffer, 3, 1)!=1) // look for a signature
     return false;
-  signature = string(buffer+SWAPBLOCKSIZE-10, 10);
+  signature = string(&buffer[SWAPBLOCKSIZE-10], 10);
   if(signature != "SWAPSPACE2" && signature != "SWAP-SPACE")
     return false;
 
@@ -1034,7 +1036,7 @@ static bool detect_swap(hwNode & n, source & s)
   if(readlogicalblocks(swapvolume, buffer, 1, 1)!=1) // skip the first block
     return false;
 
-  version = le_long(buffer);
+  version = le_long(&buffer[0]);
   if(version == 0x01000000)
   {
     bigendian = true;
@@ -1046,18 +1048,18 @@ static bool detect_swap(hwNode & n, source & s)
 
   if(bigendian)
   {
-    pages = be_long(buffer + 4) + 1;
-    badpages = be_long(buffer + 8);
+    pages = be_long(&buffer[4]) + 1;
+    badpages = be_long(&buffer[8]);
   }
   else
   {
-    pages = le_long(buffer + 4) + 1;
-    badpages = le_long(buffer + 8);
+    pages = le_long(&buffer[4]) + 1;
+    badpages = le_long(&buffer[8]);
   }
   pagesize = swapvolume.size / (unsigned long long)pages;
 
-  n.setSerial(uuid((uint8_t*)buffer+0xc));
-  n.setConfig("label", hw::strip(std::string(buffer+0x1c, 16)));
+  n.setSerial(uuid((uint8_t*)&buffer[0xc]));
+  n.setConfig("label", hw::strip(std::string(&buffer[0x1c], 16)));
   n.setConfig("pagesize", pagesize);
   n.setSize((unsigned long long)(pages - badpages) * pagesize);
   n.setCapacity(swapvolume.size);

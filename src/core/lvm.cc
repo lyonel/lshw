@@ -105,29 +105,26 @@ static string uuid(void * s)
 
 bool scan_lvm(hwNode & n, source & s)
 {
-  uint8_t sector[BLOCKSIZE];
+  vector<uint8_t> sector(s.blocksize);
   label_header lh;
-
-  if(s.blocksize != BLOCKSIZE)
-    return false;
 
   for(uint32_t i=0; i<4; i++)
   {
     if(readlogicalblocks(s, sector, i, 1) != 1)
       return false;
-    memcpy(&lh, sector, sizeof(lh));
-    lh.sector_xl = le_longlong(sector+8);
-    lh.crc_xl = le_long(sector+0x10);
-    lh.offset_xl = le_long(sector+0x14);
+    memcpy(&lh, &sector[0], sizeof(lh));
+    lh.sector_xl = le_longlong(&sector[8]);
+    lh.crc_xl = le_long(&sector[0x10]);
+    lh.offset_xl = le_long(&sector[0x14]);
 
     if((strncmp((char*)lh.id, LABEL_ID, sizeof(lh.id))==0) &&
       (lh.sector_xl==i) &&
-      (lh.offset_xl < BLOCKSIZE) &&
-      (calc_crc(INITIAL_CRC, sector+0x14, LABEL_SIZE-0x14)==lh.crc_xl))
+      (lh.offset_xl < s.blocksize) &&
+      (calc_crc(INITIAL_CRC, &sector[0x14], LABEL_SIZE-0x14)==lh.crc_xl))
     {
       pv_header pvh;
 
-      memcpy(&pvh, sector+lh.offset_xl, sizeof(pvh));
+      memcpy(&pvh, &sector[lh.offset_xl], sizeof(pvh));
       if(n.getDescription()=="")
         n.setDescription(_("Linux LVM Physical Volume"));
       n.addCapability("lvm2");
