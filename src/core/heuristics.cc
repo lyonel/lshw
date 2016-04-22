@@ -141,7 +141,7 @@ bool guessVendor(hwNode & device)
 
 static string parsehex(const string & s)
 {
-  int i = 0;
+  unsigned int i = 0;
   string result = "";
 
   if(matches(s,"^0x[[:xdigit:]][[:xdigit:]]+$"))

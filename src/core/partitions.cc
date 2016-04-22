@@ -1275,7 +1275,7 @@ static bool detect_lif(source & s, hwNode & n)
   source lifvolume;
   unsigned long dir_start = 0, dir_length = 0;
   unsigned lif_version = 0;
-  unsigned long ipl_addr = 0, ipl_length = 0, ipl_entry = 0;
+  unsigned long ipl_addr = 0, ipl_length = 0;
 
   if(s.offset!=0)
     return false;                                 // LIF boot volumes must be at the beginning of the disk
@@ -1300,9 +1300,9 @@ static bool detect_lif(source & s, hwNode & n)
 
   ipl_addr = be_long(buffer+240);                 // byte address of IPL on media
   ipl_length = be_long(buffer+244);               // size of boot code
+#if 0
   ipl_entry = be_long(buffer+248);                // boot code entry point
 
-#if 0
   fprintf(stderr, "system: %x\n", be_short(buffer+12));
   fprintf(stderr, "start of directory: %ld\n", dir_start);
   fprintf(stderr, "length of directory: %ld\n", dir_length);

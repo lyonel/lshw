@@ -882,7 +882,6 @@ static bool detect_ntfs(hwNode & n, source & s)
   unsigned long long bytes_per_sector = 512;
   unsigned long long sectors_per_cluster = 8;
   signed char clusters_per_mft_record = 1;
-  signed char clusters_per_index_record = 1;
   unsigned long long reserved_sectors = 0;
   unsigned long long hidden_sectors = 0;
   unsigned long long size = 0;
@@ -927,7 +926,6 @@ static bool detect_ntfs(hwNode & n, source & s)
     mft_record_size = clusters_per_mft_record;
     mft_record_size *= bytes_per_sector * sectors_per_cluster;
   }
-  clusters_per_index_record = (char)buffer[0x44];
 
   ntfsvolume = s;
   ntfsvolume.offset += mft * bytes_per_sector * sectors_per_cluster; // point to $MFT
