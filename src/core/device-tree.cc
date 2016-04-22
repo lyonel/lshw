@@ -727,6 +727,42 @@ bool scan_device_tree(hwNode & n)
       n.addCapability("opal", "OPAL firmware");
     }
   }
+  else if(matches(get_string(DEVICETREE "/compatible"), "qemu,pseries"))
+  {
+    string product;
+
+    if ( exists(DEVICETREE "/host-serial") )
+      n.setSerial(get_string(DEVICETREE "/host-serial"));
+
+    if ( exists( DEVICETREE "/vm,uuid") )
+      n.setConfig("uuid", get_string(DEVICETREE "/vm,uuid"));
+
+    n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
+
+    if ( exists(DEVICETREE "/hypervisor/compatible") ) {
+      product = get_string(DEVICETREE "/hypervisor/compatible");
+      product = product.substr(0, product.size()-1);
+    }
+
+    if ( exists(DEVICETREE "/host-model") ) {
+      product += " Model# ";
+      product += get_string(DEVICETREE "/host-model");
+    }
+
+    if (product != "")
+      n.setProduct(product);
+
+    n.setDescription("pSeries Guest");
+
+    if (core)
+    {
+      core->addHint("icon", string("board"));
+      scan_devtree_root(*core);
+      scan_devtree_cpu(*core);
+      core->addCapability("qemu", "QEMU virtualization");
+      core->addCapability("guest", "Virtualization guest");
+    }
+  }
   else
   {
     n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
