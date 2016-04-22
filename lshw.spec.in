@@ -94,7 +94,7 @@ http://lshw.ezix.org/
 
 %files
 %defattr(-,root,root, 0555)
-%doc README COPYING docs/TODO docs/Changelog docs/lshw.xsd
+%doc README.md COPYING docs/TODO docs/Changelog docs/lshw.xsd
 %{_sbindir}/lshw
 %doc %{_mandir}/man?/*
 %{_datadir}/lshw/

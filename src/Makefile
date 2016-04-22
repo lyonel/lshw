@@ -1,6 +1,6 @@
 PACKAGENAME:=lshw
 export PACKAGENAME
-SNAPSHOT=0.$(shell cat .timestamp)
+VERSION?= $(shell git describe --tags --long | cut -d - -f 1,2 | tr - .)
 
 SQLITE?=0
 
@@ -114,30 +114,6 @@ clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
 	make -C core clean
 	make -C gui clean
-
-.timestamp:
-	date --utc +%Y%m%d%H%M%S > $@
-
-$(PACKAGENAME).spec: $(PACKAGENAME).spec.in
-	cat $^ | sed -e "s/\@VERSION\@/`cat ../.version`/g" > $@
-                                                                               
-release: $(PACKAGENAME).spec
-	mkdir -p ../../releases
-	svn copy ${PWD} `dirname ${PWD}`/releases/`cat ../.version`
-	svn commit `dirname ${PWD}`/releases/`cat ../.version` -m "released version "`cat ../.version`" of "$(PACKAGENAME)
-	rm -rf $(PACKAGENAME)-`cat ../.version`
-	svn export ../../releases/`cat ../.version` $(PACKAGENAME)-`cat ../.version`
-	cp $^ $(PACKAGENAME)-`cat ../.version`/$(PACKAGENAME).spec
-	tar cfz $(PACKAGENAME)-`cat ../.version`.tar.gz --owner=0 --group=0 --numeric-owner --mode="go-w" $(PACKAGENAME)-`cat ../.version`
-	rm -rf $(PACKAGENAME)-`cat ../.version`
-
-snapshot: .timestamp
-	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
-	svn export -r HEAD .. $(PACKAGENAME)-$(SNAPSHOT)
-	cat $(PACKAGENAME)-$(SNAPSHOT)/src/$(PACKAGENAME).spec.in | sed -e "s/\@VERSION\@/$(SNAPSHOT)/g" > $(PACKAGENAME)-$(SNAPSHOT)/$(PACKAGENAME).spec
-	tar cfz $(PACKAGENAME)-$(SNAPSHOT).tar.gz --owner=0 --group=0 --numeric-owner --mode="go-w" $(PACKAGENAME)-$(SNAPSHOT)
-	rm -rf $(PACKAGENAME)-$(SNAPSHOT)
-	rm -f .timestamp
 
 depend:
 	@makedepend -Y $(SRCS) 2> /dev/null > /dev/null
