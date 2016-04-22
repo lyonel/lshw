@@ -9,6 +9,8 @@ version.cpe: .version
 	echo -n cpe:/a:ezix:$(PACKAGENAME): > $@
 	cat $^ >> $@
 
+.PHONY: $(PACKAGENAME).spec
+
 $(PACKAGENAME).spec: $(PACKAGENAME).spec.in
 	cat $^ | sed -e s/\@VERSION\@/$(VERSION)/g > $@
 
