@@ -16,5 +16,5 @@ $(PACKAGENAME).spec: $(PACKAGENAME).spec.in
 
 release: $(PACKAGENAME).spec
 	git archive --prefix=$(PACKAGENAME)-$(VERSION)/ -o $(PACKAGENAME)-$(VERSION).tar HEAD
-	tar -rf $(PACKAGENAME)-$(VERSION).tar $^
+	tar --transform s!^!$(PACKAGENAME)-$(VERSION)/! -rf $(PACKAGENAME)-$(VERSION).tar $^
 	gzip -f $(PACKAGENAME)-$(VERSION).tar
