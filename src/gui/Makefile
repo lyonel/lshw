@@ -11,7 +11,7 @@ INCLUDES=-I../core $(GTKINCLUDES)
 CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 CFLAGS=$(CXXFLAGS) $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 gmodule-2.0 --libs)
-LIBS=-L../core -llshw -lresolv -lsqlite3 $(GTKLIBS)
+LIBS=-L../core -llshw -lresolv $(GTKLIBS)
 LDFLAGS=
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
