@@ -464,7 +464,6 @@ static void scan_devtree_memory(hwNode & core)
       {
         for (unsigned int i = 0; i < slotnames.size(); i++)
         {
-          uint64_t base = regs[i].address;
           uint64_t size = regs[i].size;
           hwNode bank("bank",
             hw::memory);
@@ -559,7 +558,6 @@ static void scan_devtree_memory(hwNode & core)
             bank.addHint("icon", string("memory"));
           bank.setDescription("Memory bank");
           bank.setSlot(slotnames[i]);
-//bank.setPhysId(base);
           if (i < dimmtypes.size())
             bank.setDescription(dimmtypes[i]);
           if (i < dimmspeeds.size())
@@ -727,6 +725,41 @@ bool scan_device_tree(hwNode & n)
       scan_devtree_cpu(*core);
       n.addCapability("powernv", "Non-virtualized");
       n.addCapability("opal", "OPAL firmware");
+    }
+  }
+  else if(matches(get_string(DEVICETREE "/compatible"), "qemu,pseries"))
+  {
+    string product;
+
+    if ( exists(DEVICETREE "/host-serial") )
+      n.setSerial(get_string(DEVICETREE "/host-serial"));
+
+    if ( exists( DEVICETREE "/vm,uuid") )
+      n.setConfig("uuid", get_string(DEVICETREE "/vm,uuid"));
+
+    n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
+
+    if ( exists(DEVICETREE "/hypervisor/compatible") ) {
+      product = get_string(DEVICETREE "/hypervisor/compatible");
+      product = product.substr(0, product.size()-1);
+    }
+
+    if ( exists(DEVICETREE "/host-model") ) {
+      product += " Model# ";
+      product += get_string(DEVICETREE "/host-model");
+    }
+
+    if (product != "")
+      n.setProduct(product);
+
+    n.setDescription("pSeries Guest");
+
+    if (core)
+    {
+      core->addHint("icon", string("board"));
+      scan_devtree_root(*core);
+      scan_devtree_cpu(*core);
+      core->addCapability("qemu,pseries");
     }
   }
   else
