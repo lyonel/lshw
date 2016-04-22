@@ -59,11 +59,9 @@ bool scan_cpufreq(hwNode & node)
     snprintf(buffer, sizeof(buffer), DEVICESCPUFREQ, i);
     if(exists(buffer))
     {
-      unsigned long long max, min, cur;
+      unsigned long long max, cur;
       pushd(buffer);
 
-                                                  // in Hz
-      min = 1000*(unsigned long long)get_long("cpuinfo_min_freq");
                                                   // in Hz
       max = 1000*(unsigned long long)get_long("cpuinfo_max_freq");
                                                   // in Hz
