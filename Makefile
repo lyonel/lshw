@@ -1,5 +1,5 @@
 PACKAGENAME = lshw
-VERSION?= $(shell git describe --tags --long | cut -d - -f 1,2 | tr - .)
+VERSION?= $(shell git describe --tags | cut -d - -f 1,2 | tr - .)
 export PACKAGENAME
 
 all clean install snapshot gui install-gui:

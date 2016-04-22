@@ -1,3 +1,8 @@
+* lshw B.02.18
+  migrated to git
+  bug fixes
+  code cleanup
+  updated data files 
 * lshw B.02.17
   bug fixes
   code cleanup
