@@ -29,7 +29,7 @@ Installation
     	$ make gui
 
  4. the lshw home page is http://lshw.ezix.org/
- 5. send bug reports, requests for help, feature requests, comments, etc. to bugs@ezix.org.  The author can be contacted directly (lyonel@ezix.org)
+ 5. bug reports and feature requests: http://ezix.org/project/newticket?component=lshw
  
    Please make sure you include enough information in your bug report: XML output from lshw is preferred over text or HTML, indicate the affected version of lshw, your platform (i386, x86-64, PA-RISC, PowerPC, etc.) and your distribution.
 
@@ -56,4 +56,3 @@ or
 in the `src/` directory
 
 Building compressed binaries requires `upx` (cf. http://upx.sourceforge.net/).
-
