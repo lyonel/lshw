@@ -28,8 +28,11 @@ Installation
     	$ make
     	$ make gui
 
- 4. the lshw home page is http://lshw.ezix.org/
- 5. bug reports and feature requests: http://ezix.org/project/newticket?component=lshw
+Getting help
+------------
+
+ 1. the lshw home page is http://lshw.ezix.org/
+ 2. bug reports and feature requests: http://ezix.org/project/newticket?component=lshw
  
    Please make sure you include enough information in your bug report: XML output from lshw is preferred over text or HTML, indicate the affected version of lshw, your platform (i386, x86-64, PA-RISC, PowerPC, etc.) and your distribution.
 
