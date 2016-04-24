@@ -345,6 +345,87 @@ static void scan_devtree_cpu(hwNode & core)
 }
 
 
+
+struct processor_vpd_data
+{
+  string product;
+  string serial;
+  string slot;
+};
+
+
+static void add_chip_level_vpd(string name, string path,
+			       map <unsigned long, processor_vpd_data *> & vpd)
+{
+  struct dirent **dirlist;
+  int n;
+
+  pushd(path + name);
+  if(name.substr(0, 9) == "processor" && exists("ibm,chip-id"))
+  {
+    processor_vpd_data *data =
+      new processor_vpd_data();
+    unsigned long chip_id = get_u32("ibm,chip-id");
+
+    if(exists("serial-number"))
+      data->serial = hw::strip(get_string("serial-number"));
+
+    data->product = string("Part#") + get_string("part-number");
+    data->product = data->product.substr(0, data->product.size()-1);
+    if(exists("fru-number"))
+      data->product += " FRU#" + get_string("fru-number");
+
+    if(data->product != "")
+      data->product = hw::strip(data->product);
+
+    if(exists("ibm,loc-code"))
+      data->slot = hw::strip(get_string("ibm,loc-code"));
+
+    vpd.insert(std::pair<unsigned long, processor_vpd_data *>(chip_id, data));
+  }
+
+  n = scandir(".", &dirlist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    add_chip_level_vpd(dirlist[i]->d_name, path + name + "/", vpd);
+    free(dirlist[i]);
+  }
+
+  free(dirlist);
+}
+
+
+static void scan_chip_level_vpd(map <unsigned long, processor_vpd_data *> & vpd)
+{
+  struct dirent **namelist;
+  int n;
+  string path = DEVICETREEVPD;
+
+  if (!exists(path))
+    return;
+
+  pushd(DEVICETREEVPD);
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    add_chip_level_vpd(namelist[i]->d_name, path, vpd);
+    free(namelist[i]);
+  }
+
+  free(namelist);
+}
+
+
 static void scan_devtree_cpu_power(hwNode & core)
 {
   struct dirent **namelist;
@@ -352,6 +433,7 @@ static void scan_devtree_cpu_power(hwNode & core)
   int currentcpu=0;
   map <unsigned long, pair<unsigned long, vector <hwNode> > > l2_caches;
   map <unsigned long, vector <hwNode> > l3_caches;
+  map <unsigned long, processor_vpd_data *> processor_vpd;
 
   pushd(DEVICETREE "/cpus");
   n = scandir(".", &namelist, selectdir, alphasort);
@@ -433,6 +515,9 @@ static void scan_devtree_cpu_power(hwNode & core)
     }
   }
 
+  //Fetch chip-level vpd data from /proc/device-tree/vpd if exists
+  scan_chip_level_vpd(processor_vpd);
+
   for (int i = 0; i < n; i++) //second and final pass
   {
     string basepath =
@@ -440,6 +525,7 @@ static void scan_devtree_cpu_power(hwNode & core)
     unsigned long version = 0;
     hwNode cpu("cpu",
       hw::processor);
+    long long chip_id = -1;
 
     if (exists(basepath + "/device_type") &&
       hw::strip(get_string(basepath + "/device_type")) != "cpu")
@@ -457,6 +543,19 @@ static void scan_devtree_cpu_power(hwNode & core)
 
       snprintf(buffer, sizeof(buffer), "%08lx", version);
       cpu.setVersion(buffer);
+    }
+
+    if (exists(basepath + "/ibm,chip-id"))
+      chip_id = get_u32(basepath + "/ibm,chip-id");
+    if (chip_id != -1)
+    {
+      processor_vpd_data * data = processor_vpd[chip_id];
+      if (data != NULL)
+      {
+        cpu.setProduct(cpu.getProduct() + " " + data->product);
+        cpu.setSerial(data->serial);
+        cpu.setSlot(data->slot);
+      }
     }
 
     if (hw::strip(get_string(basepath + "/status")) != "okay")
@@ -519,6 +618,9 @@ static void scan_devtree_cpu_power(hwNode & core)
     free(namelist[i]);
   }
   free(namelist);
+  map<unsigned long, processor_vpd_data *>::iterator it;
+  for (it=processor_vpd.begin(); it != processor_vpd.end(); it++)
+    delete it->second;
 }
 
 void add_memory_bank(string name, string path, hwNode & core)
