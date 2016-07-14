@@ -361,6 +361,32 @@ static void scan_devtree_cpu(hwNode & core)
   }
 }
 
+static void set_cpu_config_threads(hwNode & cpu, const string & basepath)
+{
+  static int threads_per_cpu = 0;
+
+  /* In power systems, there are equal no. of threads per cpu-core */
+  if (threads_per_cpu == 0)
+  {
+    int rc;
+    struct stat sbuf;
+    string p = hw::strip(basepath + string("/ibm,ppc-interrupt-server#s"));
+
+    /*
+     * This file contains as many 32 bit interrupt server numbers, as the
+     * number of threads per CPU (in hexadecimal format). st_size gives size
+     * in bytes of a file. Hence, grouping by 4 bytes, we get the thread
+     * count.
+     */
+    rc = stat(p.c_str(), &sbuf);
+    if (!rc)
+      threads_per_cpu = sbuf.st_size / 4;
+  }
+
+  cpu.setConfig("threads", threads_per_cpu);
+}
+
+
 static void scan_devtree_cpu_power(hwNode & core)
 {
   int n;
@@ -471,6 +497,8 @@ static void scan_devtree_cpu_power(hwNode & core)
 
     if (hw::strip(get_string(basepath + "/status")) != "okay")
       cpu.disable();
+
+    set_cpu_config_threads(cpu, basepath);
 
     if (exists(basepath + "/d-cache-size"))
     {
