@@ -28,6 +28,11 @@ Installation
     	$ make
     	$ make gui
 
+ 4. If you want to install the result, do:
+
+    	$ make install
+    	$ make install-gui
+
 Getting help
 ------------
 
