@@ -4,6 +4,7 @@
 #include <glob.h>
 #include <string.h>
 #include <fcntl.h>
+#include <libgen.h>
 #include <unistd.h>
 #include <inttypes.h>
 #include <sys/ioctl.h>
@@ -42,7 +43,7 @@ bool scan_dasd(hwNode & n)
   {
     for(dev_num=0;dev_num<devices.gl_pathc;dev_num++)
     {
-      dev_name = basename(devices.gl_pathv[dev_num]);
+      dev_name = basename(const_cast<char *>(devices.gl_pathv[dev_num]));
       for (std::vector<std::string>::iterator it = sysfs_attribs.begin(); it != sysfs_attribs.end(); ++it)
       {
         std::string attrib_fname = std::string(SYSFS_PREFIX) + dev_name + "/device/" + *it;
