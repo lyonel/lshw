@@ -954,7 +954,8 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           device->setVendor(get_device_description(d.vendor_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+"]":""));
           device->setVersion(revision);
           device->setProduct(get_device_description(d.vendor_id, d.device_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+":"+tohex(d.device_id)+"]":""));
-
+          device->setSubsysProduct(get_device_description(subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
+          device->setSubsysVendor(get_device_description(subsys_v)+(enabled("output:numeric")?" ["+tohex(subsys_v)+"]":""));
           if (cmd & PCI_COMMAND_MASTER)
             device->addCapability("bus master", "bus mastering");
           if (cmd & PCI_COMMAND_VGA_PALETTE)
