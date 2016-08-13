@@ -1823,7 +1823,7 @@ static bool smbios_entry_point(const u8 *buf, size_t len,
 
 static bool scan_dmi_sysfs(hwNode & n)
 {
-  if (!exists(SYSFSDMI "/smbios_entry_point") || !exists(SYSFSDMI "/DMI"))
+  if (access(SYSFSDMI "/smbios_entry_point", R_OK)!=0 || access(SYSFSDMI "/DMI", R_OK)!=0)
     return false;
 
   uint32_t table_len = 0;
