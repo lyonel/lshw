@@ -3,6 +3,7 @@
 #include "pci.h"
 #include "osutils.h"
 #include "options.h"
+#include "sysfs.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -1146,6 +1147,10 @@ bool scan_pci(hwNode & n)
           }
           device->claim();
         }
+
+	string modalias = sysfs::entry::byBus("pci", devices[i]->d_name).modalias();
+	if(modalias!="")
+		device->setConfig("modalias", modalias);
 
         if(exists(resourcename))
         {

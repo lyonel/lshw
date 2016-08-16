@@ -298,6 +298,10 @@ entry entry::parent() const
   return e;
 }
 
+string entry::modalias() const
+{
+  return get_string(This->devpath+"/modalias");
+}
 
 vector < entry > sysfs::entries_by_bus(const string & busname)
 {
