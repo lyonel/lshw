@@ -753,6 +753,57 @@ static void scan_devtree_cpu_power(hwNode & core)
     delete it->second;
 }
 
+static bool add_memory_bank_mba_dimm(string path,
+				     unsigned long serial, hwNode & bank)
+{
+  bool found = false;
+  int n;
+  struct dirent **namelist;
+
+  pushd(path);
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return found;
+
+  for (int i = 0; i < n; i++)
+  {
+    string sname = string(namelist[i]->d_name);
+    string fullpath = path + "/" + sname;
+
+    if (found)
+    {
+      free(namelist[i]);
+      continue;
+    }
+
+    if (sname.substr(0, 13) == "memory-buffer")
+    {
+      if (exists(fullpath + "/frequency-mhz"))
+      {
+        int hz = get_u32(fullpath + "/frequency-mhz") * 1000000;
+        bank.setClock(hz);
+      }
+      found = add_memory_bank_mba_dimm(fullpath, serial, bank);
+    } else if (sname.substr(0, 3) == "mba") {
+      found = add_memory_bank_mba_dimm(fullpath, serial, bank);
+    } else if ((sname.substr(0, 4) == "dimm") &&
+	       (get_u32(fullpath + "/serial-number") == serial)) {
+      vector < reg_entry > regs = get_reg_property(fullpath);
+      bank.setSize(regs[0].size);
+
+      bank.setSlot(hw::strip(get_string(fullpath + "/ibm,slot-location-code")));
+      found = true;
+    }
+    free(namelist[i]);
+  }
+
+  free(namelist);
+  return found;
+}
+
+
 static void add_memory_bank_spd(string path, hwNode & bank)
 {
   char dimmversion[20];
@@ -885,6 +936,8 @@ static void add_memory_bank_spd(string path, hwNode & bank)
   snprintf(buff, sizeof(buff), "0x%lx", serial);
   bank.setSerial(buff);
 
+  add_memory_bank_mba_dimm(DEVICETREE, serial, bank);
+
   snprintf(buff, sizeof(buff), "spd-%d.%d", (version & 0xF0) >> 4, version & 0x0F);
   bank.addCapability(buff);
 }
@@ -895,17 +948,16 @@ static void add_memory_bank(string name, string path, hwNode & core)
   string product;
   int n;
 
+  hwNode *memory = core.getChild("memory");
+  if(!memory)
+    memory = core.addChild(hwNode("memory", hw::memory));
+
   pushd(path + name);
   if(name.substr(0, 7) == "ms-dimm")
   {
-    hwNode *memory = core.getChild("memory");
-
     hwNode bank("bank", hw::memory);
     bank.claim(true);
     bank.addHint("icon", string("memory"));
-
-    if(!memory)
-      memory = core.addChild(hwNode("memory", hw::memory));
 
     if(exists("serial-number"))
       bank.setSerial(hw::strip(get_string("serial-number")));
@@ -924,6 +976,15 @@ static void add_memory_bank(string name, string path, hwNode & core)
       bank.setSlot(hw::strip(get_string("ibm,loc-code")));
     if(unsigned long size = get_number("size"))
       bank.setSize(size*1024*1024);
+
+    memory->addChild(bank);
+  } else if(name.substr(0, 4) == "dimm") {
+    hwNode bank("bank", hw::memory);
+    bank.claim(true);
+    bank.addHint("icon", string("memory"));
+
+    // Parse Memory SPD data
+    add_memory_bank_spd(path + name + "/spd", bank);
 
     memory->addChild(bank);
   }
