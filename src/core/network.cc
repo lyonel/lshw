@@ -338,9 +338,7 @@ bool scan_network(hwNode & n)
       string businfo = sysfs::entry::byClass("net", interface.getLogicalName()).businfo();
       if (businfo!="")
         interface.setBusInfo(businfo);
-      string modalias = sysfs::entry::byClass("net", interface.getLogicalName()).modalias();
-      if (modalias!="")
-        interface.setConfig("modalias", modalias);
+      interface.setModalias(sysfs::entry::byClass("net", interface.getLogicalName()).modalias());
 
 //scan_mii(fd, interface);
       scan_ip(interface);

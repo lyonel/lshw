@@ -154,6 +154,9 @@ class hwNode
     string getSlot() const;
     void setSlot(const string & slot);
 
+    string getModalias() const;
+    void setModalias(const string & modalias);
+
     unsigned int countChildren(hw::hwClass c = hw::generic) const;
     hwNode * getChild(unsigned int);
     hwNode * getChildByPhysId(long);

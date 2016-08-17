@@ -1148,9 +1148,7 @@ bool scan_pci(hwNode & n)
           device->claim();
         }
 
-	string modalias = sysfs::entry::byBus("pci", devices[i]->d_name).modalias();
-	if(modalias!="")
-		device->setConfig("modalias", modalias);
+	device->setModalias(sysfs::entry::byBus("pci", devices[i]->d_name).modalias());
 
         if(exists(resourcename))
         {

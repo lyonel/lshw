@@ -28,7 +28,7 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, date, serial, slot, handle, description,
-    businfo, physid, dev;
+    businfo, physid, dev, modalias;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -475,6 +475,22 @@ void hwNode::setSlot(const string & slot)
 {
   if (This)
     This->slot = strip(slot);
+}
+
+
+string hwNode::getModalias() const
+{
+  if (This)
+    return This->modalias;
+  else
+    return "";
+}
+
+
+void hwNode::setModalias(const string & modalias)
+{
+  if (This)
+    This->modalias = strip(modalias);
 }
 
 
@@ -1670,7 +1686,8 @@ string hwNode::asXML(unsigned level)
       out << " claimed=\"true\"";
 
     out << " class=\"" << getClassName() << "\"";
-    out << " handle=\"" << getHandle() << "\"";
+    if(getHandle()!="") out << " handle=\"" << escape(getHandle()) << "\"";
+    if(getModalias()!="") out << " modalias=\"" << escape(getModalias()) << "\"";
     out << ">" << endl;
 
     if (getDescription() != "")
