@@ -135,6 +135,59 @@ vector < string > &list)
   return true;
 }
 
+/*
+ * Read a binary blob from given @path and store it in *data.
+ * Allocates enough memory @*data, which has to be freed by the
+ * caller. If reading error occurs, *data is set to NULL and 0
+ * is returned.
+ * @return : Size of the blob read.
+ */
+int getBinaryData(const string& path, char **data)
+{
+  int size = 0, rc = 0;
+  struct stat info;
+  char *buf;
+  int fd;
+
+  if (stat(path.c_str(), &info) != 0)
+  {
+    *data = NULL;
+    goto out;
+  }
+
+  fd = open(path.c_str(), O_RDONLY);
+  if (fd < 0)
+  {
+    *data = NULL;
+    goto out;
+  }
+
+  buf = *data = new char [ info.st_size ];
+  if (!*data)
+    goto out;
+
+  while(size < info.st_size)
+  {
+    rc = read(fd, buf + size, info.st_size - size);
+    if (rc <= 0)
+      break;
+    size += rc;
+  }
+
+out:
+  if (rc < 0)
+    size = 0;
+  if (fd >= 0)
+    close(fd);
+
+  if (size == 0 && *data)
+  {
+    delete [] *data;
+    *data = NULL;
+  }
+
+  return size;
+}
 
 string get_string(const string & path,
 const string & def)
