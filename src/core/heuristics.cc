@@ -109,6 +109,7 @@ static const char *disk_manufacturers[] =
   "FIREBALL.+", "Quantum",
   "^WDC.+", "Western Digital",
   "WD.+", "Western Digital",
+  "^VBOX.+", "VirtualBox",
   NULL, NULL
 };
 
