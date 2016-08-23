@@ -218,6 +218,39 @@ static void scan_devtree_bootrom(hwNode & core)
   }
 }
 
+static void scan_devtree_firmware_powernv(hwNode & core)
+{
+  int n;
+  struct dirent **namelist;
+
+  if (!exists(DEVICETREE "/ibm,firmware-versions"))
+    return;
+
+  pushd(DEVICETREE "/ibm,firmware-versions");
+  n = scandir(".", &namelist, selectfile, alphasort);
+  popd();
+
+  if (n <= 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    string sname = string(namelist[i]->d_name);
+    string fullpath = string(DEVICETREE) + "/ibm,firmware-versions/" + sname;
+
+    if (sname != "linux,phandle" && sname != "name" && sname != "phandle")
+    {
+      hwNode fwnode("firmware");
+      fwnode.setDescription(sname);
+      fwnode.setVersion(hw::strip(get_string(fullpath)));
+      fwnode.claim();
+      core.addChild(fwnode);
+    }
+    free(namelist[i]);
+  }
+
+  free(namelist);
+}
 
 static string cpubusinfo(int cpu)
 {
@@ -1111,6 +1144,7 @@ bool scan_device_tree(hwNode & n)
       scan_devtree_root(*core);
       scan_devtree_cpu_power(*core);
       scan_devtree_memory_powernv(*core);
+      scan_devtree_firmware_powernv(*core);
       n.addCapability("powernv", "Non-virtualized");
       n.addCapability("opal", "OPAL firmware");
     }
