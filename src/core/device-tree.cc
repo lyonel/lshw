@@ -1208,3 +1208,22 @@ bool scan_device_tree(hwNode & n)
 
   return true;
 }
+
+void add_device_tree_info(hwNode & n, string sysfs_path)
+{
+  string of_node = sysfs_path + "/of_node";
+  string val;
+
+  if (!exists(of_node))
+    return;
+
+  /* read location / slot data */
+  val = hw::strip(get_string(of_node + "/ibm,loc-code", ""));
+  if (val == "")
+    val = hw::strip(get_string(of_node + "/ibm,slot-location-code", ""));
+  if (val == "")
+    val = hw::strip(get_string(of_node + "/ibm,slot-label"));
+
+  if (val != "")
+    n.setSlot(val);
+}
