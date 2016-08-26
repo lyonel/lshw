@@ -20,9 +20,7 @@ __ID("@(#) $Id: mem.cc 1352 2006-05-27 23:54:13Z ezix $");
 bool scan_abi(hwNode & system)
 {
   // are we compiled as 32- or 64-bit process ?
-  long sc = sysconf(LONG_BIT);
-  if(sc==-1) sc = sysconf(_SC_LONG_BIT);
-  if(sc!=-1) system.setWidth(sc);
+  system.setWidth(LONG_BIT);
 
   pushd(PROC_SYS);
 
