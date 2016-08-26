@@ -16,6 +16,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/mount.h>
+#include <libgen.h>
 
 __ID("@(#) $Id$");
 
@@ -99,7 +100,7 @@ static string sysfs_getbustype(const string & path)
   {
     devname =
       string(fs.path + "/bus/") + string(namelist[i]->d_name) +
-      "/devices/" + basename(path.c_str());
+      "/devices/" + basename(const_cast<char*>(path.c_str()));
 
     if (samefile(devname, path))
       return string(namelist[i]->d_name);
@@ -139,7 +140,7 @@ static string sysfstobusinfo(const string & path)
 
   if (bustype == "virtio")
   {
-    string name = basename(path.c_str());
+    string name = basename(const_cast<char*>(path.c_str()));
     if (name.compare(0, 6, "virtio") == 0)
       return "virtio@" + name.substr(6);
     else
@@ -207,7 +208,7 @@ string entry::driver() const
   string driverlink = This->devpath + "/driver";
   if (!exists(driverlink))
     return "";
-  return basename(readlink(driverlink).c_str());
+  return basename(const_cast<char*>(readlink(driverlink).c_str()));
 }
 
 
@@ -288,7 +289,7 @@ string entry::name_in_class(const string & classname) const
 
 string entry::name() const
 {
-  return basename(This->devpath.c_str());
+  return basename(const_cast<char*>(This->devpath.c_str()));
 }
 
 
