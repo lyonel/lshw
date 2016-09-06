@@ -815,6 +815,7 @@ static void add_memory_bank_spd(string path, hwNode & bank)
   uint16_t partno_offset;
   uint16_t ver_offset;
   uint16_t serial_offset;
+  uint16_t bus_width_offset;
   int fd;
   size_t len = 0;
   dimminfo_buf dimminfo;
@@ -847,16 +848,47 @@ static void add_memory_bank_spd(string path, hwNode & bank)
   close(fd);
 
   if (dimminfo[2] >= 9) {
-    mfg_loc_offset = 0x77;
+    double ns;
+    char vendor[5];
+    const char *type, *mod_type;
+
     rev_offset1 = 0x92;
     rev_offset2 = 0x93;
-    year_offset = 0x78;
-    week_offset = 0x79;
-    partno_offset = 0x80;
     ver_offset = 0x01;
-    serial_offset = 0x7a;
 
-    switch ((dimminfo[0x8] >> 3) & 0x3) // DDR3 error detection and correction scheme
+    if (dimminfo[0x2] >= 0xc) {
+      type = "DDR4";
+      mfg_loc_offset = 0x142;
+      year_offset = 0x143;
+      week_offset = 0x144;
+      partno_offset = 0x149;
+      bus_width_offset = 0x0d;
+      serial_offset = 0x145;
+
+      /*
+       * There is no other valid values for the medium- and fine- timebase
+       * other than (125ps, 1ps), so we hard-code those here. The fine
+       * t_{ckavg}_{min} value is signed. Divide by 2 to get from raw clock
+       * to expected data rate
+       */
+      ns = (((float)dimminfo[0x12] * 0.125) +
+	    (((signed char) dimminfo[0x7d]) * 0.001)) / 2;
+      snprintf(vendor, sizeof(vendor), "%x%x", dimminfo[0x141], dimminfo[0x140]);
+    } else {
+      type = "DDR3";
+      mfg_loc_offset = 0x77;
+      year_offset = 0x78;
+      week_offset = 0x79;
+      partno_offset = 0x80;
+      serial_offset = 0x7a;
+      bus_width_offset = 0x08;
+
+      ns = (dimminfo[0xc] / 2) * (dimminfo[0xa] / (float) dimminfo[0xb]);
+      snprintf(vendor, sizeof(vendor), "%x%x", dimminfo[0x76], dimminfo[0x75]);
+    }
+
+    /* DDR3 & DDR4 error detection and correction scheme */
+    switch ((dimminfo[bus_width_offset] >> 3) & 0x3)
     {
       case 0x00:
         bank.setConfig("errordetection", "none");
@@ -867,17 +899,10 @@ static void add_memory_bank_spd(string path, hwNode & bank)
         break;
     }
 
-    double ns = (dimminfo[0xc] / 2) * (dimminfo[0xa] / (float) dimminfo[0xb]);
     bank.setClock(1000000000 / ns);
-
-    char vendor[3];
-    snprintf(vendor, sizeof(vendor), "%x%x", dimminfo[0x76], dimminfo[0x75]);
     bank.setVendor(jedec_resolve(vendor));
 
     char description[100];
-    const char *type, *mod_type;
-
-    type = "DDR3";
     switch(dimminfo[0x3])
     {
       case 0x1:
