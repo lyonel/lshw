@@ -32,7 +32,7 @@
 
 __ID("@(#) $Id$");
 
-#define DIMMINFOSIZE 0x100
+#define DIMMINFOSIZE 0x200
 typedef uint8_t dimminfo_buf[DIMMINFOSIZE];
 
 struct dimminfo
@@ -807,14 +807,14 @@ static bool add_memory_bank_mba_dimm(string path,
 static void add_memory_bank_spd(string path, hwNode & bank)
 {
   char dimmversion[20];
-  unsigned char mfg_loc_offset;
-  unsigned char rev_offset1;
-  unsigned char rev_offset2;
-  unsigned char year_offset;
-  unsigned char week_offset;
-  unsigned char partno_offset;
-  unsigned char ver_offset;
-  unsigned char serial_offset;
+  uint16_t mfg_loc_offset;
+  uint16_t rev_offset1;
+  uint16_t rev_offset2;
+  uint16_t year_offset;
+  uint16_t week_offset;
+  uint16_t partno_offset;
+  uint16_t ver_offset;
+  uint16_t serial_offset;
   int fd;
   size_t len = 0;
   dimminfo_buf dimminfo;
@@ -830,9 +830,13 @@ static void add_memory_bank_spd(string path, hwNode & bank)
   }
 
   /* Read entire SPD eeprom */
-  if (dimminfo[2] >= 9) /* DDR3 */
+  if (dimminfo[2] >= 9) /* DDR3 & DDR4 */
   {
-    len = 64 << ((dimminfo[0] & 0x70) >> 4);
+    uint8_t val = (dimminfo[0] >> 4) & 0x7;
+    if (val == 1)
+      len = 256;
+    else if (val == 2)
+      len = 512;
   } else if (dimminfo[0] < 15) { /* DDR 2 */
     len = 1 << dimminfo[1];
   }
