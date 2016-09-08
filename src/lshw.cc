@@ -28,6 +28,7 @@ void usage(const char *progname)
   fprintf(stderr, _("\nformat can be\n"));
   fprintf(stderr, _("\t-html           output hardware tree as HTML\n"));
   fprintf(stderr, _("\t-xml            output hardware tree as XML\n"));
+  fprintf(stderr, _("\t-json           output hardware tree as a JSON object\n"));
   fprintf(stderr, _("\t-short          output hardware paths\n"));
   fprintf(stderr, _("\t-businfo        output bus information\n"));
   if(getenv("DISPLAY") && exists(SBINDIR"/gtk-lshw"))
