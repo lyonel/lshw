@@ -422,7 +422,7 @@ string dirname(const string & path)
   path.copy(buffer, len);
   buffer[len] = '\0';
   string result = dirname(buffer);
-  delete buffer;
+  delete[] buffer;
   return result;
 }
 
