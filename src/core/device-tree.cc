@@ -89,8 +89,14 @@ static vector < reg_entry > get_reg_property(const string & node)
 {
   vector < reg_entry > result;
 
-  uint32_t num_address_cells = get_u32(node + "/../#address-cells") || 1;
-  uint32_t num_size_cells = get_u32(node + "/../#size-cells") || 1;
+  uint32_t num_address_cells = 1;
+  uint32_t num_size_cells = 1;
+
+  if (exists(node + "/../#address-cells"))
+    num_address_cells = get_u32(node + "/../#address-cells");
+  if (exists(node + "/../#size-cells"))
+    num_size_cells = get_u32(node + "/../#size-cells");
+
   if (num_address_cells > 2 || num_size_cells > 2)
     return result;
 
