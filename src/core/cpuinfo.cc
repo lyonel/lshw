@@ -18,6 +18,7 @@ int n = 0)
 {
   char cpubusinfo[10];
   hwNode *cpu = NULL;
+  string desc = "";
 
   if (n < 0)
     n = 0;
@@ -32,6 +33,10 @@ int n = 0)
     cpu->enable();                                // enable it
     return cpu;
   }
+
+  desc = node.getDescription();
+  if (desc=="PowerNV" || desc=="pSeries Guest" || desc=="pSeries LPAR")
+    return NULL;                                  //Do not create new cpu nodes
 
   hwNode *core = node.getChild("core");
 
@@ -49,6 +54,35 @@ int n = 0)
 
 
 #ifdef __powerpc__
+static void cpuinfo_ibm_ppc(hwNode & node,
+const string & name,
+const string & version)
+{
+  int cpucore = 0;
+  hwNode *cpu = getcpu(node, cpucore);
+
+  while (cpu)
+  {
+    vector <string> words;
+
+    string prod = cpu->getProduct();
+    int cnt = splitlines(prod, words, ' ');
+    if (cnt>2 &&
+        words[cnt-2].substr(0, 5) == "Part#" &&
+        words[cnt-1].substr(0, 4) == "FRU#")
+    {
+      string cpuvalue = name + " " +words[cnt-2] + " " + words[cnt-1];
+      cpu->setProduct(cpuvalue);
+    }
+    else
+      cpu->setProduct(name);
+
+    cpu->setVersion(version);
+
+    cpu = getcpu(node, ++cpucore);
+  }
+}
+
 static void cpuinfo_ppc(hwNode & node,
 string id,
 string value)
@@ -582,6 +616,7 @@ bool scan_cpuinfo(hwNode & n)
     cpuinfo_str = "";                             // free memory
     currentcpu = -1;
 
+    string name = "", version = "";
     for (unsigned int i = 0; i < cpuinfo_lines.size(); i++)
     {
       string id = "";
@@ -599,7 +634,24 @@ bool scan_cpuinfo(hwNode & n)
         cpuinfo_x86(n, id, value);
 #endif
 #ifdef __powerpc__
-        cpuinfo_ppc(n, id, value);
+
+        string desc = n.getDescription();
+        if (desc=="PowerNV" || desc=="pSeries Guest" || desc=="pSeries LPAR")
+	{
+          //All cores have same product name and version on power systems
+          if (id == "cpu")
+            name = value;
+	  if (id == "revision")
+            version = value;
+
+	  if (id != "" && version != "")
+	  {
+            cpuinfo_ibm_ppc(n, name, version);
+	    break;
+	  }
+	}
+	else
+          cpuinfo_ppc(n, id, value);
 #endif
 #ifdef __s390x__
         cpuinfo_s390x(n, id, value);

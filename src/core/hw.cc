@@ -35,6 +35,7 @@ struct hwNode_i
   unsigned long long size;
   unsigned long long capacity;
   unsigned long long clock;
+  unsigned long reg; //for internal reference from cpufreq module for powerpc
   unsigned int width;
   vector < hwNode > children;
   vector < string > attracted;
@@ -114,6 +115,7 @@ const string & product, const string & version)
   This->size = 0;
   This->capacity = 0;
   This->clock = 0;
+  This->reg = 0;
   This->width = 0;
   This->enabled = true;
   This->claimed = false;
@@ -555,6 +557,22 @@ void hwNode::setClock(unsigned long long clock)
 {
   if (This)
     This->clock = clock;
+}
+
+
+unsigned long hwNode::getReg() const
+{
+  if (This)
+    return This->reg;
+  else
+    return 0;
+}
+
+
+void hwNode::setReg(unsigned long reg)
+{
+  if (This)
+    This->reg = reg;
 }
 
 
@@ -1240,6 +1258,8 @@ void hwNode::merge(const hwNode & node)
     This->capacity = node.getCapacity();
   if (This->clock == 0)
     This->clock = node.getClock();
+  if (This->reg == 0)
+    This->reg = node.getReg();
   if (This->width == 0)
     This->width = node.getWidth();
   if (node.enabled())
