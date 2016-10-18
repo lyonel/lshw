@@ -244,6 +244,25 @@ static void set_cpu(hwNode & cpu, int currentcpu, const string & basepath)
 }
 
 
+static void fill_cache_info(string cache_type, string cachebase,
+			    hwNode & cache, hwNode & icache)
+{
+  cache.claim();
+  cache.setDescription(cache_type);
+  cache.setSize(get_u32(cachebase + "/d-cache-size"));
+
+  if (exists(cachebase + "/cache-unified"))
+    cache.setDescription(cache.getDescription() + " (unified)");
+  else
+  {
+    icache = cache;
+    cache.setDescription(cache.getDescription() + " (data)");
+    icache.setDescription(icache.getDescription() + " (instruction)");
+    icache.setSize(get_u32(cachebase + "/i-cache-size"));
+  }
+}
+
+
 static void scan_devtree_cpu(hwNode & core)
 {
   struct dirent **namelist;
@@ -310,29 +329,19 @@ static void scan_devtree_cpu(hwNode & core)
         {
           hwNode cache("cache",
             hw::memory);
+          hwNode icache("cache",
+            hw::memory);
           string cachebase = basepath + "/" + cachelist[j]->d_name;
 
           if (hw::strip(get_string(cachebase + "/device_type")) != "cache" &&
             hw::strip(get_string(cachebase + "/device_type")) != "l2-cache")
             break;                                // oops, not a cache!
 
-          cache.claim();
-          cache.setDescription("L2 Cache");
-          cache.setSize(get_u32(cachebase + "/d-cache-size"));
-          cache.setClock(get_u32(cachebase + "/clock-frequency"));
+	  cache.setClock(get_u32(cachebase + "/clock-frequency"));
+	  fill_cache_info("L2 Cache", cachebase, cache, icache);
 
-          if (exists(cachebase + "/cache-unified"))
-            cache.setDescription(cache.getDescription() + " (unified)");
-          else
-          {
-            hwNode icache = cache;
-            cache.setDescription(cache.getDescription() + " (data)");
-            icache.setDescription(icache.getDescription() + " (instruction)");
-            icache.setSize(get_u32(cachebase + "/i-cache-size"));
-
-            if (icache.getSize() > 0)
-              cpu.addChild(icache);
-          }
+          if (icache.getSize() > 0)
+            cpu.addChild(icache);
 
           if (cache.getSize() > 0)
             cpu.addChild(cache);
