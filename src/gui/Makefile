@@ -9,9 +9,15 @@ DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -
 GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)
 INCLUDES=-I../core $(GTKINCLUDES)
 CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
+ifeq ($(SQLITE), 1)
+	CXXFLAGS+= -DSQLITE $(shell pkg-config --cflags sqlite3)
+endif
 CFLAGS=$(CXXFLAGS) $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 gmodule-2.0 --libs)
 LIBS+=-L../core -llshw -lresolv $(GTKLIBS)
+ifeq ($(SQLITE), 1)
+	LIBS+= $(shell pkg-config --libs sqlite3)
+endif
 LDFLAGS=
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
