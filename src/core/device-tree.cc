@@ -473,6 +473,7 @@ static void scan_devtree_cpu_power(hwNode & core)
   {
     uint32_t l2_key = 0;
     uint32_t version = 0;
+    uint32_t reg;
     string basepath = string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
     hwNode cpu("cpu", hw::processor);
 
@@ -490,6 +491,9 @@ static void scan_devtree_cpu_power(hwNode & core)
 
     cpu.setDescription("CPU");
     set_cpu(cpu, currentcpu++, basepath);
+
+    reg = get_u32(basepath + "/reg");
+    cpu.setPhysId(tostring(reg));
 
     version = get_u32(basepath + "/cpu-version");
     if (version != 0)
