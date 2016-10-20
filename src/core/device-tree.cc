@@ -443,22 +443,44 @@ static void scan_chip_vpd(map <uint32_t, chip_vpd_data *> & vpd)
 
 
 static void fill_core_vpd(hwNode & cpu, string & basepath,
-			  map <uint32_t, chip_vpd_data *> & chip_vpd)
+			  map <uint32_t, chip_vpd_data *> & chip_vpd,
+			  map <uint32_t, string> & xscoms)
 {
   uint32_t chip_id;
   chip_vpd_data *data;
+  string xscom_path;
 
   if (!exists(basepath + "/ibm,chip-id"))
     return;
 
   chip_id = get_u32(basepath + "/ibm,chip-id");
   data = chip_vpd[chip_id];
+  xscom_path = xscoms[chip_id];
 
   if (data)
   {
     cpu.setProduct(data->product);
     cpu.setSerial(data->serial);
     cpu.setSlot(data->slot);
+  }
+
+  if (xscom_path != "")
+  {
+    vector <string> board_pieces;
+
+    splitlines(hw::strip(get_string(xscom_path + "/board-info")),
+	       board_pieces, ' ');
+    if (board_pieces.size() > 0)
+      cpu.setVendor(board_pieces[0]);
+
+    if (exists(xscom_path + "/serial-number"))
+      cpu.setSerial(hw::strip(get_string(xscom_path + "/serial-number")));
+
+    if (exists(xscom_path + "/ibm,slot-location-code"))
+      cpu.setSlot(hw::strip(get_string(xscom_path + "/ibm,slot-location-code")));
+
+    if (exists(xscom_path + "/part-number"))
+      cpu.setProduct(hw::strip(get_string(xscom_path + "/part-number")));
   }
 }
 
@@ -488,6 +510,34 @@ static void set_cpu_config_threads(hwNode & cpu, const string & basepath)
 }
 
 
+static void scan_xscom_node(map <uint32_t, string> & xscoms)
+{
+  int n;
+  struct dirent **namelist;
+
+  pushd(DEVICETREE);
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n <= 0)
+    return;
+
+  for (int i = 0; i < n; i++) {
+    string sname = string(namelist[i]->d_name);
+    string fullpath = "";
+    int chip_id = 0;
+
+    if (sname.substr(0,5) == "xscom") {
+      fullpath = string(DEVICETREE) + "/" + sname;
+      chip_id = get_u32(fullpath + "/ibm,chip-id");
+      xscoms.insert(std::pair<uint32_t, string>(chip_id, fullpath));
+    }
+
+    free(namelist[i]);
+  }
+  free(namelist);
+}
+
 static void scan_devtree_cpu_power(hwNode & core)
 {
   int n;
@@ -496,6 +546,7 @@ static void scan_devtree_cpu_power(hwNode & core)
   map <uint32_t, pair<uint32_t, vector <hwNode> > > l2_caches;
   map <uint32_t, vector <hwNode> > l3_caches;
   map <uint32_t, chip_vpd_data *> chip_vpd;
+  map <uint32_t, string> xscoms;
 
   pushd(DEVICETREE "/cpus");
   n = scandir(".", &namelist, selectdir, alphasort);
@@ -578,6 +629,9 @@ static void scan_devtree_cpu_power(hwNode & core)
    */
   scan_chip_vpd(chip_vpd);
 
+  // List all xscom nodes under DT
+  scan_xscom_node(xscoms);
+
   for (int i = 0; i < n; i++) //second and final pass
   {
     uint32_t l2_key = 0;
@@ -608,7 +662,7 @@ static void scan_devtree_cpu_power(hwNode & core)
     if (version != 0)
       cpu.setVersion(tostring(version));
 
-    fill_core_vpd(cpu, basepath, chip_vpd);
+    fill_core_vpd(cpu, basepath, chip_vpd, xscoms);
 
     if (hw::strip(get_string(basepath + "/status")) != "okay")
       cpu.disable();
