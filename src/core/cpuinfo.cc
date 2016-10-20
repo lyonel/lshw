@@ -13,6 +13,13 @@ __ID("@(#) $Id$");
 
 static int currentcpu = 0;
 
+static inline bool is_system_ppc_ibm(hwNode & node)
+{
+  string desc = node.getDescription();
+
+  return (desc == "PowerNV" || desc == "pSeries Guest" || desc == "pSeries LPAR");
+}
+
 static hwNode *getcpu(hwNode & node,
 int n = 0)
 {
@@ -33,6 +40,13 @@ int n = 0)
     return cpu;
   }
 
+  /*
+   * device-tree.cc creates all CPU nodes on Power Systems.
+   * Hence do not create new CPU nodes here.
+   */
+  if (is_system_ppc_ibm(node))
+    return NULL;
+
   hwNode *core = node.getChild("core");
 
   if (core)
@@ -49,6 +63,20 @@ int n = 0)
 
 
 #ifdef __powerpc__
+static void cpuinfo_ppc_ibm(hwNode & node,
+			    const string & description, const string & version)
+{
+  hwNode *cpu = getcpu(node, currentcpu);
+
+  while (cpu)
+  {
+    cpu->setDescription(description);
+    cpu->setVersion(version);
+
+    cpu = getcpu(node, ++currentcpu);
+  }
+}
+
 static void cpuinfo_ppc(hwNode & node,
 string id,
 string value)
@@ -570,6 +598,7 @@ bool scan_cpuinfo(hwNode & n)
     char buffer[1024];
     size_t count;
     string cpuinfo_str = "";
+    string description = "", version = "";
 
     while ((count = read(cpuinfo, buffer, sizeof(buffer))) > 0)
     {
@@ -599,7 +628,23 @@ bool scan_cpuinfo(hwNode & n)
         cpuinfo_x86(n, id, value);
 #endif
 #ifdef __powerpc__
-        cpuinfo_ppc(n, id, value);
+
+        // All cores have same product name and version on power systems
+        if (is_system_ppc_ibm(n))
+        {
+          if (id == "cpu")
+            description = value;
+          if (id == "revision")
+            version = value;
+
+          if (description != "" && version != "")
+          {
+            cpuinfo_ppc_ibm(n, description, version);
+            break;
+          }
+        }
+        else
+          cpuinfo_ppc(n, id, value);
 #endif
 #ifdef __s390x__
         cpuinfo_s390x(n, id, value);
