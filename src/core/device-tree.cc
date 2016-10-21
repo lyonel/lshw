@@ -926,7 +926,11 @@ bool scan_device_tree(hwNode & n)
   if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
   {
     n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
-    n.setProduct(get_string(DEVICETREE "/model-name"));
+
+    if (exists(DEVICETREE "/model-name"))
+      n.setProduct(n.getProduct() + " (" +
+		   hw::strip(get_string(DEVICETREE "/model-name")) + ")");
+
     n.setDescription("PowerNV");
     if (core)
     {
