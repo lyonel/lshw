@@ -361,6 +361,129 @@ static void scan_devtree_cpu(hwNode & core)
   }
 }
 
+
+struct chip_vpd_data
+{
+  string product;
+  string serial;
+  string slot;
+};
+
+
+static void add_chip_vpd(string path, string name,
+			 map <uint32_t, chip_vpd_data *> & vpd)
+{
+  int n;
+  struct dirent **dirlist;
+
+  pushd(path + name);
+
+  if (name.substr(0, 9) == "processor" && exists("ibm,chip-id"))
+  {
+    uint32_t chip_id = get_u32("ibm,chip-id");
+    chip_vpd_data *data = new chip_vpd_data();
+
+    if (data)
+    {
+      if (exists("serial-number"))
+        data->serial = hw::strip(get_string("serial-number"));
+
+      if (exists("ibm,loc-code"))
+	data->slot = hw::strip(get_string("ibm,loc-code"));
+
+      if (exists("part-number"))
+        data->product = hw::strip(get_string("part-number"));
+
+      if (exists("fru-number"))
+        data->product += " FRU #" + hw::strip(get_string("fru-number"));
+
+      vpd.insert(std::pair<uint32_t, chip_vpd_data *>(chip_id, data));
+    }
+  }
+
+  n = scandir(".", &dirlist, selectdir, alphasort);
+  popd();
+
+  if (n <= 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    add_chip_vpd(path + name + "/", dirlist[i]->d_name, vpd);
+    free(dirlist[i]);
+  }
+
+  free(dirlist);
+}
+
+
+static void scan_chip_vpd(map <uint32_t, chip_vpd_data *> & vpd)
+{
+  int n;
+  struct dirent **namelist;
+
+  if (!exists(DEVICETREEVPD))
+    return;
+
+  pushd(DEVICETREEVPD);
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n <= 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    add_chip_vpd(DEVICETREEVPD, namelist[i]->d_name, vpd);
+    free(namelist[i]);
+  }
+
+  free(namelist);
+}
+
+
+static void fill_core_vpd(hwNode & cpu, string & basepath,
+			  map <uint32_t, chip_vpd_data *> & chip_vpd,
+			  map <uint32_t, string> & xscoms)
+{
+  uint32_t chip_id;
+  chip_vpd_data *data;
+  string xscom_path;
+
+  if (!exists(basepath + "/ibm,chip-id"))
+    return;
+
+  chip_id = get_u32(basepath + "/ibm,chip-id");
+  data = chip_vpd[chip_id];
+  xscom_path = xscoms[chip_id];
+
+  if (data)
+  {
+    cpu.setProduct(data->product);
+    cpu.setSerial(data->serial);
+    cpu.setSlot(data->slot);
+  }
+
+  if (xscom_path != "")
+  {
+    vector <string> board_pieces;
+
+    splitlines(hw::strip(get_string(xscom_path + "/board-info")),
+	       board_pieces, ' ');
+    if (board_pieces.size() > 0)
+      cpu.setVendor(board_pieces[0]);
+
+    if (exists(xscom_path + "/serial-number"))
+      cpu.setSerial(hw::strip(get_string(xscom_path + "/serial-number")));
+
+    if (exists(xscom_path + "/ibm,slot-location-code"))
+      cpu.setSlot(hw::strip(get_string(xscom_path + "/ibm,slot-location-code")));
+
+    if (exists(xscom_path + "/part-number"))
+      cpu.setProduct(hw::strip(get_string(xscom_path + "/part-number")));
+  }
+}
+
 static void set_cpu_config_threads(hwNode & cpu, const string & basepath)
 {
   static int threads_per_cpu = 0;
@@ -387,6 +510,34 @@ static void set_cpu_config_threads(hwNode & cpu, const string & basepath)
 }
 
 
+static void scan_xscom_node(map <uint32_t, string> & xscoms)
+{
+  int n;
+  struct dirent **namelist;
+
+  pushd(DEVICETREE);
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n <= 0)
+    return;
+
+  for (int i = 0; i < n; i++) {
+    string sname = string(namelist[i]->d_name);
+    string fullpath = "";
+    int chip_id = 0;
+
+    if (sname.substr(0,5) == "xscom") {
+      fullpath = string(DEVICETREE) + "/" + sname;
+      chip_id = get_u32(fullpath + "/ibm,chip-id");
+      xscoms.insert(std::pair<uint32_t, string>(chip_id, fullpath));
+    }
+
+    free(namelist[i]);
+  }
+  free(namelist);
+}
+
 static void scan_devtree_cpu_power(hwNode & core)
 {
   int n;
@@ -394,6 +545,8 @@ static void scan_devtree_cpu_power(hwNode & core)
   struct dirent **namelist;
   map <uint32_t, pair<uint32_t, vector <hwNode> > > l2_caches;
   map <uint32_t, vector <hwNode> > l3_caches;
+  map <uint32_t, chip_vpd_data *> chip_vpd;
+  map <uint32_t, string> xscoms;
 
   pushd(DEVICETREE "/cpus");
   n = scandir(".", &namelist, selectdir, alphasort);
@@ -469,10 +622,21 @@ static void scan_devtree_cpu_power(hwNode & core)
     }
   } // first pass end
 
+  /*
+   * We have chip level VPD information (like part number, slot, etc).
+   * and this information is same for all cores under chip.
+   * Fetch chip-level VPD from /vpd node.
+   */
+  scan_chip_vpd(chip_vpd);
+
+  // List all xscom nodes under DT
+  scan_xscom_node(xscoms);
+
   for (int i = 0; i < n; i++) //second and final pass
   {
     uint32_t l2_key = 0;
     uint32_t version = 0;
+    uint32_t reg;
     string basepath = string(DEVICETREE "/cpus/") + string(namelist[i]->d_name);
     hwNode cpu("cpu", hw::processor);
 
@@ -491,9 +655,14 @@ static void scan_devtree_cpu_power(hwNode & core)
     cpu.setDescription("CPU");
     set_cpu(cpu, currentcpu++, basepath);
 
+    reg = get_u32(basepath + "/reg");
+    cpu.setPhysId(tostring(reg));
+
     version = get_u32(basepath + "/cpu-version");
     if (version != 0)
       cpu.setVersion(tostring(version));
+
+    fill_core_vpd(cpu, basepath, chip_vpd, xscoms);
 
     if (hw::strip(get_string(basepath + "/status")) != "okay")
       cpu.disable();
@@ -544,6 +713,10 @@ static void scan_devtree_cpu_power(hwNode & core)
     free(namelist[i]);
   }
   free(namelist);
+
+  map <uint32_t, chip_vpd_data *>::iterator it;
+  for (it = chip_vpd.begin(); it != chip_vpd.end(); it++)
+    delete it->second;
 }
 
 void add_memory_bank(string name, string path, hwNode & core)
@@ -926,13 +1099,18 @@ bool scan_device_tree(hwNode & n)
   if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
   {
     n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
-    n.setProduct(get_string(DEVICETREE "/model-name"));
+
+    if (exists(DEVICETREE "/model-name"))
+      n.setProduct(n.getProduct() + " (" +
+		   hw::strip(get_string(DEVICETREE "/model-name")) + ")");
+
+    n.setDescription("PowerNV");
     if (core)
     {
       core->addHint("icon", string("board"));
       scan_devtree_root(*core);
-      scan_devtree_memory_powernv(*core);
       scan_devtree_cpu_power(*core);
+      scan_devtree_memory_powernv(*core);
       n.addCapability("powernv", "Non-virtualized");
       n.addCapability("opal", "OPAL firmware");
     }
@@ -982,11 +1160,15 @@ bool scan_device_tree(hwNode & n)
       core->addHint("icon", string("board"));
       scan_devtree_root(*core);
       scan_devtree_bootrom(*core);
-      scan_devtree_memory(*core);
-      if (exists(DEVICETREE "/ibm,lpar-capable"))
+      if (exists(DEVICETREE "/ibm,lpar-capable")) {
+        n.setDescription("pSeries LPAR");
         scan_devtree_cpu_power(*core);
-      else
+        scan_devtree_memory(*core);
+      }
+      else {
+        scan_devtree_memory(*core);
         scan_devtree_cpu(*core);
+     }
     }
   }
 
