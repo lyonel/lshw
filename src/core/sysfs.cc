@@ -58,7 +58,7 @@ struct sysfs_t
           NULL);
       }
 
-      has_sysfs = exists(path + "/classes/.");
+      has_sysfs = exists(path + "/class/.");
     }
   }
 
