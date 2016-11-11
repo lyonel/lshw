@@ -1,6 +1,7 @@
 #include "version.h"
 #include "config.h"
 #include "pci.h"
+#include "device-tree.h"
 #include "osutils.h"
 #include "options.h"
 #include "sysfs.h"
@@ -1177,6 +1178,7 @@ bool scan_pci(hwNode & n)
               fclose(resource);
             }
         }
+	add_device_tree_info(*device, devices[i]->d_name);
 
         result = true;
       }
