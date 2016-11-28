@@ -428,7 +428,7 @@ static void add_chip_vpd(string path, string name,
         data->product = hw::strip(get_string("part-number"));
 
       if (exists("fru-number"))
-        data->product += " FRU #" + hw::strip(get_string("fru-number"));
+        data->product += " FRU# " + hw::strip(get_string("fru-number"));
 
       vpd.insert(std::pair<uint32_t, chip_vpd_data *>(chip_id, data));
     }
@@ -776,7 +776,7 @@ void add_memory_bank(string name, string path, hwNode & core)
     product = get_string("part-number");
     if(exists("fru-number"))
     {
-      product += " FRU#" + get_string("fru-number");
+      product += " FRU# " + get_string("fru-number");
     }
     if(product != "")
       bank.setProduct(hw::strip(product));
