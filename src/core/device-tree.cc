@@ -752,7 +752,7 @@ static void scan_devtree_cpu_power(hwNode & core)
     delete it->second;
 }
 
-void add_memory_bank(string name, string path, hwNode & core)
+static void add_memory_bank(string name, string path, hwNode & core)
 {
   struct dirent **dirlist;
   string product;
@@ -773,10 +773,10 @@ void add_memory_bank(string name, string path, hwNode & core)
     if(exists("serial-number"))
       bank.setSerial(hw::strip(get_string("serial-number")));
 
-    product = get_string("part-number");
+    product = hw::strip(get_string("part-number"));
     if(exists("fru-number"))
     {
-      product += " FRU# " + get_string("fru-number");
+      product += " FRU# " + hw::strip(get_string("fru-number"));
     }
     if(product != "")
       bank.setProduct(hw::strip(product));
