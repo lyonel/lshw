@@ -763,6 +763,7 @@ static void add_memory_bank_spd(string path, hwNode & bank)
   unsigned char week_offset;
   unsigned char partno_offset;
   unsigned char ver_offset;
+  unsigned char serial_offset;
   int fd;
   size_t len = 0;
   dimminfo_buf dimminfo;
@@ -798,6 +799,7 @@ static void add_memory_bank_spd(string path, hwNode & bank)
     week_offset = 0x79;
     partno_offset = 0x80;
     ver_offset = 0x01;
+    serial_offset = 0x7a;
 
     switch ((dimminfo[0x8] >> 3) & 0x3) // DDR3 error detection and correction scheme
     {
@@ -850,6 +852,7 @@ static void add_memory_bank_spd(string path, hwNode & bank)
     week_offset = 0x5e;
     partno_offset = 0x49;
     ver_offset = 0x3e;
+    serial_offset = 0x5f;
 
     switch (dimminfo[0xb] & 0x3) // DDR2 error detection and correction scheme
     {
@@ -872,11 +875,15 @@ static void add_memory_bank_spd(string path, hwNode & bank)
     "%02X%02X,%02X %02X,%02X", dimminfo[rev_offset1],
     dimminfo[rev_offset2], dimminfo[year_offset], dimminfo[week_offset],
     dimminfo[mfg_loc_offset]);
-  bank.setSerial(string((char *) &dimminfo[partno_offset], 18));
+  bank.setProduct(string((char *) &dimminfo[partno_offset], 18));
   bank.setVersion(dimmversion);
 
+  unsigned long serial = be_long(&dimminfo[serial_offset]);
   int version = dimminfo[ver_offset];
   char buff[32];
+
+  snprintf(buff, sizeof(buff), "0x%lx", serial);
+  bank.setSerial(buff);
 
   snprintf(buff, sizeof(buff), "spd-%d.%d", (version & 0xF0) >> 4, version & 0x0F);
   bank.addCapability(buff);
