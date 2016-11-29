@@ -14,6 +14,7 @@
 #include "version.h"
 #include "device-tree.h"
 #include "osutils.h"
+#include "jedec.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <arpa/inet.h>
@@ -808,6 +809,39 @@ static void add_memory_bank_spd(string path, hwNode & bank)
         bank.setConfig("errordetection", "ecc");
         break;
     }
+
+    double ns = (dimminfo[0xc] / 2) * (dimminfo[0xa] / (float) dimminfo[0xb]);
+    bank.setClock(1000000000 / ns);
+
+    char vendor[3];
+    snprintf(vendor, sizeof(vendor), "%x%x", dimminfo[0x76], dimminfo[0x75]);
+    bank.setVendor(jedec_resolve(vendor));
+
+    char description[100];
+    const char *type, *mod_type;
+
+    type = "DDR3";
+    switch(dimminfo[0x3])
+    {
+      case 0x1:
+        mod_type = "RDIMM";
+        break;
+      case 0x2:
+        mod_type = "UDIMM";
+        break;
+      case 0x3:
+        mod_type = "SODIMM";
+        break;
+      case 0x4:
+        mod_type = "LRDIMM";
+        break;
+      default:
+        mod_type = "DIMM";
+    }
+
+    snprintf(description, sizeof(description), "%s %s %d MHz (%0.1fns)",
+	     mod_type, type, (int) (1000 / ns), ns);
+    bank.setDescription(description);
   } else {
     mfg_loc_offset = 0x48;
     rev_offset1 = 0x5b;
