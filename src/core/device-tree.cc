@@ -14,6 +14,7 @@
 #include "version.h"
 #include "device-tree.h"
 #include "osutils.h"
+#include "jedec.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <arpa/inet.h>
@@ -31,7 +32,7 @@
 
 __ID("@(#) $Id$");
 
-#define DIMMINFOSIZE 0x100
+#define DIMMINFOSIZE 0x200
 typedef uint8_t dimminfo_buf[DIMMINFOSIZE];
 
 struct dimminfo
@@ -428,7 +429,7 @@ static void add_chip_vpd(string path, string name,
         data->product = hw::strip(get_string("part-number"));
 
       if (exists("fru-number"))
-        data->product += " FRU #" + hw::strip(get_string("fru-number"));
+        data->product += " FRU# " + hw::strip(get_string("fru-number"));
 
       vpd.insert(std::pair<uint32_t, chip_vpd_data *>(chip_id, data));
     }
@@ -752,31 +753,248 @@ static void scan_devtree_cpu_power(hwNode & core)
     delete it->second;
 }
 
-void add_memory_bank(string name, string path, hwNode & core)
+static bool add_memory_bank_mba_dimm(string path,
+				     unsigned long serial, hwNode & bank)
+{
+  bool found = false;
+  int n;
+  struct dirent **namelist;
+
+  pushd(path);
+  n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return found;
+
+  for (int i = 0; i < n; i++)
+  {
+    string sname = string(namelist[i]->d_name);
+    string fullpath = path + "/" + sname;
+
+    if (found)
+    {
+      free(namelist[i]);
+      continue;
+    }
+
+    if (sname.substr(0, 13) == "memory-buffer")
+    {
+      if (exists(fullpath + "/frequency-mhz"))
+      {
+        int hz = get_u32(fullpath + "/frequency-mhz") * 1000000;
+        bank.setClock(hz);
+      }
+      found = add_memory_bank_mba_dimm(fullpath, serial, bank);
+    } else if (sname.substr(0, 3) == "mba") {
+      found = add_memory_bank_mba_dimm(fullpath, serial, bank);
+    } else if ((sname.substr(0, 4) == "dimm") &&
+	       (get_u32(fullpath + "/serial-number") == serial)) {
+      vector < reg_entry > regs = get_reg_property(fullpath);
+      bank.setSize(regs[0].size);
+
+      bank.setSlot(hw::strip(get_string(fullpath + "/ibm,slot-location-code")));
+      found = true;
+    }
+    free(namelist[i]);
+  }
+
+  free(namelist);
+  return found;
+}
+
+
+static void add_memory_bank_spd(string path, hwNode & bank)
+{
+  char dimmversion[20];
+  uint16_t mfg_loc_offset;
+  uint16_t rev_offset1;
+  uint16_t rev_offset2;
+  uint16_t year_offset;
+  uint16_t week_offset;
+  uint16_t partno_offset;
+  uint16_t ver_offset;
+  uint16_t serial_offset;
+  uint16_t bus_width_offset;
+  int fd;
+  size_t len = 0;
+  dimminfo_buf dimminfo;
+
+  fd = open(path.c_str(), O_RDONLY);
+  if (fd < 0)
+    return;
+
+  if (read(fd, &dimminfo, 0x80) != 0x80)
+  {
+    close(fd);
+    return;
+  }
+
+  /* Read entire SPD eeprom */
+  if (dimminfo[2] >= 9) /* DDR3 & DDR4 */
+  {
+    uint8_t val = (dimminfo[0] >> 4) & 0x7;
+    if (val == 1)
+      len = 256;
+    else if (val == 2)
+      len = 512;
+  } else if (dimminfo[0] < 15) { /* DDR 2 */
+    len = 1 << dimminfo[1];
+  }
+
+  if (len > 0x80)
+    read(fd, &dimminfo[0x80], len - 0x80);
+
+  close(fd);
+
+  if (dimminfo[2] >= 9) {
+    double ns;
+    char vendor[5];
+    const char *type, *mod_type;
+
+    rev_offset1 = 0x92;
+    rev_offset2 = 0x93;
+    ver_offset = 0x01;
+
+    if (dimminfo[0x2] >= 0xc) {
+      type = "DDR4";
+      mfg_loc_offset = 0x142;
+      year_offset = 0x143;
+      week_offset = 0x144;
+      partno_offset = 0x149;
+      bus_width_offset = 0x0d;
+      serial_offset = 0x145;
+
+      /*
+       * There is no other valid values for the medium- and fine- timebase
+       * other than (125ps, 1ps), so we hard-code those here. The fine
+       * t_{ckavg}_{min} value is signed. Divide by 2 to get from raw clock
+       * to expected data rate
+       */
+      ns = (((float)dimminfo[0x12] * 0.125) +
+	    (((signed char) dimminfo[0x7d]) * 0.001)) / 2;
+      snprintf(vendor, sizeof(vendor), "%x%x", dimminfo[0x141], dimminfo[0x140]);
+    } else {
+      type = "DDR3";
+      mfg_loc_offset = 0x77;
+      year_offset = 0x78;
+      week_offset = 0x79;
+      partno_offset = 0x80;
+      serial_offset = 0x7a;
+      bus_width_offset = 0x08;
+
+      ns = (dimminfo[0xc] / 2) * (dimminfo[0xa] / (float) dimminfo[0xb]);
+      snprintf(vendor, sizeof(vendor), "%x%x", dimminfo[0x76], dimminfo[0x75]);
+    }
+
+    /* DDR3 & DDR4 error detection and correction scheme */
+    switch ((dimminfo[bus_width_offset] >> 3) & 0x3)
+    {
+      case 0x00:
+        bank.setConfig("errordetection", "none");
+        break;
+      case 0x01:
+        bank.addCapability("ecc");
+        bank.setConfig("errordetection", "ecc");
+        break;
+    }
+
+    bank.setClock(1000000000 / ns);
+    bank.setVendor(jedec_resolve(vendor));
+
+    char description[100];
+    switch(dimminfo[0x3])
+    {
+      case 0x1:
+        mod_type = "RDIMM";
+        break;
+      case 0x2:
+        mod_type = "UDIMM";
+        break;
+      case 0x3:
+        mod_type = "SODIMM";
+        break;
+      case 0x4:
+        mod_type = "LRDIMM";
+        break;
+      default:
+        mod_type = "DIMM";
+    }
+
+    snprintf(description, sizeof(description), "%s %s %d MHz (%0.1fns)",
+	     mod_type, type, (int) (1000 / ns), ns);
+    bank.setDescription(description);
+  } else {
+    mfg_loc_offset = 0x48;
+    rev_offset1 = 0x5b;
+    rev_offset2 = 0x5c;
+    year_offset = 0x5d;
+    week_offset = 0x5e;
+    partno_offset = 0x49;
+    ver_offset = 0x3e;
+    serial_offset = 0x5f;
+
+    switch (dimminfo[0xb] & 0x3) // DDR2 error detection and correction scheme
+    {
+      case 0x00:
+        bank.setConfig("errordetection", "none");
+        break;
+      case 0x01:
+        bank.addCapability("parity");
+        bank.setConfig("errordetection", "parity");
+        break;
+      case 0x02:
+      case 0x03:
+        bank.addCapability("ecc");
+        bank.setConfig("errordetection", "ecc");
+        break;
+    }
+  }
+
+  snprintf(dimmversion, sizeof(dimmversion),
+    "%02X%02X,%02X %02X,%02X", dimminfo[rev_offset1],
+    dimminfo[rev_offset2], dimminfo[year_offset], dimminfo[week_offset],
+    dimminfo[mfg_loc_offset]);
+  bank.setProduct(string((char *) &dimminfo[partno_offset], 18));
+  bank.setVersion(dimmversion);
+
+  unsigned long serial = be_long(&dimminfo[serial_offset]);
+  int version = dimminfo[ver_offset];
+  char buff[32];
+
+  snprintf(buff, sizeof(buff), "0x%lx", serial);
+  bank.setSerial(buff);
+
+  add_memory_bank_mba_dimm(DEVICETREE, serial, bank);
+
+  snprintf(buff, sizeof(buff), "spd-%d.%d", (version & 0xF0) >> 4, version & 0x0F);
+  bank.addCapability(buff);
+}
+
+static void add_memory_bank(string name, string path, hwNode & core)
 {
   struct dirent **dirlist;
   string product;
   int n;
 
+  hwNode *memory = core.getChild("memory");
+  if(!memory)
+    memory = core.addChild(hwNode("memory", hw::memory));
+
   pushd(path + name);
   if(name.substr(0, 7) == "ms-dimm")
   {
-    hwNode *memory = core.getChild("memory");
-
     hwNode bank("bank", hw::memory);
     bank.claim(true);
     bank.addHint("icon", string("memory"));
 
-    if(!memory)
-      memory = core.addChild(hwNode("memory", hw::memory));
-
     if(exists("serial-number"))
       bank.setSerial(hw::strip(get_string("serial-number")));
 
-    product = get_string("part-number");
+    product = hw::strip(get_string("part-number"));
     if(exists("fru-number"))
     {
-      product += " FRU#" + get_string("fru-number");
+      product += " FRU# " + hw::strip(get_string("fru-number"));
     }
     if(product != "")
       bank.setProduct(hw::strip(product));
@@ -787,6 +1005,15 @@ void add_memory_bank(string name, string path, hwNode & core)
       bank.setSlot(hw::strip(get_string("ibm,loc-code")));
     if(unsigned long size = get_number("size"))
       bank.setSize(size*1024*1024);
+
+    memory->addChild(bank);
+  } else if(name.substr(0, 4) == "dimm") {
+    hwNode bank("bank", hw::memory);
+    bank.claim(true);
+    bank.addHint("icon", string("memory"));
+
+    // Parse Memory SPD data
+    add_memory_bank_spd(path + name + "/spd", bank);
 
     memory->addChild(bank);
   }
@@ -872,123 +1099,32 @@ static void scan_devtree_memory(hwNode & core)
       memory = core.addChild(hwNode("memory", hw::memory));
     }
 
-    if (memory)
-    {
-      int fd = open(dimminfo.c_str(), O_RDONLY);
-
-      if (regs.size() == slotnames.size())
-      {
-        for (unsigned int i = 0; i < slotnames.size(); i++)
-        {
-          uint64_t size = regs[i].size;
-          hwNode bank("bank",
-            hw::memory);
-
-          if (fd >= 0)
-          {
-            dimminfo_buf dimminfo;
-	    
-            if (read(fd, &dimminfo, 0x80) == 0x80)
-            {
-
-              /* Read entire SPD eeprom */
-              if (dimminfo[2] >= 9) /* DDR3 */
-              {
-                read(fd, &dimminfo[0x80], (64 << ((dimminfo[0] & 0x70) >> 4)));
-              } else if (dimminfo[0] < 15) { /* DDR 2 */
-                read(fd, &dimminfo[0x80], (1 << (dimminfo[1]) ));
-              }
-
-              if (size > 0)
-              {
-                char dimmversion[20];
-                unsigned char mfg_loc_offset;
-                unsigned char rev_offset1;
-                unsigned char rev_offset2;
-                unsigned char year_offset;
-                unsigned char week_offset;
-                unsigned char partno_offset;
-                unsigned char ver_offset;
-
-                if (dimminfo[2] >= 9) {
-                  mfg_loc_offset = 0x77;
-                  rev_offset1 = 0x92;
-                  rev_offset2 = 0x93;
-                  year_offset = 0x78;
-                  week_offset = 0x79;
-                  partno_offset = 0x80;
-                  ver_offset = 0x01;
-
-                  switch ((dimminfo[0x8] >> 3) & 0x3) // DDR3 error detection and correction scheme
-                  {
-                    case 0x00:
-                      bank.setConfig("errordetection", "none");
-                      break;
-                    case 0x01:
-                      bank.addCapability("ecc");
-                      bank.setConfig("errordetection", "ecc");
-                      break;
-                  }
-                } else {
-                  mfg_loc_offset = 0x48;
-                  rev_offset1 = 0x5b;
-                  rev_offset2 = 0x5c;
-                  year_offset = 0x5d;
-                  week_offset = 0x5e;
-                  partno_offset = 0x49;
-                  ver_offset = 0x3e;
-
-                  switch (dimminfo[0xb] & 0x3) // DDR2 error detection and correction scheme
-                  {
-                    case 0x00:
-                      bank.setConfig("errordetection", "none");
-                      break;
-                    case 0x01:
-                      bank.addCapability("parity");
-                      bank.setConfig("errordetection", "parity");
-                      break;
-                    case 0x02:
-                    case 0x03:
-                      bank.addCapability("ecc");
-                      bank.setConfig("errordetection", "ecc");
-                      break;
-                  }
-                }
-                snprintf(dimmversion, sizeof(dimmversion),
-                  "%02X%02X,%02X %02X,%02X", dimminfo[rev_offset1],
-                  dimminfo[rev_offset2], dimminfo[year_offset], dimminfo[week_offset],
-                  dimminfo[mfg_loc_offset]);
-                bank.setSerial(string((char *) &dimminfo[partno_offset], 18));
-                bank.setVersion(dimmversion);
-
-                int version = dimminfo[ver_offset];
-                char buff[32];
-
-                snprintf(buff, sizeof(buff), "spd-%d.%d", (version & 0xF0) >> 4, version & 0x0F);
-                bank.addCapability(buff);
-              }
-            }
-          }
-
-          if(size>0)
-            bank.addHint("icon", string("memory"));
-          bank.setDescription("Memory bank");
-          bank.setSlot(slotnames[i]);
-          if (i < dimmtypes.size())
-            bank.setDescription(dimmtypes[i]);
-          if (i < dimmspeeds.size())
-            bank.setProduct(hw::strip(dimmspeeds[i]));
-          bank.setSize(size);
-          memory->addChild(bank);
-        }
-      }
-
-      if (fd >= 0)
-        close(fd);
-      currentmc++;
-    }
-    else
+    if (!memory)
       break;
+
+    if (regs.size() == slotnames.size())
+    {
+      for (unsigned int i = 0; i < slotnames.size(); i++)
+      {
+        uint64_t size = regs[i].size;
+        hwNode bank("bank", hw::memory);
+
+	// Parse Memory SPD data
+        add_memory_bank_spd(dimminfo, bank);
+
+        if (size > 0)
+          bank.addHint("icon", string("memory"));
+        bank.setDescription("Memory bank");
+        bank.setSlot(slotnames[i]);
+        if (i < dimmtypes.size())
+          bank.setDescription(dimmtypes[i]);
+        if (i < dimmspeeds.size())
+          bank.setProduct(hw::strip(dimmspeeds[i]));
+        bank.setSize(size);
+        memory->addChild(bank);
+      }
+    }
+    currentmc++;
 
     memory = NULL;
   }
