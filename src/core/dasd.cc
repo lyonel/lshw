@@ -47,7 +47,7 @@ bool scan_dasd(hwNode & n)
       {
         std::string attrib_fname = std::string(SYSFS_PREFIX) + dev_name + "/device/" + *it;
         std::vector<std::string> lines;
-        if (loadfile(attrib_fname, lines))
+        if (loadfile(attrib_fname, lines) && (lines.size() > 0))
         {
           dasd_attribs[*it] = lines[0];
         }

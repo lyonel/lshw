@@ -518,7 +518,7 @@ static bool load_pcidb()
   for (int i = filenames.size() - 1; i >= 0; i--)
   {
     lines.clear();
-    if (loadfile(filenames[i], lines))
+    if (loadfile(filenames[i], lines) && (lines.size() > 0))
       parse_pcidb(lines);
   }
 
