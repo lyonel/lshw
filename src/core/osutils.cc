@@ -773,47 +773,47 @@ string operating_system()
   struct utsname u;
   string os = "";
 
-  if(loadfile("/etc/lsb-release", osinfo))
+  if(loadfile("/etc/lsb-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/lsb_release", osinfo))
+  else if(loadfile("/etc/lsb_release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/system-release", osinfo))
+  else if(loadfile("/etc/system-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/release", osinfo))
+  else if(loadfile("/etc/release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/arch-release", osinfo))
+  else if(loadfile("/etc/arch-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/arklinux-release", osinfo))
+  else if(loadfile("/etc/arklinux-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/aurox-release", osinfo))
+  else if(loadfile("/etc/aurox-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/conectiva-release", osinfo))
+  else if(loadfile("/etc/conectiva-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/debian_version", osinfo))
+  else if(loadfile("/etc/debian_version", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/fedora-release", osinfo))
+  else if(loadfile("/etc/fedora-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/gentoo-release", osinfo))
+  else if(loadfile("/etc/gentoo-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/linuxppc-release", osinfo))
+  else if(loadfile("/etc/linuxppc-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/mandrake-release", osinfo))
+  else if(loadfile("/etc/mandrake-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/mandriva-release", osinfo))
+  else if(loadfile("/etc/mandriva-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/novell-release", osinfo))
+  else if(loadfile("/etc/novell-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/pld-release", osinfo))
+  else if(loadfile("/etc/pld-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/redhat-release", osinfo))
+  else if(loadfile("/etc/redhat-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/slackware-version", osinfo))
+  else if(loadfile("/etc/slackware-version", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/sun-release", osinfo))
+  else if(loadfile("/etc/sun-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/SuSE-release", osinfo))
+  else if(loadfile("/etc/SuSE-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
-  else if(loadfile("/etc/yellowdog-release", osinfo))
+  else if(loadfile("/etc/yellowdog-release", osinfo) && (osinfo.size() > 0))
     os = osinfo[0];
 
   if(uname(&u) != 0) return "";
