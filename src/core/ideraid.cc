@@ -454,7 +454,8 @@ static bool probe_port(unsigned controller, unsigned disknum, hwNode & parent)
 
 static const char *manufacturers[] =
 {
-  "^ST.+", "Seagate",
+  "^ST(?!I\\ ).+", "Seagate",
+  "^STI\\ .+", "SimpleTech",
   "^D...-.+", "IBM",
   "^IBM.+", "IBM",
   "^HITACHI.+", "Hitachi",
