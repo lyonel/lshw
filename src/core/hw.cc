@@ -1368,9 +1368,14 @@ string hwNode::asJSON(unsigned level)
   config = getConfigKeys();
   resources = getResources("\" value=\"");
 
+  if (level == 0)
+  {
+    out << "[" << endl;
+  }
+
   if(visible(getClassName()))
   {
-    out << "{" << endl;
+    out << spaces(2*level) << "{" << endl;
     out << spaces(2*level+2) << "\"id\" : \"" << getId() << "\"," << endl;
     out << spaces(2*level+2) << "\"class\" : \"" << getClassName() << "\"";
 
@@ -1613,26 +1618,25 @@ string hwNode::asJSON(unsigned level)
     resources.clear();
   }
 
-  
-  if(countChildren()>0)
+  for (unsigned int i = 0; i < countChildren(); i++)
   {
-    if(visible(getClassName()))
-      out << "," << endl << spaces(2*level+2) << "\"children\" : [" << endl;
-
-    for (unsigned int i = 0; i < countChildren(); i++)
+    out << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
+    if (visible(getChild(i)->getClassName()))
     {
-      out << spaces(2*level+4) << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
-      if(visible(getChild(i)->getClassName()) && (i < countChildren()-1)) out << "," << endl;
+      out << "," << endl;
     }
-
-    if(visible(getClassName()))
-      out << endl << spaces(2*level+2) << "]";
   }
 
   if(visible(getClassName()))
   {
     out << endl << spaces(2*level);
     out << "}";
+  }
+
+  if (level == 0)
+  {
+    out.seekp(-2, std::ios_base::end);
+    out << endl << "]" << endl;
   }
 
   return out.str();
