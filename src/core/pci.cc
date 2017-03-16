@@ -766,8 +766,12 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
   if(!pcidb_loaded)
     pcidb_loaded = load_pcidb();
 
-      d.vendor_id = get_conf_word(d, PCI_VENDOR_ID);
-      d.device_id = get_conf_word(d, PCI_DEVICE_ID);
+      u_int16_t tmp_vendor_id = get_conf_word(d, PCI_VENDOR_ID);
+      u_int16_t tmp_device_id = get_conf_word(d, PCI_DEVICE_ID);
+      if ((tmp_vendor_id & tmp_device_id) != 0xffff) {
+        d.vendor_id = tmp_vendor_id;
+        d.device_id = tmp_device_id;
+      }
       u_int16_t dclass = get_conf_word(d, PCI_CLASS_DEVICE);
       u_int16_t cmd = get_conf_word(d, PCI_COMMAND);
       u_int16_t status = get_conf_word(d, PCI_STATUS);
@@ -1105,6 +1109,7 @@ bool scan_pci(hwNode & n)
     if(matches(devices[i]->d_name, "^[[:xdigit:]]+:[[:xdigit:]]+:[[:xdigit:]]+\\.[[:xdigit:]]+$"))
     {
       string devicepath = string(devices[i]->d_name)+"/config";
+      sysfs::entry device_entry = sysfs::entry::byBus("pci", devices[i]->d_name);
       struct pci_dev d;
       int fd = open(devicepath.c_str(), O_RDONLY);
       if (fd >= 0)
@@ -1119,6 +1124,8 @@ bool scan_pci(hwNode & n)
       }
 
       sscanf(devices[i]->d_name, "%hx:%hx:%hhx.%hhx", &d.domain, &d.bus, &d.dev, &d.func);
+      sscanf(device_entry.vendor().c_str(), "%hx", &d.vendor_id);
+      sscanf(device_entry.device().c_str(), "%hx", &d.device_id);
       hwNode *device = scan_pci_dev(d, n);
 
       if(device)
@@ -1149,7 +1156,7 @@ bool scan_pci(hwNode & n)
           device->claim();
         }
 
-	device->setModalias(sysfs::entry::byBus("pci", devices[i]->d_name).modalias());
+        device->setModalias(device_entry.modalias());
 
         if(exists(resourcename))
         {

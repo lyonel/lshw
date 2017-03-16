@@ -303,6 +303,16 @@ string entry::modalias() const
   return get_string(This->devpath+"/modalias");
 }
 
+string entry::device() const
+{
+  return get_string(This->devpath+"/device");
+}
+
+string entry::vendor() const
+{
+  return get_string(This->devpath+"/vendor");
+}
+
 vector < entry > sysfs::entries_by_bus(const string & busname)
 {
   vector < entry > result;
