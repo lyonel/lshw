@@ -1131,9 +1131,9 @@ bool scan_pci(hwNode & n)
           string drivername = readlink(string(devices[i]->d_name)+"/driver");
           string modulename = readlink(string(devices[i]->d_name)+"/driver/module");
 
-          device->setConfig("driver", basename(const_cast<char *>(drivername.c_str())));
+          device->setConfig("driver", basename(drivername));
           if(exists(modulename))
-            device->setConfig("module", basename(const_cast<char *>(modulename.c_str())));
+            device->setConfig("module", basename(modulename));
 
           if(exists(string(devices[i]->d_name)+"/rom"))
           {
