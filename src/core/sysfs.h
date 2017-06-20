@@ -25,6 +25,8 @@ namespace sysfs
       string businfo() const;
       string driver() const;
       string modalias() const;
+      string device() const;
+      string vendor() const;
       entry parent() const;
       string name_in_class(const string &) const;
 
