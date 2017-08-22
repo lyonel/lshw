@@ -612,7 +612,10 @@ static void scan_devtree_cpu_power(hwNode & core)
     product = hw::strip(get_string(basepath + "/name"));
 
     if (hw::strip(get_string(basepath + "/status")) != "okay")
+    {
       cache.disable();
+      icache.disable();
+    }
 
     if (product == "l2-cache")
       fill_cache_info("L2 Cache", basepath, cache, icache);
@@ -715,6 +718,12 @@ static void scan_devtree_cpu_power(hwNode & core)
 
       if (cache.getSize() > 0)
         cpu.addChild(cache);
+
+      if (hw::strip(get_string(basepath + "/status")) != "okay")
+      {
+        cache.disable();
+        icache.disable();
+      }
     }
 
     if (exists(basepath + "/l2-cache"))
