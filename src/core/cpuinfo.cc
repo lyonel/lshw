@@ -36,7 +36,9 @@ int n = 0)
   {
     cpu->addHint("icon", string("cpu"));
     cpu->claim(true);                             // claim the cpu and all its children
-    cpu->enable();                                // enable it
+    if (!is_system_ppc_ibm(node))
+      cpu->enable();                                // enable it
+
     return cpu;
   }
 
