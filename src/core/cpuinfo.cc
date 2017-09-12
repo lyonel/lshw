@@ -136,7 +136,7 @@ string value)
       cpu->claim(true);
       cpu->setVendor(s390x_vendor);
 
-      for(int i=0; i < s390x_features.size(); i++)
+      for(size_t i=0; i < s390x_features.size(); i++)
         cpu->addCapability(s390x_features[i]);
       /* many thanks to Martin Schwidefsky for communicating the descriptions
          of the feature flags
@@ -258,7 +258,7 @@ static void cpuinfo_aarch64(hwNode & node,
               if (node.getDescription() == "")
                 node.setDescription(aarch64_processor_name);
               cpu->claim(true);
-              for(int i=0; i < aarch64_features.size(); i++)
+              for(size_t i=0; i < aarch64_features.size(); i++)
                 {
                   cpu->addCapability(aarch64_features[i]);
                   cpu->describeCapability("fp", "Floating point instructions");
@@ -279,8 +279,6 @@ static void cpuinfo_ia64(hwNode & node,
 string id,
 string value)
 {
-  unsigned long long frequency = 0;
-  int i;
 
   if (id == "processor")
     currentcpu++;
