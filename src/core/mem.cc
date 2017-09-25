@@ -5,9 +5,10 @@
  * sources:
  * - the size of /proc/kcore
  * - the value returned by the sysconf libc function
+ * - the sum of sizes of kernel hotplug memory blocks
  * - the sum of sizes of individual memory banks
  *
- * NOTE: Except in last case, this guess can be widely inaccurate, as the
+ * NOTE: In the first two cases this guess can be widely inaccurate, as the
  * kernel itself limits the memory addressable by userspace processes.
  * Because of that, this module reports the biggest value found if it can't
  * access the size of individual memory banks (information filled in by other
@@ -17,6 +18,7 @@
 
 #include "version.h"
 #include "config.h"
+#include "sysfs.h"
 #include "mem.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -49,6 +51,31 @@ static unsigned long long get_sysconf_size()
       (unsigned long long) pagesize *(unsigned long long) physpages;
 
   return logicalmem;
+}
+
+
+static unsigned long long get_hotplug_size()
+{
+  vector < sysfs::entry > entries = sysfs::entries_by_bus("memory");
+
+  if (entries.empty())
+    return 0;
+
+  unsigned long long memblocksize =
+    sysfs::entry::byPath("/system/memory").hex_attr("block_size_bytes");
+  if (memblocksize == 0)
+    return 0;
+
+  unsigned long long totalsize = 0;
+  for (vector < sysfs::entry >::iterator it = entries.begin();
+      it != entries.end(); ++it)
+  {
+    const sysfs::entry & e = *it;
+    if (e.string_attr("online") != "1")
+      continue;
+    totalsize += memblocksize;
+  }
+  return totalsize;
 }
 
 
@@ -93,9 +120,11 @@ bool scan_memory(hwNode & n)
   hwNode *memory = n.getChild("core/memory");
   unsigned long long logicalmem = 0;
   unsigned long long kcore = 0;
+  unsigned long long hotplug_size = 0;
 
   logicalmem = get_sysconf_size();
   kcore = get_kcore_size();
+  hotplug_size = get_hotplug_size();
   count_memorybanks_size(n);
   claim_memory(n);
 
@@ -127,7 +156,9 @@ bool scan_memory(hwNode & n)
     if (memory->getSize() > logicalmem)           // we already have a value
       return true;
 
-    if ((logicalmem == 0)
+    if (hotplug_size > logicalmem)
+      memory->setSize(hotplug_size);
+    else if ((logicalmem == 0)
       || ((kcore > logicalmem) && (kcore < 2 * logicalmem)))
       memory->setSize(kcore);
     else

@@ -659,10 +659,9 @@ static void scan_sg(hwNode & n)
   int sg;
   int fd = -1;
   My_sg_scsi_id m_id;
-  char slot_name[64];                             // should be 16 but some 2.6 kernels require 32 bytes
   string host = "";
   string businfo = "";
-  hwNode *parent = NULL;
+  string adapter_businfo = "";
   int emulated = 0;
   bool ghostdeventry = false;
   size_t j;
@@ -696,8 +695,12 @@ static void scan_sg(hwNode & n)
 
   host = host_logicalname(m_id.host_no);
   businfo = scsi_businfo(m_id.host_no);
+  adapter_businfo =
+      sysfs::entry::byClass("scsi_host", host_kname(m_id.host_no))
+      .parent().businfo();
 
   hwNode device = hwNode("generic");
+  hwNode *parent = NULL;
 
   switch (m_id.scsi_type)
   {
@@ -752,10 +755,9 @@ static void scan_sg(hwNode & n)
   if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7) || (m_id.scsi_type == 14))
     scan_disk(device);
 
-  memset(slot_name, 0, sizeof(slot_name));
-  if (ioctl(fd, SCSI_IOCTL_GET_PCI, slot_name) >= 0)
+  if (!adapter_businfo.empty())
   {
-    parent = n.findChildByBusInfo(guessBusInfo(hw::strip(slot_name)));
+    parent = n.findChildByBusInfo(adapter_businfo);
   }
 
   if (!parent)
@@ -785,7 +787,7 @@ static void scan_sg(hwNode & n)
   {
 
   if(parent->getBusInfo() == "")
-    parent->setBusInfo(guessBusInfo(hw::strip(slot_name)));
+    parent->setBusInfo(adapter_businfo);
   parent->setLogicalName(host);
   parent->claim();
 

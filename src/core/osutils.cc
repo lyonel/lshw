@@ -832,15 +832,10 @@ string operating_system()
 
 string platform()
 {
-  string p = "";
   struct utsname u;
 
-#ifdef __i386__
-  p = "i386";
-#endif
-
   if(uname(&u) != 0)
-    return p;
+    return string("i386");
   else
-    return p + (p!=""?"/":"") + string(u.machine);
+    return string(u.machine);
 }

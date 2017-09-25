@@ -103,6 +103,8 @@ __ID("@(#) $Id$");
 #define PCI_CLASS_STORAGE_FLOPPY     0x0102
 #define PCI_CLASS_STORAGE_IPI        0x0103
 #define PCI_CLASS_STORAGE_RAID       0x0104
+#define PCI_CLASS_STORAGE_SATA       0x0106
+#define PCI_CLASS_STORAGE_SAS        0x0107
 #define PCI_CLASS_STORAGE_OTHER      0x0180
 
 #define PCI_BASE_CLASS_NETWORK       0x02
@@ -332,6 +334,12 @@ static const char *get_class_name(unsigned int c)
       return "scsi";
     case PCI_CLASS_STORAGE_IDE:
       return "ide";
+    case PCI_CLASS_STORAGE_RAID:
+      return "raid";
+    case PCI_CLASS_STORAGE_SATA:
+      return "sata";
+    case PCI_CLASS_STORAGE_SAS:
+      return "sas";
     case PCI_CLASS_BRIDGE_HOST:
       return "host";
     case PCI_CLASS_BRIDGE_ISA:
@@ -812,6 +820,11 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
         host.setDescription(get_class_description(dclass, progif));
         host.setVendor(get_device_description(d.vendor_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+"]":""));
         host.setProduct(get_device_description(d.vendor_id, d.device_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+":"+tohex(d.device_id)+"]":""));
+        if (subsys_v != 0 || subsys_d != 0)
+        {
+          host.setSubsysVendor(get_device_description(subsys_v)+(enabled("output:numeric")?" ["+tohex(subsys_v)+"]":""));
+          host.setSubsysProduct(get_device_description(subsys_v, subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
+        }
         host.setHandle(pci_bushandle(d.bus, d.domain));
         host.setVersion(revision);
         addHints(host, d.vendor_id, d.device_id, subsys_v, subsys_d, dclass);
@@ -960,7 +973,11 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           device->setVendor(get_device_description(d.vendor_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+"]":""));
           device->setVersion(revision);
           device->setProduct(get_device_description(d.vendor_id, d.device_id)+(enabled("output:numeric")?" ["+tohex(d.vendor_id)+":"+tohex(d.device_id)+"]":""));
-
+          if (subsys_v != 0 || subsys_d != 0)
+          {
+            device->setSubsysVendor(get_device_description(subsys_v)+(enabled("output:numeric")?" ["+tohex(subsys_v)+"]":""));
+            device->setSubsysProduct(get_device_description(subsys_v, subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
+          }
           if (cmd & PCI_COMMAND_MASTER)
             device->addCapability("bus master", "bus mastering");
           if (cmd & PCI_COMMAND_VGA_PALETTE)

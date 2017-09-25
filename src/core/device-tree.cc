@@ -981,8 +981,9 @@ static void add_memory_bank(string name, string path, hwNode & core)
   if(!memory)
     memory = core.addChild(hwNode("memory", hw::memory));
 
-  pushd(path + name);
-  if(name.substr(0, 7) == "ms-dimm")
+  pushd(path + "/" + name);
+  if(name.substr(0, 7) == "ms-dimm" ||
+     name.substr(0, 18) == "IBM,memory-module@")
   {
     hwNode bank("bank", hw::memory);
     bank.claim(true);
@@ -999,12 +1000,24 @@ static void add_memory_bank(string name, string path, hwNode & core)
     if(product != "")
       bank.setProduct(hw::strip(product));
 
+    string description = "DIMM";
+    string package = hw::strip(get_string("ibm,mem-package"));
+    if (!package.empty())
+      description = package;
+    string memtype = hw::strip(get_string("ibm,mem-type"));
+    if (!memtype.empty())
+      description += " " + memtype;
     if(exists("description"))
-      bank.setDescription(hw::strip(get_string("description")));
+      description = hw::strip(get_string("description"));
+    bank.setDescription(description);
+
     if(exists("ibm,loc-code"))
       bank.setSlot(hw::strip(get_string("ibm,loc-code")));
-    if(unsigned long size = get_number("size"))
-      bank.setSize(size*1024*1024);
+    unsigned long size = get_number("size") * 1024 * 1024;
+    if (exists("ibm,size"))
+      size = get_u32("ibm,size");
+    if (size > 0)
+      bank.setSize(size);
 
     memory->addChild(bank);
   } else if(name.substr(0, 4) == "dimm") {
@@ -1026,7 +1039,7 @@ static void add_memory_bank(string name, string path, hwNode & core)
 
   for (int i = 0; i < n; i++)
   {
-    add_memory_bank(dirlist[i]->d_name, path + name + "/", core);
+    add_memory_bank(dirlist[i]->d_name, path + "/" + name, core);
     free(dirlist[i]);
   }
   free(dirlist);
@@ -1056,6 +1069,30 @@ static void scan_devtree_memory_powernv(hwNode & core)
 }
 
 
+// older POWER hardware
+static void scan_devtree_memory_ibm(hwNode & core)
+{
+  struct dirent **namelist;
+  pushd(DEVICETREE);
+  int n = scandir(".", &namelist, selectdir, alphasort);
+  popd();
+
+  if (n < 0)
+    return;
+
+  for (int i = 0; i < n; i++)
+  {
+    if (strncmp(namelist[i]->d_name, "memory-controller@", 18) == 0)
+    {
+      add_memory_bank(namelist[i]->d_name, DEVICETREE, core);
+    }
+    free(namelist[i]);
+  }
+  free(namelist);
+}
+
+
+// Apple and ARM
 static void scan_devtree_memory(hwNode & core)
 {
   int currentmc = -1;                             // current memory controller
@@ -1233,6 +1270,64 @@ static bool get_apple_model(hwNode & n)
   return false;
 }
 
+struct ibm_model_def {
+  const char *model;
+  const char *modelname;
+  const char *icon;
+  const char *chassis; // matches DMI chassis types
+};
+struct ibm_model_def ibm_model_defs[] =
+{
+  {"0200", "BladeCenter QS20", "", "blade"},
+  {"0792", "BladeCenter QS21", "", "blade"},
+  {"6778", "BladeCenter JS21", "", "blade"},
+  {"6779", "BladeCenter JS21", "", "blade"},
+  {"7047-185", "IntelliStation POWER 185", "towercomputer", "tower"},
+  {"7988", "BladeCenter JS21", "", "blade"},
+  {"8202", "Power 720 Express", "", "rackmount"},
+  {"8205", "Power 740 Express", "", "rackmount"},
+  {"8231-E1C", "Power 710 Express", "", "rackmount"},
+  {"8231-E1D", "Power 710 Express", "", "rackmount"},
+  {"8231-E2C", "Power 730 Express", "", "rackmount"},
+  {"8231-E2D", "Power 730 Express", "", "rackmount"},
+  {"8233-E8B", "Power 750 Express", "", "rackmount"},
+  {"8236-E8C", "Power 755", "", "rackmount"},
+  {"8286-41A", "Power Systems S814", "", "rackmount"},
+  {"8286-42A", "Power Systems S824", "", "rackmount"},
+  {"8406-70Y", "Power PS700", "", "rackmount"},
+  {"8406-71Y", "BladeCenter PS702", "", "blade"},
+  {"8842", "BladeCenter JS20", "", "blade"},
+  {"8844", "BladeCenter JS21", "", "blade"},
+  {"9111-285", "IntelliStation POWER 285", "towercomputer", "tower"},
+  {"9112-265", "IntelliStation POWER 265", "towercomputer", "tower"},
+  {"9114-275", "IntelliStation POWER 275", "towercomputer", "tower"},
+  {"9123", "eServer OpenPower 710", "", "rackmount"},
+  {"9124", "eServer OpenPower 720", "", "rackmount"},
+};
+
+static void get_ibm_model(hwNode & n)
+{
+  string product = n.getProduct();
+  if (product.empty())
+    return;
+  if (product.compare(0, 4, "IBM,") != 0)
+    return;
+
+  n.setVendor("IBM");
+  string machinetype = product.substr(4, 4);
+  string model = product.substr(4);
+
+  for (size_t i = 0; i < sizeof(ibm_model_defs) / sizeof(ibm_model_def); i ++)
+  {
+    if (ibm_model_defs[i].model == machinetype || ibm_model_defs[i].model == model)
+    {
+      n.setProduct(ibm_model_defs[i].modelname);
+      n.addHint("icon", string(ibm_model_defs[i].icon));
+      n.setConfig("chassis", ibm_model_defs[i].chassis);
+      return;
+    }
+  }
+}
 
 static void fix_serial_number(hwNode & n)
 {
@@ -1265,10 +1360,11 @@ bool scan_device_tree(hwNode & n)
     n.setSerial(get_string(DEVICETREE "/system-id"));
   fix_serial_number(n);
 
+  n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
+  get_apple_model(n);
+  get_ibm_model(n);
   if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
   {
-    n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
-
     if (exists(DEVICETREE "/model-name"))
       n.setProduct(n.getProduct() + " (" +
 		   hw::strip(get_string(DEVICETREE "/model-name")) + ")");
@@ -1279,6 +1375,7 @@ bool scan_device_tree(hwNode & n)
       core->addHint("icon", string("board"));
       scan_devtree_root(*core);
       scan_devtree_cpu_power(*core);
+      scan_devtree_memory_ibm(*core);
       scan_devtree_memory_powernv(*core);
       scan_devtree_firmware_powernv(*core);
       n.addCapability("powernv", "Non-virtualized");
@@ -1323,8 +1420,6 @@ bool scan_device_tree(hwNode & n)
   }
   else
   {
-    n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
-    get_apple_model(n);
     if (core)
     {
       core->addHint("icon", string("board"));
