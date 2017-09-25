@@ -19,7 +19,7 @@ using namespace std;
 bool scan_dasd(hwNode & n)
 {
   size_t dev_num;
-  char *dev_name;
+  std::string dev_name;
   glob_t devices;
   uint64_t capacity;
 
@@ -42,7 +42,7 @@ bool scan_dasd(hwNode & n)
   {
     for(dev_num=0;dev_num<devices.gl_pathc;dev_num++)
     {
-      dev_name = basename(devices.gl_pathv[dev_num]);
+      dev_name = basename(std::string(devices.gl_pathv[dev_num]));
       for (std::vector<std::string>::iterator it = sysfs_attribs.begin(); it != sysfs_attribs.end(); ++it)
       {
         std::string attrib_fname = std::string(SYSFS_PREFIX) + dev_name + "/device/" + *it;
