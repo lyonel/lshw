@@ -137,6 +137,17 @@ static string sysfstobusinfo(const string & path)
   if (bustype == "ide")
     return sysfstoide(path);
 
+  if (bustype == "usb")
+  {
+    string name = basename(path.c_str());
+    if (matches(name, "^[0-9]+-[0-9]+(\\.[0-9]+)*:[0-9]+\\.[0-9]+$"))
+    {
+      size_t colon = name.rfind(":");
+      size_t dash = name.find("-");
+      return "usb@" + name.substr(0, dash) + ":" + name.substr(dash+1, colon-dash-1);
+    }
+  }
+
   if (bustype == "virtio")
   {
     string name = basename(path.c_str());
@@ -144,6 +155,20 @@ static string sysfstobusinfo(const string & path)
       return "virtio@" + name.substr(6);
     else
       return "virtio@" + name;
+  }
+
+  if (bustype == "vio")
+    return string("vio@") + basename(path.c_str());
+
+  if (bustype == "ccw")
+    return string("ccw@") + basename(path.c_str());
+
+  if (bustype == "ccwgroup")
+  {
+    // just report businfo for the first device in the group
+    // because the group doesn't really fit into lshw's tree model
+    string firstdev = realpath(path + "/cdev0");
+    return sysfstobusinfo(firstdev);
   }
 
   return "";
@@ -225,6 +250,13 @@ entry entry::byClass(string devclass, string devname)
 }
 
 
+entry entry::byPath(string path)
+{
+  entry e(fs.path + "/devices" + path);
+  return e;
+}
+
+
 entry::entry(const string & devpath)
 {
   This = new entry_i;
@@ -297,6 +329,29 @@ entry entry::parent() const
   entry e(dirname(This->devpath));
   return e;
 }
+
+string entry::string_attr(const string & name, const string & def) const
+{
+  return hw::strip(get_string(This->devpath + "/" + name, def));
+}
+
+
+unsigned long long entry::hex_attr(const string & name, unsigned long long def) const
+{
+  string val = string_attr(name, "");
+  if (val.empty())
+    return def;
+  return strtoull(val.c_str(), NULL, 16);
+}
+
+
+vector < string > entry::multiline_attr(const string & name) const
+{
+  vector < string > lines;
+  loadfile(This->devpath + "/" + name, lines);
+  return lines;
+}
+
 
 string entry::modalias() const
 {

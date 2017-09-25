@@ -32,6 +32,7 @@
 #include "spd.h"
 #include "network.h"
 #include "isapnp.h"
+#include "pnp.h"
 #include "fb.h"
 #include "usb.h"
 #include "sysfs.h"
@@ -41,9 +42,10 @@
 #include "ideraid.h"
 #include "mounts.h"
 #include "virtio.h"
+#include "vio.h"
 #include "smp.h"
 #include "abi.h"
-#include "dasd.h"
+#include "s390.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -101,6 +103,9 @@ bool scan_system(hwNode & system)
     status("ISA PnP");
     if (enabled("isapnp"))
       scan_isapnp(computer);
+    status("PnP (sysfs)");
+    if (enabled("pnp"))
+      scan_pnp(computer);
     status("PCMCIA");
     if (enabled("pcmcia"))
       scan_pcmcia(computer);
@@ -110,6 +115,9 @@ bool scan_system(hwNode & system)
     status("Virtual I/O (VIRTIO) devices");
     if (enabled("virtio"))
       scan_virtio(computer);
+    status("IBM Virtual I/O (VIO)");
+    if (enabled("vio"))
+      scan_vio(computer);
     status("kernel device tree (sysfs)");
     if (enabled("sysfs"))
       scan_sysfs(computer);
@@ -124,8 +132,9 @@ bool scan_system(hwNode & system)
     status("SCSI");
     if (enabled("scsi"))
       scan_scsi(computer);
-    if (enabled("dasd"))
-      scan_dasd(computer);
+    status("S/390 devices");
+    if (enabled("s390"))
+      scan_s390_devices(computer);
     if (enabled("mounts"))
       scan_mounts(computer);
     status("Network interfaces");

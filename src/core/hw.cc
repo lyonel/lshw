@@ -28,7 +28,7 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, date, serial, slot, handle, description,
-    businfo, physid, dev, modalias;
+    businfo, physid, dev, modalias, subvendor, subproduct;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -396,6 +396,22 @@ void hwNode::setVendor(const string & vendor)
 }
 
 
+string hwNode::getSubVendor() const
+{
+  if (This)
+    return This->subvendor;
+  else
+    return "";
+}
+
+
+void hwNode::setSubVendor(const string & subvendor)
+{
+  if (This)
+    This->subvendor = strip(subvendor);
+}
+
+
 string hwNode::getProduct() const
 {
   if (This)
@@ -409,6 +425,22 @@ void hwNode::setProduct(const string & product)
 {
   if (This)
     This->product = strip(product);
+}
+
+
+string hwNode::getSubProduct() const
+{
+  if (This)
+    return This->subproduct;
+  else
+    return "";
+}
+
+
+void hwNode::setSubProduct(const string & subproduct)
+{
+  if (This)
+    This->subproduct = strip(subproduct);
 }
 
 
@@ -1730,6 +1762,24 @@ string hwNode::asXML(unsigned level)
       out << endl;
     }
 
+    if (getSubProduct() != "")
+    {
+      out << spaces(2*level+1);
+      out << "<subproduct>";
+      out << escape(getSubProduct());
+      out << "</subproduct>";
+      out << endl;
+    }
+
+    if (getSubVendor() != "")
+    {
+      out << spaces(2*level+1);
+      out << "<subvendor>";
+      out << escape(getSubVendor());
+      out << "</subvendor>";
+      out << endl;
+    }
+
     if (getBusInfo() != "")
     {
       out << spaces(2*level+1);
@@ -1941,6 +1991,19 @@ string hwNode::asXML(unsigned level)
       out << "</resources>" << endl;
     }
     resources.clear();
+
+    vector < string > hints = getHints();
+    if (hints.size() > 0) {
+      out << spaces(2*level+1);
+      out << "<hints>" << endl;
+      for(unsigned int i=0; i<hints.size(); i++) {
+        out << spaces(2*level+2);
+        out << "<hint name=\"" << hints[i] << "\" " << "value=\"" << getHint(hints[i]).asString() << "\" />";
+        out << endl;
+      }
+      out << spaces(2*level+1);
+      out << "</hints>" << endl;
+    }
   }
 
   for (unsigned int i = 0; i < countChildren(); i++)

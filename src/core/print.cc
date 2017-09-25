@@ -156,10 +156,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << "handle: ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << node.getHandle();
-      if (html)
+        cout << escape(node.getHandle());
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getHandle()
       cout << endl;
     }
 #endif
@@ -174,10 +177,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("description") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << node.getDescription();
-      if (html)
+        cout << escape(node.getDescription());
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getDescription();
       cout << endl;
     }
 
@@ -188,10 +194,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("product") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << node.getProduct();
-      if (html)
+        cout << escape(node.getProduct());
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getProduct();
       cout << endl;
     }
 
@@ -202,10 +211,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("vendor") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << node.getVendor();
-      if (html)
+        cout << escape(node.getVendor());
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getVendor();
       cout << endl;
     }
 
@@ -216,10 +228,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("physical id") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\"><div class=\"id\">";
-      cout << node.getPhysId();
-      if (html)
+        cout << escape(node.getPhysId());
         cout << "</div></td></tr>";
+      }
+      else
+        cout << node.getPhysId();
       cout << endl;
     }
 
@@ -230,10 +245,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("bus info") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\"><div class=\"id\">";
-      cout << node.getBusInfo();
-      if (html)
+        cout << escape(node.getBusInfo());
         cout << "</div></td></tr>";
+      }
+      else
+        cout << node.getBusInfo();
       cout << endl;
     }
 
@@ -248,10 +266,13 @@ int level)
           cout << "<tr><td class=\"first\">";
         cout << _("logical name") << ": ";
         if (html)
+        {
           cout << "</td><td class=\"second\"><div class=\"id\">";
-        cout << logicalnames[i];
-        if (html)
+          cout << escape(logicalnames[i]);
           cout << "</div></td></tr>";
+        }
+        else
+          cout << logicalnames[i];
         cout << endl;
       }
     }
@@ -263,10 +284,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("version") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << node.getVersion();
-      if (html)
+        cout << escape(node.getVersion());
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getVersion();
       cout << endl;
     }
 
@@ -277,10 +301,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("date") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << node.getDate();
-      if (html)
+        cout << escape(node.getDate());
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getDate();
       cout << endl;
     }
 
@@ -291,10 +318,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("serial") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << (enabled("output:sanitize")?REMOVED:node.getSerial());
-      if (html)
+        cout << escape(enabled("output:sanitize")?REMOVED:node.getSerial());
         cout << "</td></tr>";
+      }
+      else
+        cout << (enabled("output:sanitize")?REMOVED:node.getSerial());
       cout << endl;
     }
 
@@ -305,10 +335,13 @@ int level)
         cout << "<tr><td class=\"first\">";
       cout << _("slot") << ": ";
       if (html)
+      {
         cout << "</td><td class=\"second\">";
-      cout << node.getSlot();
-      if (html)
+        cout << escape(node.getSlot());
         cout << "</td></tr>";
+      }
+      else
+        cout << node.getSlot();
       cout << endl;
     }
 

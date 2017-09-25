@@ -8,103 +8,118 @@
  */
 #include "version.h"
 #include "pnp.h"
+#include "sysfs.h"
+#include "osutils.h"
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <map>
+#include <iostream>
 
 __ID("@(#) $Id$");
 
-static const char *pnp_vendors[] =
-{
-  "ABP", "Advansys",
-  "ACC", "Accton",
-  "ACE", "Accton",
-  "ACR", "Acer",
-  "ADP", "Adaptec",
-  "ADV", "AMD",
-  "AIR", "AIR",
-  "AMI", "AMI",
-  "ASU", "ASUS",
-  "ATI", "ATI",
-  "ATK", "Allied Telesyn",
-  "AZT", "Aztech",
-  "BAN", "Banya",
-  "BRI", "Boca Research",
-  "BUS", "Buslogic",
-  "CCI", "Cache Computers Inc.",
-  "CHA", "Chase",
-  "CMD", "CMD Technology, Inc.",
-  "COG", "Cogent",
-  "CPQ", "Compaq",
-  "CRS", "Crescendo",
-  "CSC", "Crystal",
-  "CSI", "CSI",
-  "CTL", "Creative Labs",
-  "DBI", "Digi",
-  "DEC", "Digital Equipment",
-  "DEL", "Dell",
-  "DBK", "Databook",
-  "EGL", "Eagle Technology",
-  "ELS", "ELSA",
-  "ESS", "ESS",
-  "FAR", "Farallon",
-  "FDC", "Future Domain",
-  "HWP", "Hewlett-Packard",
-  "IBM", "IBM",
-  "INT", "Intel",
-  "ISA", "Iomega",
-  "MDG", "Madge",
-  "MDY", "Microdyne",
-  "MET", "Metheus",
-  "MIC", "Micronics",
-  "MLX", "Mylex",
-  "NEC", "NEC",
-  "NVL", "Novell",
-  "OLC", "Olicom",
-  "PRO", "Proteon",
-  "RII", "Racal",
-  "RTL", "Realtek",
-  "SCM", "SCM",
-  "SEC", "SAMSUNG",
-  "SKD", "SysKonnect",
-  "SMC", "SMC",
-  "SNI", "Siemens Nixdorf",
-  "STL", "Stallion Technologies",
-  "SUP", "SupraExpress",
-  "SVE", "SVEC",
-  "TCC", "Thomas-Conrad",
-  "TCI", "Tulip",
-  "TCM", "3Com",
-  "TCO", "Thomas-Conrad",
-  "TEC", "Tecmar",
-  "TRU", "Truevision",
-  "TOS", "Toshiba",
-  "TYN", "Tyan",
-  "UBI", "Ungermann-Bass",
-  "USC", "UltraStor",
-  "VDM", "Vadem",
-  "VMI", "Vermont",
-  "WDC", "Western Digital",
-  "ZDS", "Zeos",
-  NULL, NULL
-};
+using namespace std;
 
-const char *vendorname(const char *id)
-{
-  int i = 0;
-  if (id == NULL)
-    return "";
+#define PNPVENDORS_PATH DATADIR"/pnp.ids:/usr/share/lshw/pnp.ids:/usr/share/hwdata/pnp.ids"
+#define PNPID_PATH DATADIR"/pnpid.txt:/usr/share/lshw/pnpid.txt:/usr/share/hwdata/pnpid.txt"
 
-  while (pnp_vendors[i])
+static bool pnpdb_loaded = false;
+
+static map < string, string > pnp_vendors;
+static map < string, string > pnp_ids;
+
+static void parse_pnp_vendors(const vector < string > & lines)
+{
+  for (vector < string >::const_iterator it = lines.begin();
+      it != lines.end(); ++it)
   {
-    if (strncmp(pnp_vendors[i], id, strlen(pnp_vendors[i])) == 0)
-      return pnp_vendors[i + 1];
-    i += 2;
+    const string & line = *it;
+    if (line.length() < 5 || line.at(3) != '\t')
+      continue;
+    string id = line.substr(0, 3);
+    id[0] = toupper(id[0]);
+    id[1] = toupper(id[1]);
+    id[2] = toupper(id[2]);
+    string name = line.substr(4);
+    // Microsoft is not really the manufacturer of all PNP devices
+    if (id == "PNP")
+      continue;
+    pnp_vendors[id] = name;
+  }
+}
+
+static void parse_pnp_ids(const vector < string > & lines)
+{
+  for (vector < string >::const_iterator it = lines.begin();
+      it != lines.end(); ++it)
+  {
+    const string & line = *it;
+    if (line.length() < 1 || line.at(0) == ';')
+      continue;
+    if (line.length() < 9 || line.at(7) != '\t')
+      continue;
+    string id = line.substr(0, 7);
+    id[0] = toupper(id[0]);
+    id[1] = toupper(id[1]);
+    id[2] = toupper(id[2]);
+    id[3] = tolower(id[3]);
+    id[4] = tolower(id[4]);
+    id[5] = tolower(id[5]);
+    id[6] = tolower(id[6]);
+    string desc = line.substr(8);
+    pnp_ids[id] = desc;
+  }
+}
+
+static void load_pnpdb()
+{
+  vector < string > lines;
+  vector < string > filenames;
+
+  splitlines(PNPVENDORS_PATH, filenames, ':');
+  for (int i = filenames.size() - 1; i >= 0; i--)
+  {
+    lines.clear();
+    if (loadfile(filenames[i], lines))
+      parse_pnp_vendors(lines);
   }
 
+  filenames.clear();
+  splitlines(PNPID_PATH, filenames, ':');
+  for (int i = filenames.size() - 1; i >= 0; i--)
+  {
+    lines.clear();
+    if (loadfile(filenames[i], lines))
+      parse_pnp_ids(lines);
+  }
+
+  pnpdb_loaded = true;
+}
+
+string pnp_vendorname(const string & id)
+{
+  if (!pnpdb_loaded)
+    load_pnpdb();
+
+  string vendorid = id.substr(0, 3);
+  map < string, string >::const_iterator lookup = pnp_vendors.find(vendorid);
+  if (lookup != pnp_vendors.end())
+    return lookup->second;
   return "";
 }
 
+string pnp_description(const string & id)
+{
+  if (!pnpdb_loaded)
+    load_pnpdb();
+
+  map < string, string >::const_iterator lookup = pnp_ids.find(id);
+  if (lookup != pnp_ids.end())
+    return lookup->second;
+  return "";
+}
 
 hw::hwClass pnp_class(const string & pnpid)
 {
@@ -148,4 +163,52 @@ hw::hwClass pnp_class(const string & pnpid)
     return hw::communication;                     // modems
 
   return hw::generic;
+}
+
+bool scan_pnp(hwNode & n)
+{
+  vector < sysfs::entry > entries = sysfs::entries_by_bus("pnp");
+
+  if (entries.empty())
+    return false;
+
+  hwNode *core = n.getChild("core");
+  if (!core)
+  {
+    n.addChild(hwNode("core", hw::bus));
+    core = n.getChild("core");
+  }
+
+  for (vector < sysfs::entry >::iterator it = entries.begin();
+      it != entries.end(); ++it)
+  {
+    const sysfs::entry & e = *it;
+
+    vector < string > pnpids = e.multiline_attr("id");
+    if (pnpids.empty())
+      continue;
+    // devices can report multiple PnP IDs, just pick the first
+    string pnpid = pnpids[0];
+
+    hwNode device("pnp" + e.name(), pnp_class(pnpid));
+    device.addCapability("pnp");
+    string driver = e.driver();
+    if (!driver.empty())
+      device.setConfig("driver", driver);
+    string vendor = pnp_vendorname(pnpid);
+    if (!vendor.empty())
+      device.setVendor(vendor);
+    string name = e.string_attr("name");
+    string description = pnp_description(pnpid);
+    if (!name.empty())
+      device.setProduct(name);
+    else if (!description.empty())
+      device.setProduct(description);
+    else
+      device.setProduct("PnP device " + pnpid);
+    device.claim();
+
+    core->addChild(device);
+  }
+  return true;
 }

@@ -4,7 +4,9 @@
 #include "hw.h"
 #include <string>
 
-const char * vendorname(const char * id);
+string pnp_vendorname(const string & id);
 
 hw::hwClass pnp_class(const string & pnpid);
+
+bool scan_pnp(hwNode &);
 #endif
