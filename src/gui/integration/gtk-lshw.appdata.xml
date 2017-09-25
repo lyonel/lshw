@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>gtk-lshw.desktop</id>
+  <project_license>GPL-2.0</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <name>LSHW</name>
+  <summary>Provides information on hardware</summary>
+  <description>
+    <p> A small tool to provide detailed information on the hardware configuration of the machine. It can report exact memory
+    configuration, firmware version, mainboard configuration, CPU version and speed, cache configuration, bus speed, etc.
+    on DMI-capable x86 systems, on some PowerPC machines (PowerMac G4 is known to work) and AMD64.</p>
+  </description>
+  <url type="homepage">http://www.ezix.org/project/wiki/HardwareLiSter</url>
+  <update_contact>support@ezix.org</update_contact>
+</component>
