@@ -373,9 +373,14 @@ bool scan_usb(hwNode & n)
   }
   filenames.clear();
 
-  usbdevices = fopen(SYSKERNELDEBUGUSBDEVICES, "r");
-  if(!usbdevices)
+  if (exists(SYSKERNELDEBUGUSBDEVICES))
+    usbdevices = fopen(SYSKERNELDEBUGUSBDEVICES, "r");
+
+  if(!usbdevices && exists(PROCBUSUSBDEVICES))
     usbdevices = fopen(PROCBUSUSBDEVICES, "r");
+
+  if(!usbdevices)
+    return false;
 
   while(!feof(usbdevices))
   {
