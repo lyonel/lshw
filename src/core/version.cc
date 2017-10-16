@@ -23,35 +23,12 @@
 #endif
 
 
-static char versiontag[] = "@(#) $URL$ >";
-
 const char *getpackageversion()
 {
-  static char * result = NULL;
-  char * lastslash = NULL;
+  if (VERSION)
+    return VERSION;
 
-  if(result)
-    return result;
-
-  lastslash = strrchr(versiontag, '/');
-  if(lastslash)
-    *lastslash = '\0';	// cut the basename off
-
-  lastslash = strrchr(versiontag, '/');
-  if(lastslash)
-    *lastslash = '\0';  // cut the basename off
-
-  lastslash = strrchr(versiontag, '/');
-  if(lastslash)
-    *lastslash = '\0';  // cut the basename off
-
-  lastslash = strrchr(versiontag, '/');
-  if(lastslash)
-    result = lastslash+1;
-  else
-    return "unknown";
-
-  return result;
+  return "unknown";
 }
 
 static char *txtquery(const char *name, const char *domain, unsigned int *ttl)
