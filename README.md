@@ -13,7 +13,7 @@ Installation
 ------------
 
  1. Requirements
-   - Linux 2.4.x, 2.6.x or 3.x (2.2.x might work, though)
+   - Linux 2.4.x, 2.6.x, 3.x or 4.x (2.2.x might work, though)
    - a PA-RISC-, Alpha-, IA-64- (Itanium-), PowerPC-, ARM- or x86- based machine
    - an ANSI (or close enough to ANSI compliance) C++ compiler (tested with g++ 2.95.4 and 3.x)
    - for the (optional) GTK+ graphical user interface, you will need a
