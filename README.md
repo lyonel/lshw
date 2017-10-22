@@ -63,4 +63,4 @@ or
 
 in the `src/` directory
 
-Building compressed binaries requires `upx` (cf. http://upx.sourceforge.net/).
+Building compressed binaries requires `upx` (cf. https://upx.github.io/).
