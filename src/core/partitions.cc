@@ -1106,13 +1106,13 @@ static bool detect_gpt(source & s, hwNode & n)
       partition.setSerial(tostring(p.PartitionGUID));
       partition.setHandle("GUID:" + tostring(p.PartitionGUID));
       partition.setConfig("name", p.PartitionName);
-      if(p.Attributes && PARTITION_PRECIOUS)
+      if(p.Attributes & PARTITION_PRECIOUS)
         partition.addCapability("precious", "This partition is required for the platform to function");
-      if(p.Attributes && PARTITION_READONLY)
+      if(p.Attributes & PARTITION_READONLY)
         partition.addCapability("readonly", "Read-only partition");
-      if(p.Attributes && PARTITION_HIDDEN)
+      if(p.Attributes & PARTITION_HIDDEN)
         partition.addCapability("hidden");
-      if(p.Attributes && PARTITION_NOMOUNT)
+      if(p.Attributes & PARTITION_NOMOUNT)
         partition.addCapability("nomount", "No automatic mount");
 
       partition.describeCapability("nofs", "No filesystem");
