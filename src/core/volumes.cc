@@ -938,7 +938,7 @@ static bool detect_ntfs(hwNode & n, source & s)
   if(strncmp(entry->magic, "FILE", 4) != 0)
     return false;
 
-  if(le_short(&entry->flags) && MFT_RECORD_IN_USE)	// $Volume is valid
+  if(le_short(&entry->flags) & MFT_RECORD_IN_USE)	// $Volume is valid
   {
     unsigned offset = le_short(&entry->attr_ofs);
 
@@ -982,18 +982,18 @@ static bool detect_ntfs(hwNode & n, source & s)
   n.setDescription("");
   if(vi)
   {
-    if(vi->flags && VOLUME_IS_DIRTY)
+    if(vi->flags & VOLUME_IS_DIRTY)
       n.setConfig("state", "dirty");
     else
       n.setConfig("state", "clean");
 
-    if(vi->flags && VOLUME_MODIFIED_BY_CHKDSK)
+    if(vi->flags & VOLUME_MODIFIED_BY_CHKDSK)
       n.setConfig("modified_by_chkdsk", "true");
-    if(vi->flags && VOLUME_MOUNTED_ON_NT4)
+    if(vi->flags & VOLUME_MOUNTED_ON_NT4)
       n.setConfig("mounted_on_nt4", "true");
-    if(vi->flags && VOLUME_UPGRADE_ON_MOUNT)
+    if(vi->flags & VOLUME_UPGRADE_ON_MOUNT)
       n.setConfig("upgrade_on_mount", "true");
-    if(vi->flags && VOLUME_RESIZE_LOG_FILE)
+    if(vi->flags & VOLUME_RESIZE_LOG_FILE)
       n.setConfig("resize_log_file", "true");
   }
   if(info)
