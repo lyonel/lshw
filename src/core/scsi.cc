@@ -30,7 +30,7 @@
 
 __ID("@(#) $Id$");
 
-#define SG_X "/dev/sg*"
+#define SG_X "/dev/sg[0-9]*"
 #define SG_MAJOR 21
 
 #ifndef SCSI_IOCTL_GET_PCI
