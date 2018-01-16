@@ -401,6 +401,7 @@ struct chip_vpd_data
   string product;
   string serial;
   string slot;
+  string vendor;
 };
 
 
@@ -427,6 +428,9 @@ static void add_chip_vpd(string path, string name,
 
       if (exists("part-number"))
         data->product = hw::strip(get_string("part-number"));
+
+      if (exists("vendor"))
+        data->vendor = hw::strip(get_string("vendor"));
 
       if (exists("fru-number"))
         data->product += " FRU# " + hw::strip(get_string("fru-number"));
@@ -496,6 +500,7 @@ static void fill_core_vpd(hwNode & cpu, string & basepath,
     cpu.setProduct(data->product);
     cpu.setSerial(data->serial);
     cpu.setSlot(data->slot);
+    cpu.setVendor(data->vendor);
   }
 
   if (xscom_path != "")
