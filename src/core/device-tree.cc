@@ -401,6 +401,7 @@ struct chip_vpd_data
   string product;
   string serial;
   string slot;
+  string vendor;
 };
 
 
@@ -427,6 +428,9 @@ static void add_chip_vpd(string path, string name,
 
       if (exists("part-number"))
         data->product = hw::strip(get_string("part-number"));
+
+      if (exists("vendor"))
+        data->vendor = hw::strip(get_string("vendor"));
 
       if (exists("fru-number"))
         data->product += " FRU# " + hw::strip(get_string("fru-number"));
@@ -496,6 +500,7 @@ static void fill_core_vpd(hwNode & cpu, string & basepath,
     cpu.setProduct(data->product);
     cpu.setSerial(data->serial);
     cpu.setSlot(data->slot);
+    cpu.setVendor(data->vendor);
   }
 
   if (xscom_path != "")
@@ -612,7 +617,10 @@ static void scan_devtree_cpu_power(hwNode & core)
     product = hw::strip(get_string(basepath + "/name"));
 
     if (hw::strip(get_string(basepath + "/status")) != "okay")
+    {
       cache.disable();
+      icache.disable();
+    }
 
     if (product == "l2-cache")
       fill_cache_info("L2 Cache", basepath, cache, icache);
@@ -715,6 +723,12 @@ static void scan_devtree_cpu_power(hwNode & core)
 
       if (cache.getSize() > 0)
         cpu.addChild(cache);
+
+      if (hw::strip(get_string(basepath + "/status")) != "okay")
+      {
+        cache.disable();
+        icache.disable();
+      }
     }
 
     if (exists(basepath + "/l2-cache"))
@@ -1018,6 +1032,10 @@ static void add_memory_bank(string name, string path, hwNode & core)
       size = get_u32("ibm,size");
     if (size > 0)
       bank.setSize(size);
+
+    // Parse Memory SPD data
+    if (exists("spd"))
+      add_memory_bank_spd(path + "/" + name + "/spd", bank);
 
     memory->addChild(bank);
   } else if(name.substr(0, 4) == "dimm") {
@@ -1365,6 +1383,8 @@ bool scan_device_tree(hwNode & n)
   get_ibm_model(n);
   if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
   {
+    n.setVendor(get_string(DEVICETREE "/vendor", "IBM"));
+
     if (exists(DEVICETREE "/model-name"))
       n.setProduct(n.getProduct() + " (" +
 		   hw::strip(get_string(DEVICETREE "/model-name")) + ")");
