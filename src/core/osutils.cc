@@ -21,6 +21,9 @@
 #ifndef MINOR
 #include <linux/kdev_t.h>
 #endif
+#ifdef ZLIB
+#include <zlib.h>
+#endif
 
 __ID("@(#) $Id$");
 
@@ -114,23 +117,49 @@ bool exists(const string & path)
 }
 
 
+#ifdef ZLIB
+
+typedef gzFile data_file;
+static data_file file_open(const string & file)
+{
+  data_file result = gzopen((file + ".gz").c_str(), "rb");
+  if (!result)
+  {
+    result = gzopen(file.c_str(), "rb");
+  }
+  return result;
+}
+#define file_open_error(f) ((f) == NULL)
+#define file_read(f, b, l) gzread((f), (b), (l))
+#define file_close(f) gzclose(f)
+
+#else
+
+typedef int data_file;
+#define file_open(f) open((f).c_str(), O_RDONLY);
+#define file_open_error(f) ((f) < 0)
+#define file_read(f, b, l) read((f), (b), (l))
+#define file_close(f) close(f)
+
+#endif
+
 bool loadfile(const string & file,
 vector < string > &list)
 {
   char buffer[1024];
   string buffer_str = "";
   size_t count = 0;
-  int fd = open(file.c_str(), O_RDONLY);
+  data_file fd = file_open(file);
 
-  if (fd < 0)
+  if (file_open_error(fd))
     return false;
 
-  while ((count = read(fd, buffer, sizeof(buffer))) > 0)
+  while ((count = file_read(fd, buffer, sizeof(buffer))) > 0)
     buffer_str += string(buffer, count);
 
   splitlines(buffer_str, list);
 
-  close(fd);
+  file_close(fd);
 
   return true;
 }

@@ -3,6 +3,7 @@ export PACKAGENAME
 VERSION?= $(shell git describe --tags --long | cut -d - -f 1,2 | tr - .)
 
 SQLITE?=0
+ZLIB?=0
 
 DESTDIR?=/
 PREFIX?=/usr
@@ -17,6 +18,7 @@ export SBINDIR
 export MANDIR
 export DATADIR
 export SQLITE
+export ZLIB
 
 CXX?=c++
 INCLUDES=-I./core/
@@ -24,6 +26,9 @@ DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -
 CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 ifeq ($(SQLITE), 1)
 	CXXFLAGS+= -DSQLITE $(shell pkg-config --cflags sqlite3)
+endif
+ifeq ($(ZLIB), 1)
+	CXXFLAGS+= -DZLIB $(shell pkg-config --cflags zlib)
 endif
 LDFLAGS=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
@@ -34,17 +39,27 @@ LIBS+=-llshw -lresolv
 ifeq ($(SQLITE), 1)
 	LIBS+= $(shell pkg-config --libs sqlite3)
 endif
+ifeq ($(ZLIB), 1)
+	LIBS+= $(shell pkg-config --libs zlib)
+endif
 
 export CXXFLAGS
 export LIBS
 export LDFLAGS
 
+ifeq ($(ZLIB), 1)
+DATAFILES = pci.ids.gz usb.ids.gz oui.txt.gz manuf.txt.gz pnp.ids.gz pnpid.txt.gz
+else
 DATAFILES = pci.ids usb.ids oui.txt manuf.txt pnp.ids pnpid.txt
+endif
 
 all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 
 .cc.o:
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+%.gz: %
+	gzip -c $< > $@
 
 .PHONY: core
 core:
@@ -118,6 +133,7 @@ install-gui: gui
 	
 clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
+	rm -f $(addsuffix .gz,$(DATAFILES))
 	make -C core clean
 	make -C gui clean
 

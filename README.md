@@ -23,6 +23,10 @@ Installation
 
     	$ make
 
+    To complile with zlib support (see below), use:
+
+    	$ make ZLIB=1
+
  3. If you want to build the optional GUI, do:
 
     	$ make
@@ -46,12 +50,14 @@ NOTE TO DISTRIBUTIONS
 
 By default, lshw includes its own lists of PCI IDs, USB IDs, etc. but will also look for this information in
 
-    /usr/share/lshw/,
-    /usr/local/share/,
+	/usr/share/lshw/,
+	/usr/local/share/,
 	/usr/share/,
 	/etc/,
 	/usr/share/hwdata/,
 	/usr/share/misc/
+
+If compiled with zlib support, lshw will look for `file`.gz first, then for `file`.
 
 Statically-linked and/or compressed binaries can be built by using
 
