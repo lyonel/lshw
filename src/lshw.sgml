@@ -166,6 +166,7 @@ partial information.
 <term>/usr/share/hwdata/pci.ids</term>
 <listitem><para>
 A list of all known PCI ID's (vendors,  devices, classes and subclasses).
+If compiled with zlib support, lshw will look for <filename>pci.ids.gz</filename> first, then for <filename>pci.ids</filename>.
 </para></listitem></varlistentry>
 
 <varlistentry><term>/proc/bus/pci/*</term>
