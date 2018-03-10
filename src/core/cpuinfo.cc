@@ -241,37 +241,36 @@ static void cpuinfo_aarch64(hwNode & node,
 
   if (id == "Features")
     {
-      while (value.length() > 0)
+      hwNode *cpu = getcpu(node, currentcpu);
+      if (cpu)
         {
-          size_t pos = value.find(' ');
-          string capability = (pos==string::npos)?value:value.substr(0, pos);
-          aarch64_features.push_back(capability);
-          if (pos == string::npos)
-            value = "";
-          else
-            value = hw::strip(value.substr(pos));
-        }
-      for(int i=0; i<=currentcpu; i++)
-        {
-          hwNode *cpu = getcpu(node, i);
-          if (cpu)
+          cpu->addHint("logo", string("aarch64"));
+          if (node.getDescription() == "")
+            node.setDescription(aarch64_processor_name);
+          cpu->claim(true);
+
+          while (value.length() > 0)
             {
-              cpu->addHint("logo", string("aarch64"));
-              if (node.getDescription() == "")
-                node.setDescription(aarch64_processor_name);
-              cpu->claim(true);
-              for(size_t i=0; i < aarch64_features.size(); i++)
-                {
-                  cpu->addCapability(aarch64_features[i]);
-                  cpu->describeCapability("fp", "Floating point instructions");
-                  cpu->describeCapability("asimd", "Advanced SIMD");
-                  cpu->describeCapability("evtstrm", "Event stream");
-                  cpu->describeCapability("aes", "AES instructions");
-                  cpu->describeCapability("pmull", "PMULL instruction");
-                  cpu->describeCapability("sha1", "SHA1 instructions");
-                  cpu->describeCapability("sha2", "SHA2 instructions");
-                  cpu->describeCapability("crc32", "CRC extension");
-                }
+              size_t pos = value.find(' ');
+              string capability = (pos==string::npos)?value:value.substr(0, pos);
+              aarch64_features.push_back(capability);
+              if (pos == string::npos)
+                value = "";
+              else
+                value = hw::strip(value.substr(pos));
+            }
+
+          for(size_t i=0; i < aarch64_features.size(); i++)
+            {
+              cpu->addCapability(aarch64_features[i]);
+              cpu->describeCapability("fp", "Floating point instructions");
+              cpu->describeCapability("asimd", "Advanced SIMD");
+              cpu->describeCapability("evtstrm", "Event stream");
+              cpu->describeCapability("aes", "AES instructions");
+              cpu->describeCapability("pmull", "PMULL instruction");
+              cpu->describeCapability("sha1", "SHA1 instructions");
+              cpu->describeCapability("sha2", "SHA2 instructions");
+              cpu->describeCapability("crc32", "CRC extension");
             }
         }
     }
