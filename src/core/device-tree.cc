@@ -1038,6 +1038,10 @@ static void add_memory_bank(string name, string path, hwNode & core)
     if (exists("spd"))
       add_memory_bank_spd(path + "/" + name + "/spd", bank);
 
+    // Parse Memory SPD data
+    if (exists("frequency"))
+      bank.setClock(get_u32("frequency"));
+
     memory->addChild(bank);
   } else if(name.substr(0, 4) == "dimm") {
     hwNode bank("bank", hw::memory);
