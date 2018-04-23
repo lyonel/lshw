@@ -862,6 +862,7 @@ static void add_memory_bank_spd(string path, hwNode & bank)
   close(fd);
 
   if (dimminfo[2] >= 9) {
+    int rank_offset;
     double ns;
     char vendor[5];
     const char *type, *mod_type;
@@ -878,6 +879,7 @@ static void add_memory_bank_spd(string path, hwNode & bank)
       partno_offset = 0x149;
       bus_width_offset = 0x0d;
       serial_offset = 0x145;
+      rank_offset = 0xc;
 
       /*
        * There is no other valid values for the medium- and fine- timebase
@@ -896,6 +898,7 @@ static void add_memory_bank_spd(string path, hwNode & bank)
       partno_offset = 0x80;
       serial_offset = 0x7a;
       bus_width_offset = 0x08;
+      rank_offset = 0x7;
 
       ns = (dimminfo[0xc] / 2) * (dimminfo[0xa] / (float) dimminfo[0xb]);
       snprintf(vendor, sizeof(vendor), "%x%x", dimminfo[0x76], dimminfo[0x75]);
@@ -912,6 +915,9 @@ static void add_memory_bank_spd(string path, hwNode & bank)
         bank.setConfig("errordetection", "ecc");
         break;
     }
+
+    // Add DIMM rank
+    bank.setConfig("rank", ((dimminfo[rank_offset] >> 3) & 0x7) + 1);
 
     bank.setClock(1000000000 / ns);
     bank.setVendor(jedec_resolve(vendor));
