@@ -30,7 +30,7 @@ endif
 ifeq ($(ZLIB), 1)
 	CXXFLAGS+= -DZLIB $(shell pkg-config --cflags zlib)
 endif
-LDFLAGS=-L./core/ -g
+LDFLAGS+=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
