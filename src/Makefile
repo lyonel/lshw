@@ -20,7 +20,7 @@ export DATADIR
 export SQLITE
 export ZLIB
 
-CXX?=c++
+CXX?=$(CROSS_COMPILE)c++
 INCLUDES=-I./core/
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\" -DVERSION=\"$(VERSION)\"
 CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
@@ -30,7 +30,7 @@ endif
 ifeq ($(ZLIB), 1)
 	CXXFLAGS+= -DZLIB $(shell pkg-config --cflags zlib)
 endif
-LDFLAGS=-L./core/ -g
+LDFLAGS+=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
