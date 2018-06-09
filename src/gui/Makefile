@@ -1,7 +1,7 @@
 PACKAGENAME?=lshw
 
-CXX?=c++
-CC?=cc
+CXX?=$(CROSS_COMPILE)c++
+CC?=$(CROSS_COMPILE)cc
 STRIP?=strip
 OBJCOPY?=objcopy
 
