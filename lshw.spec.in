@@ -12,7 +12,7 @@ Group: Applications/System
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
-lshw (Hardware Lister) is a small tool to provide detailed informaton on
+lshw (Hardware Lister) is a small tool to provide detailed information on
 the hardware configuration of the machine. It can report exact memory
 configuration, firmware version, mainboard configuration, CPU version
 and speed, cache configuration, bus speed, etc. on DMI-capable x86s
