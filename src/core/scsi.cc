@@ -260,6 +260,10 @@ static const char *scsi_type(int type)
       return "Medium Changer";
     case 0xd:
       return "Enclosure";
+    case 0xe:
+      return "Simplified direct-access device";
+    case 0x14:
+      return "Host managed zoned block device";
     default:
       return "";
   }
@@ -706,6 +710,7 @@ static void scan_sg(hwNode & n)
   {
     case 0:
     case 14:
+    case 20:
       device = hwNode("disk", hw::disk);
       break;
     case 1:
@@ -752,7 +757,8 @@ static void scan_sg(hwNode & n)
   }
   if ((m_id.scsi_type == 4) || (m_id.scsi_type == 5))
     scan_cdrom(device);
-  if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7) || (m_id.scsi_type == 14))
+  if ((m_id.scsi_type == 0) || (m_id.scsi_type == 7) ||
+      (m_id.scsi_type == 14) || (m_id.scsi_type == 20))
     scan_disk(device);
 
   if (!adapter_businfo.empty())
