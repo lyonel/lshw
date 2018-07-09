@@ -965,7 +965,21 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           }
           device->setDescription(get_class_description(dclass));
 
-          if (moredescription != ""
+          if (dclass == PCI_CLASS_STORAGE_IDE)
+          {
+            // IDE programming interface names are really long and awkward,
+            // so don't add them as capabilities
+            if (progif == 0x00 || progif == 0x80)
+              device->addCapability("isa_compat_mode", "ISA compatibility mode");
+            else if (progif == 0x05 || progif == 0x85)
+              device->addCapability("pci_native_mode", "PCI native mode");
+            else if (progif == 0x0a || progif == 0x0f || progif == 0x8a || progif == 0x8f)
+            {
+              device->addCapability("isa_compat_mode", "ISA compatibility mode");
+              device->addCapability("pci_native_mode", "PCI native mode");
+            }
+          }
+          else if (moredescription != ""
             && moredescription != device->getDescription())
           {
             device->addCapability(moredescription);
