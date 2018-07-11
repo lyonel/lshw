@@ -1395,7 +1395,6 @@ bool scan_device_tree(hwNode & n)
       core->addHint("icon", string("board"));
       scan_devtree_root(*core);
       scan_devtree_cpu_power(*core);
-      scan_devtree_memory_ibm(*core);
       scan_devtree_memory_powernv(*core);
       scan_devtree_firmware_powernv(*core);
       n.addCapability("powernv", "Non-virtualized");
@@ -1448,12 +1447,12 @@ bool scan_device_tree(hwNode & n)
       if (exists(DEVICETREE "/ibm,lpar-capable")) {
         n.setDescription("pSeries LPAR");
         scan_devtree_cpu_power(*core);
-        scan_devtree_memory(*core);
       }
       else {
-        scan_devtree_memory(*core);
         scan_devtree_cpu(*core);
-     }
+      }
+      scan_devtree_memory(*core);
+      scan_devtree_memory_ibm(*core);
     }
   }
 
