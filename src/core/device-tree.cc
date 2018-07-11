@@ -695,6 +695,7 @@ static void scan_devtree_cpu_power(hwNode & core)
     }
 
     cpu.setDescription("CPU");
+    cpu.addHint("logo", string("powerpc"));
     set_cpu(cpu, currentcpu++, basepath);
 
     reg = get_u32(basepath + "/reg");
