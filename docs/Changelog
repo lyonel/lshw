@@ -83,7 +83,7 @@
   fixed a portability problem with GTK+ [1099]
 *  B.02.05
   added support for DVD writers
-  improved GUI usability (thanks to OpenUsability volonteers: Tina Trillitzsch and Florian Graessle)
+  improved GUI usability (thanks to OpenUsability volunteers: Tina Trillitzsch and Florian Graessle)
   many new SVG icons
   added a logo for LSHW (used as icon for gtk-lshw's windows)
   build system updates
@@ -209,6 +209,6 @@
   fixes for GCC 3.2
 * T.00.02
   second public test release
-  PCI busses listing
+  PCI buses listing
 * T.00.01
   first public test release
