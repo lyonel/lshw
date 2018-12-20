@@ -23,7 +23,7 @@ Installation
 
     	$ make
 
-    To complile with zlib support (see below), use:
+    To compile with zlib support (see below), use:
 
     	$ make ZLIB=1
 

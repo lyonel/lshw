@@ -171,12 +171,12 @@ If compiled with zlib support, lshw will look for <filename>pci.ids.gz</filename
 
 <varlistentry><term>/proc/bus/pci/*</term>
 <listitem><para>
-Used to access the configuration of installed PCI busses and devices.
+Used to access the configuration of installed PCI buses and devices.
 </para></listitem></varlistentry>
 
 <varlistentry><term>/proc/ide/*</term>
 <listitem><para>
-Used to access the configuration of installed IDE busses and devices.
+Used to access the configuration of installed IDE buses and devices.
 </para></listitem></varlistentry>
 
 <varlistentry><term>/proc/scsi/*, /dev/sg*</term>
@@ -196,7 +196,7 @@ Used on PowerPC platforms to access OpenFirmware configuration.
 
 <varlistentry><term>/proc/bus/usb/*</term>
 <listitem><para>
-Used to access the configuration of installed USB busses and devices.
+Used to access the configuration of installed USB buses and devices.
 </para></listitem></varlistentry>
 
 <varlistentry><term>/sys/*</term>
