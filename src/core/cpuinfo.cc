@@ -455,6 +455,8 @@ string value)
     {
       if (value == "AuthenticAMD")
         value = "Advanced Micro Devices [AMD]";
+      if (value == "HygonGenuine")
+        value = "Hygon";
       if (value == "GenuineIntel")
         value = "Intel Corp.";
       cpu->setVendor(value);
