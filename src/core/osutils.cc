@@ -769,6 +769,7 @@ string decimalkilos(unsigned long long value)
   }
 
   out << value;
+  out << " ";
   if ((i > 0) && (i <= strlen(prefixes)))
     out << prefixes[i - 1];
 
