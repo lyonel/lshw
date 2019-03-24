@@ -105,6 +105,7 @@ __ID("@(#) $Id$");
 #define PCI_CLASS_STORAGE_RAID       0x0104
 #define PCI_CLASS_STORAGE_SATA       0x0106
 #define PCI_CLASS_STORAGE_SAS        0x0107
+#define PCI_CLASS_STORAGE_NVME       0x0108
 #define PCI_CLASS_STORAGE_OTHER      0x0180
 
 #define PCI_BASE_CLASS_NETWORK       0x02
@@ -340,6 +341,8 @@ static const char *get_class_name(unsigned int c)
       return "sata";
     case PCI_CLASS_STORAGE_SAS:
       return "sas";
+    case PCI_CLASS_STORAGE_NVME:
+      return "nvme";
     case PCI_CLASS_BRIDGE_HOST:
       return "host";
     case PCI_CLASS_BRIDGE_ISA:
