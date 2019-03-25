@@ -368,6 +368,21 @@ string entry::vendor() const
   return get_string(This->devpath+"/vendor");
 }
 
+string entry::model() const
+{
+  return get_string(This->devpath+"/model");
+}
+
+string entry::serial() const
+{
+  return get_string(This->devpath+"/serial");
+}
+
+string entry::firmware_rev() const
+{
+  return get_string(This->devpath+"/firmware_rev");
+}
+
 vector < entry > sysfs::entries_by_bus(const string & busname)
 {
   vector < entry > result;

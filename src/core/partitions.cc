@@ -295,6 +295,7 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   struct stat buf;
   char name[10];
   int dev = 0;
+  string devname;
 
   snprintf(name, sizeof(name), "%d", n);
   if(disk.getBusInfo()!="")
@@ -304,9 +305,16 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
   if(!S_ISBLK(buf.st_mode)) return false;
 
   if(s.diskname!="")
-    dev = open_dev(buf.st_rdev + n, S_IFBLK, s.diskname+string(name));
+    devname = s.diskname;
   else
-    dev = open_dev(buf.st_rdev + n, S_IFBLK, disk.getLogicalName()+string(name));
+    devname = disk.getLogicalName();
+
+  // NVMe partitions are like /dev/nvme0n1p2
+  if(matches(devname, "^/dev/nvme[[:digit:]]+n[[:digit:]]+$"))
+    devname += "p";
+  devname += string(name);
+
+  dev = open_dev(buf.st_rdev + n, S_IFBLK, devname);
 
   if(dev>=0)
   {
@@ -330,10 +338,7 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
     if(memcmp(buffer1, buffer2, BLOCKSIZE)==0)
     {
       partition.claim();
-      if(s.diskname!="")
-        partition.setLogicalName(s.diskname+string(name));
-      else
-        partition.setLogicalName(disk.getLogicalName()+string(name));
+      partition.setLogicalName(devname);
       return true;
     }
   }

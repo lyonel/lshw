@@ -29,6 +29,7 @@
 #include "pcmcia-legacy.h"
 #include "ide.h"
 #include "scsi.h"
+#include "nvme.h"
 #include "spd.h"
 #include "network.h"
 #include "isapnp.h"
@@ -132,6 +133,9 @@ bool scan_system(hwNode & system)
     status("SCSI");
     if (enabled("scsi"))
       scan_scsi(computer);
+    status("NVMe");
+    if (enabled("nvme"))
+      scan_nvme(computer);
     status("S/390 devices");
     if (enabled("s390"))
       scan_s390_devices(computer);

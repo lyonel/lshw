@@ -28,6 +28,9 @@ namespace sysfs
       string modalias() const;
       string device() const;
       string vendor() const;
+      string model() const;
+      string serial() const;
+      string firmware_rev() const;
       entry parent() const;
       string name_in_class(const string &) const;
       string string_attr(const string & name, const string & def = "") const;

@@ -8,7 +8,7 @@ LDFLAGS=
 LDSTATIC=
 LIBS=
 
-OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o s390.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o mounts.o smp.o abi.o jedec.o dump.o fat.o virtio.o vio.o
+OBJS = hw.o main.o print.o mem.o dmi.o device-tree.o cpuinfo.o osutils.o pci.o version.o cpuid.o ide.o cdrom.o pcmcia-legacy.o scsi.o nvme.o s390.o disk.o spd.o network.o isapnp.o pnp.o fb.o options.o usb.o sysfs.o display.o heuristics.o parisc.o cpufreq.o partitions.o blockio.o lvm.o ideraid.o pcmcia.o volumes.o mounts.o smp.o abi.o jedec.o dump.o fat.o virtio.o vio.o
 ifeq ($(SQLITE), 1)
 	OBJS+= db.o
 endif
@@ -23,7 +23,7 @@ lib$(PACKAGENAME).a: $(OBJS)
 	$(AR) rs $@ $^
 
 install: all
-	
+
 clean:
 	rm -f $(OBJS) lib$(PACKAGENAME).a
 
@@ -51,6 +51,7 @@ ide.o: version.h cpuinfo.h hw.h osutils.h cdrom.h disk.h heuristics.h
 cdrom.o: version.h cdrom.h hw.h partitions.h
 pcmcia-legacy.o: version.h pcmcia-legacy.h hw.h osutils.h
 scsi.o: version.h mem.h hw.h cdrom.h disk.h osutils.h heuristics.h sysfs.h
+nvme.o: version.h hw.h disk.h osutils.h sysfs.h
 disk.o: version.h disk.h hw.h osutils.h heuristics.h partitions.h
 spd.o: version.h spd.h hw.h osutils.h
 network.o: version.h config.h network.h hw.h osutils.h sysfs.h options.h
