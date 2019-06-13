@@ -1284,8 +1284,8 @@ void hwNode::merge(const hwNode & node)
     This->handle = node.getHandle();
   if (This->description == "")
     This->description = node.getDescription();
-  if (This->logicalnames.size() == 0)
-    This->logicalnames = node.getLogicalNames();
+  for (unsigned int i = 0; i < node.This->logicalnames.size(); i++)
+    setLogicalName(node.This->logicalnames[i]);
   if (This->businfo == "")
     This->businfo = node.getBusInfo();
   if (This->physid == "")
