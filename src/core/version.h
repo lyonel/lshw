@@ -1,6 +1,8 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
+#include "config.h"
+
 #if defined(__GNUC__) || defined(__INTEL_COMPILER)
 #define __ID(string) __asm__(".ident\t\"" string "\"")
 #else
