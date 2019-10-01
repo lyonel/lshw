@@ -1921,6 +1921,8 @@ static bool scan_dmi_sysfs(hwNode & n)
 
   ifstream ep_stream(SYSFSDMI "/smbios_entry_point",
       ifstream::in | ifstream::binary | ifstream::ate);
+  if (!ep_stream)
+    return false;
   ifstream::pos_type ep_len = ep_stream.tellg();
   vector < u8 > ep_buf(ep_len);
   ep_stream.seekg(0, ifstream::beg);
