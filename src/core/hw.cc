@@ -1645,7 +1645,21 @@ string hwNode::asJSON(unsigned level)
     resources.clear();
   }
 
-  
+  vector < string > hints = getHints();
+  if (hints.size() > 0) {
+    out << "," << endl;
+    out << spaces(2*level+2);
+    out << "\"hints\" : {" << endl;
+
+    for(unsigned int j=0; j<hints.size(); j++) {
+        if(j) out << "," << endl;
+        out << spaces(2*level+4);
+        out << "\"" << escapeJSON(hints[j]) << "\" : \"" << escapeJSON(getHint(hints[j]).asString()) << "\"";
+    }
+    out << endl << spaces(2*level+2);
+    out << "}";
+  }
+
   if(countChildren()>0)
   {
     if(visible(getClassName()))
