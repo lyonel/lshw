@@ -1392,13 +1392,11 @@ vector < string > hwNode::getHints() const
 string hwNode::asJSON(unsigned level)
 {
   vector < string > config;
-  vector < string > resources;
   ostringstream out;
 
   if(!This) return "";
 
   config = getConfigKeys();
-  resources = getResources("\" value=\"");
 
   if(visible(getClassName()))
   {
@@ -1629,18 +1627,20 @@ string hwNode::asJSON(unsigned level)
     }
     config.clear();
 
-    if (0 && resources.size() > 0)
+    vector < string > resources = getResources("\" : \"");
+    if (resources.size() > 0)
     {
-      out << spaces(2*level+1);
-      out << "<resources>" << endl;
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"resources\" : {" << endl;
       for (unsigned int j = 0; j < resources.size(); j++)
       {
-        out << spaces(2*level+2);
-        out << "<resource type=\"" << escapeJSON(resources[j]) << "\" />";
-        out << endl;
+        if(j) out << "," << endl;
+        out << spaces(2*level+4);
+        out << "\"" << resources[j] << "\"";
       }
-      out << spaces(2*level+1);
-      out << "</resources>" << endl;
+      out << endl << spaces(2*level+2);
+      out << "}";
     }
     resources.clear();
   }
@@ -1687,13 +1687,11 @@ string hwNode::asJSON(unsigned level)
 string hwNode::asXML(unsigned level)
 {
   vector < string > config;
-  vector < string > resources;
   ostringstream out;
 
   if(!This) return "";
 
   config = getConfigKeys();
-  resources = getResources("\" value=\"");
 
   if (level == 0)
   {
@@ -1987,6 +1985,7 @@ string hwNode::asXML(unsigned level)
     }
     config.clear();
 
+    vector < string > resources = getResources("\" value=\"");
     if (resources.size() > 0)
     {
       out << spaces(2*level+1);
