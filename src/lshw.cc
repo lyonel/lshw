@@ -35,7 +35,7 @@ void usage(const char *progname)
     fprintf(stderr, _("\t-X              use graphical interface\n"));
   fprintf(stderr, _("\noptions can be\n"));
 #ifdef SQLITE
-  fprintf(stderr, _("\t-dump OUTFILE   save hardware tree to a file\n"));
+  fprintf(stderr, _("\t-dump filename  displays output and dump collected information into a file (SQLite database)\n"));
 #endif
   fprintf(stderr, _("\t-class CLASS    only show a certain class of hardware\n"));
   fprintf(stderr, _("\t-C CLASS        same as '-class CLASS'\n"));

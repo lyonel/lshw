@@ -651,8 +651,10 @@ static bool detect_hfsx(hwNode & n, source & s)
   wtime = (time_t)(be_long(&vol->modifyDate) - HFSTIMEOFFSET);
   n.setConfig("created", datetime(mkfstime, false));	// creation time uses local time
   if (enabled("output:time"))
+  {
     n.setConfig("checked", datetime(fscktime));
-  n.setConfig("modified", datetime(wtime));
+    n.setConfig("modified", datetime(wtime));
+  }
 
   return true;
 }
@@ -742,7 +744,7 @@ static bool detect_hfs(hwNode & n, source & s)
     n.setConfig("created", datetime(mkfstime - HFSTIMEOFFSET, false));	// all dates use local time
   if(dumptime)
     n.setConfig("backup", datetime(dumptime - HFSTIMEOFFSET, false));
-  if(wtime)
+  if(wtime && enabled("output:time"))
     n.setConfig("modified", datetime(wtime - HFSTIMEOFFSET, false));
 
   return true;
