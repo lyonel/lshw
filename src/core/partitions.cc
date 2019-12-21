@@ -845,6 +845,12 @@ static bool detect_gpt(source & s, hwNode & n)
         partition.setVendor("Mac OS X");
       }
       else
+      if(p.PartitionTypeGUID == "7C3457EF-0000-11AA-AA11-00306543ECAC")
+      {
+        partition.setDescription("Apple APFS partition");
+        partition.setVendor("Mac OS X");
+      }
+      else
       if(p.PartitionTypeGUID == "6A898CC3-1DD2-11B2-99A6-080020736631")
       {
         partition.setDescription("OS X ZFS partition or Solaris /usr partition");

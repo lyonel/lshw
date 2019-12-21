@@ -39,6 +39,7 @@ static bool detect_reiserfs(hwNode & n, source & s);
 static bool detect_fat(hwNode & n, source & s);
 static bool detect_hfsx(hwNode & n, source & s);
 static bool detect_hfs(hwNode & n, source & s);
+static bool detect_apfs(hwNode & n, source & s);
 static bool detect_ntfs(hwNode & n, source & s);
 static bool detect_swap(hwNode & n, source & s);
 
@@ -69,6 +70,7 @@ static struct fstypes fs_types[] =
   {"mfs", "MacOS MFS", "", NULL},
   {"hfsplus", "MacOS HFS+", "secure,journaled", detect_hfsx},
   {"hfs", "MacOS HFS", "", detect_hfs},
+  {"apfs", "MacOS APFS", "", detect_apfs},
   {"luks", "Linux Unified Key Setup", "encrypted", detect_luks},
   {"swap", "Linux swap", "", detect_swap},
   { NULL, NULL, NULL, NULL }
@@ -747,6 +749,77 @@ static bool detect_hfs(hwNode & n, source & s)
   if(wtime && enabled("output:time"))
     n.setConfig("modified", datetime(wtime - HFSTIMEOFFSET, false));
 
+  return true;
+}
+
+#define APFS_CONTAINER_SUPERBLOCK_TYPE 1
+#define APFS_CONTAINER_SUPERBLOCK_SUBTYPE 0
+#define APFS_STANDARD_BLOCK_SIZE 4096
+
+/*
+ * This struct is much longer than this, but this seems
+ * to contain the useful bits (for now).
+ *
+ * All values are little-endian.
+ */
+struct apfs_super_block {
+  // Generic part to all APFS objects
+  uint64_t checksum;
+  uint64_t oid;
+  uint64_t xid;
+  uint16_t type;
+  uint16_t flags;
+  uint16_t subtype;
+  uint16_t pad;
+
+  // Specific to container header
+  uint32_t magic; // 'NXSB'
+  uint32_t block_size;
+  uint64_t block_count;
+  uint64_t features;
+  uint64_t read_only_features;
+  uint64_t incompatible_features;
+  uint8_t uuid[16];
+};
+
+static bool detect_apfs(hwNode & n, source & s)
+{
+  static char buffer[sizeof(apfs_super_block)];
+  source apfsvolume;
+  apfs_super_block *sb = (apfs_super_block*)buffer;
+  unsigned long block_size;
+
+  apfsvolume = s;
+
+  if(readlogicalblocks(apfsvolume, buffer, 0, 1)!=1)
+    return false;
+
+  if(le_long(&sb->magic) != 0x4253584eu) // 'NXSB'
+    return false;
+
+  if(le_short(&sb->type) != APFS_CONTAINER_SUPERBLOCK_TYPE)
+    return false;
+
+  if(le_short(&sb->subtype) != APFS_CONTAINER_SUPERBLOCK_SUBTYPE)
+    return false;
+
+  if(le_short(&sb->pad) != 0)
+    return false;
+
+  /*
+    * This check is pretty draconian, but should avoid false
+    * positives. Can be improved as more APFS documentation
+    * is published.
+  */
+  block_size = le_long(&sb->block_size);
+  if(block_size != APFS_STANDARD_BLOCK_SIZE)
+    return false;
+  
+  apfsvolume.blocksize = block_size;
+
+  n.setSize((unsigned long long)block_size * le_longlong(&sb->block_count));
+
+  // TODO: APFS contains many volumes and scanning these would be a further job.
   return true;
 }
 
