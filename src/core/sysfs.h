@@ -21,7 +21,7 @@ namespace sysfs
       entry(const entry &);
       ~entry();
 
-      bool hassubdir(const string &);
+      bool hassubdir(const string &) const;
       string name() const;
       string businfo() const;
       string driver() const;

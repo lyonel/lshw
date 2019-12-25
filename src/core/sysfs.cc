@@ -285,7 +285,7 @@ entry::~entry()
   delete This;
 }
 
-bool entry::hassubdir(const string & s)
+bool entry::hassubdir(const string & s) const
 {
   return exists(This->devpath + "/" + s);
 }
