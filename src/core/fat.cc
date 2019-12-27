@@ -186,11 +186,6 @@ bool scan_fat(hwNode & n, source & id)
 	if (vs.heads == 0)
 		return false;
 
-	/* cluster size check */
-	if (vs.sectors_per_cluster == 0 ||
-	    (vs.sectors_per_cluster & (vs.sectors_per_cluster-1)))
-		return false;
-
 	/* media check */
 	if (vs.media < 0xf8 && vs.media != 0xf0)
 		return false;
@@ -200,6 +195,11 @@ bool scan_fat(hwNode & n, source & id)
 		return false;
 
 valid:
+	/* cluster size check */
+	if (vs.sectors_per_cluster == 0 ||
+	    (vs.sectors_per_cluster & (vs.sectors_per_cluster-1)))
+		return false;
+
 	/* sector size check */
 	sector_size_bytes = le_short(&vs.sector_size_bytes);
 	if (sector_size_bytes != 0x200 && sector_size_bytes != 0x400 &&
