@@ -492,6 +492,8 @@ static void fill_core_vpd(hwNode & cpu, string & basepath,
     return;
 
   chip_id = get_u32(basepath + "/ibm,chip-id");
+  cpu.setConfig("chip-id", chip_id);
+
   data = chip_vpd[chip_id];
   xscom_path = xscoms[chip_id];
 
