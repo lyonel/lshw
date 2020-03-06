@@ -1031,6 +1031,8 @@ static void add_memory_bank(string name, string path, hwNode & core)
     if(exists("description"))
       description = hw::strip(get_string("description"));
     bank.setDescription(description);
+    if (exists("ibm,chip-id"))
+      bank.setConfig("chip-id", get_u32("ibm,chip-id"));
 
     if(exists("ibm,loc-code"))
       bank.setSlot(hw::strip(get_string("ibm,loc-code")));
