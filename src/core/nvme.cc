@@ -24,16 +24,20 @@ bool scan_nvme(hwNode & n)
   {
     const sysfs::entry & e = *it;
 
-    hwNode device(e.name(), hw::storage);
-    device.claim();
-    device.setLogicalName(e.name());
-    device.setDescription("NVMe device");
-    device.setProduct(e.string_attr("model"));
-    device.setSerial(e.string_attr("serial"));
-    device.setVersion(e.string_attr("firmware_rev"));
-    device.setConfig("nqn",e.string_attr("subsysnqn"));
-    device.setConfig("state",e.string_attr("state"));
-    device.setModalias(e.modalias());
+    hwNode *device = n.findChildByBusInfo(e.leaf().businfo());
+    if(!device) {
+      device = n.addChild(hwNode(e.name(), hw::storage));
+    }
+
+    device->claim();
+    device->setLogicalName(e.name());
+    device->setDescription("NVMe device");
+    device->setProduct(e.string_attr("model"));
+    device->setSerial(e.string_attr("serial"));
+    device->setVersion(e.string_attr("firmware_rev"));
+    device->setConfig("nqn",e.string_attr("subsysnqn"));
+    device->setConfig("state",e.string_attr("state"));
+    device->setModalias(e.modalias());
 
     vector < sysfs::entry > namespaces = e.devices();
     for(vector < sysfs::entry >::iterator i = namespaces.begin(); i != namespaces.end(); ++i)
@@ -47,13 +51,8 @@ bool scan_nvme(hwNode & n)
       ns.setLogicalName(n.name());
       ns.setConfig("wwid",n.string_attr("wwid"));
       scan_disk(ns);
-      device.addChild(ns);
+      device->addChild(ns);
     }
-
-    if(hwNode *child = n.findChildByBusInfo(e.leaf().businfo())) {
-	    child->addChild(device);
-    } else
-	    n.addChild(device);
   }
 
   return true;
