@@ -38,6 +38,7 @@ bool scan_nvme(hwNode & n)
     for(unsigned long long i=1; e.hassubdir(e.name()+"n"+tostring(i)); i++) {
 	    hwNode ns("namespace", hw::disk);
 	    ns.claim();
+	    ns.setPhysId(i);
 	    ns.setLogicalName(e.name()+"n"+tostring(i));
 	    scan_partitions(ns);
 	    device.addChild(ns);
