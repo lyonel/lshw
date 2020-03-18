@@ -35,14 +35,19 @@ bool scan_nvme(hwNode & n)
     device.setConfig("state",e.string_attr("state"));
     device.setModalias(e.modalias());
 
-    for(unsigned long long i=1; e.hassubdir(e.name()+"n"+tostring(i)); i++) {
-	    hwNode ns("namespace", hw::disk);
-	    ns.claim();
-	    ns.setPhysId(i);
-	    ns.setDescription("NVMe namespace");
-	    ns.setLogicalName(e.name()+"n"+tostring(i));
-	    scan_disk(ns);
-	    device.addChild(ns);
+    vector < sysfs::entry > namespaces = e.devices();
+    for(vector < sysfs::entry >::iterator i = namespaces.begin(); i != namespaces.end(); ++i)
+    {
+      const sysfs::entry & n = *i;
+
+      hwNode ns("namespace", hw::disk);
+      ns.claim();
+      ns.setPhysId(n.string_attr("nsid"));
+      ns.setDescription("NVMe disk");
+      ns.setLogicalName(n.name());
+      ns.setConfig("wwid",n.string_attr("wwid"));
+      scan_disk(ns);
+      device.addChild(ns);
     }
 
     if(hwNode *child = n.findChildByBusInfo(e.leaf().businfo())) {

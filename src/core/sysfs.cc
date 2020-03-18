@@ -376,6 +376,24 @@ string entry::vendor() const
   return get_string(This->devpath+"/vendor");
 }
 
+vector < entry > entry::devices() const
+{
+  vector < entry > result;
+
+  if (!pushd(This->devpath))
+    return result;
+
+  struct dirent **namelist;
+  int count = scandir(This->devpath.c_str(), &namelist, selectdir, alphasort);
+  for (int i = 0; i < count; i ++)
+  {
+    entry e = sysfs::entry(This->devpath + "/" + string(namelist[i]->d_name));
+    if(e.hassubdir("device"))
+	    result.push_back(e);
+  }
+  return result;
+}
+
 vector < entry > sysfs::entries_by_bus(const string & busname)
 {
   vector < entry > result;

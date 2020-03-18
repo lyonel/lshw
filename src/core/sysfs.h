@@ -36,6 +36,8 @@ namespace sysfs
       unsigned long long hex_attr(const string & name, unsigned long long def = 0) const;
       vector < string > multiline_attr(const string & name) const;
 
+      vector < entry > devices() const;
+
       struct entry_i * This;
 
     private:
