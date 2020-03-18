@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/mount.h>
 
+
 __ID("@(#) $Id$");
 
 using namespace sysfs;
@@ -226,6 +227,13 @@ string sysfs_finddevice(const string & name)
   return result;
 }
 
+entry entry::leaf() const
+{
+  if (hassubdir("device"))
+    return entry(This->devpath+"/device");
+
+  return entry(This->devpath);
+}
 
 string entry::driver() const
 {
@@ -245,7 +253,7 @@ entry entry::byBus(string devbus, string devname)
 
 entry entry::byClass(string devclass, string devname)
 {
-  entry e(fs.path + "/class/" + devclass + "/" + devname + "/device");
+  entry e(fs.path + "/class/" + devclass + "/" + devname);
   return e;
 }
 
@@ -386,6 +394,23 @@ vector < entry > sysfs::entries_by_bus(const string & busname)
   return result;
 }
 
+vector < entry > sysfs::entries_by_class(const string & classname)
+{
+  vector < entry > result;
+
+  if (!pushd(fs.path + "/class/" + classname))
+    return result;
+
+  struct dirent **namelist;
+  int count;
+  count = scandir(".", &namelist, selectlink, alphasort);
+  for (int i = 0; i < count; i ++)
+  {
+    entry e = sysfs::entry::byClass(classname, namelist[i]->d_name);
+    result.push_back(e);
+  }
+  return result;
+}
 
 bool scan_sysfs(hwNode & n)
 {

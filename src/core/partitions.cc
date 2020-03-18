@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <ctype.h>
 
 __ID("@(#) $Id$");
 
@@ -290,23 +291,29 @@ static struct systypes dos_sys_types[] =
 
 static unsigned int lastlogicalpart = 5;
 
+static string partitionname(string disk, unsigned int n)
+{
+  if(isdigit(disk[disk.length()-1]))
+	  return disk+"p"+tostring(n);
+  else
+	  return disk+tostring(n);
+}
+
 static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, hwNode & partition)
 {
   struct stat buf;
-  char name[10];
   int dev = 0;
 
-  snprintf(name, sizeof(name), "%d", n);
   if(disk.getBusInfo()!="")
-    partition.setBusInfo(disk.getBusInfo()+string(",")+string(name));
+    partition.setBusInfo(disk.getBusInfo()+string(",")+tostring(n));
 
   if(fstat(s.fd, &buf)!=0) return false;
   if(!S_ISBLK(buf.st_mode)) return false;
 
   if(s.diskname!="")
-    dev = open_dev(buf.st_rdev + n, S_IFBLK, s.diskname+string(name));
+    dev = open_dev(buf.st_rdev + n, S_IFBLK, partitionname(s.diskname, n));
   else
-    dev = open_dev(buf.st_rdev + n, S_IFBLK, disk.getLogicalName()+string(name));
+    dev = open_dev(buf.st_rdev + n, S_IFBLK, partitionname(disk.getLogicalName(), n));
 
   if(dev>=0)
   {
@@ -331,9 +338,9 @@ static bool guess_logicalname(source & s, const hwNode & disk, unsigned int n, h
     {
       partition.claim();
       if(s.diskname!="")
-        partition.setLogicalName(s.diskname+string(name));
+        partition.setLogicalName(partitionname(s.diskname,n));
       else
-        partition.setLogicalName(disk.getLogicalName()+string(name));
+        partition.setLogicalName(partitionname(disk.getLogicalName(),n));
       return true;
     }
   }

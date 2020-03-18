@@ -335,10 +335,10 @@ bool scan_network(hwNode & n)
       interface.claim();
       interface.addHint("icon", string("network"));
 
-      string businfo = sysfs::entry::byClass("net", interface.getLogicalName()).businfo();
+      string businfo = sysfs::entry::byClass("net", interface.getLogicalName()).leaf().businfo();
       if (businfo!="")
         interface.setBusInfo(businfo);
-      interface.setModalias(sysfs::entry::byClass("net", interface.getLogicalName()).modalias());
+      interface.setModalias(sysfs::entry::byClass("net", interface.getLogicalName()).leaf().modalias());
 
 //scan_mii(fd, interface);
       scan_ip(interface);

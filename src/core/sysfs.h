@@ -21,6 +21,8 @@ namespace sysfs
       entry(const entry &);
       ~entry();
 
+      entry leaf() const;
+
       bool hassubdir(const string &) const;
       string name() const;
       string businfo() const;
@@ -42,6 +44,7 @@ namespace sysfs
   };
 
   vector < entry > entries_by_bus(const string & busname);
+  vector < entry > entries_by_class(const string & classname);
 
 }                                                 // namespace sysfs
 

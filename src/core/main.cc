@@ -43,6 +43,7 @@
 #include "mounts.h"
 #include "virtio.h"
 #include "vio.h"
+#include "nvme.h"
 #include "smp.h"
 #include "abi.h"
 #include "s390.h"
@@ -132,6 +133,9 @@ bool scan_system(hwNode & system)
     status("SCSI");
     if (enabled("scsi"))
       scan_scsi(computer);
+    status("NVMe");
+    if (enabled("nvme"))
+      scan_nvme(computer);
     status("S/390 devices");
     if (enabled("s390"))
       scan_s390_devices(computer);
