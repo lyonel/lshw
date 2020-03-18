@@ -3,7 +3,7 @@
 #include "sysfs.h"
 #include "osutils.h"
 #include "nvme.h"
-#include "partitions.h"
+#include "disk.h"
 
 #include <vector>
 #include <iostream>
@@ -39,8 +39,9 @@ bool scan_nvme(hwNode & n)
 	    hwNode ns("namespace", hw::disk);
 	    ns.claim();
 	    ns.setPhysId(i);
+	    ns.setDescription("NVMe namespace");
 	    ns.setLogicalName(e.name()+"n"+tostring(i));
-	    scan_partitions(ns);
+	    scan_disk(ns);
 	    device.addChild(ns);
     }
 
