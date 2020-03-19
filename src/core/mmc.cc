@@ -74,6 +74,15 @@ bool scan_mmc(hwNode & n)
       if(d.string_attr("scr")!="")
 	card.setDescription("SD Card");
 
+      vector < sysfs::entry > devices = d.devices();
+      for(unsigned long i=0;i<devices.size();i++)
+      {
+        card.setLogicalName(devices[i].name());
+	if(devices[i].hex_attr("removable"))
+	  card.addCapability("removable");
+      }
+      scan_disk(card);
+
       device->addChild(card);
     }
 

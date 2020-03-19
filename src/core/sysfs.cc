@@ -384,13 +384,25 @@ vector < entry > entry::devices() const
     return result;
 
   struct dirent **namelist;
-  int count = scandir(This->devpath.c_str(), &namelist, selectdir, alphasort);
+  int count = scandir(".", &namelist, selectdir, alphasort);
   for (int i = 0; i < count; i ++)
   {
     entry e = sysfs::entry(This->devpath + "/" + string(namelist[i]->d_name));
     if(e.hassubdir("subsystem"))
 	    result.push_back(e);
   }
+  if(pushd("block"))
+  {
+    int count = scandir(".", &namelist, selectdir, alphasort);
+    for (int i = 0; i < count; i ++)
+    {
+      entry e = sysfs::entry(This->devpath + "/block/" + string(namelist[i]->d_name));
+      if(e.hassubdir("subsystem"))
+	      result.push_back(e);
+    }
+    popd();
+  }
+  popd();
   return result;
 }
 
@@ -409,6 +421,7 @@ vector < entry > sysfs::entries_by_bus(const string & busname)
     entry e = sysfs::entry::byBus(busname, namelist[i]->d_name);
     result.push_back(e);
   }
+  popd();
   return result;
 }
 
@@ -427,6 +440,7 @@ vector < entry > sysfs::entries_by_class(const string & classname)
     entry e = sysfs::entry::byClass(classname, namelist[i]->d_name);
     result.push_back(e);
   }
+  popd();
   return result;
 }
 
