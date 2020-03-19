@@ -388,7 +388,7 @@ vector < entry > entry::devices() const
   for (int i = 0; i < count; i ++)
   {
     entry e = sysfs::entry(This->devpath + "/" + string(namelist[i]->d_name));
-    if(e.hassubdir("device"))
+    if(e.hassubdir("subsystem"))
 	    result.push_back(e);
   }
   return result;

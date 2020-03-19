@@ -44,6 +44,7 @@
 #include "virtio.h"
 #include "vio.h"
 #include "nvme.h"
+#include "mmc.h"
 #include "smp.h"
 #include "abi.h"
 #include "s390.h"
@@ -136,6 +137,9 @@ bool scan_system(hwNode & system)
     status("NVMe");
     if (enabled("nvme"))
       scan_nvme(computer);
+    status("MMC");
+    if (enabled("mmc"))
+      scan_mmc(computer);
     status("S/390 devices");
     if (enabled("s390"))
       scan_s390_devices(computer);
