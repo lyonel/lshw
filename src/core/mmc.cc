@@ -4,6 +4,7 @@
 #include "osutils.h"
 #include "mmc.h"
 #include "disk.h"
+#include "heuristics.h"
 
 #include <vector>
 #include <iostream>
@@ -64,6 +65,7 @@ bool scan_mmc(hwNode & n)
       card.claim();
       card.setProduct(d.string_attr("name"));
       card.setVendor(manufacturer(d.hex_attr("manfid")));
+      card.setBusInfo(guessBusInfo(d.name()));
       card.setPhysId(strip0x(d.string_attr("rca")));
       card.setSerial(tostring(d.hex_attr("serial")));
       if(unsigned long hwrev = d.hex_attr("hwrev")) {

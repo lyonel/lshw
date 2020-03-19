@@ -16,6 +16,21 @@ __ID("@(#) $Id$");
 
 string guessBusInfo(const string & info)
 {
+                                                  // NVMe: "nvme"host"n"namespace
+  if(matches(info, "^nvme[0-9]+n[0-9]+$"))
+  {
+    string s = info;
+    size_t n = s.rfind("n");
+    s[n] = ':';
+    return "nvme@" + s.substr(4, string::npos);
+  }
+
+                                                  // SD/MMC: "mmc"host:address
+  if(matches(info, "^mmc[0-9]+:[[:xdigit:]]+$"))
+  {
+    return "mmc@" + info.substr(3, string::npos);
+  }
+
                                                   // 2.6-style PCI
   if(matches(info,"^[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]:[[:xdigit:]][[:xdigit:]]\\.[[:xdigit:]]$"))
   {

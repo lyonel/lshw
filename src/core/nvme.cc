@@ -4,6 +4,7 @@
 #include "osutils.h"
 #include "nvme.h"
 #include "disk.h"
+#include "heuristics.h"
 
 #include <vector>
 #include <iostream>
@@ -46,6 +47,7 @@ bool scan_nvme(hwNode & n)
 
       hwNode ns("namespace", hw::disk);
       ns.claim();
+      ns.setBusInfo(guessBusInfo(n.name()));
       ns.setPhysId(n.string_attr("nsid"));
       ns.setDescription("NVMe disk");
       ns.setLogicalName(n.name());
