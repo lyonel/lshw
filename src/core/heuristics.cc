@@ -26,7 +26,7 @@ string guessBusInfo(const string & info)
   }
 
                                                   // SD/MMC: "mmc"host:address
-  if(matches(info, "^mmc[0-9]+:[[:xdigit:]]+$"))
+  if(matches(info, "^mmc[0-9]+(:[[:xdigit:]]+)+$"))
   {
     return "mmc@" + info.substr(3, string::npos);
   }

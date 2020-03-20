@@ -49,9 +49,9 @@ bool scan_mmc(hwNode & n)
 
     hwNode *device = n.findChildByBusInfo(e.leaf().businfo());
     if(!device)
-      device = n.addChild(hwNode(e.name(), hw::storage));
+      device = n.addChild(hwNode(e.name(), hw::bus));
     else
-      device->setClass(hw::storage);
+      device->setClass(hw::bus);
 
     device->claim();
     device->setLogicalName(e.name());
@@ -63,7 +63,7 @@ bool scan_mmc(hwNode & n)
     {
       const sysfs::entry & d = *i;
 
-      hwNode card("card", hw::disk);
+      hwNode card("card");
       card.claim();
       string prod = d.string_attr("name");
       if(prod != "00000") card.setProduct(prod);
@@ -77,16 +77,34 @@ bool scan_mmc(hwNode & n)
       card.setDate(d.string_attr("date"));
       card.setDescription("SD/MMC Device");
       if(d.string_attr("scr")!="")
+      {
 	card.setDescription("SD Card");
+        card.setClass(hw::disk);
+      }
 
       vector < sysfs::entry > devices = d.devices();
-      for(unsigned long i=0;i<devices.size();i++)
+      if(devices.size()==1)
       {
-        card.setLogicalName(devices[i].name());
-	if(devices[i].hex_attr("removable"))
+        card.setLogicalName(devices[0].name());
+        card.setModalias(devices[0].modalias());
+        card.setBusInfo(guessBusInfo(devices[0].name()));
+	if(devices[0].hex_attr("removable"))
 	  card.addCapability("removable");
+        scan_disk(card);
+      } else {
+        for(unsigned long i=0;i<devices.size();i++)
+        {
+          hwNode device("device");
+
+          device.setLogicalName(devices[i].name());
+          device.setModalias(devices[i].modalias());
+          device.setBusInfo(guessBusInfo(devices[i].name()));
+	  if(devices[i].hex_attr("removable"))
+	    device.addCapability("removable");
+          scan_disk(device);
+          card.addChild(device);
+        }
       }
-      scan_disk(card);
 
       device->addChild(card);
     }
