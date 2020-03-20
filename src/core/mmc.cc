@@ -24,6 +24,8 @@ static string manufacturer(unsigned long n)
 {
   switch(n)
   {
+    case 0x0:
+            return "";
     case 0x2:
 	    return "Kingston";
     case 0x3:
@@ -53,7 +55,7 @@ bool scan_mmc(hwNode & n)
 
     device->claim();
     device->setLogicalName(e.name());
-    device->setDescription("MMC host");
+    device->setDescription("MMC Host");
     device->setModalias(e.modalias());
 
     vector < sysfs::entry > namespaces = e.devices();
@@ -63,7 +65,8 @@ bool scan_mmc(hwNode & n)
 
       hwNode card("card", hw::disk);
       card.claim();
-      card.setProduct(d.string_attr("name"));
+      string prod = d.string_attr("name");
+      if(prod != "00000") card.setProduct(prod);
       card.setVendor(manufacturer(d.hex_attr("manfid")));
       card.setBusInfo(guessBusInfo(d.name()));
       card.setPhysId(strip0x(d.string_attr("rca")));
@@ -72,7 +75,7 @@ bool scan_mmc(hwNode & n)
 	card.setVersion(tostring(hwrev)+"."+tostring(d.hex_attr("fwrev")));
       }
       card.setDate(d.string_attr("date"));
-      card.setDescription("SD/MMC Card");
+      card.setDescription("SD/MMC Device");
       if(d.string_attr("scr")!="")
 	card.setDescription("SD Card");
 
