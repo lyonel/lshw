@@ -83,27 +83,20 @@ bool scan_mmc(hwNode & n)
       }
 
       vector < sysfs::entry > devices = d.devices();
-      if(devices.size()==1)
+      for(unsigned long i=0;i<devices.size();i++)
       {
-        card.setLogicalName(devices[0].name());
-        card.setModalias(devices[0].modalias());
-        card.setBusInfo(guessBusInfo(devices[0].name()));
-	if(devices[0].hex_attr("removable"))
-	  card.addCapability("removable");
-        scan_disk(card);
-      } else {
-        for(unsigned long i=0;i<devices.size();i++)
-        {
-          hwNode device("device");
+        hwNode *subdev;
+        if(devices.size()>1)
+          subdev = card.addChild(hwNode("device"));
+        else
+          subdev = &card;
 
-          device.setLogicalName(devices[i].name());
-          device.setModalias(devices[i].modalias());
-          device.setBusInfo(guessBusInfo(devices[i].name()));
-	  if(devices[i].hex_attr("removable"))
-	    device.addCapability("removable");
-          scan_disk(device);
-          card.addChild(device);
-        }
+        subdev->setLogicalName(devices[i].name());
+        subdev->setModalias(devices[i].modalias());
+        subdev->setBusInfo(guessBusInfo(devices[i].name()));
+        if(devices[i].hex_attr("removable"))
+          subdev->addCapability("removable");
+        scan_disk(*subdev);
       }
 
       device->addChild(card);
