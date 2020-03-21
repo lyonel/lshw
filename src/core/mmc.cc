@@ -369,7 +369,6 @@ bool scan_mmc(hwNode & n)
         subdev->setLogicalName(devices[i].name());
         subdev->setModalias(devices[i].modalias());
         subdev->setBusInfo(guessBusInfo(devices[i].name()));
-        subdev->setPhysId(tostring(i+1));
         if(devices[i].hex_attr("removable"))
           subdev->addCapability("removable");
         scan_disk(*subdev);
