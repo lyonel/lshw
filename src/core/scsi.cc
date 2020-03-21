@@ -702,6 +702,10 @@ static void scan_sg(hwNode & n)
   adapter_businfo =
       sysfs::entry::byClass("scsi_host", host_kname(m_id.host_no))
       .parent().businfo();
+  if(adapter_businfo.empty())
+    adapter_businfo =
+        sysfs::entry::byClass("scsi_host", host_kname(m_id.host_no))
+	.parent().parent().businfo();
 
   hwNode device = hwNode("generic");
   hwNode *parent = NULL;
