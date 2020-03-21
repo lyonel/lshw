@@ -701,11 +701,15 @@ static void scan_sg(hwNode & n)
   businfo = scsi_businfo(m_id.host_no);
   adapter_businfo =
       sysfs::entry::byClass("scsi_host", host_kname(m_id.host_no))
-      .parent().businfo();
+      .parent().businfo();			// "normal" case (legacy?)
   if(adapter_businfo.empty())
     adapter_businfo =
         sysfs::entry::byClass("scsi_host", host_kname(m_id.host_no))
-	.parent().parent().businfo();
+	.parent().parent().businfo();		// 1 level of indirection: USB→SCSI
+  if(adapter_businfo.empty())
+    adapter_businfo =
+        sysfs::entry::byClass("scsi_host", host_kname(m_id.host_no))
+	.parent().parent().parent().businfo();	// 2 levels of indirection: PCI→(S)ATA→SCSI
 
   hwNode device = hwNode("generic");
   hwNode *parent = NULL;
