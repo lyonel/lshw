@@ -225,6 +225,27 @@ static hwNode sdioNode(unsigned long long c, unsigned long long vendor = 0, unsi
       break;
     case SDIO_VENDOR_ID_INTEL:
       result.setVendor("Intel");
+      switch(device)
+      {
+        case SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX:
+          result.setProduct("IWMC3200WIMAX");
+          break;
+        case SDIO_DEVICE_ID_INTEL_IWMC3200WIFI:
+          result.setProduct("IWMC3200WIFI");
+          break;
+        case SDIO_DEVICE_ID_INTEL_IWMC3200TOP:
+          result.setProduct("IWMC3200TOP");
+          break;
+        case SDIO_DEVICE_ID_INTEL_IWMC3200GPS:
+          result.setProduct("IWMC3200GPS");
+          break;
+        case SDIO_DEVICE_ID_INTEL_IWMC3200BT:
+          result.setProduct("IWMC3200BT");
+          break;
+        case SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX_2G5:
+          result.setProduct("IWMC3200WIMAX 2G5");
+          break;
+      }
       break;
     case SDIO_VENDOR_ID_MARVELL:
       result.setVendor("Marvell");
@@ -234,12 +255,49 @@ static hwNode sdioNode(unsigned long long c, unsigned long long vendor = 0, unsi
       break;
     case SDIO_VENDOR_ID_SIANO:
       result.setVendor("Siano");
+      switch(device)
+      {
+        case SDIO_DEVICE_ID_SIANO_NOVA_B0:
+          result.setProduct("NOVA B0");
+          break;
+        case SDIO_DEVICE_ID_SIANO_NICE:
+          result.setProduct("NICE");
+          break;
+        case SDIO_DEVICE_ID_SIANO_VEGA_A0:
+          result.setProduct("VEGA A0");
+          break;
+        case SDIO_DEVICE_ID_SIANO_VENICE:
+          result.setProduct("VENICE");
+          break;
+        case SDIO_DEVICE_ID_SIANO_NOVA_A0:
+          result.setProduct("NOVA A0");
+          break;
+        case SDIO_DEVICE_ID_SIANO_STELLAR:
+          result.setProduct("STELLAR");
+          break;
+      }
       break;
     case SDIO_VENDOR_ID_TI:
       result.setVendor("Texas Instruments");
+      switch(device)
+      {
+        case SDIO_DEVICE_ID_TI_WL1271:
+          result.setProduct("WL1271");
+          break;
+        case SDIO_VENDOR_ID_TI_WL1251:
+        case SDIO_DEVICE_ID_TI_WL1251:
+          result.setProduct("WL1251");
+          break;
+      }
       break;
     case SDIO_VENDOR_ID_STE:
       result.setVendor("ST Ericsson");
+      switch(device)
+      {
+        case SDIO_DEVICE_ID_STE_CW1200:
+          result.setProduct("CW1200");
+          break;
+      }
       break;
   }
 
