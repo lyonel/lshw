@@ -533,7 +533,7 @@ bool scan_network(hwNode & n)
           interface.setBusInfo(guessBusInfo(drvinfo.bus_info));
       }
 
-      if(sysfs::entry::byClass("net", interface.getLogicalName()).hassubdir("bridge"))
+      if(sysfs::entry::byClass("net", interface.getLogicalName()).isvirtual())
         interface.addCapability("logical", _("Logical interface"));
 
       existing = n.findChildByBusInfo(interface.getBusInfo());
