@@ -1,3 +1,9 @@
+* lshw B.02.19
+  detection of NVMe disks
+  detection of SD/MMC and SDIO devices
+  bug fixes
+  code cleanup
+  updated data files 
 * lshw B.02.18
   migrated to git
   bug fixes
