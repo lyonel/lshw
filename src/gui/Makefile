@@ -12,7 +12,7 @@ CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 ifeq ($(SQLITE), 1)
 	CXXFLAGS+= -DSQLITE $(shell pkg-config --cflags sqlite3)
 endif
-CFLAGS=$(CXXFLAGS) $(DEFINES)
+CFLAGS=$(CXXFLAGS) -g $(DEFINES)
 GTKLIBS=$(shell pkg-config gtk+-2.0 gmodule-2.0 --libs)
 LIBS+=-L../core -llshw -lresolv $(GTKLIBS)
 ifeq ($(SQLITE), 1)
