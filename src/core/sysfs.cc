@@ -338,6 +338,16 @@ entry entry::parent() const
   return e;
 }
 
+string entry::classname() const
+{
+  return basename(dirname(This->devpath).c_str());
+}
+
+bool entry::isvirtual() const
+{
+  return string(basename(dirname(dirname(This->devpath)).c_str())) == "virtual";
+}
+
 string entry::string_attr(const string & name, const string & def) const
 {
   return hw::strip(get_string(This->devpath + "/" + name, def));
