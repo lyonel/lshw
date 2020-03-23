@@ -130,6 +130,15 @@ class hwNode
     string getProduct() const;
     void setProduct(const string & product);
 
+    string getFamily() const;
+    void setFamily(const string & family);
+
+    string getStepping() const;
+    void setStepping(const string & stepping);
+
+    string getModel() const;
+    void setModel(const string & model);
+
     string getSubProduct() const;
     void setSubProduct(const string & subproduct);
 

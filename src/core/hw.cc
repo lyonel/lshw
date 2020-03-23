@@ -28,7 +28,8 @@ struct hwNode_i
 {
   hwClass deviceclass;
   string id, vendor, product, version, date, serial, slot, handle, description,
-    businfo, physid, dev, modalias, subvendor, subproduct;
+    businfo, physid, dev, modalias, subvendor, subproduct, family, stepping,
+    model;
   bool enabled;
   bool claimed;
   unsigned long long start;
@@ -122,6 +123,9 @@ const string & product, const string & version)
   This->businfo = string("");
   This->physid = string("");
   This->dev = string("");
+  This->family = string("");
+  This->stepping = string("");
+  This->model = string("");
 }
 
 
@@ -427,6 +431,49 @@ void hwNode::setProduct(const string & product)
     This->product = strip(product);
 }
 
+string hwNode::getFamily() const
+{
+  if (This)
+    return This->family;
+  else
+    return "";
+}
+
+
+void hwNode::setFamily(const string & family)
+{
+  if (This)
+    This->family = strip(family);
+}
+
+string hwNode::getStepping() const
+{
+  if (This)
+    return This->stepping;
+  else
+    return "";
+}
+
+
+void hwNode::setStepping(const string & stepping)
+{
+  if (This)
+    This->stepping = strip(stepping);
+}
+
+string hwNode::getModel() const
+{
+  if (This)
+    return This->model;
+  else
+    return "";
+}
+
+void hwNode::setModel(const string & model)
+{
+  if (This)
+    This->model = strip(model);
+}
 
 string hwNode::getSubProduct() const
 {
@@ -1443,6 +1490,31 @@ string hwNode::asJSON(unsigned level)
       out << spaces(2*level+2);
       out << "\"vendor\" : \"";
       out << escapeJSON(getVendor());
+      out << "\"";
+    }
+
+    if (getFamily() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"cpu family\" : \"";
+      out << escapeJSON(getFamily());
+      out << "\"";
+    }
+    if (getStepping() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"stepping\" : \"";
+      out << escapeJSON(getStepping());
+      out << "\"";
+    }
+    if (getModel() != "")
+    {
+      out << "," << endl;
+      out << spaces(2*level+2);
+      out << "\"model\" : \"";
+      out << escapeJSON(getModel());
       out << "\"";
     }
 

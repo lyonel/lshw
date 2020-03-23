@@ -221,6 +221,57 @@ int level)
       cout << endl;
     }
 
+    if (node.getFamily() != "")
+    {
+      tab(level + 1, false);
+      if (html)
+        cout << "<tr><td class=\"first\">";
+      cout << _("cpu family") << ": ";
+      if (html)
+      {
+        cout << "</td><td class=\"second\">";
+        cout << escape(node.getFamily());
+        cout << "</td></tr>";
+      }
+      else
+        cout << node.getFamily();
+      cout << endl;
+    }
+
+    if (node.getStepping() != "")
+    {
+      tab(level + 1, false);
+      if (html)
+        cout << "<tr><td class=\"first\">";
+      cout << _("stepping") << ": ";
+      if (html)
+      {
+        cout << "</td><td class=\"second\">";
+        cout << escape(node.getStepping());
+        cout << "</td></tr>";
+      }
+	else
+        cout << node.getStepping();
+      cout << endl;
+    }
+
+    if (node.getModel() != "")
+    {
+      tab(level + 1, false);
+      if (html)
+        cout << "<tr><td class=\"first\">";
+      cout << _("model") << ": ";
+      if (html)
+      {
+        cout << "</td><td class=\"second\">";
+        cout << escape(node.getModel());
+        cout << "</td></tr>";
+      }
+      else
+        cout << node.getModel();
+      cout << endl;
+    }
+
     if (node.getPhysId() != "")
     {
       tab(level + 1, false);

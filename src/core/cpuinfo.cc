@@ -463,6 +463,12 @@ string value)
     }
     if (id == "model name")
       cpu->setProduct(value);
+    if (id == "cpu family")
+      cpu->setFamily(value);
+    if (id == "model")
+      cpu->setModel(value);
+    if (id == "stepping")
+      cpu->setStepping(value);
 //if ((id == "cpu MHz") && (cpu->getSize() == 0))
 //{
 //cpu->setSize((long long) (1000000L * atof(value.c_str())));
