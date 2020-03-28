@@ -2432,6 +2432,26 @@ string value::asString() const
 }
 
 
+long long value::asInteger() const
+{
+  if(!This) return 0;
+
+  switch(This->type)
+  {
+    case hw::text:
+      return stoll(This->s, NULL, 0);
+    case hw::integer:
+      return This->ll;
+    case hw::boolean:
+      return This->b?1:0;
+    case hw::nil:
+      return 0;
+  };
+
+  return 0;
+}
+
+
 bool value::defined() const
 {
   if(!This) return false;

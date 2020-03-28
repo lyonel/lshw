@@ -79,6 +79,7 @@ namespace hw
       bool operator ==(const value &) const;
 
       string asString() const;
+      long long asInteger() const;
       bool defined() const;
 
     private:

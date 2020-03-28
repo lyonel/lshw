@@ -463,6 +463,14 @@ string value)
     }
     if (id == "model name")
       cpu->setProduct(value);
+    if (id == "microcode")
+      cpu->setConfig(id, stoll(value, NULL, 0));
+    if (id == "cpu family")
+      cpu->addHint(id, stoll(value, NULL, 0));
+    if (id == "model")
+      cpu->addHint(id, stoll(value, NULL, 0));
+    if (id == "stepping")
+      cpu->addHint(id, stoll(value, NULL, 0));
 //if ((id == "cpu MHz") && (cpu->getSize() == 0))
 //{
 //cpu->setSize((long long) (1000000L * atof(value.c_str())));
@@ -667,8 +675,17 @@ bool scan_cpuinfo(hwNode & n)
   }
 
   hwNode *cpu = getcpu(n, 0);
-  if(cpu && (n.getWidth()==0))
-    n.setWidth(cpu->getWidth());
+  if(cpu)
+  {
+    hw::value family, model, stepping;
+    family = cpu->getHint("cpu family");
+    model = cpu->getHint("model");
+    stepping = cpu->getHint("stepping");
+    if(family.defined() && model.defined() && stepping.defined())
+	    cpu->setVersion(tostring(family.asInteger())+"."+tostring(model.asInteger())+"."+tostring(stepping.asInteger()));
+    if(n.getWidth()==0)
+      n.setWidth(cpu->getWidth());
+  }
 
   return true;
 }
