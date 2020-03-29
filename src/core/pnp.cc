@@ -165,6 +165,11 @@ hw::hwClass pnp_class(const string & pnpid)
   return hw::generic;
 }
 
+static bool ISAbridge(const hwNode & n)
+{
+  return n.getClass()==hw::bridge && n.isCapable("isa");
+}
+
 bool scan_pnp(hwNode & n)
 {
   vector < sysfs::entry > entries = sysfs::entries_by_bus("pnp");
@@ -172,11 +177,12 @@ bool scan_pnp(hwNode & n)
   if (entries.empty())
     return false;
 
-  hwNode *core = n.getChild("core");
-  if (!core)
+  hwNode *isapnpbridge = n.findChild(ISAbridge);
+  if (!isapnpbridge) isapnpbridge = n.getChild("core");
+  if (!isapnpbridge)
   {
     n.addChild(hwNode("core", hw::bus));
-    core = n.getChild("core");
+    isapnpbridge = n.getChild("core");
   }
 
   for (vector < sysfs::entry >::iterator it = entries.begin();
@@ -208,7 +214,7 @@ bool scan_pnp(hwNode & n)
       device.setProduct("PnP device " + pnpid);
     device.claim();
 
-    core->addChild(device);
+    isapnpbridge->addChild(device);
   }
   return true;
 }
