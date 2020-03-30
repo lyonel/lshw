@@ -195,8 +195,8 @@ static string dmi_uuid(const u8 * p)
     return string(REMOVED);
 
   snprintf(buffer, sizeof(buffer),
-    "%02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X",
-    p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10],
+    "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+    p[3], p[2], p[1], p[0], p[5], p[4], p[7], p[6], p[8], p[9], p[10],
     p[11], p[12], p[13], p[14], p[15]);
 
   return hw::strip(string(buffer));
