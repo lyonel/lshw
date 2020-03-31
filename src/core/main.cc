@@ -45,6 +45,7 @@
 #include "vio.h"
 #include "nvme.h"
 #include "mmc.h"
+#include "input.h"
 #include "smp.h"
 #include "abi.h"
 #include "s390.h"
@@ -140,6 +141,9 @@ bool scan_system(hwNode & system)
     status("MMC");
     if (enabled("mmc"))
       scan_mmc(computer);
+    status("input");
+    if (enabled("input"))
+      scan_input(computer);
     status("S/390 devices");
     if (enabled("s390"))
       scan_s390_devices(computer);
