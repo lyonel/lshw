@@ -327,8 +327,8 @@ bool scan_mmc(hwNode & n)
     device->setDescription("MMC Host");
     device->setModalias(e.modalias());
 
-    vector < sysfs::entry > namespaces = e.devices();
-    for(vector < sysfs::entry >::iterator i = namespaces.begin(); i != namespaces.end(); ++i)
+    vector < sysfs::entry > devices = e.devices();
+    for(vector < sysfs::entry >::iterator i = devices.begin(); i != devices.end(); ++i)
     {
       const sysfs::entry & d = *i;
 
