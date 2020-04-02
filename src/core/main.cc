@@ -47,6 +47,7 @@
 #include "mmc.h"
 #include "input.h"
 #include "sound.h"
+#include "graphics.h"
 #include "smp.h"
 #include "abi.h"
 #include "s390.h"
@@ -145,6 +146,9 @@ bool scan_system(hwNode & system)
     status("sound");
     if (enabled("sound"))
       scan_sound(computer);
+    status("graphics");
+    if (enabled("graphics"))
+      scan_graphics(computer);
     status("input");
     if (enabled("input"))
       scan_input(computer);
