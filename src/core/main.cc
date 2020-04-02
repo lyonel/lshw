@@ -46,6 +46,7 @@
 #include "nvme.h"
 #include "mmc.h"
 #include "input.h"
+#include "sound.h"
 #include "smp.h"
 #include "abi.h"
 #include "s390.h"
@@ -141,6 +142,9 @@ bool scan_system(hwNode & system)
     status("MMC");
     if (enabled("mmc"))
       scan_mmc(computer);
+    status("sound");
+    if (enabled("sound"))
+      scan_sound(computer);
     status("input");
     if (enabled("input"))
       scan_input(computer);

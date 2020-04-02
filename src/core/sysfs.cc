@@ -343,6 +343,11 @@ string entry::classname() const
   return basename(dirname(This->devpath).c_str());
 }
 
+string entry::subsystem() const
+{
+  return basename(realpath(This->devpath+"/subsystem").c_str());
+}
+
 bool entry::isvirtual() const
 {
   return string(basename(dirname(dirname(This->devpath)).c_str())) == "virtual";

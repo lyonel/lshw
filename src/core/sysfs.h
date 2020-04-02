@@ -26,6 +26,7 @@ namespace sysfs
       bool hassubdir(const string &) const;
       string name() const;
       string classname() const;
+      string subsystem() const;
       bool isvirtual() const;
       string businfo() const;
       string driver() const;
