@@ -79,7 +79,7 @@ bool scan_input(hwNode & n)
 	      device->addCapability("hil", "HP-HIL");
 	      break;
       case BUS_BLUETOOTH:
-	      device->addCapability("bt", "Bluetooth");
+	      device->addCapability("bluetooth", "Bluetooth");
 	      break;
       case BUS_VIRTUAL:
 	      device->addCapability("virtual");
@@ -112,7 +112,7 @@ bool scan_input(hwNode & n)
 	      device->addCapability("i2c", "I²C bus");
 	      break;
       case BUS_HOST:
-	      device->addCapability("host");
+	      device->addCapability("platform");
 	      break;
       case BUS_GSC:
 	      device->addCapability("gsc", "GSC bus");
