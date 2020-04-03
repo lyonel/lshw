@@ -53,6 +53,12 @@ bool scan_input(hwNode & n)
 
     hwNode *device = n.findChildByBusInfo(e.leaf().businfo());
     if(!device)
+    {
+      device = n.findChildByBusInfo(e.leaf().parent().businfo());
+      if(device)
+        device = device->addChild(hwNode("input", hw::input));
+    }
+    if(!device)
       device = n.addChild(hwNode("input", hw::input));
     else
     {
