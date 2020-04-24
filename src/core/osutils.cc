@@ -148,7 +148,7 @@ vector < string > &list)
 {
   char buffer[1024];
   string buffer_str = "";
-  size_t count = 0;
+  ssize_t count = 0;
   data_file fd = file_open(file);
 
   if (file_open_error(fd))
@@ -174,7 +174,7 @@ const string & def)
   if (fd >= 0)
   {
     char buffer[1024];
-    size_t count = 0;
+    ssize_t count = 0;
 
     memset(buffer, 0, sizeof(buffer));
     result = "";
