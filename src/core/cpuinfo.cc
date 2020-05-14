@@ -446,6 +446,7 @@ string value)
 
   if (cpu)
   {
+    hw::value family, model, stepping;
 
 // x86 CPUs are assumed to be 32 bits per default
     if(cpu->getWidth()==0) cpu->setWidth(32);
@@ -471,6 +472,13 @@ string value)
       cpu->addHint(id, stoll(value, NULL, 0));
     if (id == "stepping")
       cpu->addHint(id, stoll(value, NULL, 0));
+
+    family = cpu->getHint("cpu family");
+    model = cpu->getHint("model");
+    stepping = cpu->getHint("stepping");
+    if(family.defined() && model.defined() && stepping.defined())
+            cpu->setVersion(tostring(family.asInteger())+"."+tostring(model.asInteger())+"."+tostring(stepping.asInteger()));
+
 //if ((id == "cpu MHz") && (cpu->getSize() == 0))
 //{
 //cpu->setSize((long long) (1000000L * atof(value.c_str())));
@@ -675,17 +683,8 @@ bool scan_cpuinfo(hwNode & n)
   }
 
   hwNode *cpu = getcpu(n, 0);
-  if(cpu)
-  {
-    hw::value family, model, stepping;
-    family = cpu->getHint("cpu family");
-    model = cpu->getHint("model");
-    stepping = cpu->getHint("stepping");
-    if(family.defined() && model.defined() && stepping.defined())
-	    cpu->setVersion(tostring(family.asInteger())+"."+tostring(model.asInteger())+"."+tostring(stepping.asInteger()));
-    if(n.getWidth()==0)
-      n.setWidth(cpu->getWidth());
-  }
+  if(cpu && (n.getWidth()==0))
+    n.setWidth(cpu->getWidth());
 
   return true;
 }
