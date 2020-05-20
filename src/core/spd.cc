@@ -192,8 +192,12 @@ static bool scan_eeproms(hwNode & memory)
     return false;
 
   for (int i = 0; i < n; i++)
+  {
     if (scan_eeprom(memory, namelist[i]->d_name))
       current_bank++;
+    free(namelist[i]);
+  }
+  free(namelist);
 
   return true;
 }
