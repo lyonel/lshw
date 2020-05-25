@@ -1400,7 +1400,7 @@ string hwNode::asJSON(unsigned level)
   config = getConfigKeys();
   resources = getResources("\" value=\"");
 
-  if (level == 0)
+  if (::enabled("output:list") && level == 0)
   {
     out << "[" << endl;
   }
@@ -1665,9 +1665,8 @@ string hwNode::asJSON(unsigned level)
     out << "}";
   }
 
-  if (level == 0)
+  if (::enabled("output:list") && level == 0)
   {
-    out.seekp(-2, std::ios_base::end);
     out << endl << "]" << endl;
   }
 

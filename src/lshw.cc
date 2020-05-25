@@ -84,6 +84,7 @@ char **argv)
 
   disable("isapnp");
 
+  disable("output:list");
   disable("output:json");
   disable("output:db");
   disable("output:xml");
