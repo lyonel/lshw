@@ -597,7 +597,7 @@ bool scan_cpuinfo(hwNode & n)
   if (core)
   {
     char buffer[1024];
-    size_t count;
+    ssize_t count;
     string cpuinfo_str = "";
     string description = "", version = "";
     string plat = platform();
