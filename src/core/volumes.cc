@@ -784,12 +784,13 @@ struct apfs_super_block {
 
 static bool detect_apfs(hwNode & n, source & s)
 {
-  static char buffer[sizeof(apfs_super_block)];
+  static char buffer[APFS_STANDARD_BLOCK_SIZE];
   source apfsvolume;
   apfs_super_block *sb = (apfs_super_block*)buffer;
   unsigned long block_size;
 
   apfsvolume = s;
+  apfsvolume.blocksize = APFS_STANDARD_BLOCK_SIZE;
 
   if(readlogicalblocks(apfsvolume, buffer, 0, 1)!=1)
     return false;
