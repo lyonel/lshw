@@ -219,10 +219,47 @@ static void scan_devtree_bootrom(hwNode & core)
   }
 }
 
+static hwNode *add_base_opal_node(hwNode & core)
+{
+  vector < string >:: iterator it;
+  vector < string > compat;
+  string basepath = DEVICETREE "/ibm,opal";
+  hwNode opal("firmware");
+
+  if (!exists(basepath))
+    return NULL;
+
+  pushd(basepath);
+
+  opal.setProduct("OPAL firmware");
+  opal.setDescription("skiboot");
+
+  compat = get_strings(basepath + "/compatible");
+  for (it = compat.begin(); it != compat.end(); ++it) {
+    if (matches(*it, "^ibm,opal-v"))
+      opal.addCapability((*it).erase(0,4));
+  }
+
+  if (exists(basepath + "/ipmi/compatible") &&
+    matches(get_string(basepath + "/ipmi/compatible"), "^ibm,opal-ipmi"))
+    opal.addCapability("ipmi");
+
+  if (exists(basepath + "/diagnostics/compatible") &&
+    matches(get_string(basepath + "/diagnostics/compatible"), "^ibm,opal-prd"))
+    opal.addCapability("prd");
+
+  popd();
+
+  opal.claim();
+  return core.addChild(opal);
+}
+
 static void scan_devtree_firmware_powernv(hwNode & core)
 {
   int n;
   struct dirent **namelist;
+
+  hwNode *opal = add_base_opal_node(core);
 
   if (!exists(DEVICETREE "/ibm,firmware-versions"))
     return;
@@ -245,6 +282,11 @@ static void scan_devtree_firmware_powernv(hwNode & core)
       fwnode.setDescription(sname);
       fwnode.setVersion(hw::strip(get_string(fullpath)));
       fwnode.claim();
+      if (opal && sname == "skiboot") {
+        opal->merge(fwnode);
+        free(namelist[i]);
+        continue;
+      }
       core.addChild(fwnode);
     }
     free(namelist[i]);
