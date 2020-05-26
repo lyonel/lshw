@@ -1396,7 +1396,7 @@ static void get_ibm_model(hwNode & n)
   {
     if (ibm_model_defs[i].model == machinetype || ibm_model_defs[i].model == model)
     {
-      n.setProduct(ibm_model_defs[i].modelname);
+      n.setProduct(n.getProduct() + " (" + ibm_model_defs[i].modelname + ")");
       n.addHint("icon", string(ibm_model_defs[i].icon));
       n.setConfig("chassis", ibm_model_defs[i].chassis);
       return;
