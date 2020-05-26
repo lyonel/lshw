@@ -1650,19 +1650,40 @@ string hwNode::asJSON(unsigned level)
     resources.clear();
   }
 
-  for (unsigned int i = 0; i < countChildren(); i++)
+  if(!::enabled("output:list") && countChildren()>0)
   {
-    out << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
-    if (visible(getChild(i)->getClassName()))
+    out << "," << endl;
+    out << spaces(2*level+2);
+    out << "\"children\" : [";
+    for (unsigned int i = 0; i < countChildren(); i++)
     {
-      out << "," << endl;
+      out << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
+      if (visible(getChild(i)->getClassName()) && i<countChildren()-1)
+      {
+        out << "," << endl;
+      }
     }
+    out << "]";
   }
 
   if(visible(getClassName()))
   {
     out << endl << spaces(2*level);
     out << "}";
+  }
+
+  if(::enabled("output:list") && countChildren()>0)
+  {
+    bool needcomma = visible(getClassName());
+    for (unsigned int i = 0; i < countChildren(); i++)
+      {
+        string json = getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
+
+        if(needcomma && strip(json)!="")
+          out << "," << endl;
+        out << getChild(i)->asJSON(visible(getClassName()) ? level + 2 : 1);
+        needcomma |= strip(json)!="";
+      }
   }
 
   if (::enabled("output:list") && level == 0)
