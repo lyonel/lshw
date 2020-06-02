@@ -561,11 +561,13 @@ static bool scan_device(hwNode & node, string name = "")
   else
   {
     for (int i = 0; i < n; i++)
-      if(matches(namelist[i]->d_name, "^[0-9]+(:[0-9]+)*$"))
     {
-      pushd(namelist[i]->d_name);
-      scan_device(curnode?*curnode:node, namelist[i]->d_name);
-      popd();
+      if(matches(namelist[i]->d_name, "^[0-9]+(:[0-9]+)*$"))
+      {
+        pushd(namelist[i]->d_name);
+        scan_device(curnode?*curnode:node, namelist[i]->d_name);
+        popd();
+      }
       free(namelist[i]);
     }
     free(namelist);

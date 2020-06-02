@@ -83,7 +83,7 @@ static string sysfs_getbustype(const string & path)
 {
   struct dirent **namelist;
   int i, n;
-  string devname;
+  string bustype = "";
 
 /*
   to determine to which kind of bus a device is connected:
@@ -96,17 +96,28 @@ static string sysfs_getbustype(const string & path)
   n = scandir(".", &namelist, selectdir, alphasort);
   popd();
 
+  if (n <= 0)
+    return "";
+
   for (i = 0; i < n; i++)
   {
-    devname =
+    string devname =
       string(fs.path + "/bus/") + string(namelist[i]->d_name) +
       "/devices/" + basename(path.c_str());
 
     if (samefile(devname, path))
-      return string(namelist[i]->d_name);
+    {
+      bustype = string(namelist[i]->d_name);
+      break;
+    }
+    free(namelist[i]);
   }
 
-  return "";
+  for (int j = i; j < n; j++)
+    free(namelist[j]);
+  free(namelist);
+
+  return bustype;
 }
 
 
@@ -405,7 +416,11 @@ vector < entry > entry::devices() const
     entry e = sysfs::entry(This->devpath + "/" + string(namelist[i]->d_name));
     if(e.hassubdir("subsystem"))
 	    result.push_back(e);
+    free(namelist[i]);
   }
+  if (namelist)
+    free(namelist);
+
   if(pushd("block"))
   {
     int count = scandir(".", &namelist, selectdir, alphasort);
@@ -414,7 +429,10 @@ vector < entry > entry::devices() const
       entry e = sysfs::entry(This->devpath + "/block/" + string(namelist[i]->d_name));
       if(e.hassubdir("subsystem"))
 	      result.push_back(e);
+      free(namelist[i]);
     }
+    if (namelist)
+      free(namelist);
     popd();
   }
   popd();
@@ -435,8 +453,11 @@ vector < entry > sysfs::entries_by_bus(const string & busname)
   {
     entry e = sysfs::entry::byBus(busname, namelist[i]->d_name);
     result.push_back(e);
+    free(namelist[i]);
   }
   popd();
+  if (namelist)
+    free(namelist);
   return result;
 }
 
@@ -454,8 +475,11 @@ vector < entry > sysfs::entries_by_class(const string & classname)
   {
     entry e = sysfs::entry::byClass(classname, namelist[i]->d_name);
     result.push_back(e);
+    free(namelist[i]);
   }
   popd();
+  if (namelist)
+    free(namelist);
   return result;
 }
 
