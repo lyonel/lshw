@@ -10,7 +10,7 @@ lshw \- list hardware
 .sp
 \fBlshw\fR [ \fB-X\fR ] 
 .sp
-\fBlshw\fR [ \fB [ -html ]  [ -short ]  [ -xml ]  [ -json ]  [ -businfo ] \fR ]  [ \fB-dump \fIfilename\fB\fR ]  [ \fB-class \fIclass\fB\fR\fI...\fR ]  [ \fB-disable \fItest\fB\fR\fI...\fR ]  [ \fB-enable \fItest\fB\fR\fI...\fR ]  [ \fB-sanitize\fR ]  [ \fB-numeric\fR ]  [ \fB-quiet\fR ] 
+\fBlshw\fR [ \fB [ -html ]  [ -short ]  [ -xml ]  [ -json ]  [ -businfo ] \fR ]  [ \fB-dump \fIfilename\fB\fR ]  [ \fB-class \fIclass\fB\fR\fI...\fR ]  [ \fB-disable \fItest\fB\fR\fI...\fR ]  [ \fB-enable \fItest\fB\fR\fI...\fR ]  [ \fB-sanitize\fR ]  [ \fB-numeric\fR ]  [ \fB-notime\fR ]  [ \fB-quiet\fR ] 
 .SH "DESCRIPTION"
 .PP
 
@@ -74,6 +74,8 @@ Remove potentially sensitive information from output (IP addresses, serial numbe
 .TP
 \fB-numeric\fR
 Also display numeric IDs (for PCI and USB devices).
+\fB-notime\fR
+exclude volatile attributes (timestamps) from output
 .SH "BUGS"
 .PP
 \fBlshw\fR currently does not detect 
