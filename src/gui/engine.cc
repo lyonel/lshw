@@ -460,7 +460,7 @@ static void redirect_cout(std::ofstream &out, bool enable = true)
 void save_as(GtkWidget *mainwindow)
 {
   struct utsname buf;
-  GtkWidget *dialog = NULL;
+  GtkFileChooserNative *dialog = NULL;
   GtkWidget *sanitize = NULL;
   GtkFileFilter *filter = NULL;
   bool proceed = true;
@@ -469,12 +469,11 @@ void save_as(GtkWidget *mainwindow)
   if(!computer)		// nothing to save
     return;
 
-  dialog = gtk_file_chooser_dialog_new ("Save hardware configuration",
+  dialog = gtk_file_chooser_native_new ("Save hardware configuration",
 				      GTK_WINDOW(mainwindow),
 				      GTK_FILE_CHOOSER_ACTION_SAVE,
-				      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-				      NULL);
+				      "_Save",
+				      "_Cancel");
   //gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
   sanitize = gtk_check_button_new_with_label("Anonymize output");
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(sanitize), enabled("output:sanitize")?TRUE:FALSE);
@@ -511,7 +510,7 @@ void save_as(GtkWidget *mainwindow)
   if(uname(&buf)==0)
     gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), buf.nodename);
 
-  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  if (gtk_native_dialog_run (GTK_NATIVE_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
   {
     char *filename;
 
@@ -603,5 +602,5 @@ void save_as(GtkWidget *mainwindow)
     }
   }
 
-  gtk_widget_destroy (dialog);
+  g_object_unref (dialog);
 }
