@@ -6,10 +6,20 @@
 #include "config.h"
 #include "stock.h"
 #include "engine.h"
+#include "callbacks.h"
 
 static char *id = "@(#) $Id$";
 
 extern GtkWidget *mainwindow;
+
+static GActionEntry app_entries[] =
+{
+  { "go_up",   on_go_up_activated,   NULL, NULL, NULL },
+  { "refresh", on_refresh_activated, NULL, NULL, NULL },
+  { "save",    on_save_activated,    NULL, NULL, NULL },
+  { "about",   on_about_activated,   NULL, NULL, NULL },
+  { "quit",    on_quit_activated,    NULL, NULL, NULL }
+};
 
 static void
 activate (GApplication *app,
@@ -34,6 +44,10 @@ activate (GApplication *app,
     if(!proceed)
       return;
   }
+
+  g_action_map_add_action_entries (G_ACTION_MAP (app),
+                                   app_entries, G_N_ELEMENTS (app_entries),
+                                   app);
 
   lshw_gtk_stock_init();
   lshw_ui_init();

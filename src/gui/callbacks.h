@@ -1,8 +1,29 @@
 #include <gtk/gtk.h>
 
-void refresh_display (GtkMenuItem * menuitem, gpointer user_data);
+void
+on_go_up_activated                     (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app);
 
-void on_about1_activate (GtkMenuItem * menuitem, gpointer user_data);
+void
+on_refresh_activated                   (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app);
+
+void
+on_save_activated                      (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app);
+
+void
+on_about_activated                     (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app);
+
+void
+on_quit_activated                      (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app);
 
 void on_aboutclose_activate (GtkButton * button, gpointer user_data);
 
@@ -35,14 +56,4 @@ void on_treeview2_cursor_changed (GtkTreeView * treeview, gpointer user_data);
 
 void on_treeview3_cursor_changed (GtkTreeView * treeview, gpointer user_data);
 
-void go_up (GtkToolButton * toolbutton, gpointer user_data);
-
 void on_lshw_map (GtkWidget * widget, gpointer user_data);
-
-void
-on_save_activate                       (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_savebutton_clicked                  (GtkToolButton   *toolbutton,
-                                        gpointer         user_data);

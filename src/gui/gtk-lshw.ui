@@ -136,7 +136,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_save_activate" swapped="no"/>
+                        <property name="action_name">app.save</property>
                       </object>
                     </child>
                     <child>
@@ -152,7 +152,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="gtk_main_quit" swapped="no"/>
+                        <property name="action_name">app.quit</property>
                       </object>
                     </child>
                   </object>
@@ -176,7 +176,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="refresh_display" swapped="no"/>
+                        <property name="action_name">app.refresh</property>
                       </object>
                     </child>
                   </object>
@@ -200,7 +200,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_about1_activate" swapped="no"/>
+                        <property name="action_name">app.about</property>
                       </object>
                     </child>
                   </object>
@@ -225,7 +225,7 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="stock_id">gtk-go-up</property>
-                <signal name="clicked" handler="go_up" swapped="no"/>
+                <property name="action_name">app.go_up</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -238,7 +238,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Rescan the hardware</property>
                 <property name="stock_id">gtk-refresh</property>
-                <signal name="clicked" handler="refresh_display" swapped="no"/>
+                <property name="action_name">app.refresh</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -251,7 +251,7 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="stock_id">gtk-save</property>
-                <signal name="clicked" handler="on_savebutton_clicked" swapped="no"/>
+                <property name="action_name">app.save</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -263,7 +263,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="stock_id">gtk-quit</property>
-                <signal name="clicked" handler="gtk_main_quit" swapped="no"/>
+                <property name="action_name">app.quit</property>
               </object>
               <packing>
                 <property name="expand">False</property>
