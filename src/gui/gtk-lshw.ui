@@ -114,9 +114,10 @@
     <signal name="delete-event" handler="gtk_main_quit" swapped="no"/>
     <signal name="map" handler="on_lshw_map" after="yes" swapped="no"/>
     <child>
-      <object class="GtkVBox" id="vbox1">
+      <object class="GtkBox" id="main-box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">GTK_ORIENTATION_VERTICAL</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -292,15 +293,17 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHPaned" id="hpaned1">
+          <object class="GtkPaned" id="paned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
             <child>
-              <object class="GtkHBox" id="hbox3">
+              <object class="GtkBox" id="tree-box">
                 <property name="width_request">350</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
+                <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
                 <child>
                   <object class="GtkScrolledWindow" id="scrolledwindow2">
                     <property name="visible">True</property>
