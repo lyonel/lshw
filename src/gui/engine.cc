@@ -556,8 +556,8 @@ void save_as(GtkWidget *mainwindow)
                                   "A file named <i><tt>%s</tt></i> already exists in folder <tt>%s</tt>.\n\nDo you want to overwrite it?",
                                   basename(buffer1), dirname(buffer2));
         gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
-				  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				  "Overwrite", GTK_RESPONSE_ACCEPT,
+				  "_Cancel", GTK_RESPONSE_CANCEL,
+				  "_Overwrite", GTK_RESPONSE_ACCEPT,
                                   NULL);
         proceed = (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT);
         gtk_widget_destroy (dialog);
