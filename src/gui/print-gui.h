@@ -4,7 +4,7 @@
 #include "hw.h"
 #include <gtk/gtk.h>
 
-void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath);
+void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath, GHashTable *pixbufs);
 
 string gethwpath(hwNode & node, hwNode & base);
 #endif

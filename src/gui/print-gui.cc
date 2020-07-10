@@ -66,15 +66,12 @@ static void printsize(long long value, const hwNode & node, const string & name,
 }
 
 
-static  void inserticon(const string & icon, const string & comment, GtkTextBuffer *buffer, GtkTextIter &iter, GtkTextView * textview)
+static  void inserticon(const string & icon, const string & comment, GtkTextBuffer *buffer, GtkTextIter &iter, GHashTable *pixbufs)
 {
   GdkPixbuf *pixbuf;
   GtkTextTag *tag;
 
-  pixbuf = gtk_widget_render_icon(GTK_WIDGET(textview),
-    icon.c_str(),
-    gtk_icon_size_from_name(LSHW_ICON_SIZE_LOGO), /* size */
-    NULL);
+  pixbuf = GDK_PIXBUF(g_hash_table_lookup(pixbufs, icon.c_str()));
   if(!GDK_IS_PIXBUF(pixbuf))
     return;
 
@@ -87,7 +84,7 @@ static  void inserticon(const string & icon, const string & comment, GtkTextBuff
 }
 
 
-void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath)
+void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpath, GHashTable *pixbufs)
 {
   vector < string > config;
   vector < string > resources;
@@ -125,13 +122,13 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 
   if(node.getHint("icon").defined())
-    inserticon(string("lshw-") + node.getHint("icon").asString(), "", buffer, iter, textview);
+    inserticon(string("lshw-") + node.getHint("icon").asString(), "", buffer, iter, pixbufs);
 
   if(node.getHint("bus.icon").defined())
-    inserticon(string("lshw-") + node.getHint("bus.icon").asString(), "", buffer, iter, textview);
+    inserticon(string("lshw-") + node.getHint("bus.icon").asString(), "", buffer, iter, pixbufs);
 
   if(node.getHint("logo").defined())
-    inserticon(string("lshw-") + node.getHint("logo").asString(), "", buffer, iter, textview);
+    inserticon(string("lshw-") + node.getHint("logo").asString(), "", buffer, iter, pixbufs);
 
   gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
 
@@ -218,10 +215,10 @@ void printmarkup(const hwNode & node, GtkTextView *textview, const string & hwpa
   gtk_text_buffer_insert (buffer, &iter, "\n", -1);
 
   if(!node.claimed())
-    inserticon(LSHW_STOCK_DISABLED, _("this device hasn't been claimed\n"), buffer, iter, textview);
+    inserticon(LSHW_STOCK_DISABLED, _("this device hasn't been claimed\n"), buffer, iter, pixbufs);
 
   if(!node.enabled())
-    inserticon(LSHW_STOCK_DISABLED, _("this device has been disabled\n"), buffer, iter, textview);
+    inserticon(LSHW_STOCK_DISABLED, _("this device has been disabled\n"), buffer, iter, pixbufs);
 
   (void) &id;                                     // avoid "id defined but not used" warning
 }

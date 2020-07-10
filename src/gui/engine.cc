@@ -40,6 +40,7 @@ extern GtkWidget *description;
 extern GtkWidget *go_up_button;
 extern GtkWidget *save_button;
 extern GtkWidget *statusbar;
+extern GHashTable *pixbufs;
 
 enum
 {
@@ -224,7 +225,7 @@ static void display(GtkWidget * mainwindow)
     create_tags(buffer);
 
     string hwpath = gethwpath(*displayed, container);
-    printmarkup(*displayed, GTK_TEXT_VIEW(description), hwpath);
+    printmarkup(*displayed, GTK_TEXT_VIEW(description), hwpath, pixbufs);
   }
 }
 
