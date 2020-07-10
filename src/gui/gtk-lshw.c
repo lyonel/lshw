@@ -31,8 +31,8 @@ main (int argc, char *argv[])
 				GTK_BUTTONS_NONE,
 				"Executing this program as a normal user will give incomplete and maybe erroneous information.");
     gtk_dialog_add_buttons(GTK_DIALOG(dialog),
-                                  GTK_STOCK_QUIT, GTK_RESPONSE_CANCEL,
-                                  GTK_STOCK_EXECUTE, GTK_RESPONSE_ACCEPT,
+                                  "_Quit", GTK_RESPONSE_CANCEL,
+                                  "_Execute", GTK_RESPONSE_ACCEPT,
                                   NULL);
 
     proceed = (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT);
