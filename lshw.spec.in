@@ -31,8 +31,8 @@ http://lshw.ezix.org/
 Summary: HardWare LiSter (GUI version)
 Group: Applications/System
 Requires: %{name} >= %{version}
-Requires: gtk2 >= 2.4
-BuildRequires: gtk2-devel >= 2.4
+Requires: gtk3 >= 3.24
+BuildRequires: gtk3-devel >= 3.24
 
 %description gui
 lshw (Hardware Lister) is a small tool to provide detailed informaton on
