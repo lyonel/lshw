@@ -11,17 +11,10 @@ static char *id = "@(#) $Id$";
 
 extern GtkWidget *mainwindow;
 
-int
-main (int argc, char *argv[])
+static void
+activate (GApplication *app,
+          gpointer      user_data)
 {
-#ifndef NONLS
-  bindtextdomain (PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (PACKAGE, "UTF-8");
-  textdomain (PACKAGE);
-#endif
-
-  gtk_init (&argc, &argv);
-
   if(geteuid() != 0)
   {
     bool proceed = false;
@@ -39,19 +32,34 @@ main (int argc, char *argv[])
     gtk_widget_destroy (dialog);
 
     if(!proceed)
-      return -1;
+      return;
   }
 
   lshw_gtk_stock_init();
   lshw_ui_init();
 
   if(!mainwindow)
-    return(1);
+    return;
 
   gtk_widget_show(mainwindow);
-  gtk_main ();
+  gtk_application_add_window(GTK_APPLICATION(app), GTK_WINDOW(mainwindow));
+}
+
+int
+main (int argc, char *argv[])
+{
+#ifndef NONLS
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (PACKAGE, "UTF-8");
+  textdomain (PACKAGE);
+#endif
+
+  GtkApplication *app = gtk_application_new ("org.ezix.gtk-lshw", G_APPLICATION_FLAGS_NONE);
+  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+  int status = g_application_run (G_APPLICATION (app), argc, argv);
+  g_object_unref (app);
 
   (void) &id;                                     // avoid warning "id defined but not used"
 
-  return 0;
+  return status;
 }
