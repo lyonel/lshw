@@ -89,7 +89,6 @@ lshw_gtk_stock_init(void)
   static int stock_initted = 0;
   GtkIconFactory *icon_factory;
   int i;
-  GtkWidget *win;
 
   if (stock_initted)
     return;
@@ -100,10 +99,6 @@ lshw_gtk_stock_init(void)
   icon_factory = gtk_icon_factory_new();
 
   gtk_icon_factory_add_default(icon_factory);
-
-/* Er, yeah, a hack, but it works. :) */
-  win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_widget_realize(win);
 
   for (i = 0; i < G_N_ELEMENTS(stock_icons); i++)
   {
@@ -127,8 +122,6 @@ lshw_gtk_stock_init(void)
         gtk_icon_set_unref(iconset);
       }
   }
-
-  gtk_widget_destroy(win);
 
 /* register logo icon size */
   gtk_icon_size_register(LSHW_ICON_SIZE_LOGO, LSHW_DEFAULT_ICON_SIZE, LSHW_DEFAULT_ICON_SIZE);
