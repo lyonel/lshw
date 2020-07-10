@@ -27,7 +27,6 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="activate" handler="on_aboutclose_activate" swapped="no"/>
                 <signal name="clicked" handler="on_aboutclose_activate" swapped="no"/>
@@ -73,7 +72,6 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="relief">none</property>
             <property name="uri">http://www.ezix.org/</property>
           </object>
@@ -126,7 +124,6 @@
               <object class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -138,7 +135,6 @@
                         <property name="label">gtk-save</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_save_activate" swapped="no"/>
@@ -148,7 +144,6 @@
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                     </child>
                     <child>
@@ -156,7 +151,6 @@
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="gtk_main_quit" swapped="no"/>
@@ -170,7 +164,6 @@
               <object class="GtkMenuItem" id="menuitem3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -182,7 +175,6 @@
                         <property name="label">gtk-refresh</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="refresh_display" swapped="no"/>
@@ -196,7 +188,6 @@
               <object class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -208,7 +199,6 @@
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_about1_activate" swapped="no"/>
@@ -235,7 +225,6 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-go-up</property>
                 <signal name="clicked" handler="go_up" swapped="no"/>
               </object>
@@ -249,7 +238,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Rescan the hardware</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-refresh</property>
                 <signal name="clicked" handler="refresh_display" swapped="no"/>
               </object>
@@ -263,7 +251,6 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-save</property>
                 <signal name="clicked" handler="on_savebutton_clicked" swapped="no"/>
               </object>
@@ -276,7 +263,6 @@
               <object class="GtkToolButton" id="quitbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-quit</property>
                 <signal name="clicked" handler="gtk_main_quit" swapped="no"/>
               </object>
