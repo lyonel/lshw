@@ -37,10 +37,10 @@ static hwNode *selected3 = NULL;
 extern GtkWidget *mainwindow;
 extern GtkWidget *list1, *list2, *list3;
 extern GtkWidget *description;
-extern GtkWidget *go_up_button;
-extern GtkWidget *save_button;
 extern GtkWidget *statusbar;
 extern GHashTable *pixbufs;
+extern GSimpleAction *go_up_action;
+extern GSimpleAction *save_action;
 
 enum
 {
@@ -251,14 +251,11 @@ void refresh(GtkWidget *mainwindow)
 {
   hwNode computer("computer", hw::system);
   static bool lock = false;
-  //GtkWidget * menu = lookup_widget(mainwindow, "menu");
-  //GtkWidget * save_menuitem = lookup_widget(menu, "save");
 
   if(lock) return;
 
   lock = true;
-  gtk_widget_set_sensitive(save_button, FALSE);
-  //gtk_widget_set_sensitive(save_menuitem, FALSE);
+  g_simple_action_set_enabled(save_action, FALSE);
 
   populate_sublist(list1, NULL);
   populate_sublist(list2, NULL);
@@ -273,9 +270,8 @@ void refresh(GtkWidget *mainwindow)
   status(NULL);
   displayed = container.addChild(computer);
 
-  gtk_widget_set_sensitive(go_up_button, FALSE);
-  gtk_widget_set_sensitive(save_button, TRUE);
-  //gtk_widget_set_sensitive(save_menuitem, TRUE);
+  g_simple_action_set_enabled(go_up_action, FALSE);
+  g_simple_action_set_enabled(save_action, TRUE);
 
   selected1 = NULL;
   selected2 = NULL;
@@ -379,10 +375,7 @@ void browse(unsigned list, GtkTreeView *treeview)
       break;
   }
 
-  if(selected1 && (find_parent(selected1, &container)!= &container))
-    gtk_widget_set_sensitive(go_up_button, 1);
-  else
-    gtk_widget_set_sensitive(go_up_button, 0);
+  g_simple_action_set_enabled(go_up_action, selected1 && (find_parent(selected1, &container)!= &container));
 
   (void) &::id;                                   // avoid warning "id defined but not used"
 }
@@ -404,10 +397,7 @@ void go_back(GtkWidget *mainwindow)
       displayed = find_parent(displayed, &container);
   }
 
-  if(selected1 && (find_parent(selected1, &container)!= &container))
-    gtk_widget_set_sensitive(go_up_button, 1);
-  else
-    gtk_widget_set_sensitive(go_up_button, 0);
+  g_simple_action_set_enabled(go_up_action, selected1 && (find_parent(selected1, &container)!= &container));
 
   display(mainwindow);
 }

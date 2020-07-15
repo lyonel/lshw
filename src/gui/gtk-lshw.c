@@ -11,6 +11,8 @@
 static char *id = "@(#) $Id$";
 
 extern GtkWidget *mainwindow;
+GSimpleAction *go_up_action;
+GSimpleAction *save_action;
 
 static GActionEntry app_entries[] =
 {
@@ -48,6 +50,11 @@ activate (GApplication *app,
   g_action_map_add_action_entries (G_ACTION_MAP (app),
                                    app_entries, G_N_ELEMENTS (app_entries),
                                    app);
+  go_up_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "go_up"));
+  save_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "save"));
+
+  g_simple_action_set_enabled(go_up_action, FALSE);
+  g_simple_action_set_enabled(save_action, FALSE);
 
   lshw_gtk_stock_init();
   lshw_ui_init();

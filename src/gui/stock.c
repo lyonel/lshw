@@ -13,8 +13,6 @@ GtkWidget *list1 = NULL;
 GtkWidget *list2 = NULL;
 GtkWidget *list3 = NULL;
 GtkWidget *description = NULL;
-GtkWidget *go_up_button = NULL;
-GtkWidget *save_button = NULL;
 GtkWidget *statusbar = NULL;
 GHashTable *pixbufs = NULL;
 
@@ -151,8 +149,6 @@ void lshw_ui_init(void)
   list2 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview2"));
   list3 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview3"));
   description = GTK_WIDGET(gtk_builder_get_object( builder, "description"));
-  go_up_button = GTK_WIDGET(gtk_builder_get_object( builder, "upbutton"));
-  save_button = GTK_WIDGET(gtk_builder_get_object( builder, "savebutton"));
   statusbar = GTK_WIDGET(gtk_builder_get_object( builder, "statusbar"));
   gtk_builder_connect_signals( builder, mainwindow );
   g_object_unref( G_OBJECT( builder ) );

@@ -222,7 +222,6 @@
             <child>
               <object class="GtkToolButton" id="upbutton">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="stock_id">gtk-go-up</property>
                 <property name="action_name">app.go_up</property>
@@ -248,7 +247,6 @@
             <child>
               <object class="GtkToolButton" id="savebutton">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="stock_id">gtk-save</property>
                 <property name="action_name">app.save</property>
