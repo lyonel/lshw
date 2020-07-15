@@ -57,7 +57,7 @@ activate (GApplication *app,
   g_simple_action_set_enabled(save_action, FALSE);
 
   lshw_gtk_stock_init();
-  lshw_ui_init();
+  lshw_ui_init(GTK_APPLICATION(app));
 
   if(!mainwindow)
     return;
