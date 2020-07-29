@@ -17,17 +17,36 @@ static char *id = "@(#) $Id$";
 
 G_MODULE_EXPORT
 void
-refresh_display                        (GtkMenuItem     *menuitem,
-gpointer         user_data)
+on_go_up_activated                     (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app)
+{
+  go_back(mainwindow);
+}
+
+G_MODULE_EXPORT
+void
+on_refresh_activated                   (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app)
 {
   refresh(mainwindow);
 }
 
+G_MODULE_EXPORT
+void
+on_save_activated                      (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app)
+{
+  save_as(mainwindow);
+}
 
 G_MODULE_EXPORT
 void
-on_about1_activate                     (GtkMenuItem     *menuitem,
-gpointer         user_data)
+on_about_activated                     (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app)
 {
   if(GTK_IS_WIDGET(about))
   {
@@ -35,6 +54,14 @@ gpointer         user_data)
   }
 }
 
+G_MODULE_EXPORT
+void
+on_quit_activated                      (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app)
+{
+  g_application_quit(G_APPLICATION(app));
+}
 
 G_MODULE_EXPORT
 void
@@ -149,35 +176,8 @@ gpointer         user_data)
 
 G_MODULE_EXPORT
 void
-go_up                                  (GtkToolButton   *toolbutton,
-gpointer         user_data)
-{
-  go_back(mainwindow);
-}
-
-
-G_MODULE_EXPORT
-void
 on_lshw_map                            (GtkWidget       *widget,
 gpointer         user_data)
 {
   refresh(mainwindow);
 }
-
-G_MODULE_EXPORT
-void
-on_save_activate                       (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-  save_as(mainwindow);
-}
-
-
-G_MODULE_EXPORT
-void
-on_savebutton_clicked                  (GtkToolButton   *toolbutton,
-                                        gpointer         user_data)
-{
-  on_save_activate(NULL, NULL);
-}
-

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.22"/>
+  <requires lib="gtk+" version="3.24"/>
   <object class="GtkDialog" id="aboutlshw">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">About</property>
@@ -27,7 +27,6 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="activate" handler="on_aboutclose_activate" swapped="no"/>
                 <signal name="clicked" handler="on_aboutclose_activate" swapped="no"/>
@@ -73,7 +72,6 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="relief">none</property>
             <property name="uri">http://www.ezix.org/</property>
           </object>
@@ -104,19 +102,19 @@
       <action-widget response="-7">closebutton1</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkWindow" id="mainwindow">
+  <object class="GtkApplicationWindow" id="mainwindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">lshw</property>
     <property name="default_width">700</property>
     <property name="default_height">480</property>
     <property name="startup_id">org.ezix.gtk-lshw</property>
-    <signal name="delete-event" handler="gtk_main_quit" swapped="no"/>
     <signal name="map" handler="on_lshw_map" after="yes" swapped="no"/>
     <child>
-      <object class="GtkVBox" id="vbox1">
+      <object class="GtkBox" id="main-box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">GTK_ORIENTATION_VERTICAL</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -125,7 +123,6 @@
               <object class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -137,17 +134,15 @@
                         <property name="label">gtk-save</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_save_activate" swapped="no"/>
+                        <property name="action_name">app.save</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                     </child>
                     <child>
@@ -155,10 +150,9 @@
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="gtk_main_quit" swapped="no"/>
+                        <property name="action_name">app.quit</property>
                       </object>
                     </child>
                   </object>
@@ -169,7 +163,6 @@
               <object class="GtkMenuItem" id="menuitem3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -181,10 +174,9 @@
                         <property name="label">gtk-refresh</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="refresh_display" swapped="no"/>
+                        <property name="action_name">app.refresh</property>
                       </object>
                     </child>
                   </object>
@@ -195,7 +187,6 @@
               <object class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -207,10 +198,9 @@
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_about1_activate" swapped="no"/>
+                        <property name="action_name">app.about</property>
                       </object>
                     </child>
                   </object>
@@ -232,11 +222,9 @@
             <child>
               <object class="GtkToolButton" id="upbutton">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-go-up</property>
-                <signal name="clicked" handler="go_up" swapped="no"/>
+                <property name="action_name">app.go_up</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -248,9 +236,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Rescan the hardware</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-refresh</property>
-                <signal name="clicked" handler="refresh_display" swapped="no"/>
+                <property name="action_name">app.refresh</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -260,11 +247,9 @@
             <child>
               <object class="GtkToolButton" id="savebutton">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-save</property>
-                <signal name="clicked" handler="on_savebutton_clicked" swapped="no"/>
+                <property name="action_name">app.save</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -275,9 +260,8 @@
               <object class="GtkToolButton" id="quitbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="stock_id">gtk-quit</property>
-                <signal name="clicked" handler="gtk_main_quit" swapped="no"/>
+                <property name="action_name">app.quit</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -292,15 +276,17 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHPaned" id="hpaned1">
+          <object class="GtkPaned" id="paned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
             <child>
-              <object class="GtkHBox" id="hbox3">
+              <object class="GtkBox" id="tree-box">
                 <property name="width_request">350</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
+                <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
                 <child>
                   <object class="GtkScrolledWindow" id="scrolledwindow2">
                     <property name="visible">True</property>

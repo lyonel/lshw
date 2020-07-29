@@ -43,7 +43,6 @@
 /**
  * For getting the icon size for the logo
  */
-#define LSHW_ICON_SIZE_LOGO        "lshw-icon-size-logo"
 #define LSHW_DEFAULT_ICON_SIZE        40
 
 void lshw_gtk_stock_init(void);

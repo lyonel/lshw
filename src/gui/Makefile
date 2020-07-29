@@ -6,14 +6,14 @@ STRIP?=strip
 OBJCOPY?=objcopy
 
 DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
-GTKINCLUDES=$(shell pkg-config gtk+-2.0 --cflags)
+GTKINCLUDES=$(shell pkg-config gtk+-3.0 --cflags)
 INCLUDES=-I../core $(GTKINCLUDES)
 CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 ifeq ($(SQLITE), 1)
 	CXXFLAGS+= -DSQLITE $(shell pkg-config --cflags sqlite3)
 endif
 CFLAGS=$(CXXFLAGS) -g $(DEFINES)
-GTKLIBS=$(shell pkg-config gtk+-2.0 gmodule-2.0 --libs)
+GTKLIBS=$(shell pkg-config gtk+-3.0 gmodule-2.0 --libs)
 LIBS+=-L../core -llshw -lresolv $(GTKLIBS)
 ifeq ($(SQLITE), 1)
 	LIBS+= $(shell pkg-config --libs sqlite3)

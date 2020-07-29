@@ -13,9 +13,8 @@ GtkWidget *list1 = NULL;
 GtkWidget *list2 = NULL;
 GtkWidget *list3 = NULL;
 GtkWidget *description = NULL;
-GtkWidget *go_up_button = NULL;
-GtkWidget *save_button = NULL;
 GtkWidget *statusbar = NULL;
+GHashTable *pixbufs = NULL;
 
 static struct StockIcon
 {
@@ -87,28 +86,19 @@ void
 lshw_gtk_stock_init(void)
 {
   static int stock_initted = 0;
-  GtkIconFactory *icon_factory;
   int i;
-  GtkWidget *win;
 
   if (stock_initted)
     return;
 
   stock_initted = 1;
 
-/* Setup the icon factory. */
-  icon_factory = gtk_icon_factory_new();
-
-  gtk_icon_factory_add_default(icon_factory);
-
-/* Er, yeah, a hack, but it works. :) */
-  win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_widget_realize(win);
+/* Setup the icons hash table. */
+  pixbufs = g_hash_table_new(g_str_hash, g_str_equal);
 
   for (i = 0; i < G_N_ELEMENTS(stock_icons); i++)
   {
     GdkPixbuf *pixbuf;
-    GtkIconSet *iconset;
     gchar *filename;
 
       filename = find_file(stock_icons[i].filename, "artwork");
@@ -116,24 +106,14 @@ lshw_gtk_stock_init(void)
       if (filename == NULL)
         continue;
 
-      pixbuf = gdk_pixbuf_new_from_file(filename, NULL);
+      pixbuf = gdk_pixbuf_new_from_file_at_size(filename, LSHW_DEFAULT_ICON_SIZE, LSHW_DEFAULT_ICON_SIZE, NULL);
       g_free(filename);
 
       if(pixbuf)	/* we managed to load something */
       {
-        iconset = gtk_icon_set_new_from_pixbuf(pixbuf);
-        g_object_unref(G_OBJECT(pixbuf));
-        gtk_icon_factory_add(icon_factory, stock_icons[i].name, iconset);
-        gtk_icon_set_unref(iconset);
+        g_hash_table_insert(pixbufs, (char*)stock_icons[i].name, pixbuf);
       }
   }
-
-  gtk_widget_destroy(win);
-
-/* register logo icon size */
-  gtk_icon_size_register(LSHW_ICON_SIZE_LOGO, LSHW_DEFAULT_ICON_SIZE, LSHW_DEFAULT_ICON_SIZE);
-
-  g_object_unref(G_OBJECT(icon_factory));
 
   (void) &id;                                     /* avoid "id defined but not used" warning */
 }
@@ -169,16 +149,11 @@ void lshw_ui_init(void)
   list2 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview2"));
   list3 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview3"));
   description = GTK_WIDGET(gtk_builder_get_object( builder, "description"));
-  go_up_button = GTK_WIDGET(gtk_builder_get_object( builder, "upbutton"));
-  save_button = GTK_WIDGET(gtk_builder_get_object( builder, "savebutton"));
   statusbar = GTK_WIDGET(gtk_builder_get_object( builder, "statusbar"));
   gtk_builder_connect_signals( builder, mainwindow );
   g_object_unref( G_OBJECT( builder ) );
 
-  icon = gtk_widget_render_icon(GTK_WIDGET(mainwindow),
-    "lshw-logo",
-    GTK_ICON_SIZE_DIALOG,
-    NULL);
+  icon = g_hash_table_lookup(pixbufs, LSHW_STOCK_LOGO);
   if(GDK_IS_PIXBUF(icon))
   {
     gtk_window_set_icon(GTK_WINDOW(mainwindow), icon);
