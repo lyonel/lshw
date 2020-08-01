@@ -25,10 +25,6 @@ on_quit_activated                      (GSimpleAction   *action,
                                         GVariant        *parameter,
                                         gpointer         app);
 
-void on_aboutclose_activate (GtkButton * button, gpointer user_data);
-
-void on_version_realize (GtkWidget * widget, gpointer user_data);
-
 void
 on_treeview1_row_activated (GtkTreeView * treeview,
 			    GtkTreePath * path,
