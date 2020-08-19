@@ -14,6 +14,7 @@ GtkWidget *list2 = NULL;
 GtkWidget *list3 = NULL;
 GtkWidget *description = NULL;
 GtkWidget *statusbar = NULL;
+GMenuModel *menubar = NULL;
 GHashTable *pixbufs = NULL;
 
 static struct StockIcon
@@ -118,7 +119,7 @@ lshw_gtk_stock_init(void)
   (void) &id;                                     /* avoid "id defined but not used" warning */
 }
 
-void lshw_ui_init(void)
+void lshw_ui_init(GtkApplication *app)
 {
   GError *error = NULL;
   GtkBuilder *builder = NULL;
@@ -151,6 +152,9 @@ void lshw_ui_init(void)
   description = GTK_WIDGET(gtk_builder_get_object( builder, "description"));
   statusbar = GTK_WIDGET(gtk_builder_get_object( builder, "statusbar"));
   gtk_builder_connect_signals( builder, mainwindow );
+  menubar = G_MENU_MODEL( gtk_builder_get_object( builder, "menubar"));
+  gtk_window_set_application( GTK_WINDOW( mainwindow ), app );
+  gtk_application_set_menubar( app, menubar );
   g_object_unref( G_OBJECT( builder ) );
 
   icon = g_hash_table_lookup(pixbufs, LSHW_STOCK_LOGO);

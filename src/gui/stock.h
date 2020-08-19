@@ -45,6 +45,8 @@
  */
 #define LSHW_DEFAULT_ICON_SIZE        40
 
+typedef struct _GtkApplication GtkApplication;
+
 void lshw_gtk_stock_init(void);
-void lshw_ui_init(void);
+void lshw_ui_init(GtkApplication *);
 #endif                                            /* _STOCK_H_ */
