@@ -8,7 +8,6 @@ static char *id = "@(#) $Id$";
 #define UIFILE "gtk-lshw.ui"
 
 GtkWidget *mainwindow = NULL;
-GtkWidget *about = NULL;
 GtkWidget *list1 = NULL;
 GtkWidget *list2 = NULL;
 GtkWidget *list3 = NULL;
@@ -145,7 +144,6 @@ void lshw_ui_init(GtkApplication *app)
   g_free(uiname);
 
   mainwindow = GTK_WIDGET( gtk_builder_get_object( builder, "mainwindow" ) );
-  about = GTK_WIDGET( gtk_builder_get_object( builder, "aboutlshw" ) );
   list1 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview1"));
   list2 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview2"));
   list3 = GTK_WIDGET(gtk_builder_get_object( builder, "treeview3"));

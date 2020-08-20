@@ -10,7 +10,6 @@
 #include "engine.h"
 #include <string.h>
 
-extern GtkWidget *about;
 extern GtkWidget *mainwindow;
 
 static char *id = "@(#) $Id$";
@@ -44,18 +43,6 @@ on_save_activated                      (GSimpleAction   *action,
 
 G_MODULE_EXPORT
 void
-on_about_activated                     (GSimpleAction   *action,
-                                        GVariant        *parameter,
-                                        gpointer         app)
-{
-  if(GTK_IS_WIDGET(about))
-  {
-    gtk_widget_show(about);
-  }
-}
-
-G_MODULE_EXPORT
-void
 on_quit_activated                      (GSimpleAction   *action,
                                         GVariant        *parameter,
                                         gpointer         app)
@@ -65,24 +52,19 @@ on_quit_activated                      (GSimpleAction   *action,
 
 G_MODULE_EXPORT
 void
-on_aboutclose_activate          (GtkButton       *button,
-gpointer         user_data)
+on_about_activated                     (GSimpleAction   *action,
+                                        GVariant        *parameter,
+                                        gpointer         app)
 {
-  if(GTK_IS_WIDGET(about))
-  {
-    gtk_widget_hide(about);
-  }
-}
+  gtk_show_about_dialog(GTK_WINDOW(mainwindow),
+                        "program-name", "GTK+ frontend for lshw",
+                        "website", "https://www.ezix.org/",
+                        "copyright", "© 2004-2011 Lyonel Vincent\n© 2020 Emmanuel Gil Peyrot",
+                        "version", getpackageversion(),
+                        "license-type", GTK_LICENSE_GPL_2_0,
+                        NULL);
 
-
-G_MODULE_EXPORT
-void
-on_version_realize                     (GtkWidget       *widget,
-gpointer         user_data)
-{
   const char *latest = checkupdates();
-
-  gtk_label_set_text(GTK_LABEL(widget), getpackageversion());
 
   if(latest)
   {
@@ -100,17 +82,13 @@ gpointer         user_data)
                                   latest);
 
         gtk_window_set_title(GTK_WINDOW(dialog), "Update available");
-        /* Destroy the dialog when the user responds to it (e.g. clicks a button) */
-        g_signal_connect_swapped (dialog, "response",
-                           G_CALLBACK (gtk_widget_destroy),
-                           dialog);
       }
 
-      gtk_widget_show(dialog);
+      gtk_dialog_run(GTK_DIALOG(dialog));
+      gtk_widget_destroy(dialog);
     }
   }
 }
-
 
 G_MODULE_EXPORT
 void
