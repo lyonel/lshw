@@ -7,3 +7,5 @@
  * use businfo to find CPUs instead of hardcoding cpu:n form
  * use sysfs for PCMCIA access
  * use MPTABLE for reporting of CPUs
+
+report SSD/rotational devices: /sys/block/DEV/queue/rotational
