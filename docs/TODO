@@ -9,3 +9,4 @@
  * use MPTABLE for reporting of CPUs
 
 report SSD/rotational devices: /sys/block/DEV/queue/rotational
+better handle containers
