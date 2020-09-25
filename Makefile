@@ -2,7 +2,7 @@ PACKAGENAME = lshw
 VERSION?= $(shell git describe --tags | cut -d - -f 1,2 | tr - .)
 export PACKAGENAME
 
-all clean install snapshot gui install-gui:
+all clean install snapshot gui install-gui static:
 	+$(MAKE) -C src $@
 
 version.cpe: .version
