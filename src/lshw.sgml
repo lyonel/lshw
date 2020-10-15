@@ -101,7 +101,7 @@ Outputs the device list showing bus information, detailing <productname>SCSI</pr
 </para></listitem></varlistentry>
 <varlistentry><term>-dump <replaceable class="parameter">filename</replaceable></term>
 <listitem><para>
-Dump collected information into a file (SQLite database).
+Display output and dump collected information into a file (SQLite database).
 </para></listitem></varlistentry>
 <varlistentry><term>-class <replaceable class="parameter">class</replaceable></term>
 <listitem><para>
