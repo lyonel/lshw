@@ -43,6 +43,7 @@ list hardware
 	<arg choice="opt"><option>-sanitize</option></arg>
 	<arg choice="opt"><option>-numeric</option></arg>
 	<arg choice="opt"><option>-quiet</option></arg>
+	<arg choice="opt"><option>-notime</option></arg>
    </cmdsynopsis>
 </refsynopsisdiv>
 
@@ -125,6 +126,10 @@ Remove potentially sensitive information from output (IP addresses, serial numbe
 <varlistentry><term>-numeric</term>
 <listitem><para>
 Also display numeric IDs (for PCI and USB devices).
+</para></listitem></varlistentry>
+<varlistentry><term>-notime</term>
+<listitem><para>
+Exclude volatile attributes (timestamps) from output.
 </para></listitem></varlistentry>
 </variablelist>
 </para>
