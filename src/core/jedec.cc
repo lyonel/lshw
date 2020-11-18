@@ -17,6 +17,7 @@ static const char * jedec_id[] = {
 	"0500",	"Elpida",
 	"07",	"Hitachi",
 	"8007",	"Hitachi",
+    "081A", "Xi'an SinoChip Semiconductor",
 	"08",	"Inmos",
 	"8008",	"Inmos",
 	"0B",	"Intersil",
