@@ -7,6 +7,7 @@
 #include "version.h"
 #include "sysfs.h"
 #include "osutils.h"
+#include <libgen.h>
 #include <limits.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -103,7 +104,7 @@ static string sysfs_getbustype(const string & path)
   {
     string devname =
       string(fs.path + "/bus/") + string(namelist[i]->d_name) +
-      "/devices/" + basename(path.c_str());
+      "/devices/" + basename(const_cast<char *>(path.c_str()));
 
     if (samefile(devname, path))
     {
@@ -151,7 +152,7 @@ static string sysfstobusinfo(const string & path)
 
   if (bustype == "usb")
   {
-    string name = basename(path.c_str());
+    string name = basename(const_cast<char *>(path.c_str()));
     if (matches(name, "^[0-9]+-[0-9]+(\\.[0-9]+)*:[0-9]+\\.[0-9]+$"))
     {
       size_t colon = name.rfind(":");
@@ -162,7 +163,7 @@ static string sysfstobusinfo(const string & path)
 
   if (bustype == "virtio")
   {
-    string name = basename(path.c_str());
+    string name = basename(const_cast<char *>(path.c_str()));
     if (name.compare(0, 6, "virtio") == 0)
       return "virtio@" + name.substr(6);
     else
@@ -170,10 +171,10 @@ static string sysfstobusinfo(const string & path)
   }
 
   if (bustype == "vio")
-    return string("vio@") + basename(path.c_str());
+    return string("vio@") + basename(const_cast<char *>(path.c_str()));
 
   if (bustype == "ccw")
-    return string("ccw@") + basename(path.c_str());
+    return string("ccw@") + basename(const_cast<char *>(path.c_str()));
 
   if (bustype == "ccwgroup")
   {
@@ -251,7 +252,7 @@ string entry::driver() const
   string driverlink = This->devpath + "/driver";
   if (!exists(driverlink))
     return "";
-  return basename(readlink(driverlink).c_str());
+  return basename(const_cast<char *>(readlink(driverlink).c_str()));
 }
 
 
@@ -339,7 +340,7 @@ string entry::name_in_class(const string & classname) const
 
 string entry::name() const
 {
-  return basename(This->devpath.c_str());
+  return basename(const_cast<char *>(This->devpath.c_str()));
 }
 
 
