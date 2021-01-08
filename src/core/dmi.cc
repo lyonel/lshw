@@ -1567,10 +1567,13 @@ int dmiversionrev)
 
 // size
           u = data[0x0D] << 8 | data[0x0C];
-          if(u == 0x7FFF) {
-             unsigned long long extendsize = (data[0x1F] << 24) | (data[0x1E] << 16) | (data[0x1D] << 8) | data[0x1C];
-             extendsize &= 0x7FFFFFFFUL;
-             size = extendsize * 1024ULL * 1024ULL;
+          if ((dmiversionmaj > 2)
+            || ((dmiversionmaj == 2) && (dmiversionmin >= 7))) {
+             if(u == 0x7FFF) {
+                unsigned long long extendsize = (data[0x1F] << 24) | (data[0x1E] << 16) | (data[0x1D] << 8) | data[0x1C];
+                extendsize &= 0x7FFFFFFFUL;
+                size = extendsize * 1024ULL * 1024ULL;
+             }
           }
 	  else
           if (u != 0xFFFF)
