@@ -1506,7 +1506,8 @@ bool scan_device_tree(hwNode & n)
         scan_devtree_cpu_power(*core);
       }
       else {
-        scan_devtree_cpu(*core);
+        if (exists(DEVICETREE "/cpus"))
+          scan_devtree_cpu(*core);
       }
       scan_devtree_memory(*core);
       scan_devtree_memory_ibm(*core);
