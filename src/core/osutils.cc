@@ -455,6 +455,16 @@ string dirname(const string & path)
   return result;
 }
 
+string basename(const string & path)
+{
+  size_t len = path.length();
+  char *buffer = new char[len + 1];
+  path.copy(buffer, len);
+  buffer[len] = '\0';
+  string result = basename(buffer);
+  delete[] buffer;
+  return result;
+}
 
 string spaces(unsigned int count, const string & space)
 {

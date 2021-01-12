@@ -1083,7 +1083,7 @@ void hwNode::setLogicalName(const string & name)
       This->logicalnames.push_back("/dev/" + n);
     }
     else
-      This->logicalnames.push_back((n[0]=='/')?n:basename(n.c_str()));
+      This->logicalnames.push_back((n[0]=='/')?n:basename(n));
 
     if(This->dev == "")
       This->dev = get_devid(n);

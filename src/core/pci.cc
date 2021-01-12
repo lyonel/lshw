@@ -9,7 +9,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdint.h>
-#include <libgen.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -1172,9 +1171,9 @@ bool scan_pci(hwNode & n)
           string drivername = readlink(string(devices[i]->d_name)+"/driver");
           string modulename = readlink(string(devices[i]->d_name)+"/driver/module");
 
-          device->setConfig("driver", basename(const_cast<char *>(drivername.c_str())));
+          device->setConfig("driver", basename(drivername));
           if(exists(modulename))
-            device->setConfig("module", basename(const_cast<char *>(modulename.c_str())));
+            device->setConfig("module", basename(modulename));
 
           if(exists(string(devices[i]->d_name)+"/rom"))
           {
