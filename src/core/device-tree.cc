@@ -1503,6 +1503,8 @@ bool scan_device_tree(hwNode & n)
       scan_devtree_bootrom(*core);
       if (exists(DEVICETREE "/ibm,lpar-capable")) {
         n.setDescription("pSeries LPAR");
+        if (exists( DEVICETREE "/ibm,partition-uuid"))
+          n.setConfig("uuid", get_string(DEVICETREE "/ibm,partition-uuid"));
         scan_devtree_cpu_power(*core);
       }
       else {
