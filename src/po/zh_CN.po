@@ -1,0 +1,1269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 玉堂白鹤 <yjwork@qq.com>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-08 14:02+0200\n"
+"PO-Revision-Date: 2021-02-22 11:13+0800\n"
+"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../core/abi.cc:49
+msgid "32-bit processes"
+msgstr "32 位进程"
+
+#: ../core/abi.cc:50
+msgid "64-bit processes"
+msgstr "64 位进程"
+
+#: ../core/cpuid.cc:284
+msgid "CPU virtualization (Vanderpool)"
+msgstr "CPU 虚拟化 (Vanderpool)"
+
+#: ../core/cpuid.cc:297 ../core/cpuid.cc:298
+msgid "Logical CPU"
+msgstr "逻辑 CPU"
+
+#: ../core/cpuid.cc:301
+msgid "HyperThreading"
+msgstr "超线程"
+
+#: ../core/cpuid.cc:365 ../core/cpuid.cc:372 ../core/cpuid.cc:466
+msgid "L1 cache"
+msgstr "L1 缓存"
+
+#: ../core/cpuid.cc:383 ../core/cpuid.cc:390 ../core/cpuid.cc:478
+msgid "L2 cache"
+msgstr "L2 缓存"
+
+#: ../core/dmi.cc:141
+msgid "Other"
+msgstr "其他"
+
+#: ../core/dmi.cc:142
+msgid "Unknown"
+msgstr "未知"
+
+#: ../core/dmi.cc:143
+msgid "Lead Acid"
+msgstr "铅酸电池"
+
+#: ../core/dmi.cc:144
+msgid "Nickel Cadmium"
+msgstr "镍镉"
+
+#: ../core/dmi.cc:145
+msgid "Nickel Metal Hydride"
+msgstr "氢化镍金属"
+
+#: ../core/dmi.cc:146
+msgid "Lithium Ion"
+msgstr "锂离子"
+
+#: ../core/dmi.cc:147
+msgid "Zinc Air"
+msgstr "锌空气"
+
+#: ../core/dmi.cc:148
+msgid "Lithium Polymer"
+msgstr "聚合物锂电"
+
+#: ../core/dmi.cc:262
+msgid "Server Blade"
+msgstr "刀片服务器"
+
+#: ../core/dmi.cc:263
+msgid "Connectivitiy Switch"
+msgstr "连接开关"
+
+#: ../core/dmi.cc:264
+msgid "System Management Module"
+msgstr "系统管理模块"
+
+#: ../core/dmi.cc:265
+msgid "Processor Module"
+msgstr "处理器模块"
+
+#: ../core/dmi.cc:266
+msgid "I/O Module"
+msgstr "I/O 模块"
+
+#: ../core/dmi.cc:267
+msgid "Memory Module"
+msgstr "内存模块"
+
+#: ../core/dmi.cc:268
+msgid "Daughter Board"
+msgstr "子板"
+
+#: ../core/dmi.cc:269 ../core/dmi.cc:1031
+msgid "Motherboard"
+msgstr "主板"
+
+#: ../core/dmi.cc:270
+msgid "Processor/Memory Module"
+msgstr "处理器/内存模块"
+
+#: ../core/dmi.cc:271
+msgid "Processor/IO Module "
+msgstr "处理器/IO 模块 "
+
+#: ../core/dmi.cc:272
+msgid "Interconnect Board"
+msgstr "互连板"
+
+#: ../core/dmi.cc:289
+msgid "ISA bus"
+msgstr "ISA 总线"
+
+#: ../core/dmi.cc:291
+msgid "MCA bus"
+msgstr "MCA 总线"
+
+#: ../core/dmi.cc:293
+msgid "EISA bus"
+msgstr "EISA 总线"
+
+#: ../core/dmi.cc:295
+msgid "PCI bus"
+msgstr "PCI 总线"
+
+#: ../core/dmi.cc:297
+msgid "PCMCIA/PCCard"
+msgstr "PCMCIA/PCCard"
+
+#: ../core/dmi.cc:299
+msgid "Plug-and-Play"
+msgstr "即插即用"
+
+#: ../core/dmi.cc:301
+msgid "Advanced Power Management"
+msgstr "高级电源管理"
+
+#: ../core/dmi.cc:303
+msgid "BIOS EEPROM can be upgraded"
+msgstr "BIOS EEPROM 可以升级"
+
+#: ../core/dmi.cc:305
+msgid "BIOS shadowing"
+msgstr "BIOS 映射"
+
+#: ../core/dmi.cc:307
+msgid "VESA video extensions"
+msgstr "VESA 视频扩展"
+
+#: ../core/dmi.cc:309
+msgid "ESCD"
+msgstr "ESCD"
+
+#: ../core/dmi.cc:311
+msgid "Booting from CD-ROM/DVD"
+msgstr "从 CD-ROM/DVD 引导"
+
+#: ../core/dmi.cc:313
+msgid "Selectable boot path"
+msgstr "可选的引导路径"
+
+#: ../core/dmi.cc:315
+msgid "BIOS ROM is socketed"
+msgstr "BIOS ROM 已插入"
+
+#: ../core/dmi.cc:317
+msgid "Booting from PCMCIA"
+msgstr "从 PCMCIA 引导"
+
+#: ../core/dmi.cc:319
+msgid "Enhanced Disk Drive extensions"
+msgstr "增强的磁盘驱动器扩展"
+
+#: ../core/dmi.cc:321
+msgid "NEC 9800 floppy"
+msgstr "NEC 9800 软盘"
+
+#: ../core/dmi.cc:323
+msgid "Toshiba floppy"
+msgstr "Toshiba 软盘"
+
+#: ../core/dmi.cc:325
+msgid "5.25\" 360KB floppy"
+msgstr "5.25\" 360KB 软盘"
+
+#: ../core/dmi.cc:327
+msgid "5.25\" 1.2MB floppy"
+msgstr "5.25\" 1.2MB 软盘"
+
+#: ../core/dmi.cc:329
+msgid "3.5\" 720KB floppy"
+msgstr "3.5\" 720KB 软盘"
+
+#: ../core/dmi.cc:331
+msgid "3.5\" 2.88MB floppy"
+msgstr "3.5\" 2.88MB 软盘"
+
+#: ../core/dmi.cc:333
+msgid "Print Screen key"
+msgstr "打印屏幕键"
+
+#: ../core/dmi.cc:335
+msgid "i8042 keyboard controller"
+msgstr "i8042 键盘控制器"
+
+#: ../core/dmi.cc:337
+msgid "INT14 serial line control"
+msgstr "INT14 串行线控制"
+
+#: ../core/dmi.cc:339
+msgid "INT17 printer control"
+msgstr "INT17 打印机控制"
+
+#: ../core/dmi.cc:341
+msgid "INT10 CGA/Mono video"
+msgstr "INT10 CGA/单声道视频"
+
+#: ../core/dmi.cc:343
+msgid "NEC PC-98"
+msgstr "NEC PC-98"
+
+#: ../core/dmi.cc:355
+msgid "ACPI"
+msgstr "ACPI"
+
+#: ../core/dmi.cc:357
+msgid "USB legacy emulation"
+msgstr "USB 传统仿真"
+
+#: ../core/dmi.cc:359
+msgid "AGP"
+msgstr "AGP"
+
+#: ../core/dmi.cc:361
+msgid "I2O booting"
+msgstr "I2O 引导"
+
+#: ../core/dmi.cc:363
+msgid "Booting from LS-120"
+msgstr "从 LS-120 引导"
+
+#: ../core/dmi.cc:365
+msgid "Booting from ATAPI ZIP"
+msgstr "从 ATAPI ZIP 引导"
+
+#: ../core/dmi.cc:367
+msgid "Booting from IEEE1394 (Firewire)"
+msgstr "从 IEEE1394 (火线) 引导"
+
+#: ../core/dmi.cc:369
+msgid "Smart battery"
+msgstr "智能电池"
+
+#: ../core/dmi.cc:375
+msgid "BIOS boot specification"
+msgstr "BIOS 引导规范"
+
+#: ../core/dmi.cc:378
+msgid "Function-key initiated network service boot"
+msgstr ""
+
+#: ../core/dmi.cc:401
+msgid "Non-burst"
+msgstr ""
+
+#: ../core/dmi.cc:403
+msgid "Burst"
+msgstr ""
+
+#: ../core/dmi.cc:405
+msgid "Pipeline burst"
+msgstr ""
+
+#: ../core/dmi.cc:407 ../core/dmi.cc:570
+msgid "Synchronous"
+msgstr "同步"
+
+#: ../core/dmi.cc:409
+msgid "Asynchronous"
+msgstr "异步"
+
+#: ../core/dmi.cc:425
+msgid "Internal"
+msgstr "内部"
+
+#: ../core/dmi.cc:428
+msgid "External"
+msgstr "外部"
+
+#: ../core/dmi.cc:437
+msgid "Write-trough"
+msgstr "直写模式"
+
+#: ../core/dmi.cc:440
+msgid "Write-back"
+msgstr "回写模式"
+
+#: ../core/dmi.cc:443
+msgid "Varies With Memory Address"
+msgstr "随内存地址变化"
+
+#: ../core/dmi.cc:447
+msgid "cache"
+msgstr "缓存"
+
+#: ../core/dmi.cc:452
+msgid "Instruction cache"
+msgstr "指令缓存"
+
+#: ../core/dmi.cc:455
+msgid "Data cache"
+msgstr "数据缓存"
+
+#: ../core/dmi.cc:458
+msgid "Unified cache"
+msgstr "统一缓存"
+
+#: ../core/dmi.cc:473
+msgid "System board or motherboard"
+msgstr "系统板或主板"
+
+#: ../core/dmi.cc:474
+msgid "ISA add-on card"
+msgstr "ISA 附加卡"
+
+#: ../core/dmi.cc:475
+msgid "EISA add-on card"
+msgstr "EISA 附加卡"
+
+#: ../core/dmi.cc:476
+msgid "PCI add-on card"
+msgstr "PCI 附加卡"
+
+#: ../core/dmi.cc:477
+msgid "MCA add-on card"
+msgstr "MCA 附加卡"
+
+#: ../core/dmi.cc:478
+msgid "PCMCIA add-on card"
+msgstr "PCMCIA 附加卡"
+
+#: ../core/dmi.cc:479
+msgid "Proprietary add-on card"
+msgstr "Proprietary 附加卡"
+
+#: ../core/dmi.cc:480
+msgid "NuBus"
+msgstr "NuBus"
+
+#: ../core/dmi.cc:484
+msgid "PC-98/C20 add-on card"
+msgstr "PC-98/C20 附加卡"
+
+#: ../core/dmi.cc:485
+msgid "PC-98/C24 add-on card"
+msgstr "PC-98/C24 附加卡"
+
+#: ../core/dmi.cc:486
+msgid "PC-98/E add-on card"
+msgstr "PC-98/E 附加卡"
+
+#: ../core/dmi.cc:487
+msgid "PC-98/Local bus add-on card"
+msgstr "PC-98/本地总线附加卡"
+
+#: ../core/dmi.cc:488
+msgid "PC-98/Card slot add-on card"
+msgstr "PC-98/卡槽附加卡"
+
+#: ../core/dmi.cc:505
+msgid " SIMM"
+msgstr " SIMM"
+
+#: ../core/dmi.cc:506
+msgid " SIP"
+msgstr " SIP"
+
+#: ../core/dmi.cc:507
+msgid " Chip"
+msgstr " Chip"
+
+#: ../core/dmi.cc:508
+msgid " DIP"
+msgstr " DIP"
+
+#: ../core/dmi.cc:509
+msgid " ZIP"
+msgstr " ZIP"
+
+#: ../core/dmi.cc:510
+msgid " Proprietary Card"
+msgstr " 专用卡"
+
+#: ../core/dmi.cc:511
+msgid " DIMM"
+msgstr " DIMM"
+
+#: ../core/dmi.cc:512
+msgid " TSOP"
+msgstr " TSOP"
+
+#: ../core/dmi.cc:513
+msgid " Row of chips"
+msgstr " 芯片排"
+
+#: ../core/dmi.cc:514
+msgid " RIMM"
+msgstr " RIMM"
+
+#: ../core/dmi.cc:515
+msgid " SODIMM"
+msgstr " SODIMM"
+
+#: ../core/dmi.cc:516
+msgid " SRIMM"
+msgstr " SRIMM"
+
+#: ../core/dmi.cc:517
+msgid " FB-DIMM"
+msgstr " FB-DIMM"
+
+#: ../core/dmi.cc:532
+msgid " DRAM"
+msgstr " DRAM"
+
+#: ../core/dmi.cc:533
+msgid " EDRAM"
+msgstr " EDRAM"
+
+#: ../core/dmi.cc:534
+msgid " VRAM"
+msgstr " VRAM"
+
+#: ../core/dmi.cc:535
+msgid " SRAM"
+msgstr " SRAM"
+
+#: ../core/dmi.cc:536
+msgid " RAM"
+msgstr " RAM"
+
+#: ../core/dmi.cc:537
+msgid " ROM"
+msgstr " ROM"
+
+#: ../core/dmi.cc:538
+msgid " FLASH"
+msgstr " FLASH"
+
+#: ../core/dmi.cc:539
+msgid " EEPROM"
+msgstr " EEPROM"
+
+#: ../core/dmi.cc:540
+msgid " FEPROM"
+msgstr " FEPROM"
+
+#: ../core/dmi.cc:541
+msgid " EPROM"
+msgstr " EPROM"
+
+#: ../core/dmi.cc:542
+msgid " CDRAM"
+msgstr " CDRAM"
+
+#: ../core/dmi.cc:543
+msgid " 3DRAM"
+msgstr " 3DRAM"
+
+#: ../core/dmi.cc:544
+msgid " SDRAM"
+msgstr " SDRAM"
+
+#: ../core/dmi.cc:545
+msgid " SGRAM"
+msgstr " SGRAM"
+
+#: ../core/dmi.cc:546
+msgid " RDRAM"
+msgstr " RDRAM"
+
+#: ../core/dmi.cc:547
+msgid " DDR"
+msgstr " DDR"
+
+#: ../core/dmi.cc:548
+msgid " DDR2"
+msgstr " DDR2"
+
+#: ../core/dmi.cc:549
+msgid " DDR2 FB-DIMM"
+msgstr " DDR2 FB-DIMM"
+
+#: ../core/dmi.cc:562
+msgid "Fast-paged"
+msgstr "快速分页"
+
+#: ../core/dmi.cc:564
+msgid "Static column"
+msgstr "静态列"
+
+#: ../core/dmi.cc:566
+msgid "Pseudo-static"
+msgstr "伪静态"
+
+#: ../core/dmi.cc:568
+msgid "RAMBUS"
+msgstr "RAMBUS"
+
+#: ../core/dmi.cc:572
+msgid "CMOS"
+msgstr "CMOS"
+
+#: ../core/dmi.cc:574
+msgid "EDO"
+msgstr "EDO"
+
+#: ../core/dmi.cc:576
+msgid "Window DRAM"
+msgstr "Window DRAM"
+
+#: ../core/dmi.cc:578
+msgid "Cache DRAM"
+msgstr "Cache DRAM"
+
+#: ../core/dmi.cc:580
+msgid "Non-volatile"
+msgstr "非易失"
+
+#: ../core/dmi.cc:593
+msgid "Desktop Computer"
+msgstr "台式电脑"
+
+#: ../core/dmi.cc:594
+msgid "Low Profile Desktop Computer"
+msgstr "轻薄台式计算机"
+
+#: ../core/dmi.cc:595
+msgid "Pizza Box Computer"
+msgstr "比萨饼盒式电脑"
+
+#: ../core/dmi.cc:596
+msgid "Mini Tower Computer"
+msgstr "小型塔式电脑"
+
+#: ../core/dmi.cc:597
+msgid "Tower Computer"
+msgstr "塔式电脑"
+
+#: ../core/dmi.cc:598
+msgid "Portable Computer"
+msgstr "便携式电脑"
+
+#: ../core/dmi.cc:599
+msgid "Laptop"
+msgstr "手提或膝上电脑"
+
+#: ../core/dmi.cc:600
+msgid "Notebook"
+msgstr "笔记本"
+
+#: ../core/dmi.cc:601
+msgid "Hand Held Computer"
+msgstr "手提电脑"
+
+#: ../core/dmi.cc:602
+msgid "Docking Station"
+msgstr "扩展坞"
+
+#: ../core/dmi.cc:603
+msgid "All In One"
+msgstr "一体机"
+
+#: ../core/dmi.cc:604
+msgid "Sub Notebook"
+msgstr "小型笔记本电脑"
+
+#: ../core/dmi.cc:605
+msgid "Space-saving Computer"
+msgstr "节省空间的电脑"
+
+#: ../core/dmi.cc:606
+msgid "Lunch Box Computer"
+msgstr "午餐盒电脑"
+
+#: ../core/dmi.cc:607
+msgid "System"
+msgstr "系统"
+
+#: ../core/dmi.cc:608
+msgid "Expansion Chassis"
+msgstr "扩展机箱"
+
+#: ../core/dmi.cc:609
+msgid "Sub Chassis"
+msgstr ""
+
+#: ../core/dmi.cc:610
+msgid "Bus Expansion Chassis"
+msgstr ""
+
+#: ../core/dmi.cc:611
+msgid "Peripheral Chassis"
+msgstr "外围机箱"
+
+#: ../core/dmi.cc:612
+msgid "RAID Chassis"
+msgstr "RAID 机箱"
+
+#: ../core/dmi.cc:613
+msgid "Rack Mount Chassis"
+msgstr "机架式机箱"
+
+#: ../core/dmi.cc:614
+msgid "Sealed-case PC"
+msgstr "密封箱 PC"
+
+#: ../core/dmi.cc:615
+msgid "Multi-system"
+msgstr "多系统"
+
+#: ../core/dmi.cc:988
+msgid "BIOS"
+msgstr "BIOS"
+
+#: ../core/dmi.cc:1084
+msgid "CPU"
+msgstr "CPU"
+
+#: ../core/dmi.cc:1131 ../core/dmi.cc:1218 ../core/dmi.cc:1460
+msgid "[empty]"
+msgstr "[空]"
+
+#: ../core/dmi.cc:1165
+msgid " Memory Controller"
+msgstr " 内存控制器"
+
+#: ../core/dmi.cc:1183 ../core/dmi.cc:1391
+msgid "empty memory bank"
+msgstr ""
+
+#: ../core/dmi.cc:1345
+msgid "System Memory"
+msgstr "系统内存"
+
+#: ../core/dmi.cc:1350
+msgid "Video Memory"
+msgstr "显存"
+
+#: ../core/dmi.cc:1353
+msgid "Flash Memory"
+msgstr "闪存"
+
+#: ../core/dmi.cc:1356
+msgid "NVRAM"
+msgstr "NVRAM"
+
+#: ../core/dmi.cc:1359
+msgid "Cache Memory"
+msgstr "高速缓存"
+
+#: ../core/dmi.cc:1363
+msgid "Generic Memory"
+msgstr "通用内存"
+
+#: ../core/dmi.cc:1609
+msgid "make outbound connections"
+msgstr ""
+
+#: ../core/dmi.cc:1610
+msgid "receive inbound connections"
+msgstr ""
+
+#: ../core/hw.cc:1615
+msgid "<!-- generated by lshw-"
+msgstr "<!-- 由 lshw 生成-"
+
+#: ../core/hw.cc:1630
+msgid "<!-- WARNING: not running as root -->"
+msgstr "<!-- 警告：未以 root 身份运行 -->"
+
+#: ../core/hw.cc:2102
+msgid "(none)"
+msgstr "(无)"
+
+#: ../core/hw.cc:2105
+msgid "dma"
+msgstr "dma"
+
+#: ../core/hw.cc:2109
+msgid "irq"
+msgstr "irq"
+
+#: ../core/hw.cc:2113
+msgid "iomemory"
+msgstr "记忆"
+
+#: ../core/hw.cc:2117
+msgid "memory"
+msgstr "内存"
+
+#: ../core/hw.cc:2119
+msgid "(prefetchable)"
+msgstr "(可预取)"
+
+#: ../core/hw.cc:2122
+msgid "ioport"
+msgstr "ioport"
+
+#: ../core/hw.cc:2126
+#, c-format
+msgid "%lx(size=%ld)"
+msgstr "%lx(大小=%ld)"
+
+#: ../core/hw.cc:2129
+msgid "(unknown)"
+msgstr "(未知)"
+
+#: ../core/hw.cc:2299
+msgid "false"
+msgstr "假"
+
+#: ../core/hw.cc:2299
+msgid "true"
+msgstr "真"
+
+#: ../core/hw.cc:2301
+msgid "(nil)"
+msgstr "(零)"
+
+#: ../core/mem.cc:125
+msgid "System memory"
+msgstr "系统内存"
+
+#: ../core/network.cc:211
+msgid "Ethernet"
+msgstr "以太网"
+
+#: ../core/network.cc:213
+msgid "SLIP"
+msgstr "SLIP"
+
+#: ../core/network.cc:215
+msgid "loopback"
+msgstr "环回"
+
+#: ../core/network.cc:217
+msgid "FDDI"
+msgstr "FDDI"
+
+#: ../core/network.cc:219
+msgid "IEEE1394"
+msgstr "IEEE1394"
+
+#: ../core/network.cc:221
+msgid "IRDA"
+msgstr "IRDA"
+
+#: ../core/network.cc:223
+msgid "PPP"
+msgstr "PPP"
+
+#: ../core/network.cc:225
+msgid "X25"
+msgstr "X25"
+
+#: ../core/network.cc:227
+msgid "IPtunnel"
+msgstr "IP隧道"
+
+#: ../core/network.cc:229
+msgid "Framerelay.DLCI"
+msgstr "帧中继.DLCI"
+
+#: ../core/network.cc:231
+msgid "Framerelay.AD"
+msgstr "帧中继.AD"
+
+#: ../core/network.cc:233
+msgid "IP6tunnel"
+msgstr "IP6隧道"
+
+#: ../core/network.cc:235
+msgid "IP6inIP4"
+msgstr "IP6inIP4"
+
+#: ../core/network.cc:372 ../core/network.cc:380 ../core/network.cc:512
+msgid "Logical interface"
+msgstr "逻辑接口"
+
+#: ../core/network.cc:374
+msgid "Physical interface"
+msgstr "物理接口"
+
+#: ../core/network.cc:388
+msgid "Wireless-LAN"
+msgstr "无线局域网"
+
+#: ../core/network.cc:390 ../core/usb.cc:261
+msgid "Wireless interface"
+msgstr "无线接口"
+
+#: ../core/network.cc:411
+msgid "twisted pair"
+msgstr "双绞线"
+
+#: ../core/network.cc:413
+msgid "AUI"
+msgstr "AUI"
+
+#: ../core/network.cc:415
+msgid "BNC"
+msgstr "BNC"
+
+#: ../core/network.cc:417
+msgid "Media Independant Interface"
+msgstr "媒体独立接口"
+
+#: ../core/network.cc:419
+msgid "optical fibre"
+msgstr "光纤"
+
+#: ../core/network.cc:422
+msgid "10Mbit/s"
+msgstr "10Mbit/s"
+
+#: ../core/network.cc:427
+msgid "10Mbit/s (full duplex)"
+msgstr "10Mbit/s (全双工)"
+
+#: ../core/network.cc:432
+msgid "100Mbit/s"
+msgstr "100Mbit/s"
+
+#: ../core/network.cc:437
+msgid "100Mbit/s (full duplex)"
+msgstr "100Mbit/s (全双工)"
+
+#: ../core/network.cc:447
+msgid "1Gbit/s (full duplex)"
+msgstr "1Gbit/s (全双工)"
+
+#: ../core/network.cc:451
+msgid "Auto-negotiation"
+msgstr "自动协商"
+
+#: ../core/pci.cc:725
+msgid "PCI Express"
+msgstr "PCI Express"
+
+#: ../core/print.cc:143 ../gui/print-gui.cc:116
+msgid " DISABLED"
+msgstr " 停用"
+
+#: ../core/print.cc:145 ../gui/print-gui.cc:118
+msgid " UNCLAIMED"
+msgstr " 无人认领"
+
+#: ../core/print.cc:175
+msgid "description"
+msgstr "描述"
+
+#: ../core/print.cc:189 ../gui/print-gui.cc:139
+msgid "product"
+msgstr "产品"
+
+#: ../core/print.cc:203 ../gui/print-gui.cc:140
+msgid "vendor"
+msgstr "厂商"
+
+#: ../core/print.cc:217
+msgid "physical id"
+msgstr "物理 id"
+
+#: ../core/print.cc:231 ../gui/print-gui.cc:141
+msgid "bus info"
+msgstr "总线信息"
+
+#: ../core/print.cc:249 ../gui/print-gui.cc:147
+msgid "logical name"
+msgstr "逻辑名称"
+
+#: ../core/print.cc:264 ../gui/print-gui.cc:150
+msgid "version"
+msgstr "版本"
+
+#: ../core/print.cc:278 ../gui/print-gui.cc:151
+msgid "serial"
+msgstr "序列号"
+
+#: ../core/print.cc:292 ../gui/print-gui.cc:152
+msgid "slot"
+msgstr "槽"
+
+#: ../core/print.cc:306 ../gui/print-gui.cc:155
+msgid "size"
+msgstr "大小"
+
+#: ../core/print.cc:360 ../gui/print-gui.cc:157
+msgid "capacity"
+msgstr "容量"
+
+#: ../core/print.cc:416
+msgid "address"
+msgstr "地址"
+
+#: ../core/print.cc:419
+msgid "range"
+msgstr "范围"
+
+#: ../core/print.cc:430 ../gui/print-gui.cc:160
+msgid "width"
+msgstr "宽度"
+
+#: ../core/print.cc:444 ../gui/print-gui.cc:163
+msgid "clock"
+msgstr "时钟"
+
+#: ../core/print.cc:461 ../gui/print-gui.cc:170
+msgid "capabilities"
+msgstr "性能"
+
+#: ../core/print.cc:482
+msgid "configuration:"
+msgstr "配置："
+
+#: ../core/print.cc:484
+msgid "configuration of "
+msgstr "配置来自 "
+
+#: ../core/print.cc:504
+msgid "resources:"
+msgstr "资源："
+
+#: ../core/print.cc:506
+msgid "resources of "
+msgstr "资源来自 "
+
+#: ../core/print.cc:659
+msgid "H/W path"
+msgstr "硬件路径"
+
+#: ../core/print.cc:660 ../core/print.cc:677
+msgid "Device"
+msgstr "设备"
+
+#: ../core/print.cc:661 ../core/print.cc:678
+msgid "Class"
+msgstr "类别"
+
+#: ../core/print.cc:662 ../core/print.cc:679
+msgid "Description"
+msgstr "描述"
+
+#: ../core/print.cc:676
+msgid "Bus info"
+msgstr "总线信息"
+
+#: ../core/usb.cc:165
+msgid "Audio device"
+msgstr "音频设备"
+
+#: ../core/usb.cc:169
+msgid "Control device"
+msgstr "控制设备"
+
+#: ../core/usb.cc:172
+msgid "MIDI"
+msgstr "MIDI"
+
+#: ../core/usb.cc:174
+msgid "Audio streaming"
+msgstr "音频流"
+
+#: ../core/usb.cc:180
+msgid "Communication device"
+msgstr "通信设备"
+
+#: ../core/usb.cc:183
+msgid "Modem"
+msgstr "调制解调器"
+
+#: ../core/usb.cc:184
+msgid "AT (Hayes) compatible"
+msgstr "AT (Hayes) 兼容"
+
+#: ../core/usb.cc:186
+msgid "Ethernet networking"
+msgstr "以太网网络"
+
+#: ../core/usb.cc:187
+msgid "OBEX networking"
+msgstr "OBEX 网络"
+
+#: ../core/usb.cc:191
+msgid "Human interface device"
+msgstr "人机接口设备"
+
+#: ../core/usb.cc:197
+msgid "Keyboard"
+msgstr "键盘"
+
+#: ../core/usb.cc:200
+msgid "Mouse"
+msgstr "鼠标"
+
+#: ../core/usb.cc:207
+msgid "Printer"
+msgstr "打印机"
+
+#: ../core/usb.cc:214
+msgid "Unidirectional"
+msgstr "单向"
+
+#: ../core/usb.cc:217
+msgid "Bidirectional"
+msgstr "双向"
+
+#: ../core/usb.cc:220
+msgid "IEEE 1284.4 compatible bidirectional"
+msgstr "IEEE 1284.4 兼容双向"
+
+#: ../core/usb.cc:227
+msgid "Mass storage device"
+msgstr "大容量存储设备"
+
+#: ../core/usb.cc:231
+msgid "RBC (typically Flash) mass storage"
+msgstr "RBC（通常为闪存）大容量存储"
+
+#: ../core/usb.cc:234
+msgid "SFF-8020i, MMC-2 (ATAPI)"
+msgstr "SFF-8020i, MMC-2 (ATAPI)"
+
+#: ../core/usb.cc:237
+msgid "Floppy (UFI)"
+msgstr "软盘 (UFI)"
+
+#: ../core/usb.cc:240
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../core/usb.cc:246
+msgid "USB hub"
+msgstr "USB hub"
+
+#: ../core/usb.cc:253
+msgid "Smart card reader"
+msgstr "智能卡读卡器"
+
+#: ../core/usb.cc:257
+msgid "Video"
+msgstr "视频"
+
+#: ../core/usb.cc:264
+msgid "Bluetooth wireless interface"
+msgstr "蓝牙无线接口"
+
+#: ../core/usb.cc:265
+msgid "Bluetooth wireless radio"
+msgstr "蓝牙无线电台"
+
+#: ../core/usb.cc:270
+msgid "Generic USB device"
+msgstr "通用 USB 设备"
+
+#: ../core/volumes.cc:308
+msgid "Extended Attributes"
+msgstr "扩展属性"
+
+#: ../core/volumes.cc:310
+msgid "4GB+ files"
+msgstr "4GB+ 文件"
+
+#: ../core/volumes.cc:312
+msgid "16TB+ files"
+msgstr "16TB+ 文件"
+
+#: ../core/volumes.cc:314
+msgid "directories with 65000+ subdirs"
+msgstr "包含 65000 多个子目录的目录"
+
+#: ../core/volumes.cc:316
+msgid "needs recovery"
+msgstr "需要恢复"
+
+#: ../core/volumes.cc:318
+msgid "64bit filesystem"
+msgstr "64位文件系统"
+
+#: ../core/volumes.cc:320
+msgid "extent-based allocation"
+msgstr "基于分区的分配"
+
+#: ../core/volumes.cc:328
+msgid "EXT4 volume"
+msgstr "EXT4 卷"
+
+#: ../core/volumes.cc:334
+msgid "EXT3 volume"
+msgstr "EXT3 卷"
+
+#: ../core/volumes.cc:363
+msgid "Encrypted volume"
+msgstr "加密卷"
+
+#: ../core/volumes.cc:635
+msgid "Contains a bootable Mac OS installation"
+msgstr "包含可引导的 Mac OS安装"
+
+#: ../core/volumes.cc:637
+msgid "Contains a bootable Mac OS X installation"
+msgstr "包含可引导的 Mac OS X 安装"
+
+#: ../core/volumes.cc:1074
+msgid "initialized volume"
+msgstr "初始化的卷"
+
+#: ../core/volumes.cc:1076
+msgid "volume"
+msgstr "卷"
+
+#: ../gui/print-gui.cc:193
+msgid "configuration"
+msgstr "配置"
+
+#: ../gui/print-gui.cc:209
+msgid "resources"
+msgstr "资源"
+
+#: ../gui/print-gui.cc:221
+msgid "this device hasn't been claimed\n"
+msgstr "这个设备还没有被认领\n"
+
+#: ../gui/print-gui.cc:224
+msgid "this device has been disabled\n"
+msgstr "此设备已被禁用\n"
+
+#: ../lshw.cc:24
+#, c-format
+msgid "usage: %s [-format] [-options ...]\n"
+msgstr "用法: %s [-格式] [-选项 ...]\n"
+
+#: ../lshw.cc:25
+#, c-format
+msgid "       %s -version\n"
+msgstr "       %s -版本\n"
+
+#: ../lshw.cc:27
+#, c-format
+msgid "\t-version        print program version (%s)\n"
+msgstr "\t-version        打印程序版本 (%s)\n"
+
+#: ../lshw.cc:28
+#, c-format
+msgid ""
+"\n"
+"format can be\n"
+msgstr ""
+"\n"
+"格式可以是\n"
+
+#: ../lshw.cc:29
+#, c-format
+msgid "\t-html           output hardware tree as HTML\n"
+msgstr "\t-html           将硬件树输出为 HTML\n"
+
+#: ../lshw.cc:30
+#, c-format
+msgid "\t-xml            output hardware tree as XML\n"
+msgstr "\t-xml            将硬件树输出为 XML\n"
+
+#: ../lshw.cc:31
+#, c-format
+msgid "\t-short          output hardware paths\n"
+msgstr "\t-short          输出硬件路径\n"
+
+#: ../lshw.cc:32
+#, c-format
+msgid "\t-businfo        output bus information\n"
+msgstr "\t-businfo        输出总线信息\n"
+
+#: ../lshw.cc:34
+#, c-format
+msgid "\t-X              use graphical interface\n"
+msgstr "\t-X              使用图形界面\n"
+
+#: ../lshw.cc:35
+#, c-format
+msgid ""
+"\n"
+"options can be\n"
+msgstr ""
+"\n"
+"选项可以是\n"
+
+#: ../lshw.cc:37
+#, c-format
+msgid "\t-class CLASS    only show a certain class of hardware\n"
+msgstr "\t-class CLASS    只显示某一类硬件\n"
+
+#: ../lshw.cc:38
+#, c-format
+msgid "\t-C CLASS        same as '-class CLASS'\n"
+msgstr "\t-C CLASS        等同于 '-class CLASS'\n"
+
+#: ../lshw.cc:39
+#, c-format
+msgid "\t-c CLASS        same as '-class CLASS'\n"
+msgstr "\t-c CLASS        等同于 '-class CLASS'\n"
+
+#: ../lshw.cc:41
+#, c-format
+msgid "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n"
+msgstr "\t-disable TEST   禁用测试 (例如 pci, isapnp, cpuid, 等)\n"
+
+#: ../lshw.cc:43
+#, c-format
+msgid "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n"
+msgstr "\t-enable TEST    启用测试 (例如 pci, isapnp, cpuid, 等)\n"
+
+#: ../lshw.cc:44
+#, c-format
+msgid "\t-quiet          don't display status\n"
+msgstr "\t-quiet          不显示状态\n"
+
+#: ../lshw.cc:45
+#, c-format
+msgid ""
+"\t-sanitize       sanitize output (remove sensitive information like serial "
+"numbers, etc.)\n"
+msgstr "\t-sanitize       清理输出（删除敏感信息，如序列号等）\n"
+
+#: ../lshw.cc:46
+#, c-format
+msgid "\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"
+msgstr "\t-numeric        输出数字标识 (用于 PCI, USB, 等)\n"
+
+#: ../lshw.cc:119
+#, c-format
+msgid "the latest version is %s\n"
+msgstr "最新版本是 %s\n"
+
+#: ../lshw.cc:215
+#, c-format
+msgid "WARNING: you should run this program as super-user.\n"
+msgstr "警告：您应该以超级用户身份运行此程序。\n"
+
+#: ../lshw.cc:243
+#, c-format
+msgid ""
+"WARNING: output may be incomplete or inaccurate, you should run this program "
+"as super-user.\n"
+msgstr "警告：输出可能不完整或不正确，您应该以超级用户身份运行此程序。\n"
