@@ -520,6 +520,9 @@ static hwNode get_device(long hw_type, long sversion, long hversion)
 
 static bool scan_device(hwNode & node, string name = "")
 {
+  if(!exists(name))
+    return false;
+
   struct dirent **namelist;
   int n;
   hwNode * curnode = NULL;
