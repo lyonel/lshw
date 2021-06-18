@@ -277,7 +277,7 @@ static const char *dmi_board_type(u8 data)
     "",
     "",
     N_("Server Blade"),
-    N_("Connectivitiy Switch"),
+    N_("Connectivity Switch"),
     N_("System Management Module"),
     N_("Processor Module"),
     N_("I/O Module"),
