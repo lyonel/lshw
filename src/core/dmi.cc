@@ -152,19 +152,19 @@ static const char *dmi_battery_chemistry(u8 code)
 {
   static const char *chemistry[]=
   {
-    N_("Other"),                                      /* 0x01 */
-    N_("Unknown"),
-    N_("Lead Acid"),
-    N_("Nickel Cadmium"),
-    N_("Nickel Metal Hydride"),
-    N_("Lithium Ion"),
-    N_("Zinc Air"),
-    N_("Lithium Polymer")                             /* 0x08 */
+    N_("Other Battery"),                              /* 0x01 */
+    N_("Unknown Battery"),
+    N_("Lead Acid Battery"),
+    N_("Nickel Cadmium Battery"),
+    N_("Nickel Metal Hydride Battery"),
+    N_("Lithium Ion Battery"),
+    N_("Zinc Air Battery"),
+    N_("Lithium Polymer Battery")                     /* 0x08 */
   };
 
   if(code>=0x01 && code<=0x08)
     return _(chemistry[code-0x01]);
-  return "";
+  return _("Battery");
 }
 
 
@@ -1735,7 +1735,7 @@ int dmiversionrev)
           else
             batt.setCapacity(dmi_battery_capacity(data[0x0A] + 256*data[0x0B], data[0x15]));
           if(data[0x09]!=0x02 || dm->length<0x1A)
-            batt.setDescription(hw::strip(string(dmi_battery_chemistry(data[0x09])) + " Battery"));
+            batt.setDescription(dmi_battery_chemistry(data[0x09]));
 
           node.addChild(batt);
         }
