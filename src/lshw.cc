@@ -41,9 +41,9 @@ void usage(const char *progname)
   fprintf(stderr, _("\t-C CLASS        same as '-class CLASS'\n"));
   fprintf(stderr, _("\t-c CLASS        same as '-class CLASS'\n"));
   fprintf(stderr,
-    _("\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n"));
+    _("\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc.)\n"));
   fprintf(stderr,
-    _("\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n"));
+    _("\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc.)\n"));
   fprintf(stderr, _("\t-quiet          don't display status\n"));
   fprintf(stderr, _("\t-sanitize       sanitize output (remove sensitive information like serial numbers, etc.)\n"));
   fprintf(stderr, _("\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"));
