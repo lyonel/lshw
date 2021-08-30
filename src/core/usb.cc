@@ -338,6 +338,7 @@ static bool load_usbids(const string & name)
         }
       }
     }
+    if(buffer != NULL) free(buffer);
   }
 
   fclose(usbids);
@@ -497,6 +498,7 @@ bool scan_usb(hwNode & n)
         }
       }
     }
+    if(buffer != NULL) free(buffer);
   }
   if(defined)
     addUSBChild(n, device, bus, lev, prnt);
