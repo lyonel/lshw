@@ -195,9 +195,9 @@ static bool scan_eeproms(hwNode & memory)
   {
     if (scan_eeprom(memory, namelist[i]->d_name))
       current_bank++;
-    free(namelist[i]);
+    delete(namelist[i]);
   }
-  free(namelist);
+  delete(namelist);
 
   return true;
 }

@@ -2459,7 +2459,7 @@ long long value::asInteger() const
   switch(This->type)
   {
     case hw::text:
-      return stoll(This->s, NULL, 0);
+      return strtoll(This->s.c_str(), NULL, 0);
     case hw::integer:
       return This->ll;
     case hw::boolean:
