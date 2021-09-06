@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <malloc.h>
 #include <string>
 #include <dirent.h>
 #include <stdio.h>
@@ -195,9 +196,9 @@ static bool scan_eeproms(hwNode & memory)
   {
     if (scan_eeprom(memory, namelist[i]->d_name))
       current_bank++;
-    delete(namelist[i]);
+    free(namelist[i]);
   }
-  delete(namelist);
+  free(namelist);
 
   return true;
 }
