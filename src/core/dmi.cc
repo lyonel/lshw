@@ -1648,9 +1648,9 @@ int dmiversionrev)
                     uint64_t(data[0x1C]) << 40 | uint64_t(data[0x1B]) << 32 |
                     uint64_t(data[0x1A]) << 24 | uint64_t(data[0x19]) << 16 |
                     uint64_t(data[0x18]) << 8 | uint64_t(data[0x17]);
-          if (end - start < 512)                  // memory range is smaller thant 512KB
+          if (end - start < 512)                  // memory range is smaller than 512KB
           {
-// consider that values were expressed in megagytes
+// consider that values were expressed in megabytes
             start *= 1024;
             end *= 1024;
           }
@@ -1688,7 +1688,7 @@ int dmiversionrev)
                     uint64_t(data[0x18]) << 8 | uint64_t(data[0x17]);
           if (end - start < 512)                  // memory range is smaller than 512KB
           {
-// consider that values were expressed in megagytes
+// consider that values were expressed in megabytes
             start *= 1024;
             end *= 1024;
           }
