@@ -23,7 +23,7 @@ lib$(PACKAGENAME).a: $(OBJS)
 	$(AR) rs $@ $^
 
 install: all
-	
+
 clean:
 	rm -f $(OBJS) lib$(PACKAGENAME).a
 

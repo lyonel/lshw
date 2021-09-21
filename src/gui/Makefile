@@ -46,7 +46,7 @@ gtk-$(PACKAGENAME): $(OBJS) ../core/liblshw.a
 
 install: all
 	$(STRIP) gtk-$(PACKAGENAME)
-	
+
 clean:
 	rm -f $(OBJS) gtk-$(PACKAGENAME) gtk-lshw.glade.bak gtk-lshw.gladep.bak callbacks.c.bak callbacks.h.bak Makefile.bak
 
