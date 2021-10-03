@@ -148,10 +148,17 @@ struct ethtool_value
 #define SUPPORTED_BNC                   (1 << 11)
 #define SUPPORTED_10000baseT_Full       (1 << 12)
 
-/* The forced speed, 10Mb, 100Mb, gigabit, 10GbE. */
+/* Indicates what features are supported by the interface,
+ * in the second word of the extended bitmap. */
+#define SUPPORTED2_2500baseT_Full       (1 << 15)
+#define SUPPORTED2_5000baseT_Full       (1 << 16)
+
+/* The forced speed, 10Mb, 100Mb, gigabit, 2.5GbE, 5GbE, 10GbE. */
 #define SPEED_10                10
 #define SPEED_100               100
 #define SPEED_1000              1000
+#define SPEED_2500              2500
+#define SPEED_5000              5000
 #define SPEED_10000             10000
 
 /* Duplex, half or full. */
@@ -332,7 +339,7 @@ static bool isVirtual(const string & MAC)
 }
 
 
-static void updateCapabilities(hwNode & interface, u32 supported, u16 speed, u8 duplex, u8 port, u8 autoneg)
+static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2, u32 speed, u8 duplex, u8 port, u8 autoneg)
 {
   if(supported & SUPPORTED_TP)
     interface.addCapability("tp", _("twisted pair"));
@@ -374,6 +381,16 @@ static void updateCapabilities(hwNode & interface, u32 supported, u16 speed, u8 
     interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
     interface.setCapacity(1000000000ULL);
   }
+  if(supported2 & SUPPORTED2_2500baseT_Full)
+  {
+    interface.addCapability("2500bt-fd", _("2.5Gbit/s (full duplex)"));
+    interface.setCapacity(2500000000ULL);
+  }
+  if(supported2 & SUPPORTED2_5000baseT_Full)
+  {
+    interface.addCapability("5000bt-fd", _("5Gbit/s (full duplex)"));
+    interface.setCapacity(5000000000ULL);
+  }
   if(supported & SUPPORTED_10000baseT_Full)
   {
     interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
@@ -395,6 +412,14 @@ static void updateCapabilities(hwNode & interface, u32 supported, u16 speed, u8 
     case SPEED_1000:
       interface.setConfig("speed", "1Gbit/s");
       interface.setSize(1000000000ULL);
+      break;
+    case SPEED_2500:
+      interface.setConfig("speed", "2.5Gbit/s");
+      interface.setSize(2500000000ULL);
+      break;
+    case SPEED_5000:
+      interface.setConfig("speed", "5Gbit/s");
+      interface.setSize(5000000000ULL);
       break;
     case SPEED_10000:
       interface.setConfig("speed", "10Gbit/s");
@@ -563,8 +588,8 @@ bool scan_network(hwNode & n)
           // Read link mode settings.
           if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
           {
-            updateCapabilities(interface, elink.link_mode_masks[0], elink.speed,
-              elink.duplex, elink.port, elink.autoneg);
+            updateCapabilities(interface, elink.link_mode_masks[0], elink.link_mode_masks[1],
+              elink.speed, elink.duplex, elink.port, elink.autoneg);
             read_capabilities = true;
           }
         }
@@ -578,7 +603,7 @@ bool scan_network(hwNode & n)
         ifr.ifr_data = (caddr_t) &ecmd;
         if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
         {
-          updateCapabilities(interface, ecmd.supported, ecmd.speed, ecmd.duplex, ecmd.port, ecmd.autoneg);
+          updateCapabilities(interface, ecmd.supported, 0, ecmd.speed, ecmd.duplex, ecmd.port, ecmd.autoneg);
         }
       }
 
