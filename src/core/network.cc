@@ -53,6 +53,7 @@ typedef unsigned long long u64;
 typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
+typedef int8_t s8;
 
 struct ethtool_cmd
 {
@@ -68,6 +69,28 @@ struct ethtool_cmd
   u32 maxtxpkt;                                   /* Tx pkts before generating tx int */
   u32 maxrxpkt;                                   /* Rx pkts before generating rx int */
   u32 reserved[4];
+};
+
+#define MAX_LINK_MODE_MASK_SIZE 64
+struct ethtool_link_settings
+{
+  u32 cmd;
+  u32 speed;                                      /* The forced speed, 10Mb, 100Mb, gigabit */
+  u8 duplex;                                      /* Duplex, half or full */
+  u8 port;                                        /* Which connector port */
+  u8 phy_address;
+  u8 autoneg;                                     /* Enable or disable autonegotiation */
+  u8 mdio_support;
+  u8 eth_tp_mdix;
+  u8 eth_tp_mdix_ctrl;
+  s8 link_mode_masks_nwords;
+  u8 transceiver;                                 /* Which tranceiver to use */
+  u8 master_slave_cfg;
+  u8 master_slave_state;
+  u8 reserved1[1];
+  u32 reserved[7];
+  u32 link_mode_masks[3 * MAX_LINK_MODE_MASK_SIZE]; /* Link mode mask fields for modes:
+                                                       supported, advertised, peer advertised. */
 };
 
 #ifndef IFNAMSIZ
@@ -108,6 +131,7 @@ struct ethtool_value
 #define ETHTOOL_GSET            0x00000001        /* Get settings. */
 #define ETHTOOL_GDRVINFO        0x00000003        /* Get driver info. */
 #define ETHTOOL_GLINK           0x0000000a        /* Get link status (ethtool_value) */
+#define ETHTOOL_GLINKSETTINGS   0x0000004c        /* Get link mode settings. */
 
 /* Indicates what features are supported by the interface. */
 #define SUPPORTED_10baseT_Half          (1 << 0)
@@ -424,12 +448,15 @@ bool scan_network(hwNode & n)
     struct ethtool_drvinfo drvinfo;
     struct ethtool_cmd ecmd;
     struct ethtool_value edata;
+    struct ethtool_link_settings elink;
 
     for (unsigned int i = 0; i < interfaces.size(); i++)
     {
       hwNode *existing;
       hwNode interface("network",
         hw::network);
+      s8 mask_size = 0;
+      bool read_capabilities = false;
 
       interface.setLogicalName(interfaces[i]);
       interface.claim();
@@ -517,13 +544,42 @@ bool scan_network(hwNode & n)
         interface.setConfig("link", edata.data ? "yes":"no");
       }
 
-      ecmd.cmd = ETHTOOL_GSET;
+      elink.cmd = ETHTOOL_GLINKSETTINGS;
+      elink.link_mode_masks_nwords = 0;
       memset(&ifr, 0, sizeof(ifr));
       strcpy(ifr.ifr_name, interfaces[i].c_str());
-      ifr.ifr_data = (caddr_t) &ecmd;
+      ifr.ifr_data = (caddr_t) &elink;
+      // Probe link mode mask count.
       if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
       {
-        updateCapabilities(interface, ecmd.supported, ecmd.speed, ecmd.duplex, ecmd.port, ecmd.autoneg);
+        mask_size = -elink.link_mode_masks_nwords;
+        if (mask_size > 1 && mask_size <= MAX_LINK_MODE_MASK_SIZE)
+        {
+          elink.cmd = ETHTOOL_GLINKSETTINGS;
+          elink.link_mode_masks_nwords = mask_size;
+          memset(&ifr, 0, sizeof(ifr));
+          strcpy(ifr.ifr_name, interfaces[i].c_str());
+          ifr.ifr_data = (caddr_t) &elink;
+          // Read link mode settings.
+          if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+          {
+            updateCapabilities(interface, elink.link_mode_masks[0], elink.speed,
+              elink.duplex, elink.port, elink.autoneg);
+            read_capabilities = true;
+          }
+        }
+      }
+
+      if (!read_capabilities)
+      {
+        ecmd.cmd = ETHTOOL_GSET;
+        memset(&ifr, 0, sizeof(ifr));
+        strcpy(ifr.ifr_name, interfaces[i].c_str());
+        ifr.ifr_data = (caddr_t) &ecmd;
+        if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+        {
+          updateCapabilities(interface, ecmd.supported, ecmd.speed, ecmd.duplex, ecmd.port, ecmd.autoneg);
+        }
       }
 
       drvinfo.cmd = ETHTOOL_GDRVINFO;
