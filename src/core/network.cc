@@ -457,6 +457,50 @@ static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2
 }
 
 
+static void scan_modes(hwNode & interface, int fd)
+{
+  struct ifreq ifr;
+  struct ethtool_cmd ecmd;
+  struct ethtool_link_settings elink;
+  s8 mask_size;
+
+  elink.cmd = ETHTOOL_GLINKSETTINGS;
+  elink.link_mode_masks_nwords = 0;
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  ifr.ifr_data = (caddr_t) &elink;
+  // Probe link mode mask count.
+  if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+  {
+    mask_size = -elink.link_mode_masks_nwords;
+    if (mask_size > 1 && mask_size <= MAX_LINK_MODE_MASK_SIZE)
+    {
+      elink.cmd = ETHTOOL_GLINKSETTINGS;
+      elink.link_mode_masks_nwords = mask_size;
+      memset(&ifr, 0, sizeof(ifr));
+      strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+      ifr.ifr_data = (caddr_t) &elink;
+      // Read link mode settings.
+      if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+      {
+        updateCapabilities(interface, elink.link_mode_masks[0], elink.link_mode_masks[1],
+          elink.speed, elink.duplex, elink.port, elink.autoneg);
+        return;
+      }
+    }
+  }
+
+  ecmd.cmd = ETHTOOL_GSET;
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  ifr.ifr_data = (caddr_t) &ecmd;
+  if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+  {
+    updateCapabilities(interface, ecmd.supported, 0, ecmd.speed, ecmd.duplex, ecmd.port, ecmd.autoneg);
+  }
+}
+
+
 bool scan_network(hwNode & n)
 {
   vector < string > interfaces;
@@ -471,17 +515,13 @@ bool scan_network(hwNode & n)
   {
     struct ifreq ifr;
     struct ethtool_drvinfo drvinfo;
-    struct ethtool_cmd ecmd;
     struct ethtool_value edata;
-    struct ethtool_link_settings elink;
 
     for (unsigned int i = 0; i < interfaces.size(); i++)
     {
       hwNode *existing;
       hwNode interface("network",
         hw::network);
-      s8 mask_size = 0;
-      bool read_capabilities = false;
 
       interface.setLogicalName(interfaces[i]);
       interface.claim();
@@ -569,43 +609,7 @@ bool scan_network(hwNode & n)
         interface.setConfig("link", edata.data ? "yes":"no");
       }
 
-      elink.cmd = ETHTOOL_GLINKSETTINGS;
-      elink.link_mode_masks_nwords = 0;
-      memset(&ifr, 0, sizeof(ifr));
-      strcpy(ifr.ifr_name, interfaces[i].c_str());
-      ifr.ifr_data = (caddr_t) &elink;
-      // Probe link mode mask count.
-      if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
-      {
-        mask_size = -elink.link_mode_masks_nwords;
-        if (mask_size > 1 && mask_size <= MAX_LINK_MODE_MASK_SIZE)
-        {
-          elink.cmd = ETHTOOL_GLINKSETTINGS;
-          elink.link_mode_masks_nwords = mask_size;
-          memset(&ifr, 0, sizeof(ifr));
-          strcpy(ifr.ifr_name, interfaces[i].c_str());
-          ifr.ifr_data = (caddr_t) &elink;
-          // Read link mode settings.
-          if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
-          {
-            updateCapabilities(interface, elink.link_mode_masks[0], elink.link_mode_masks[1],
-              elink.speed, elink.duplex, elink.port, elink.autoneg);
-            read_capabilities = true;
-          }
-        }
-      }
-
-      if (!read_capabilities)
-      {
-        ecmd.cmd = ETHTOOL_GSET;
-        memset(&ifr, 0, sizeof(ifr));
-        strcpy(ifr.ifr_name, interfaces[i].c_str());
-        ifr.ifr_data = (caddr_t) &ecmd;
-        if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
-        {
-          updateCapabilities(interface, ecmd.supported, 0, ecmd.speed, ecmd.duplex, ecmd.port, ecmd.autoneg);
-        }
-      }
+      scan_modes(interface, fd);
 
       drvinfo.cmd = ETHTOOL_GDRVINFO;
       memset(&ifr, 0, sizeof(ifr));
