@@ -19,6 +19,9 @@
 #include <unistd.h>
 #include <limits.h>
 #include <sys/utsname.h>
+#include <string.h>
+#include <limits.h>
+#include <cstring>
 
 using namespace hw;
 
