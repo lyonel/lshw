@@ -430,7 +430,7 @@ bool scan_network(hwNode & n)
         if(ecmd.supported & SUPPORTED_BNC)
           interface.addCapability("bnc", _("BNC"));
         if(ecmd.supported & SUPPORTED_MII)
-          interface.addCapability("mii", _("Media Independant Interface"));
+          interface.addCapability("mii", _("Media Independent Interface"));
         if(ecmd.supported & SUPPORTED_FIBRE)
           interface.addCapability("fibre",_( "optical fibre"));
         if(ecmd.supported & SUPPORTED_10baseT_Half)
