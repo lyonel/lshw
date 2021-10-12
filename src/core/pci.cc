@@ -14,6 +14,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <cstring>
 
 __ID("@(#) $Id$");
 

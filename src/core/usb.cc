@@ -14,6 +14,7 @@
 #include "heuristics.h"
 #include "options.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <map>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -24,6 +25,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <cstring>
 
 #define PROCBUSUSBDEVICES "/proc/bus/usb/devices"
 #define SYSKERNELDEBUGUSBDEVICES "/sys/kernel/debug/usb/devices"

@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <time.h>
+#include <cstring>
 
 __ID("@(#) $Id$");
 
