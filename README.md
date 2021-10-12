@@ -17,7 +17,7 @@ Installation
    - a PA-RISC-, Alpha-, IA-64- (Itanium-), PowerPC-, ARM- or x86- based machine
    - an ANSI (or close enough to ANSI compliance) C++ compiler (tested with g++ 2.95.4 and 3.x)
    - for the (optional) GTK+ graphical user interface, you will need a
-	complete GTK+ development environment (gtk3-devel on RedHat/Fedora derivatives) 
+	complete GTK+ development environment (gtk3-devel on RedHat/Fedora derivatives)
 
  2. To compile it, just use:
 
@@ -42,7 +42,7 @@ Getting help
 
  1. the lshw home page is http://lshw.ezix.org/
  2. bug reports and feature requests: http://ezix.org/project/newticket?component=lshw
- 
+
    Please make sure you include enough information in your bug report: XML output from lshw is preferred over text or HTML, indicate the affected version of lshw, your platform (i386, x86-64, PA-RISC, PowerPC, etc.) and your distribution.
 
 NOTE TO DISTRIBUTIONS
