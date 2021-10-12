@@ -348,7 +348,7 @@ static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2
   if(supported & SUPPORTED_BNC)
     interface.addCapability("bnc", _("BNC"));
   if(supported & SUPPORTED_MII)
-    interface.addCapability("mii", _("Media Independant Interface"));
+    interface.addCapability("mii", _("Media Independent Interface"));
   if(supported & SUPPORTED_FIBRE)
     interface.addCapability("fibre",_( "optical fibre"));
   if(supported & SUPPORTED_10baseT_Half)
