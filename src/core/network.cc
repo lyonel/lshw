@@ -53,6 +53,7 @@ typedef unsigned long long u64;
 typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
+typedef int8_t s8;
 
 struct ethtool_cmd
 {
@@ -68,6 +69,28 @@ struct ethtool_cmd
   u32 maxtxpkt;                                   /* Tx pkts before generating tx int */
   u32 maxrxpkt;                                   /* Rx pkts before generating rx int */
   u32 reserved[4];
+};
+
+#define MAX_LINK_MODE_MASK_SIZE 64
+struct ethtool_link_settings
+{
+  u32 cmd;
+  u32 speed;                                      /* The forced speed, 10Mb, 100Mb, gigabit */
+  u8 duplex;                                      /* Duplex, half or full */
+  u8 port;                                        /* Which connector port */
+  u8 phy_address;
+  u8 autoneg;                                     /* Enable or disable autonegotiation */
+  u8 mdio_support;
+  u8 eth_tp_mdix;
+  u8 eth_tp_mdix_ctrl;
+  s8 link_mode_masks_nwords;
+  u8 transceiver;                                 /* Which tranceiver to use */
+  u8 master_slave_cfg;
+  u8 master_slave_state;
+  u8 reserved1[1];
+  u32 reserved[7];
+  u32 link_mode_masks[3 * MAX_LINK_MODE_MASK_SIZE]; /* Link mode mask fields for modes:
+                                                       supported, advertised, peer advertised. */
 };
 
 #ifndef IFNAMSIZ
@@ -108,6 +131,7 @@ struct ethtool_value
 #define ETHTOOL_GSET            0x00000001        /* Get settings. */
 #define ETHTOOL_GDRVINFO        0x00000003        /* Get driver info. */
 #define ETHTOOL_GLINK           0x0000000a        /* Get link status (ethtool_value) */
+#define ETHTOOL_GLINKSETTINGS   0x0000004c        /* Get link mode settings. */
 
 /* Indicates what features are supported by the interface. */
 #define SUPPORTED_10baseT_Half          (1 << 0)
@@ -124,10 +148,17 @@ struct ethtool_value
 #define SUPPORTED_BNC                   (1 << 11)
 #define SUPPORTED_10000baseT_Full       (1 << 12)
 
-/* The forced speed, 10Mb, 100Mb, gigabit, 10GbE. */
+/* Indicates what features are supported by the interface,
+ * in the second word of the extended bitmap. */
+#define SUPPORTED2_2500baseT_Full       (1 << 15)
+#define SUPPORTED2_5000baseT_Full       (1 << 16)
+
+/* The forced speed, 10Mb, 100Mb, gigabit, 2.5GbE, 5GbE, 10GbE. */
 #define SPEED_10                10
 #define SPEED_100               100
 #define SPEED_1000              1000
+#define SPEED_2500              2500
+#define SPEED_5000              5000
 #define SPEED_10000             10000
 
 /* Duplex, half or full. */
@@ -308,6 +339,168 @@ static bool isVirtual(const string & MAC)
 }
 
 
+static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2, u32 speed, u8 duplex, u8 port, u8 autoneg)
+{
+  if(supported & SUPPORTED_TP)
+    interface.addCapability("tp", _("twisted pair"));
+  if(supported & SUPPORTED_AUI)
+    interface.addCapability("aui", _("AUI"));
+  if(supported & SUPPORTED_BNC)
+    interface.addCapability("bnc", _("BNC"));
+  if(supported & SUPPORTED_MII)
+    interface.addCapability("mii", _("Media Independant Interface"));
+  if(supported & SUPPORTED_FIBRE)
+    interface.addCapability("fibre",_( "optical fibre"));
+  if(supported & SUPPORTED_10baseT_Half)
+  {
+    interface.addCapability("10bt", _("10Mbit/s"));
+    interface.setCapacity(10000000ULL);
+  }
+  if(supported & SUPPORTED_10baseT_Full)
+  {
+    interface.addCapability("10bt-fd", _("10Mbit/s (full duplex)"));
+    interface.setCapacity(10000000ULL);
+  }
+  if(supported & SUPPORTED_100baseT_Half)
+  {
+    interface.addCapability("100bt", _("100Mbit/s"));
+    interface.setCapacity(100000000ULL);
+  }
+  if(supported & SUPPORTED_100baseT_Full)
+  {
+    interface.addCapability("100bt-fd", _("100Mbit/s (full duplex)"));
+    interface.setCapacity(100000000ULL);
+  }
+  if(supported & SUPPORTED_1000baseT_Half)
+  {
+    interface.addCapability("1000bt", "1Gbit/s");
+    interface.setCapacity(1000000000ULL);
+  }
+  if(supported & SUPPORTED_1000baseT_Full)
+  {
+    interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
+    interface.setCapacity(1000000000ULL);
+  }
+  if(supported2 & SUPPORTED2_2500baseT_Full)
+  {
+    interface.addCapability("2500bt-fd", _("2.5Gbit/s (full duplex)"));
+    interface.setCapacity(2500000000ULL);
+  }
+  if(supported2 & SUPPORTED2_5000baseT_Full)
+  {
+    interface.addCapability("5000bt-fd", _("5Gbit/s (full duplex)"));
+    interface.setCapacity(5000000000ULL);
+  }
+  if(supported & SUPPORTED_10000baseT_Full)
+  {
+    interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+    interface.setCapacity(10000000000ULL);
+  }
+  if(supported & SUPPORTED_Autoneg)
+    interface.addCapability("autonegotiation", _("Auto-negotiation"));
+
+  switch(speed)
+  {
+    case SPEED_10:
+      interface.setConfig("speed", "10Mbit/s");
+      interface.setSize(10000000ULL);
+      break;
+    case SPEED_100:
+      interface.setConfig("speed", "100Mbit/s");
+      interface.setSize(100000000ULL);
+      break;
+    case SPEED_1000:
+      interface.setConfig("speed", "1Gbit/s");
+      interface.setSize(1000000000ULL);
+      break;
+    case SPEED_2500:
+      interface.setConfig("speed", "2.5Gbit/s");
+      interface.setSize(2500000000ULL);
+      break;
+    case SPEED_5000:
+      interface.setConfig("speed", "5Gbit/s");
+      interface.setSize(5000000000ULL);
+      break;
+    case SPEED_10000:
+      interface.setConfig("speed", "10Gbit/s");
+      interface.setSize(10000000000ULL);
+      break;
+  }
+  switch(duplex)
+  {
+    case DUPLEX_HALF:
+      interface.setConfig("duplex", "half");
+      break;
+    case DUPLEX_FULL:
+      interface.setConfig("duplex", "full");
+      break;
+  }
+  switch(port)
+  {
+    case PORT_TP:
+      interface.setConfig("port", "twisted pair");
+      break;
+    case PORT_AUI:
+      interface.setConfig("port", "AUI");
+      break;
+    case PORT_BNC:
+      interface.setConfig("port", "BNC");
+      break;
+    case PORT_MII:
+      interface.setConfig("port", "MII");
+      break;
+    case PORT_FIBRE:
+      interface.setConfig("port", "fibre");
+      break;
+  }
+  interface.setConfig("autonegotiation", (autoneg == AUTONEG_DISABLE) ?  "off" : "on");
+}
+
+
+static void scan_modes(hwNode & interface, int fd)
+{
+  struct ifreq ifr;
+  struct ethtool_cmd ecmd;
+  struct ethtool_link_settings elink;
+  s8 mask_size;
+
+  elink.cmd = ETHTOOL_GLINKSETTINGS;
+  elink.link_mode_masks_nwords = 0;
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  ifr.ifr_data = (caddr_t) &elink;
+  // Probe link mode mask count.
+  if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+  {
+    mask_size = -elink.link_mode_masks_nwords;
+    if (mask_size > 1 && mask_size <= MAX_LINK_MODE_MASK_SIZE)
+    {
+      elink.cmd = ETHTOOL_GLINKSETTINGS;
+      elink.link_mode_masks_nwords = mask_size;
+      memset(&ifr, 0, sizeof(ifr));
+      strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+      ifr.ifr_data = (caddr_t) &elink;
+      // Read link mode settings.
+      if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+      {
+        updateCapabilities(interface, elink.link_mode_masks[0], elink.link_mode_masks[1],
+          elink.speed, elink.duplex, elink.port, elink.autoneg);
+        return;
+      }
+    }
+  }
+
+  ecmd.cmd = ETHTOOL_GSET;
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  ifr.ifr_data = (caddr_t) &ecmd;
+  if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
+  {
+    updateCapabilities(interface, ecmd.supported, 0, ecmd.speed, ecmd.duplex, ecmd.port, ecmd.autoneg);
+  }
+}
+
+
 bool scan_network(hwNode & n)
 {
   vector < string > interfaces;
@@ -322,7 +515,6 @@ bool scan_network(hwNode & n)
   {
     struct ifreq ifr;
     struct ethtool_drvinfo drvinfo;
-    struct ethtool_cmd ecmd;
     struct ethtool_value edata;
 
     for (unsigned int i = 0; i < interfaces.size(); i++)
@@ -417,108 +609,7 @@ bool scan_network(hwNode & n)
         interface.setConfig("link", edata.data ? "yes":"no");
       }
 
-      ecmd.cmd = ETHTOOL_GSET;
-      memset(&ifr, 0, sizeof(ifr));
-      strcpy(ifr.ifr_name, interfaces[i].c_str());
-      ifr.ifr_data = (caddr_t) &ecmd;
-      if (ioctl(fd, SIOCETHTOOL, &ifr) == 0)
-      {
-        if(ecmd.supported & SUPPORTED_TP)
-          interface.addCapability("tp", _("twisted pair"));
-        if(ecmd.supported & SUPPORTED_AUI)
-          interface.addCapability("aui", _("AUI"));
-        if(ecmd.supported & SUPPORTED_BNC)
-          interface.addCapability("bnc", _("BNC"));
-        if(ecmd.supported & SUPPORTED_MII)
-          interface.addCapability("mii", _("Media Independant Interface"));
-        if(ecmd.supported & SUPPORTED_FIBRE)
-          interface.addCapability("fibre",_( "optical fibre"));
-        if(ecmd.supported & SUPPORTED_10baseT_Half)
-        {
-          interface.addCapability("10bt", _("10Mbit/s"));
-          interface.setCapacity(10000000ULL);
-        }
-        if(ecmd.supported & SUPPORTED_10baseT_Full)
-        {
-          interface.addCapability("10bt-fd", _("10Mbit/s (full duplex)"));
-          interface.setCapacity(10000000ULL);
-        }
-        if(ecmd.supported & SUPPORTED_100baseT_Half)
-        {
-          interface.addCapability("100bt", _("100Mbit/s"));
-          interface.setCapacity(100000000ULL);
-        }
-        if(ecmd.supported & SUPPORTED_100baseT_Full)
-        {
-          interface.addCapability("100bt-fd", _("100Mbit/s (full duplex)"));
-          interface.setCapacity(100000000ULL);
-        }
-        if(ecmd.supported & SUPPORTED_1000baseT_Half)
-        {
-          interface.addCapability("1000bt", "1Gbit/s");
-          interface.setCapacity(1000000000ULL);
-        }
-        if(ecmd.supported & SUPPORTED_1000baseT_Full)
-        {
-          interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
-          interface.setCapacity(1000000000ULL);
-        }
-        if(ecmd.supported & SUPPORTED_10000baseT_Full)
-        {
-          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
-          interface.setCapacity(10000000000ULL);
-        }
-        if(ecmd.supported & SUPPORTED_Autoneg)
-          interface.addCapability("autonegotiation", _("Auto-negotiation"));
-
-        switch(ecmd.speed)
-        {
-          case SPEED_10:
-            interface.setConfig("speed", "10Mbit/s");
-            interface.setSize(10000000ULL);
-            break;
-          case SPEED_100:
-            interface.setConfig("speed", "100Mbit/s");
-            interface.setSize(100000000ULL);
-            break;
-          case SPEED_1000:
-            interface.setConfig("speed", "1Gbit/s");
-            interface.setSize(1000000000ULL);
-            break;
-          case SPEED_10000:
-            interface.setConfig("speed", "10Gbit/s");
-            interface.setSize(10000000000ULL);
-            break;
-        }
-        switch(ecmd.duplex)
-        {
-          case DUPLEX_HALF:
-            interface.setConfig("duplex", "half");
-            break;
-          case DUPLEX_FULL:
-            interface.setConfig("duplex", "full");
-            break;
-        }
-        switch(ecmd.port)
-        {
-          case PORT_TP:
-            interface.setConfig("port", "twisted pair");
-            break;
-          case PORT_AUI:
-            interface.setConfig("port", "AUI");
-            break;
-          case PORT_BNC:
-            interface.setConfig("port", "BNC");
-            break;
-          case PORT_MII:
-            interface.setConfig("port", "MII");
-            break;
-          case PORT_FIBRE:
-            interface.setConfig("port", "fibre");
-            break;
-        }
-        interface.setConfig("autonegotiation", (ecmd.autoneg == AUTONEG_DISABLE) ?  "off" : "on");
-      }
+      scan_modes(interface, fd);
 
       drvinfo.cmd = ETHTOOL_GDRVINFO;
       memset(&ifr, 0, sizeof(ifr));
