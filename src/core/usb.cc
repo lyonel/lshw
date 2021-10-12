@@ -311,6 +311,7 @@ static bool load_usbids(const string & name)
         buffer[linelen-1] = '\0';                 // chop \n
       string line = string(buffer);
       free(buffer);
+      buffer = NULL;
 
       description = NULL;
       t = 0;
@@ -338,6 +339,7 @@ static bool load_usbids(const string & name)
         }
       }
     }
+    if(buffer != NULL) free(buffer);
   }
 
   fclose(usbids);
@@ -393,6 +395,7 @@ bool scan_usb(hwNode & n)
     {
       string line = hw::strip(string(buffer));
       free(buffer);
+      buffer = NULL;
 
       if(line.length()<=0)
       {
@@ -497,6 +500,7 @@ bool scan_usb(hwNode & n)
         }
       }
     }
+    if(buffer != NULL) free(buffer);
   }
   if(defined)
     addUSBChild(n, device, bus, lev, prnt);
