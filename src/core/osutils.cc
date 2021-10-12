@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iomanip>
 #include <stack>
+#include <cstring>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>

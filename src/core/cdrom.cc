@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include <linux/cdrom.h>
+#include <climits>
 
 __ID("@(#) $Id$");
 

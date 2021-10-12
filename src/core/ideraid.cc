@@ -20,6 +20,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <ctype.h>
+#include <cstring>
 #include <vector>
 #include <linux/hdreg.h>
 #include <regex.h>

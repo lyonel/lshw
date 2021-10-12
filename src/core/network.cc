@@ -123,6 +123,43 @@ struct ethtool_value
 #define SUPPORTED_FIBRE                 (1 << 10)
 #define SUPPORTED_BNC                   (1 << 11)
 #define SUPPORTED_10000baseT_Full       (1 << 12)
+//        ETHTOOL_LINK_MODE_Pause_BIT             = 13,
+//        ETHTOOL_LINK_MODE_Asym_Pause_BIT        = 14,
+#define SUPPORTED_2500baseX_Full        (1 << 15)
+//        ETHTOOL_LINK_MODE_Backplane_BIT         = 16,
+#define SUPPORTED_1000baseKX_Full       (1 << 17)
+#define SUPPORTED_10000baseKX4_Full     (1 << 18)
+#define SUPPORTED_10000baseKR_Full      (1 << 19)
+// What does FEC mean?
+#define SUPPORTED_10000baseR_FEC        (1 << 20)
+#define SUPPORTED_20000baseMLD2_Full    (1 << 21)
+#define SUPPORTED_20000baseKR2_Full     (1 << 22)
+#define SUPPORTED_40000baseKR4_Full     (1 << 23)
+#define SUPPORTED_40000baseCR4_Full     (1 << 24)
+#define SUPPORTED_40000baseSR4_Full     (1 << 25)
+#define SUPPORTED_40000baseLR4_Full     (1 << 26)
+#define SUPPORTED_56000baseKR4_Full     (1 << 27)
+#define SUPPORTED_56000baseCR4_Full     (1 << 28)
+#define SUPPORTED_56000baseSR4_Full     (1 << 29)
+#define SUPPORTED_56000baseLR4_Full     (1 << 30)
+#define SUPPORTED_25000baseCR_Full      (1 << 31)
+#define SUPPORTED_25000baseKR_Full      (1 << 32)
+#define SUPPORTED_25000baseSR_Full      (1 << 33)
+#define SUPPORTED_50000baseCR2_Full     (1 << 34)
+#define SUPPORTED_50000baseKR2_Full     (1 << 35)
+#define SUPPORTED_100000baseKR4_Full    (1 << 36)
+#define SUPPORTED_100000baseSR4_Full    (1 << 37)
+#define SUPPORTED_100000baseCR4_Full    (1 << 38)
+#define SUPPORTED_100000baseLR4_ER4_Full (1 << 39)
+#define SUPPORTED_50000baseSR2_Full     (1 << 40)
+#define SUPPORTED_1000baseX_Full        (1 << 41)
+#define SUPPORTED_10000baseCR_Full      (1 << 42)
+#define SUPPORTED_10000baseSR_Full      (1 << 43)
+#define SUPPORTED_10000baseLR_Full      (1 << 44)
+#define SUPPORTED_10000baseLRM_Full     (1 << 45)
+#define SUPPORTED_10000baseER_Full      (1 << 46)
+#define SUPPORTED_2500baseT_Full        (1 << 47)
+#define SUPPORTED_5000baseT_Full        (1 << 48)
 
 /* The forced speed, 10Mb, 100Mb, gigabit, 10GbE. */
 #define SPEED_10                10
@@ -430,7 +467,7 @@ bool scan_network(hwNode & n)
         if(ecmd.supported & SUPPORTED_BNC)
           interface.addCapability("bnc", _("BNC"));
         if(ecmd.supported & SUPPORTED_MII)
-          interface.addCapability("mii", _("Media Independant Interface"));
+          interface.addCapability("mii", _("Media Independent Interface"));
         if(ecmd.supported & SUPPORTED_FIBRE)
           interface.addCapability("fibre",_( "optical fibre"));
         if(ecmd.supported & SUPPORTED_10baseT_Half)
@@ -463,11 +500,183 @@ bool scan_network(hwNode & n)
           interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
           interface.setCapacity(1000000000ULL);
         }
+
+        // Addition by Zigo
+        if(ecmd.supported & SUPPORTED_1000baseKX_Full)
+        {
+          interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
+          interface.setCapacity(1000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_1000baseX_Full)
+        {
+          interface.addCapability("1000bt-fd", _("1Gbit/s (full duplex)"));
+          interface.setCapacity(1000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_2500baseX_Full)
+        {
+          interface.addCapability("2500bt-fd", _("2500Mbit/s (full duplex)"));
+          interface.setCapacity(2500000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_2500baseT_Full)
+        {
+          interface.addCapability("2500bt-fd", _("2500Mbit/s (full duplex)"));
+          interface.setCapacity(2500000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_5000baseT_Full)
+        {
+          interface.addCapability("5000bt-fd", _("5Gbit/s (full duplex)"));
+          interface.setCapacity(5000000000ULL);
+        }
+
+        // Was there already
         if(ecmd.supported & SUPPORTED_10000baseT_Full)
         {
           interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
           interface.setCapacity(10000000000ULL);
         }
+
+        // Additions by Zigo
+        if(ecmd.supported & SUPPORTED_10000baseKX4_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseKR_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseR_FEC)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseCR_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseSR_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseLR_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseLRM_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_10000baseER_Full)
+        {
+          interface.addCapability("10000bt-fd", _("10Gbit/s (full duplex)"));
+          interface.setCapacity(10000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_20000baseMLD2_Full)
+        {
+          interface.addCapability("20000bt-fd", _("20Gbit/s (full duplex)"));
+          interface.setCapacity(20000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_20000baseKR2_Full)
+        {
+          interface.addCapability("20000bt-fd", _("20Gbit/s (full duplex)"));
+          interface.setCapacity(20000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_25000baseCR_Full)
+        {
+          interface.addCapability("25000bt-fd", _("25Gbit/s (full duplex)"));
+          interface.setCapacity(25000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_25000baseKR_Full)
+        {
+          interface.addCapability("25000bt-fd", _("25Gbit/s (full duplex)"));
+          interface.setCapacity(25000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_25000baseSR_Full)
+        {
+          interface.addCapability("25000bt-fd", _("25Gbit/s (full duplex)"));
+          interface.setCapacity(25000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_40000baseKR4_Full)
+        {
+          interface.addCapability("40000bt-fd", _("40Gbit/s (full duplex)"));
+          interface.setCapacity(40000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_40000baseCR4_Full)
+        {
+          interface.addCapability("40000bt-fd", _("40Gbit/s (full duplex)"));
+          interface.setCapacity(40000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_40000baseSR4_Full)
+        {
+          interface.addCapability("40000bt-fd", _("40Gbit/s (full duplex)"));
+          interface.setCapacity(40000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_40000baseLR4_Full)
+        {
+          interface.addCapability("40000bt-fd", _("40Gbit/s (full duplex)"));
+          interface.setCapacity(40000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_50000baseCR2_Full)
+        {
+          interface.addCapability("50000bt-fd", _("50Gbit/s (full duplex)"));
+          interface.setCapacity(50000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_50000baseKR2_Full)
+        {
+          interface.addCapability("50000bt-fd", _("50Gbit/s (full duplex)"));
+          interface.setCapacity(50000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_50000baseSR2_Full)
+        {
+          interface.addCapability("50000bt-fd", _("50Gbit/s (full duplex)"));
+          interface.setCapacity(50000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_56000baseKR4_Full)
+        {
+          interface.addCapability("56000bt-fd", _("56Gbit/s (full duplex)"));
+          interface.setCapacity(56000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_56000baseCR4_Full)
+        {
+          interface.addCapability("56000bt-fd", _("56Gbit/s (full duplex)"));
+          interface.setCapacity(56000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_56000baseSR4_Full)
+        {
+          interface.addCapability("56000bt-fd", _("56Gbit/s (full duplex)"));
+          interface.setCapacity(56000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_56000baseLR4_Full)
+        {
+          interface.addCapability("56000bt-fd", _("56Gbit/s (full duplex)"));
+          interface.setCapacity(56000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_100000baseKR4_Full)
+        {
+          interface.addCapability("100000bt-fd", _("100Gbit/s (full duplex)"));
+          interface.setCapacity(100000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_100000baseSR4_Full)
+        {
+          interface.addCapability("100000bt-fd", _("100Gbit/s (full duplex)"));
+          interface.setCapacity(100000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_100000baseCR4_Full)
+        {
+          interface.addCapability("100000bt-fd", _("100Gbit/s (full duplex)"));
+          interface.setCapacity(100000000000ULL);
+        }
+        if(ecmd.supported & SUPPORTED_100000baseLR4_ER4_Full)
+        {
+          interface.addCapability("100000bt-fd", _("100Gbit/s (full duplex)"));
+          interface.setCapacity(100000000000ULL);
+        }
+
         if(ecmd.supported & SUPPORTED_Autoneg)
           interface.addCapability("autonegotiation", _("Auto-negotiation"));
 

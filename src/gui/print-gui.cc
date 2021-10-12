@@ -10,6 +10,7 @@
 #include "version.h"
 #include "osutils.h"
 #include "stock.h"
+#include <cstring>
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
