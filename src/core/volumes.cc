@@ -46,34 +46,34 @@ static bool detect_swap(hwNode & n, source & s);
 
 static struct fstypes fs_types[] =
 {
-  {"blank", "Blank", "", NULL},
-  {"fat", "Windows FAT", "", detect_fat},
-  {"ntfs", "Windows NTFS", "secure", detect_ntfs},
-  {"hpfs", "OS/2 HPFS", "secure", NULL},
-  {"ext2", "EXT2/EXT3", "secure", detect_ext2},
-  {"reiserfs", "Linux ReiserFS", "secure,journaled", detect_reiserfs},
-  {"romfs", "Linux ROMFS", "ro", NULL},
-  {"squashfs", "Linux SquashFS", "ro", NULL},
-  {"cramfs", "Linux CramFS", "ro", NULL},
-  {"minixfs", "MinixFS", "secure", NULL},
-  {"sysvfs", "System V FS", "secure", NULL},
-  {"jfs", "Linux JFS", "secure,journaled", NULL},
-  {"xfs", "Linux XFS", "secure,journaled", NULL},
-  {"iso9660", "ISO-9660", "secure,ro", NULL},
-  {"xboxdvd", "X-Box DVD", "ro", NULL},
-  {"udf", "UDF", "secure,ro", NULL},
-  {"ufs", "UFS", "secure", NULL},
-  {"hphfs", "HP-UX HFS", "secure", NULL},
-  {"vxfs", "VxFS", "secure,journaled", NULL},
-  {"ffs", "FFS", "secure", NULL},
-  {"befs", "BeOS BFS", "journaled", NULL},
-  {"qnxfs", "QNX FS", "", NULL},
-  {"mfs", "MacOS MFS", "", NULL},
-  {"hfsplus", "MacOS HFS+", "secure,journaled", detect_hfsx},
-  {"hfs", "MacOS HFS", "", detect_hfs},
-  {"apfs", "MacOS APFS", "", detect_apfs},
-  {"luks", "Linux Unified Key Setup", "encrypted", detect_luks},
-  {"swap", "Linux swap", "", detect_swap},
+  {"blank", N_("Blank volume"), "", NULL},
+  {"fat", N_("Windows FAT volume"), "", detect_fat},
+  {"ntfs", N_("Windows NTFS volume"), "secure", detect_ntfs},
+  {"hpfs", N_("OS/2 HPFS volume"), "secure", NULL},
+  {"ext2", N_("EXT2/EXT3 volume"), "secure", detect_ext2},
+  {"reiserfs", N_("Linux ReiserFS volume"), "secure,journaled", detect_reiserfs},
+  {"romfs", N_("Linux ROMFS volume"), "ro", NULL},
+  {"squashfs", N_("Linux SquashFS volume"), "ro", NULL},
+  {"cramfs", N_("Linux CramFS volume"), "ro", NULL},
+  {"minixfs", N_("MinixFS volume"), "secure", NULL},
+  {"sysvfs", N_("System V FS volume"), "secure", NULL},
+  {"jfs", N_("Linux JFS volume"), "secure,journaled", NULL},
+  {"xfs", N_("Linux XFS volume"), "secure,journaled", NULL},
+  {"iso9660", N_("ISO-9660 volume"), "secure,ro", NULL},
+  {"xboxdvd", N_("X-Box DVD volume"), "ro", NULL},
+  {"udf", N_("UDF volume"), "secure,ro", NULL},
+  {"ufs", N_("UFS volume"), "secure", NULL},
+  {"hphfs", N_("HP-UX HFS volume"), "secure", NULL},
+  {"vxfs", N_("VxFS volume"), "secure,journaled", NULL},
+  {"ffs", N_("FFS volume"), "secure", NULL},
+  {"befs", N_("BeOS BFS volume"), "journaled", NULL},
+  {"qnxfs", N_("QNX FS volume"), "", NULL},
+  {"mfs", N_("MacOS MFS volume"), "", NULL},
+  {"hfsplus", N_("MacOS HFS+ volume"), "secure,journaled", detect_hfsx},
+  {"hfs", N_("MacOS HFS volume"), "", detect_hfs},
+  {"apfs", N_("MacOS APFS volume"), "", detect_apfs},
+  {"luks", N_("Linux Unified Key Setup volume"), "encrypted", detect_luks},
+  {"swap", N_("Linux swap volume"), "", detect_swap},
   { NULL, NULL, NULL, NULL }
 };
 
@@ -1155,7 +1155,7 @@ bool scan_volume(hwNode & n, source & s)
         n.setConfig("filesystem", fs_types[i].id);
       n.addCapability("initialized", _("initialized volume"));
       if(n.getDescription()=="")
-        n.setDescription(string(fs_types[i].description) + " "+string(_("volume")));
+        n.setDescription(_(fs_types[i].description));
       return true;
     }
     i++;
