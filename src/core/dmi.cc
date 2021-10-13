@@ -462,7 +462,7 @@ u8 cachetype = 0)
   switch ((config >> 8) & 3)
   {
     case 0:
-      n.addCapability("write-through", _("Write-trough"));
+      n.addCapability("write-through", _("Write-through"));
       break;
     case 1:
       n.addCapability("write-back", _("Write-back"));
