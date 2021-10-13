@@ -9,6 +9,7 @@
 #include <string>
 #include <dirent.h>
 #include <stdio.h>
+#include <cstring>
 
 __ID("@(#) $Id$");
 

@@ -6,6 +6,8 @@
 #include "osutils.h"
 #include "options.h"
 
+#include <cstring>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <sys/utsname.h>

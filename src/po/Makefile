@@ -18,6 +18,6 @@ $(PACKAGENAME).pot: POTFILES
 
 install: $(CATALOGS)
 	$(foreach i, $(LANGUAGES), install -D $(i).mo $(DESTDIR)/$(DATADIR)/locale/$(i)/LC_MESSAGES/$(PACKAGENAME).mo ;)
-	
+
 clean:
 	rm -f $(CATALOGS) $(PACKAGENAME).pot

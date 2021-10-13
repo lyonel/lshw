@@ -3,17 +3,17 @@
   detection of SD/MMC and SDIO devices
   bug fixes
   code cleanup
-  updated data files 
+  updated data files
 * lshw B.02.18
   migrated to git
   bug fixes
   code cleanup
-  updated data files 
+  updated data files
 * lshw B.02.17
   bug fixes
   code cleanup
   improved support for FAT-formatted disks
-  updated data files 
+  updated data files
 * lshw B.02.16
   bug fixes
   code cleanup
@@ -27,7 +27,7 @@
   updated data files
 * lshw B.02.14
   bug fixes
-  support for EXT4 partitions 
+  support for EXT4 partitions
 * lshw B.02.13
   fix bug #402: properly detect 64 bit systems (even when compiled for i386)
   fix bug #401: SMP-related crash on IA-64
@@ -70,7 +70,7 @@
 * lshw B.02.09
   minor bugfixes (#26, #27)
   added support for PCI domains (#28)
-  use of /sys (sysfs) when possible for PCI devices 
+  use of /sys (sysfs) when possible for PCI devices
 *  B.02.08.01
   bugfix release for non-x86 platforms (#24)
 *  B.02.08
@@ -99,7 +99,7 @@
   the GUI now uses a GtkTextView instead of a GtkLabel
   SVG icons are now displayed for USB, Firewire, SCSI, etc.
   added support for reporting VMX (Vanderpool) capabilities (untested)
-  fixed a compilation problem with GCC 4 
+  fixed a compilation problem with GCC 4
 *  B.02.03
   added support for PA-RISC devices (IODC-controlled) on 2.6 kernels
   the GUI can now be launched by invoking lshw with the '-X' option

@@ -21,6 +21,8 @@
 #include "volumes.h"
 #include "osutils.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -520,7 +522,6 @@ hwNode & partition)
  * - Now pass seed as an arg
  * - changed unsigned long to uint32_t, added #include<stdint.h>
  * - changed len to be an unsigned long
- * - changed crc32val to be a register
  * - License remains unchanged!  It's still GPL-compatable!
  */
 
@@ -626,7 +627,7 @@ uint32_t
 __efi_crc32(const void *buf, unsigned long len, uint32_t seed)
 {
   unsigned long i;
-  register uint32_t crc32val;
+  uint32_t crc32val;
   const unsigned char *s = (const unsigned char *)buf;
 
   crc32val = seed;
