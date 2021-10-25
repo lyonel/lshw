@@ -12,6 +12,7 @@ MANDIR=$(PREFIX)/share/man
 DATADIR=$(PREFIX)/share
 INSTALL?=install -p
 STRIP?=strip
+GZIP?=gzip -9
 export DESTDIR
 export PREFIX
 export SBINDIR
@@ -60,7 +61,7 @@ all: $(PACKAGENAME) $(PACKAGENAME).1 $(DATAFILES)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 %.gz: %
-	gzip -c $< > $@
+	$(GZIP) -c $< > $@
 
 .PHONY: core
 core:
