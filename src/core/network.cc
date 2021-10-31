@@ -421,13 +421,32 @@ static void scan_module(hwNode & interface, int fd)
       if ((eeeprom.data[0] == SFF_8024_ID_SOLDERED || eeeprom.data[0] == SFF_8024_ID_SFP) &&
           eeeprom.data[1] == SFF_8024_EXT_ID_DEFINED_BY_2WIRE_ID)
       {
+        char buffer[32];
         int wavelength = eeeprom.data[60] << 8 | eeeprom.data[61];
-        /* Skip wavelength for SFP+ cables. */
+        /* Skip wavelength for SFP+ cables, they use byte 60 for other data. */
         if ((eeeprom.data[8] & 0x0C) == 0 && wavelength > 0)
         {
-          char wlstr[16];
-          snprintf(wlstr, sizeof(wlstr), "%dnm", wavelength);
-          interface.setConfig("wavelength", wlstr);
+          snprintf(buffer, sizeof(buffer), "%dnm", wavelength);
+          interface.setConfig("wavelength", buffer);
+        }
+        int max_length = 0;
+        int length;
+        length = eeeprom.data[14] * 1000; /* SMF, km */
+        if (length > max_length) max_length = length;
+        length = eeeprom.data[15] * 100; /* SMF, meter */
+        if (length > max_length) max_length = length;
+        length = eeeprom.data[16] * 10; /* 50um (OM2), meter */
+        if (length > max_length) max_length = length;
+        length = eeeprom.data[17] * 10; /* 62.5um (OM1), meter */
+        if (length > max_length) max_length = length;
+        length = eeeprom.data[18]; /* Copper, meter */
+        if (length > max_length) max_length = length;
+        length = eeeprom.data[19] * 10; /* OM3, meter */
+        if (length > max_length) max_length = length;
+        if (max_length > 0)
+        {
+          snprintf(buffer, sizeof(buffer), "%dm", max_length);
+          interface.setConfig("maxlength", buffer);
         }
       }
       break;
