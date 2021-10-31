@@ -111,6 +111,14 @@ struct ethtool_modinfo {
 #define SFF_8024_ID_SFP                         0x3
 #define SFF_8024_EXT_ID_DEFINED_BY_2WIRE_ID     0x4
 
+/* Common connector types. */
+#define SFF_8024_CONNECTOR_SC                   0x1
+#define SFF_8024_CONNECTOR_LC                   0x7
+#define SFF_8024_CONNECTOR_OPTICAL_PIGTAIL      0xb
+#define SFF_8024_CONNECTOR_COPPER_PIGTAIL       0x21
+#define SFF_8024_CONNECTOR_RJ45                 0x22
+#define SFF_8024_CONNECTOR_NON_SEPARABLE        0x23
+
 #define MAX_EEPROM_SIZE 256
 struct ethtool_eeprom {
   u32 cmd;
@@ -449,6 +457,27 @@ static void scan_module(hwNode & interface, int fd)
         {
           snprintf(buffer, sizeof(buffer), "%dm", max_length);
           interface.setConfig("maxlength", buffer);
+        }
+        switch (eeeprom.data[2])
+        {
+          case SFF_8024_CONNECTOR_SC:
+            interface.setConfig("connector", "SC");
+            break;
+          case SFF_8024_CONNECTOR_LC:
+            interface.setConfig("connector", "LC");
+            break;
+          case SFF_8024_CONNECTOR_OPTICAL_PIGTAIL:
+            interface.setConfig("connector", "optical pigtail");
+            break;
+          case SFF_8024_CONNECTOR_COPPER_PIGTAIL:
+            interface.setConfig("connector", "copper pigtail");
+            break;
+          case SFF_8024_CONNECTOR_RJ45:
+            interface.setConfig("connector", "RJ45");
+            break;
+          case SFF_8024_CONNECTOR_NON_SEPARABLE:
+            interface.setConfig("connector", "non separable");
+            break;
         }
       }
       break;
