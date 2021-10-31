@@ -93,6 +93,33 @@ struct ethtool_link_settings
                                                        supported, advertised, peer advertised. */
 };
 
+/* Recognized module eeprom standards. */
+#define ETH_MODULE_SFF_8079     0x1
+#define ETH_MODULE_SFF_8472     0x2
+#define ETH_MODULE_SFF_8636     0x3
+#define ETH_MODULE_SFF_8436     0x4
+
+struct ethtool_modinfo {
+  u32 cmd;
+  u32 type;                                       /* SFF standard used in module */
+  u32 eeprom_len;                                 /* Length of module eeprom */
+  u32 reserved[8];
+};
+
+/* Known id types. */
+#define SFF_8024_ID_SOLDERED                    0x2
+#define SFF_8024_ID_SFP                         0x3
+#define SFF_8024_EXT_ID_DEFINED_BY_2WIRE_ID     0x4
+
+#define MAX_EEPROM_SIZE 256
+struct ethtool_eeprom {
+  u32 cmd;
+  u32 magic;                                      /* Only used for eeprom writes */
+  u32 offset;                                     /* Read or write offset */
+  u32 len;                                        /* Length of read/write */
+  u8 data[MAX_EEPROM_SIZE];                       /* Buffer */
+};
+
 #ifndef IFNAMSIZ
 #define IFNAMSIZ 32
 #endif
@@ -131,6 +158,8 @@ struct ethtool_value
 #define ETHTOOL_GSET            0x00000001        /* Get settings. */
 #define ETHTOOL_GDRVINFO        0x00000003        /* Get driver info. */
 #define ETHTOOL_GLINK           0x0000000a        /* Get link status (ethtool_value) */
+#define ETHTOOL_GMODULEINFO     0x00000042        /* Get plug-in module information */
+#define ETHTOOL_GMODULEEEPROM   0x00000043        /* Get plug-in module eeprom */
 #define ETHTOOL_GLINKSETTINGS   0x0000004c        /* Get link mode settings. */
 
 /* Indicates what features are supported by the interface. */
@@ -355,6 +384,54 @@ static bool isVirtual(const string & MAC)
     return true;	// VirtualBox
 
   return false;
+}
+
+
+// Get data for connected transceiver module.
+static void scan_module(hwNode & interface, int fd)
+{
+  struct ifreq ifr;
+  struct ethtool_modinfo emodinfo;
+  struct ethtool_eeprom eeeprom;
+
+  emodinfo.cmd = ETHTOOL_GMODULEINFO;
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  ifr.ifr_data = (caddr_t) &emodinfo;
+  // Skip interface if module info not supported.
+  if (ioctl(fd, SIOCETHTOOL, &ifr) != 0)
+    return;
+
+  eeeprom.cmd = ETHTOOL_GMODULEEEPROM;
+  eeeprom.offset = 0;
+  eeeprom.len = emodinfo.eeprom_len;
+  if (eeeprom.len > MAX_EEPROM_SIZE)
+    eeeprom.len = MAX_EEPROM_SIZE;
+  memset(&ifr, 0, sizeof(ifr));
+  strcpy(ifr.ifr_name, interface.getLogicalName().c_str());
+  ifr.ifr_data = (caddr_t) &eeeprom;
+  if (ioctl(fd, SIOCETHTOOL, &ifr) != 0)
+    return;
+
+  switch (emodinfo.type)
+  {
+    /* SFF 8472 eeprom layout starts with same data as SFF 8079. */
+    case ETH_MODULE_SFF_8079:
+    case ETH_MODULE_SFF_8472:
+      if ((eeeprom.data[0] == SFF_8024_ID_SOLDERED || eeeprom.data[0] == SFF_8024_ID_SFP) &&
+          eeeprom.data[1] == SFF_8024_EXT_ID_DEFINED_BY_2WIRE_ID)
+      {
+        int wavelength = eeeprom.data[60] << 8 | eeeprom.data[61];
+        /* Skip wavelength for SFP+ cables. */
+        if ((eeeprom.data[8] & 0x0C) == 0 && wavelength > 0)
+        {
+          char wlstr[16];
+          snprintf(wlstr, sizeof(wlstr), "%dnm", wavelength);
+          interface.setConfig("wavelength", wlstr);
+        }
+      }
+      break;
+  }
 }
 
 
@@ -666,6 +743,7 @@ bool scan_network(hwNode & n)
       }
 
       scan_modes(interface, fd);
+      scan_module(interface, fd);
 
       drvinfo.cmd = ETHTOOL_GDRVINFO;
       memset(&ifr, 0, sizeof(ifr));
