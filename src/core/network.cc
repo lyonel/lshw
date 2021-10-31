@@ -422,6 +422,8 @@ static void scan_module(hwNode & interface, int fd)
           eeeprom.data[1] == SFF_8024_EXT_ID_DEFINED_BY_2WIRE_ID)
       {
         char buffer[32];
+        /* Get part number (padded with space). String is stripped inside setConfig. */
+        interface.setConfig("module", string((const char*)&eeeprom.data[40], 16));
         int wavelength = eeeprom.data[60] << 8 | eeeprom.data[61];
         /* Skip wavelength for SFP+ cables, they use byte 60 for other data. */
         if ((eeeprom.data[8] & 0x0C) == 0 && wavelength > 0)
