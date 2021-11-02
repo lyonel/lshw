@@ -1,0 +1,1521 @@
+# Catalan translations for lshw
+# Copyright (C) 2021 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the lshw package.
+# Alex Henrie <alexhenrie24@gmail.com>, 2021
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: @(#) $Id$\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-22 00:36-0600\n"
+"PO-Revision-Date: 2021-10-22 01:05-0600\n"
+"Last-Translator: Alex Henrie <alexhenrie24@gmail.com>\n"
+"Language-Team: Catalan <ca@li.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+
+#: ../core/abi.cc:50
+msgid "32-bit processes"
+msgstr "Processos de 32 bits"
+
+#: ../core/abi.cc:51
+msgid "64-bit processes"
+msgstr "Processos de 64 bits"
+
+#: ../core/cpuid.cc:285
+msgid "CPU virtualization (Vanderpool)"
+msgstr "Virtualització de CPU (Vanderpool)"
+
+#: ../core/cpuid.cc:298 ../core/cpuid.cc:299
+msgid "Logical CPU"
+msgstr "CPU lògica"
+
+#: ../core/cpuid.cc:302
+msgid "HyperThreading"
+msgstr "HyperThreading"
+
+#: ../core/cpuid.cc:366 ../core/cpuid.cc:373 ../core/cpuid.cc:467
+msgid "L1 cache"
+msgstr "Cau L1"
+
+#: ../core/cpuid.cc:384 ../core/cpuid.cc:391 ../core/cpuid.cc:479
+msgid "L2 cache"
+msgstr "Cau L2"
+
+#: ../core/dmi.cc:155
+msgid "Other Battery"
+msgstr "Altra pila"
+
+#: ../core/dmi.cc:156
+msgid "Unknown Battery"
+msgstr "Pila desconeguda"
+
+#: ../core/dmi.cc:157
+msgid "Lead Acid Battery"
+msgstr "Pila de plom i àcid"
+
+#: ../core/dmi.cc:158
+msgid "Nickel Cadmium Battery"
+msgstr "Pila de níquel cadmi"
+
+#: ../core/dmi.cc:159
+msgid "Nickel Metal Hydride Battery"
+msgstr "Pila d'hidrur de metall de níquel"
+
+#: ../core/dmi.cc:160
+msgid "Lithium Ion Battery"
+msgstr "Pila d'ió liti"
+
+#: ../core/dmi.cc:161
+msgid "Zinc Air Battery"
+msgstr "Pila de zinc i aire"
+
+#: ../core/dmi.cc:162
+msgid "Lithium Polymer Battery"
+msgstr "Pila de polímer de liti"
+
+#: ../core/dmi.cc:167
+msgid "Battery"
+msgstr "Pila"
+
+#: ../core/dmi.cc:279
+msgid "Server Blade"
+msgstr "Servidor blade"
+
+#: ../core/dmi.cc:280
+msgid "Connectivity Switch"
+msgstr "Commutador de connectivitat"
+
+#: ../core/dmi.cc:281
+msgid "System Management Module"
+msgstr "Mòdul de gestió de sistema"
+
+#: ../core/dmi.cc:282
+msgid "Processor Module"
+msgstr "Mòdul de processador"
+
+#: ../core/dmi.cc:283
+msgid "I/O Module"
+msgstr "Mòdul E/S"
+
+#: ../core/dmi.cc:284
+msgid "Memory Module"
+msgstr "Mòdul de memoria"
+
+#: ../core/dmi.cc:285
+msgid "Daughter Board"
+msgstr "Placa filla"
+
+#: ../core/dmi.cc:286 ../core/dmi.cc:1094
+msgid "Motherboard"
+msgstr "Placa mare"
+
+#: ../core/dmi.cc:287
+msgid "Processor/Memory Module"
+msgstr "Mòdul de processador/memòria"
+
+#: ../core/dmi.cc:288
+msgid "Processor/IO Module "
+msgstr "Mòdul de processador/ES "
+
+#: ../core/dmi.cc:289
+msgid "Interconnect Board"
+msgstr "Placa d'interconnexió"
+
+#: ../core/dmi.cc:306
+msgid "ISA bus"
+msgstr "Bus ISA"
+
+#: ../core/dmi.cc:308
+msgid "MCA bus"
+msgstr "Bus MCA"
+
+#: ../core/dmi.cc:310
+msgid "EISA bus"
+msgstr "Bus EISA"
+
+#: ../core/dmi.cc:312
+msgid "PCI bus"
+msgstr "Bus PCI"
+
+#: ../core/dmi.cc:314
+msgid "PCMCIA/PCCard"
+msgstr "PCMCIA/PCCard"
+
+#: ../core/dmi.cc:316
+msgid "Plug-and-Play"
+msgstr "Plug-and-Play"
+
+#: ../core/dmi.cc:318
+msgid "Advanced Power Management"
+msgstr "Gestió de poder automàtica"
+
+#: ../core/dmi.cc:320
+msgid "BIOS EEPROM can be upgraded"
+msgstr "Es pot actualitzar la EEPROM del BIOS"
+
+#: ../core/dmi.cc:322
+msgid "BIOS shadowing"
+msgstr "Ombreig de BIOS"
+
+#: ../core/dmi.cc:324
+msgid "VESA video extensions"
+msgstr "Extensions de vídeo VESA"
+
+#: ../core/dmi.cc:326
+msgid "ESCD"
+msgstr "ESCD"
+
+#: ../core/dmi.cc:328
+msgid "Booting from CD-ROM/DVD"
+msgstr "S'arranca des de CD-ROM/DVD"
+
+#: ../core/dmi.cc:330
+msgid "Selectable boot path"
+msgstr "Camí d'arrancada seleccionable"
+
+#: ../core/dmi.cc:332
+msgid "BIOS ROM is socketed"
+msgstr "La ROM de BIOS té sòcol"
+
+#: ../core/dmi.cc:334
+msgid "Booting from PCMCIA"
+msgstr "S'arranca des de PCMCIA"
+
+#: ../core/dmi.cc:336
+msgid "Enhanced Disk Drive extensions"
+msgstr "Extensions de controlador de disc millorades"
+
+#: ../core/dmi.cc:338
+msgid "NEC 9800 floppy"
+msgstr "Disquet de NEC 9800"
+
+#: ../core/dmi.cc:340
+msgid "Toshiba floppy"
+msgstr "Disquet de Toshiba"
+
+#: ../core/dmi.cc:342
+msgid "5.25\" 360KB floppy"
+msgstr "Disquet de 5,25\" 360KB"
+
+#: ../core/dmi.cc:344
+msgid "5.25\" 1.2MB floppy"
+msgstr "Disquet de 5,25\" 1,2MB"
+
+#: ../core/dmi.cc:346
+msgid "3.5\" 720KB floppy"
+msgstr "Disquet de 3,5\" 720KB"
+
+#: ../core/dmi.cc:348
+msgid "3.5\" 2.88MB floppy"
+msgstr "Disquet de 3,5\" 2,88MB"
+
+#: ../core/dmi.cc:350
+msgid "Print Screen key"
+msgstr "Tecla de Imprimir Pantalla"
+
+#: ../core/dmi.cc:352
+msgid "i8042 keyboard controller"
+msgstr "Controlador de teclat i8042"
+
+#: ../core/dmi.cc:354
+msgid "INT14 serial line control"
+msgstr "Control de línia serial INT14"
+
+#: ../core/dmi.cc:356
+msgid "INT17 printer control"
+msgstr "Control d'impressora INT17"
+
+#: ../core/dmi.cc:358
+msgid "INT10 CGA/Mono video"
+msgstr "Vídeo CGA/Mono INT10"
+
+#: ../core/dmi.cc:360
+msgid "NEC PC-98"
+msgstr "NEC PC-98"
+
+#: ../core/dmi.cc:372
+msgid "ACPI"
+msgstr "ACPI"
+
+#: ../core/dmi.cc:374
+msgid "USB legacy emulation"
+msgstr "Emulació de l'USB antic"
+
+#: ../core/dmi.cc:376
+msgid "AGP"
+msgstr "AGP"
+
+#: ../core/dmi.cc:378
+msgid "I2O booting"
+msgstr "Arrencada I2O"
+
+#: ../core/dmi.cc:380
+msgid "Booting from LS-120"
+msgstr "S'arrenca des de LS-120"
+
+#: ../core/dmi.cc:382
+msgid "Booting from ATAPI ZIP"
+msgstr "S'arrenca des d'ATAPI ZIP"
+
+#: ../core/dmi.cc:384
+msgid "Booting from IEEE1394 (Firewire)"
+msgstr "S'arrenca des d'IEEE1394 (Firewire)"
+
+#: ../core/dmi.cc:386
+msgid "Smart battery"
+msgstr "Pila intel·ligenta"
+
+#: ../core/dmi.cc:392
+msgid "BIOS boot specification"
+msgstr "Especificació d'arrencada BIOS"
+
+#: ../core/dmi.cc:395
+msgid "Function-key initiated network service boot"
+msgstr "Una tecla de funció ha iniciat una arrencada de servei de xarxa"
+
+#: ../core/dmi.cc:397
+msgid "UEFI specification is supported"
+msgstr "És compatible amb l'especificació UEFI"
+
+#: ../core/dmi.cc:399
+msgid "This machine is a virtual machine"
+msgstr "Aquesta màquina és una màquina virtual"
+
+#: ../core/dmi.cc:429
+msgid "Non-burst"
+msgstr "Sense ràfega"
+
+#: ../core/dmi.cc:431
+msgid "Burst"
+msgstr "Ràfega"
+
+#: ../core/dmi.cc:433
+msgid "Pipeline burst"
+msgstr "Ràfega de canonada"
+
+#: ../core/dmi.cc:435 ../core/dmi.cc:608
+msgid "Synchronous"
+msgstr "Síncron"
+
+#: ../core/dmi.cc:437
+msgid "Asynchronous"
+msgstr "Asíncron"
+
+#: ../core/dmi.cc:453
+msgid "Internal"
+msgstr "Intern"
+
+#: ../core/dmi.cc:456
+msgid "External"
+msgstr "Extern"
+
+#: ../core/dmi.cc:465
+msgid "Write-through"
+msgstr "Escriptura immediata"
+
+#: ../core/dmi.cc:468
+msgid "Write-back"
+msgstr "Escriptura postergada"
+
+#: ../core/dmi.cc:471
+msgid "Varies With Memory Address"
+msgstr "Varia amb l'adreça de memòria"
+
+#: ../core/dmi.cc:475
+msgid "cache"
+msgstr "cau"
+
+#: ../core/dmi.cc:480
+msgid "Instruction cache"
+msgstr "Cau d'instruccions"
+
+#: ../core/dmi.cc:483
+msgid "Data cache"
+msgstr "Cau de dades"
+
+#: ../core/dmi.cc:486
+msgid "Unified cache"
+msgstr "Cau unificada"
+
+#: ../core/dmi.cc:501
+msgid "System board or motherboard"
+msgstr "Placa de sistema o placa mare"
+
+#: ../core/dmi.cc:502
+msgid "ISA add-on card"
+msgstr "Targeta d'expansió ISA"
+
+#: ../core/dmi.cc:503
+msgid "EISA add-on card"
+msgstr "Targeta d'expansió EISA"
+
+#: ../core/dmi.cc:504
+msgid "PCI add-on card"
+msgstr "Targeta d'expansió PCI"
+
+#: ../core/dmi.cc:505
+msgid "MCA add-on card"
+msgstr "Targeta d'expansió MCA"
+
+#: ../core/dmi.cc:506
+msgid "PCMCIA add-on card"
+msgstr "Targeta d'expansió PCMCIA"
+
+#: ../core/dmi.cc:507
+msgid "Proprietary add-on card"
+msgstr "Targeta d'expansió propietària"
+
+#: ../core/dmi.cc:508
+msgid "NuBus"
+msgstr "NuBus"
+
+#: ../core/dmi.cc:512
+msgid "PC-98/C20 add-on card"
+msgstr "Targeta d'expansió PC-98/C20"
+
+#: ../core/dmi.cc:513
+msgid "PC-98/C24 add-on card"
+msgstr "Targeta d'expansió PC-98/C24"
+
+#: ../core/dmi.cc:514
+msgid "PC-98/E add-on card"
+msgstr "Targeta d'expansió PC-98/E"
+
+#: ../core/dmi.cc:515
+msgid "PC-98/Local bus add-on card"
+msgstr "Targeta d'expansió PC-98/Bus local"
+
+#: ../core/dmi.cc:516
+msgid "PC-98/Card slot add-on card"
+msgstr "Targeta d'expansió PC-98/Ranura de targeta"
+
+#: ../core/dmi.cc:533
+msgid " SIMM"
+msgstr " SIMM"
+
+#: ../core/dmi.cc:534
+msgid " SIP"
+msgstr " SIP"
+
+#: ../core/dmi.cc:535
+msgid " Chip"
+msgstr " Xip"
+
+#: ../core/dmi.cc:536
+msgid " DIP"
+msgstr " DIP"
+
+#: ../core/dmi.cc:537
+msgid " ZIP"
+msgstr " ZIP"
+
+#: ../core/dmi.cc:538
+msgid " Proprietary Card"
+msgstr " Targeta propietària"
+
+#: ../core/dmi.cc:539
+msgid " DIMM"
+msgstr " DIMM"
+
+#: ../core/dmi.cc:540
+msgid " TSOP"
+msgstr " TSOP"
+
+#: ../core/dmi.cc:541
+msgid " Row of chips"
+msgstr " Fila de xips"
+
+#: ../core/dmi.cc:542
+msgid " RIMM"
+msgstr " RIMM"
+
+#: ../core/dmi.cc:543
+msgid " SODIMM"
+msgstr " SODIMM"
+
+#: ../core/dmi.cc:544
+msgid " SRIMM"
+msgstr " SRIMM"
+
+#: ../core/dmi.cc:545
+msgid " FB-DIMM"
+msgstr " FB-DIMM"
+
+#: ../core/dmi.cc:560
+msgid " DRAM"
+msgstr " DRAM"
+
+#: ../core/dmi.cc:561
+msgid " EDRAM"
+msgstr " EDRAM"
+
+#: ../core/dmi.cc:562
+msgid " VRAM"
+msgstr " VRAM"
+
+#: ../core/dmi.cc:563
+msgid " SRAM"
+msgstr " SRAM"
+
+#: ../core/dmi.cc:564
+msgid " RAM"
+msgstr " RAM"
+
+#: ../core/dmi.cc:565
+msgid " ROM"
+msgstr " ROM"
+
+#: ../core/dmi.cc:566
+msgid " FLASH"
+msgstr " FLASH"
+
+#: ../core/dmi.cc:567
+msgid " EEPROM"
+msgstr " EEPROM"
+
+#: ../core/dmi.cc:568
+msgid " FEPROM"
+msgstr " FEPROM"
+
+#: ../core/dmi.cc:569
+msgid " EPROM"
+msgstr " EPROM"
+
+#: ../core/dmi.cc:570
+msgid " CDRAM"
+msgstr " CDRAM"
+
+#: ../core/dmi.cc:571
+msgid " 3DRAM"
+msgstr " 3DRAM"
+
+#: ../core/dmi.cc:572
+msgid " SDRAM"
+msgstr " SDRAM"
+
+#: ../core/dmi.cc:573
+msgid " SGRAM"
+msgstr " SGRAM"
+
+#: ../core/dmi.cc:574
+msgid " RDRAM"
+msgstr " RDRAM"
+
+#: ../core/dmi.cc:575
+msgid " DDR"
+msgstr " DDR"
+
+#: ../core/dmi.cc:576
+msgid " DDR2"
+msgstr " DDR2"
+
+#: ../core/dmi.cc:577
+msgid " DDR2 FB-DIMM"
+msgstr " DDR2 FB-DIMM"
+
+#: ../core/dmi.cc:600
+msgid "Fast-paged"
+msgstr "Paginació ràpida"
+
+#: ../core/dmi.cc:602
+msgid "Static column"
+msgstr "Columna estàtica"
+
+#: ../core/dmi.cc:604
+msgid "Pseudo-static"
+msgstr "Pseudo-estàtica"
+
+#: ../core/dmi.cc:606
+msgid "RAMBUS"
+msgstr "RAMBUS"
+
+#: ../core/dmi.cc:610
+msgid "CMOS"
+msgstr "CMOS"
+
+#: ../core/dmi.cc:612
+msgid "EDO"
+msgstr "EDO"
+
+#: ../core/dmi.cc:614
+msgid "Window DRAM"
+msgstr "DRAM de finestra"
+
+#: ../core/dmi.cc:616
+msgid "Cache DRAM"
+msgstr "DRAM cau"
+
+#: ../core/dmi.cc:618
+msgid "Non-volatile"
+msgstr "No volàtil"
+
+#: ../core/dmi.cc:620
+msgid "Registered (Buffered)"
+msgstr "Registrada (amb memòria intermèdia)"
+
+#: ../core/dmi.cc:622
+msgid "Unbuffered (Unregistered)"
+msgstr "Sense memòria intermèdia (no registrada)"
+
+#: ../core/dmi.cc:624
+msgid "LRDIMM"
+msgstr "LRDIMM"
+
+#: ../core/dmi.cc:637
+msgid "Desktop Computer"
+msgstr "Ordinador de taula"
+
+#: ../core/dmi.cc:638
+msgid "Low Profile Desktop Computer"
+msgstr "Ordinador de taula de perfil baix"
+
+#: ../core/dmi.cc:639
+msgid "Pizza Box Computer"
+msgstr "Ordinador de caixa de pizza"
+
+#: ../core/dmi.cc:640
+msgid "Mini Tower Computer"
+msgstr "Ordinador de torre petita"
+
+#: ../core/dmi.cc:641
+msgid "Tower Computer"
+msgstr "Ordinador de torre"
+
+#: ../core/dmi.cc:642
+msgid "Portable Computer"
+msgstr "Ordinador portable"
+
+#: ../core/dmi.cc:643
+msgid "Laptop"
+msgstr "Portàtil"
+
+#: ../core/dmi.cc:644
+msgid "Notebook"
+msgstr "Portàtil petit"
+
+#: ../core/dmi.cc:645
+msgid "Hand Held Computer"
+msgstr "Ordinador de mà"
+
+#: ../core/dmi.cc:646
+msgid "Docking Station"
+msgstr "Estació d'acoblament"
+
+#: ../core/dmi.cc:647
+msgid "All In One"
+msgstr "Tot en un"
+
+#: ../core/dmi.cc:648
+msgid "Sub Notebook"
+msgstr "Subportàtil"
+
+#: ../core/dmi.cc:649
+msgid "Space-saving Computer"
+msgstr "Ordinador compacte"
+
+#: ../core/dmi.cc:650
+msgid "Lunch Box Computer"
+msgstr "Ordinador de carmanyola"
+
+#: ../core/dmi.cc:651
+msgid "System"
+msgstr "Sistema"
+
+#: ../core/dmi.cc:652
+msgid "Expansion Chassis"
+msgstr "Xassís d'expansió"
+
+#: ../core/dmi.cc:653
+msgid "Sub Chassis"
+msgstr "Subxassís"
+
+#: ../core/dmi.cc:654
+msgid "Bus Expansion Chassis"
+msgstr "Xassís d'expansió de bus"
+
+#: ../core/dmi.cc:655
+msgid "Peripheral Chassis"
+msgstr "Xassís perifèric"
+
+#: ../core/dmi.cc:656
+msgid "RAID Chassis"
+msgstr "Xassís RAID"
+
+#: ../core/dmi.cc:657
+msgid "Rack Mount Chassis"
+msgstr "Xassís de muntatge de bastidor"
+
+#: ../core/dmi.cc:658
+msgid "Sealed-case PC"
+msgstr "PC de carcassa segellada"
+
+#: ../core/dmi.cc:659
+msgid "Multi-system"
+msgstr "Polisistema"
+
+#: ../core/dmi.cc:660
+msgid "Compact PCI"
+msgstr "PCI compacte"
+
+#: ../core/dmi.cc:661
+msgid "Advanced TCA"
+msgstr "TCA avançat"
+
+#: ../core/dmi.cc:662
+msgid "Blade"
+msgstr "Blade"
+
+#: ../core/dmi.cc:663
+msgid "Blade enclosure"
+msgstr "Recinte de blade"
+
+#: ../core/dmi.cc:664
+msgid "Tablet"
+msgstr "Tauleta"
+
+#: ../core/dmi.cc:665
+msgid "Convertible"
+msgstr "Convertible"
+
+#: ../core/dmi.cc:666
+msgid "Detachable"
+msgstr "Separable"
+
+#: ../core/dmi.cc:667
+msgid "IoT Gateway"
+msgstr "Passarel·la IoT"
+
+#: ../core/dmi.cc:668
+msgid "Embedded PC"
+msgstr "PC incrustat"
+
+#: ../core/dmi.cc:669
+msgid "Mini PC"
+msgstr "Mini PC"
+
+#: ../core/dmi.cc:670
+msgid "Stick PC"
+msgstr "PC de llapis"
+
+#: ../core/dmi.cc:1045
+msgid "BIOS"
+msgstr "BIOS"
+
+#: ../core/dmi.cc:1147
+msgid "CPU"
+msgstr "CPU"
+
+#: ../core/dmi.cc:1198 ../core/dmi.cc:1312 ../core/dmi.cc:1613
+msgid "[empty]"
+msgstr "[buit]"
+
+#: ../core/dmi.cc:1226
+msgid "64-bit capable"
+msgstr "Capaç de 64 bits"
+
+#: ../core/dmi.cc:1259
+msgid " Memory Controller"
+msgstr " Controlador de memòria"
+
+#: ../core/dmi.cc:1277 ../core/dmi.cc:1536
+msgid "empty memory bank"
+msgstr "banc de memòria buit"
+
+#: ../core/dmi.cc:1447
+msgid "System Memory"
+msgstr "Memòria de sistema"
+
+#: ../core/dmi.cc:1453
+msgid "Video Memory"
+msgstr "Memòria de vídeo"
+
+#: ../core/dmi.cc:1457
+msgid "Flash Memory"
+msgstr "Memòria de flash"
+
+#: ../core/dmi.cc:1461
+msgid "NVRAM"
+msgstr "NVRAM"
+
+#: ../core/dmi.cc:1465
+msgid "Cache Memory"
+msgstr "Memòria cau"
+
+#: ../core/dmi.cc:1469
+msgid "Generic Memory"
+msgstr "Memòria genèrica"
+
+#: ../core/dmi.cc:1490
+msgid "Parity error correction"
+msgstr "Correcció d'errors de paritat"
+
+#: ../core/dmi.cc:1494
+msgid "Single-bit error-correcting code (ECC)"
+msgstr "Codi de correcció d'errors d'un sol bit (ECC)"
+
+#: ../core/dmi.cc:1498
+msgid "Multi-bit error-correcting code (ECC)"
+msgstr "Codi de correcció d'errors de múltiples bits (ECC)"
+
+#: ../core/dmi.cc:1502
+msgid "CRC error correction"
+msgstr "Correcció d'errors CRC"
+
+#: ../core/dmi.cc:1783
+msgid "make outbound connections"
+msgstr "fa connexions sortints"
+
+#: ../core/dmi.cc:1784
+msgid "receive inbound connections"
+msgstr "rep connexions entrants"
+
+#: ../core/hw.cc:1713
+msgid "<!-- generated by lshw-"
+msgstr "<!-- generat pel lshw-"
+
+#: ../core/hw.cc:1728
+msgid "<!-- WARNING: not running as root -->"
+msgstr "<!-- ADVERTÈNCIA: no s'està executant com al root -->"
+
+#: ../core/hw.cc:2249
+msgid "(none)"
+msgstr "(cap)"
+
+#: ../core/hw.cc:2252
+msgid "dma"
+msgstr "dma"
+
+#: ../core/hw.cc:2256
+msgid "irq"
+msgstr "irq"
+
+#: ../core/hw.cc:2260
+msgid "iomemory"
+msgstr "iomemory"
+
+#: ../core/hw.cc:2264
+msgid "memory"
+msgstr "memòria"
+
+#: ../core/hw.cc:2266
+msgid "(prefetchable)"
+msgstr "(precarregable)"
+
+#: ../core/hw.cc:2269
+msgid "ioport"
+msgstr "ioport"
+
+#: ../core/hw.cc:2273
+#, c-format
+msgid "%lx(size=%ld)"
+msgstr "%lx(mida=%ld)"
+
+#: ../core/hw.cc:2276
+msgid "(unknown)"
+msgstr "(desconegut)"
+
+#: ../core/hw.cc:2446
+msgid "false"
+msgstr "fals"
+
+#: ../core/hw.cc:2446
+msgid "true"
+msgstr "cert"
+
+#: ../core/hw.cc:2448
+msgid "(nil)"
+msgstr "(nul)"
+
+#: ../core/lvm.cc:132
+msgid "Linux LVM Physical Volume"
+msgstr "Volum físic LVM de Linux"
+
+#: ../core/mem.cc:154
+msgid "System memory"
+msgstr "Memòria de sistema"
+
+#: ../core/network.cc:274
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: ../core/network.cc:276
+msgid "SLIP"
+msgstr "SLIP"
+
+#: ../core/network.cc:278
+msgid "loopback"
+msgstr "loopback"
+
+#: ../core/network.cc:280
+msgid "FDDI"
+msgstr "FDDI"
+
+#: ../core/network.cc:282
+msgid "IEEE1394"
+msgstr "IEEE1394"
+
+#: ../core/network.cc:284
+msgid "IRDA"
+msgstr "IRDA"
+
+#: ../core/network.cc:286
+msgid "PPP"
+msgstr "PPP"
+
+#: ../core/network.cc:288
+msgid "X25"
+msgstr "X25"
+
+#: ../core/network.cc:290
+msgid "IPtunnel"
+msgstr "TúnelIP"
+
+#: ../core/network.cc:292
+msgid "Framerelay.DLCI"
+msgstr "Framerelay.DLCI"
+
+#: ../core/network.cc:294
+msgid "Framerelay.AD"
+msgstr "Framerelay.AD"
+
+#: ../core/network.cc:296
+msgid "IP6tunnel"
+msgstr "TúnelIP6"
+
+#: ../core/network.cc:298
+msgid "IP6inIP4"
+msgstr "IP6enIP4"
+
+#: ../core/network.cc:364
+msgid "twisted pair"
+msgstr "parell trenat"
+
+#: ../core/network.cc:366
+msgid "AUI"
+msgstr "AUI"
+
+#: ../core/network.cc:368
+msgid "BNC"
+msgstr "BNC"
+
+#: ../core/network.cc:370
+msgid "Media Independent Interface"
+msgstr "Interfície independent de mitjans"
+
+#: ../core/network.cc:372
+msgid "optical fibre"
+msgstr "fibra òptica"
+
+#: ../core/network.cc:375
+msgid "10Mbit/s"
+msgstr "10Mbit/s"
+
+#: ../core/network.cc:380
+msgid "10Mbit/s (full duplex)"
+msgstr "10Mbit/s (dúplex complet)"
+
+#: ../core/network.cc:385
+msgid "100Mbit/s"
+msgstr "100Mbit/s"
+
+#: ../core/network.cc:390
+msgid "100Mbit/s (full duplex)"
+msgstr "100Mbit/s (dúplex complet)"
+
+#: ../core/network.cc:400 ../core/network.cc:405
+msgid "1Gbit/s (full duplex)"
+msgstr "1Gbit/s (dúplex complet)"
+
+#: ../core/network.cc:410 ../core/network.cc:415
+msgid "2.5Gbit/s (full duplex)"
+msgstr "2,5Gbit/s (dúplex complet)"
+
+#: ../core/network.cc:420
+msgid "5Gbit/s (full duplex)"
+msgstr "5Gbit/s (dúplex complet)"
+
+#: ../core/network.cc:425 ../core/network.cc:432
+msgid "10Gbit/s (full duplex)"
+msgstr "10Gbit/s (dúplex complet)"
+
+#: ../core/network.cc:438
+msgid "25Gbit/s (full duplex)"
+msgstr "25Gbit/s (dúplex complet)"
+
+#: ../core/network.cc:444
+msgid "40Gbit/s (full duplex)"
+msgstr "40Gbit/s (dúplex complet)"
+
+#: ../core/network.cc:448
+msgid "Auto-negotiation"
+msgstr "Negociació automàtica"
+
+#: ../core/network.cc:636 ../core/network.cc:644 ../core/network.cc:684
+msgid "Logical interface"
+msgstr "Interfície lògica"
+
+#: ../core/network.cc:638
+msgid "Physical interface"
+msgstr "Interfície física"
+
+#: ../core/network.cc:652
+msgid "Wireless-LAN"
+msgstr "LAN sense fil"
+
+#: ../core/network.cc:654 ../core/usb.cc:263
+msgid "Wireless interface"
+msgstr "Interfície sense fil"
+
+#: ../core/pci.cc:736
+msgid "PCI Express"
+msgstr "PCI Exprés"
+
+#: ../core/print.cc:143 ../gui/print-gui.cc:114
+msgid " DISABLED"
+msgstr " DESHABILITAT"
+
+#: ../core/print.cc:145 ../gui/print-gui.cc:116
+msgid " UNCLAIMED"
+msgstr " NO RECLAMAT"
+
+#: ../core/print.cc:178
+msgid "description"
+msgstr "descripció"
+
+#: ../core/print.cc:195 ../gui/print-gui.cc:137
+msgid "product"
+msgstr "producte"
+
+#: ../core/print.cc:212 ../gui/print-gui.cc:138
+msgid "vendor"
+msgstr "fabricant"
+
+#: ../core/print.cc:229
+msgid "physical id"
+msgstr "id físic"
+
+#: ../core/print.cc:246 ../gui/print-gui.cc:139
+msgid "bus info"
+msgstr "informació de bus"
+
+#: ../core/print.cc:267 ../gui/print-gui.cc:145
+msgid "logical name"
+msgstr "nom lògic"
+
+#: ../core/print.cc:285 ../gui/print-gui.cc:148
+msgid "version"
+msgstr "versió"
+
+#: ../core/print.cc:302
+msgid "date"
+msgstr "data"
+
+#: ../core/print.cc:319 ../gui/print-gui.cc:149
+msgid "serial"
+msgstr "serial"
+
+#: ../core/print.cc:336 ../gui/print-gui.cc:150
+msgid "slot"
+msgstr "ranura"
+
+#: ../core/print.cc:353 ../gui/print-gui.cc:153
+msgid "size"
+msgstr "mida"
+
+#: ../core/print.cc:407 ../gui/print-gui.cc:155
+msgid "capacity"
+msgstr "capacitat"
+
+#: ../core/print.cc:463
+msgid "address"
+msgstr "adreça"
+
+#: ../core/print.cc:466
+msgid "range"
+msgstr "interval"
+
+#: ../core/print.cc:477 ../gui/print-gui.cc:158
+msgid "width"
+msgstr "amplada"
+
+#: ../core/print.cc:491 ../gui/print-gui.cc:161
+msgid "clock"
+msgstr "rellotge"
+
+#: ../core/print.cc:508 ../gui/print-gui.cc:168
+msgid "capabilities"
+msgstr "capabilitats"
+
+#: ../core/print.cc:529
+msgid "configuration:"
+msgstr "configuració:"
+
+#: ../core/print.cc:531
+msgid "configuration of "
+msgstr "configuració de "
+
+#: ../core/print.cc:551
+msgid "resources:"
+msgstr "recursos:"
+
+#: ../core/print.cc:553
+msgid "resources of "
+msgstr "recursos de "
+
+#: ../core/print.cc:706
+msgid "H/W path"
+msgstr "Camí H/W"
+
+#: ../core/print.cc:707 ../core/print.cc:724
+msgid "Device"
+msgstr "Dispositiu"
+
+#: ../core/print.cc:708 ../core/print.cc:725
+msgid "Class"
+msgstr "Classe"
+
+#: ../core/print.cc:709 ../core/print.cc:726
+msgid "Description"
+msgstr "Descripció"
+
+#: ../core/print.cc:723
+msgid "Bus info"
+msgstr "Informació de bus"
+
+#: ../core/usb.cc:167
+msgid "Audio device"
+msgstr "Dispositiu d'àudio"
+
+#: ../core/usb.cc:171
+msgid "Control device"
+msgstr "Dispositiu de control"
+
+#: ../core/usb.cc:174
+msgid "MIDI"
+msgstr "MIDI"
+
+#: ../core/usb.cc:176
+msgid "Audio streaming"
+msgstr "Transmissió d'àudio"
+
+#: ../core/usb.cc:182
+msgid "Communication device"
+msgstr "Dispositiu de comunicació"
+
+#: ../core/usb.cc:185
+msgid "Modem"
+msgstr "Mòdem"
+
+#: ../core/usb.cc:186
+msgid "AT (Hayes) compatible"
+msgstr "Compatible amb AT (Hayes)"
+
+#: ../core/usb.cc:188
+msgid "Ethernet networking"
+msgstr "Xarxes d'Ethernet"
+
+#: ../core/usb.cc:189
+msgid "OBEX networking"
+msgstr "Xarxes OBEX"
+
+#: ../core/usb.cc:193
+msgid "Human interface device"
+msgstr "Dispositiu d'interfície humana"
+
+#: ../core/usb.cc:199
+msgid "Keyboard"
+msgstr "Teclat"
+
+#: ../core/usb.cc:202
+msgid "Mouse"
+msgstr "Ratolí"
+
+#: ../core/usb.cc:209
+msgid "Printer"
+msgstr "Impressora"
+
+#: ../core/usb.cc:216
+msgid "Unidirectional"
+msgstr "Unidireccional"
+
+#: ../core/usb.cc:219
+msgid "Bidirectional"
+msgstr "Bidireccional"
+
+#: ../core/usb.cc:222
+msgid "IEEE 1284.4 compatible bidirectional"
+msgstr "Bidireccional compatible amb IEEE 1284.4"
+
+#: ../core/usb.cc:229
+msgid "Mass storage device"
+msgstr "Dispositiu d'emmagatzematge massiu"
+
+#: ../core/usb.cc:233
+msgid "RBC (typically Flash) mass storage"
+msgstr "Emmagatzematge massiu RBC (típicament Flash)"
+
+#: ../core/usb.cc:236
+msgid "SFF-8020i, MMC-2 (ATAPI)"
+msgstr "SFF-8020i, MMC-2 (ATAPI)"
+
+#: ../core/usb.cc:239
+msgid "Floppy (UFI)"
+msgstr "Disquet (UFI)"
+
+#: ../core/usb.cc:242
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../core/usb.cc:248
+msgid "USB hub"
+msgstr "Concentrador USB"
+
+#: ../core/usb.cc:255
+msgid "Smart card reader"
+msgstr "Lector de targetes intel·ligentes"
+
+#: ../core/usb.cc:259
+msgid "Video"
+msgstr "Vídeo"
+
+#: ../core/usb.cc:266
+msgid "Bluetooth wireless interface"
+msgstr "Interfície sense fil de Bluetooth"
+
+#: ../core/usb.cc:267
+msgid "Bluetooth wireless radio"
+msgstr "Ràdio sense fil de Bluetooth"
+
+#: ../core/usb.cc:272
+msgid "Generic USB device"
+msgstr "Dispositiu USB genèric"
+
+#: ../core/volumes.cc:49
+msgid "Blank volume"
+msgstr "Volum en blanc"
+
+#: ../core/volumes.cc:50
+msgid "Windows FAT volume"
+msgstr "Volum de Windows FAT"
+
+#: ../core/volumes.cc:51
+msgid "Windows NTFS volume"
+msgstr "Volum de Windows NTFS"
+
+#: ../core/volumes.cc:52
+msgid "OS/2 HPFS volume"
+msgstr "Volum d'OS/2 HPFS"
+
+#: ../core/volumes.cc:53
+msgid "EXT2/EXT3 volume"
+msgstr "Volum EXT2/EXT3"
+
+#: ../core/volumes.cc:54
+msgid "Linux ReiserFS volume"
+msgstr "Volum de Linux ReiserFS"
+
+#: ../core/volumes.cc:55
+msgid "Linux ROMFS volume"
+msgstr "Volum de Linux ROMFS"
+
+#: ../core/volumes.cc:56
+msgid "Linux SquashFS volume"
+msgstr "Volum de Linux SquashFS"
+
+#: ../core/volumes.cc:57
+msgid "Linux CramFS volume"
+msgstr "Volum de Linux CramFS"
+
+#: ../core/volumes.cc:58
+msgid "MinixFS volume"
+msgstr "Volum de MinixFS"
+
+#: ../core/volumes.cc:59
+msgid "System V FS volume"
+msgstr "Volum de System V FS"
+
+#: ../core/volumes.cc:60
+msgid "Linux JFS volume"
+msgstr "Volum de Linux JFS"
+
+#: ../core/volumes.cc:61
+msgid "Linux XFS volume"
+msgstr "Volum de Linux XFS"
+
+#: ../core/volumes.cc:62
+msgid "ISO-9660 volume"
+msgstr "Volum ISO-9660"
+
+#: ../core/volumes.cc:63
+msgid "X-Box DVD volume"
+msgstr "Volum d'X-Box DVD"
+
+#: ../core/volumes.cc:64
+msgid "UDF volume"
+msgstr "Volum UDF"
+
+#: ../core/volumes.cc:65
+msgid "UFS volume"
+msgstr "Volum UFS"
+
+#: ../core/volumes.cc:66
+msgid "HP-UX HFS volume"
+msgstr "Volum d'HP-UX HFS"
+
+#: ../core/volumes.cc:67
+msgid "VxFS volume"
+msgstr "Volum VxFS"
+
+#: ../core/volumes.cc:68
+msgid "FFS volume"
+msgstr "Volum FFS"
+
+#: ../core/volumes.cc:69
+msgid "BeOS BFS volume"
+msgstr "Volum de BeOS BFS"
+
+#: ../core/volumes.cc:70
+msgid "QNX FS volume"
+msgstr "Volum QNX FS"
+
+#: ../core/volumes.cc:71
+msgid "MacOS MFS volume"
+msgstr "Volum de MacOS MFS"
+
+#: ../core/volumes.cc:72
+msgid "MacOS HFS+ volume"
+msgstr "Volum de MacOS HFS+"
+
+#: ../core/volumes.cc:73
+msgid "MacOS HFS volume"
+msgstr "Volum de MacOS HFS"
+
+#: ../core/volumes.cc:74
+msgid "MacOS APFS volume"
+msgstr "Volum de MacOS APFS"
+
+#: ../core/volumes.cc:75
+msgid "Linux Unified Key Setup volume"
+msgstr "Volum de Linux Unified Key Setup"
+
+#: ../core/volumes.cc:76
+msgid "Linux swap volume"
+msgstr "Volum de Linux d'intercanvi"
+
+#: ../core/volumes.cc:316
+msgid "Extended Attributes"
+msgstr "Atributs extensos"
+
+#: ../core/volumes.cc:318
+msgid "4GB+ files"
+msgstr "fitxers 4GB+"
+
+#: ../core/volumes.cc:320
+msgid "16TB+ files"
+msgstr "fitxers 16TB+"
+
+#: ../core/volumes.cc:322
+msgid "directories with 65000+ subdirs"
+msgstr "directoris amb 65000+ subdirectoris"
+
+#: ../core/volumes.cc:324
+msgid "needs recovery"
+msgstr "necessita recuperació"
+
+#: ../core/volumes.cc:326
+msgid "64bit filesystem"
+msgstr "sistema de fitxers de 64 bits"
+
+#: ../core/volumes.cc:328
+msgid "extent-based allocation"
+msgstr "assignació basada en abast"
+
+#: ../core/volumes.cc:336
+msgid "EXT4 volume"
+msgstr "Volum EXT4"
+
+#: ../core/volumes.cc:342
+msgid "EXT3 volume"
+msgstr "Volum EXT3"
+
+#: ../core/volumes.cc:371
+msgid "Encrypted volume"
+msgstr "Volum xifrat"
+
+#: ../core/volumes.cc:644
+msgid "Contains a bootable Mac OS installation"
+msgstr "Conté una instal·lació de Mac OS arrencable"
+
+#: ../core/volumes.cc:646
+msgid "Contains a bootable Mac OS X installation"
+msgstr "Conté una instal·lació de Mac OS X arrencable"
+
+#: ../core/volumes.cc:1156
+msgid "initialized volume"
+msgstr "volum initialitzat"
+
+#: ../gui/print-gui.cc:191
+msgid "configuration"
+msgstr "configuració"
+
+#: ../gui/print-gui.cc:207
+msgid "resources"
+msgstr "recursos"
+
+#: ../gui/print-gui.cc:219
+msgid "this device hasn't been claimed\n"
+msgstr "no s'ha reclamat aquest dispositiu\n"
+
+#: ../gui/print-gui.cc:222
+msgid "this device has been disabled\n"
+msgstr "s'ha deshabilitat aquest dispositiu\n"
+
+#: ../lshw.cc:24
+#, c-format
+msgid "usage: %s [-format] [-options ...]\n"
+msgstr "ús: %s [-format] [-opcions ...]\n"
+
+#: ../lshw.cc:25
+#, c-format
+msgid "       %s -version\n"
+msgstr "       %s -version\n"
+
+#: ../lshw.cc:27
+#, c-format
+msgid "\t-version        print program version (%s)\n"
+msgstr "\t-version        imprimeix la versió del programa (%s)\n"
+
+#: ../lshw.cc:28
+#, c-format
+msgid ""
+"\n"
+"format can be\n"
+msgstr ""
+"\n"
+"el format pot ser\n"
+
+#: ../lshw.cc:29
+#, c-format
+msgid "\t-html           output hardware tree as HTML\n"
+msgstr "\t-html           emet l'arbre de maquinari com a HTML\n"
+
+#: ../lshw.cc:30
+#, c-format
+msgid "\t-xml            output hardware tree as XML\n"
+msgstr "\t-xml           emet l'arbre demaquinari com a XML\n"
+
+#: ../lshw.cc:31
+#, c-format
+msgid "\t-json           output hardware tree as a JSON object\n"
+msgstr "\t-json           emet l'arbre de maquinari com a objecte JSON\n"
+
+#: ../lshw.cc:32
+#, c-format
+msgid "\t-short          output hardware paths\n"
+msgstr "\t-short          emet els camins del maquinari\n"
+
+#: ../lshw.cc:33
+#, c-format
+msgid "\t-businfo        output bus information\n"
+msgstr "\t-businfo        emet informació de bus\n"
+
+#: ../lshw.cc:35
+#, c-format
+msgid "\t-X              use graphical interface\n"
+msgstr "\t-X              usa la interfície gràfica\n"
+
+#: ../lshw.cc:36
+#, c-format
+msgid ""
+"\n"
+"options can be\n"
+msgstr ""
+"\n"
+"les opcions poden ser\n"
+
+#: ../lshw.cc:38
+#, c-format
+msgid ""
+"\t-dump filename  display output and dump collected information into a file "
+"(SQLite database)\n"
+msgstr ""
+"\t-dump fitxer  mostra la sortida i bolca la informació recollida en un "
+"fitxer (base de dades SQL)\n"
+
+#: ../lshw.cc:40
+#, c-format
+msgid "\t-class CLASS    only show a certain class of hardware\n"
+msgstr "\t-class CLASSE    mostra només una classe determinada de maquinari\n"
+
+#: ../lshw.cc:41
+#, c-format
+msgid "\t-C CLASS        same as '-class CLASS'\n"
+msgstr "\t-C CLASSE        ho mateix que '-class CLASSE'\n"
+
+#: ../lshw.cc:42
+#, c-format
+msgid "\t-c CLASS        same as '-class CLASS'\n"
+msgstr "\t-c CLASSE        ho mateix que '-class CLASSE'\n"
+
+#: ../lshw.cc:44
+#, c-format
+msgid "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr ""
+"\t-disable TEST   deshabilita una prova (com a pci, isapnp, cpuid, etc.)\n"
+
+#: ../lshw.cc:46
+#, c-format
+msgid "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr ""
+"\t-enable TEST    habilita una prova (com a pci, isapnp, cpuid, etc.)\n"
+
+#: ../lshw.cc:47
+#, c-format
+msgid "\t-quiet          don't display status\n"
+msgstr "\t-quiet          no mostris l'estat\n"
+
+#: ../lshw.cc:48
+#, c-format
+msgid ""
+"\t-sanitize       sanitize output (remove sensitive information like serial "
+"numbers, etc.)\n"
+msgstr ""
+"\t-sanitize       saneja la sortida (elimina informació sensitiva com als "
+"nombres serials etc.)\n"
+
+#: ../lshw.cc:49
+#, c-format
+msgid "\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"
+msgstr ""
+"\t-numeric        emet identificadors numèrics (per a PCI, USB, etc.)\n"
+
+#: ../lshw.cc:50
+#, c-format
+msgid ""
+"\t-notime         exclude volatile attributes (timestamps) from output\n"
+msgstr ""
+"\t-notime         exclou els atributs volàtils (marques de temps) de la "
+"sortida\n"
+
+#: ../lshw.cc:126
+#, c-format
+msgid "the latest version is %s\n"
+msgstr "la versió més darrera és %s\n"
+
+#: ../lshw.cc:228
+#, c-format
+msgid "WARNING: you should run this program as super-user.\n"
+msgstr "ADVERTÈNCIA: es deu executar aquest programa com al superusuari.\n"
+
+#: ../lshw.cc:259
+#, c-format
+msgid ""
+"WARNING: output may be incomplete or inaccurate, you should run this program "
+"as super-user.\n"
+msgstr ""
+"AVERTÈNCIA: la sortida pot ser incompleta o inexacta, es deu executar aquest "
+"programa com al superusuari.\n"
