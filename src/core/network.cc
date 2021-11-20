@@ -227,6 +227,7 @@ struct ethtool_value
 #define PORT_MII                0x02
 #define PORT_FIBRE              0x03
 #define PORT_BNC                0x04
+#define PORT_DA                 0x05
 
 /* Which tranceiver to use. */
 #define XCVR_INTERNAL           0x00
@@ -634,6 +635,9 @@ static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2
       break;
     case PORT_FIBRE:
       interface.setConfig("port", "fibre");
+      break;
+    case PORT_DA:
+      interface.setConfig("port", "direct attach");
       break;
   }
   interface.setConfig("autonegotiation", (autoneg == AUTONEG_DISABLE) ?  "off" : "on");
