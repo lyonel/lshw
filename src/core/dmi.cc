@@ -1589,7 +1589,7 @@ int dmiversionrev)
             char buffer[80];
             u = data[0x16] << 8 | data[0x15];
 // speed
-            clock = u * 1000000;                  // u is a frequency in MHz
+            clock = u * 1000000ULL;                  // u is a frequency in MHz
             if (u == 0)
               strcpy(buffer, "");
             else
