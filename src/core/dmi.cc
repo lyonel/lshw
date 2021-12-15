@@ -1465,14 +1465,16 @@ int dmiversionrev)
               description = _("Cache Memory");
               memory_icon = true;
               break;
+            case 0x08:
+              description = _("System memory");
+              memory_icon = true;
+              break;
             default:
               description = _("Generic Memory");
               memory_icon = true;
           }
           if (id == "memory" && hardwarenode->getChild("memory"))
           {
-            // we don't want multiple "System memory" nodes,
-            // so just ignore this one
             break;
           }
           hwNode newnode(id, hw::memory);
