@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: @(#) $Id$\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 00:36-0600\n"
-"PO-Revision-Date: 2021-10-22 01:05-0600\n"
+"PO-Revision-Date: 2021-11-09 09:21-0700\n"
 "Last-Translator: Alex Henrie <alexhenrie24@gmail.com>\n"
 "Language-Team: Catalan <ca@li.org>\n"
 "Language: ca\n"
@@ -1312,11 +1312,11 @@ msgstr "Atributs extensos"
 
 #: ../core/volumes.cc:318
 msgid "4GB+ files"
-msgstr "fitxers 4GB+"
+msgstr "fitxers de 4GB+"
 
 #: ../core/volumes.cc:320
 msgid "16TB+ files"
-msgstr "fitxers 16TB+"
+msgstr "fitxers de 16TB+"
 
 #: ../core/volumes.cc:322
 msgid "directories with 65000+ subdirs"
@@ -1406,7 +1406,7 @@ msgstr "\t-html           emet l'arbre de maquinari com a HTML\n"
 #: ../lshw.cc:30
 #, c-format
 msgid "\t-xml            output hardware tree as XML\n"
-msgstr "\t-xml           emet l'arbre demaquinari com a XML\n"
+msgstr "\t-xml           emet l'arbre de maquinari com a XML\n"
 
 #: ../lshw.cc:31
 #, c-format
@@ -1443,7 +1443,7 @@ msgid ""
 "\t-dump filename  display output and dump collected information into a file "
 "(SQLite database)\n"
 msgstr ""
-"\t-dump fitxer  mostra la sortida i bolca la informació recollida en un "
+"\t-dump fitxer    mostra la sortida i bolca la informació recollida en un "
 "fitxer (base de dades SQL)\n"
 
 #: ../lshw.cc:40
@@ -1454,24 +1454,24 @@ msgstr "\t-class CLASSE    mostra només una classe determinada de maquinari\n"
 #: ../lshw.cc:41
 #, c-format
 msgid "\t-C CLASS        same as '-class CLASS'\n"
-msgstr "\t-C CLASSE        ho mateix que '-class CLASSE'\n"
+msgstr "\t-C CLASSE       ho mateix que '-class CLASSE'\n"
 
 #: ../lshw.cc:42
 #, c-format
 msgid "\t-c CLASS        same as '-class CLASS'\n"
-msgstr "\t-c CLASSE        ho mateix que '-class CLASSE'\n"
+msgstr "\t-c CLASSE       ho mateix que '-class CLASSE'\n"
 
 #: ../lshw.cc:44
 #, c-format
 msgid "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc.)\n"
 msgstr ""
-"\t-disable TEST   deshabilita una prova (com a pci, isapnp, cpuid, etc.)\n"
+"\t-disable PROVA  deshabilita una prova (com a pci, isapnp, cpuid, etc.)\n"
 
 #: ../lshw.cc:46
 #, c-format
 msgid "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc.)\n"
 msgstr ""
-"\t-enable TEST    habilita una prova (com a pci, isapnp, cpuid, etc.)\n"
+"\t-enable PROVA   habilita una prova (com a pci, isapnp, cpuid, etc.)\n"
 
 #: ../lshw.cc:47
 #, c-format
@@ -1484,7 +1484,7 @@ msgid ""
 "\t-sanitize       sanitize output (remove sensitive information like serial "
 "numbers, etc.)\n"
 msgstr ""
-"\t-sanitize       saneja la sortida (elimina informació sensitiva com als "
+"\t-sanitize       expurga la sortida (elimina informació sensitiva com als "
 "nombres serials etc.)\n"
 
 #: ../lshw.cc:49
