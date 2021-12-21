@@ -1,6 +1,6 @@
 PACKAGENAME?=lshw
 
-LANGUAGES = ca fr
+LANGUAGES = ca es fr
 SRCS = $(LANGUAGES:=.po)
 CATALOGS = $(LANGUAGES:=.mo)
 

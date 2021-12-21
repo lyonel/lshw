@@ -1,0 +1,1521 @@
+# Spanish translations for lshw
+# Copyright (C) 2021 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the lshw package.
+# Alex Henrie <alexhenrie24@gmail.com>, 2021
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: @(#) $Id$\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-22 00:36-0600\n"
+"PO-Revision-Date: 2021-11-09 09:22-0700\n"
+"Last-Translator: Alex Henrie <alexhenrie24@gmail.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+
+#: ../core/abi.cc:50
+msgid "32-bit processes"
+msgstr "Procesos de 32 bits"
+
+#: ../core/abi.cc:51
+msgid "64-bit processes"
+msgstr "Procesos de 64 bits"
+
+#: ../core/cpuid.cc:285
+msgid "CPU virtualization (Vanderpool)"
+msgstr "Virtualización CPU (Vanderpool)"
+
+#: ../core/cpuid.cc:298 ../core/cpuid.cc:299
+msgid "Logical CPU"
+msgstr "CPU lógico"
+
+#: ../core/cpuid.cc:302
+msgid "HyperThreading"
+msgstr "HyperThreading"
+
+#: ../core/cpuid.cc:366 ../core/cpuid.cc:373 ../core/cpuid.cc:467
+msgid "L1 cache"
+msgstr "Caché L1"
+
+#: ../core/cpuid.cc:384 ../core/cpuid.cc:391 ../core/cpuid.cc:479
+msgid "L2 cache"
+msgstr "Caché L2"
+
+#: ../core/dmi.cc:155
+msgid "Other Battery"
+msgstr "Otra pila"
+
+#: ../core/dmi.cc:156
+msgid "Unknown Battery"
+msgstr "Pila desconocida"
+
+#: ../core/dmi.cc:157
+msgid "Lead Acid Battery"
+msgstr "Pila de plomo y ácido"
+
+#: ../core/dmi.cc:158
+msgid "Nickel Cadmium Battery"
+msgstr "Pila de níquel-cadmio"
+
+#: ../core/dmi.cc:159
+msgid "Nickel Metal Hydride Battery"
+msgstr "Pila de níquel-metalhidruro"
+
+#: ../core/dmi.cc:160
+msgid "Lithium Ion Battery"
+msgstr "Pila de ion de litio"
+
+#: ../core/dmi.cc:161
+msgid "Zinc Air Battery"
+msgstr "Pila de cinc-aire"
+
+#: ../core/dmi.cc:162
+msgid "Lithium Polymer Battery"
+msgstr "Pila de polímero de litio"
+
+#: ../core/dmi.cc:167
+msgid "Battery"
+msgstr "Pila"
+
+#: ../core/dmi.cc:279
+msgid "Server Blade"
+msgstr "Servidor blade"
+
+#: ../core/dmi.cc:280
+msgid "Connectivity Switch"
+msgstr "Conmutador de conectividad"
+
+#: ../core/dmi.cc:281
+msgid "System Management Module"
+msgstr "Módulo de gestión de sistema"
+
+#: ../core/dmi.cc:282
+msgid "Processor Module"
+msgstr "Módulo de procesador"
+
+#: ../core/dmi.cc:283
+msgid "I/O Module"
+msgstr "Modulo E/S"
+
+#: ../core/dmi.cc:284
+msgid "Memory Module"
+msgstr "Módulo de memoria"
+
+#: ../core/dmi.cc:285
+msgid "Daughter Board"
+msgstr "Placa hija"
+
+#: ../core/dmi.cc:286 ../core/dmi.cc:1094
+msgid "Motherboard"
+msgstr "Placa madre"
+
+#: ../core/dmi.cc:287
+msgid "Processor/Memory Module"
+msgstr "Módulo de procesador/memoria"
+
+#: ../core/dmi.cc:288
+msgid "Processor/IO Module "
+msgstr "Módulo de procesador/ES "
+
+#: ../core/dmi.cc:289
+msgid "Interconnect Board"
+msgstr "Placa de interconexión"
+
+#: ../core/dmi.cc:306
+msgid "ISA bus"
+msgstr "Bus ISA"
+
+#: ../core/dmi.cc:308
+msgid "MCA bus"
+msgstr "Bus MCA"
+
+#: ../core/dmi.cc:310
+msgid "EISA bus"
+msgstr "Bus EISA"
+
+#: ../core/dmi.cc:312
+msgid "PCI bus"
+msgstr "Bus PCI"
+
+#: ../core/dmi.cc:314
+msgid "PCMCIA/PCCard"
+msgstr "PCMCIA/PCCard"
+
+#: ../core/dmi.cc:316
+msgid "Plug-and-Play"
+msgstr "Plug-and-Play"
+
+#: ../core/dmi.cc:318
+msgid "Advanced Power Management"
+msgstr "Gestión de poder avanzada"
+
+#: ../core/dmi.cc:320
+msgid "BIOS EEPROM can be upgraded"
+msgstr "Se puede actualizar la EEPROM del BIOS"
+
+#: ../core/dmi.cc:322
+msgid "BIOS shadowing"
+msgstr "Sombreado de BIOS"
+
+#: ../core/dmi.cc:324
+msgid "VESA video extensions"
+msgstr "Extensiones de vídeo VESA"
+
+#: ../core/dmi.cc:326
+msgid "ESCD"
+msgstr "ESCD"
+
+#: ../core/dmi.cc:328
+msgid "Booting from CD-ROM/DVD"
+msgstr "Se arranca desde CD-ROM/DVD"
+
+#: ../core/dmi.cc:330
+msgid "Selectable boot path"
+msgstr "Camino de arrancada seleccionable"
+
+#: ../core/dmi.cc:332
+msgid "BIOS ROM is socketed"
+msgstr "La ROM de BIOS tiene enchufe"
+
+#: ../core/dmi.cc:334
+msgid "Booting from PCMCIA"
+msgstr "Se arranca desde PCMCIA"
+
+#: ../core/dmi.cc:336
+msgid "Enhanced Disk Drive extensions"
+msgstr "Extensiones de controlador de disco mejoradas"
+
+#: ../core/dmi.cc:338
+msgid "NEC 9800 floppy"
+msgstr "Disquete de NEC 9800"
+
+#: ../core/dmi.cc:340
+msgid "Toshiba floppy"
+msgstr "Disquete de Toshiba"
+
+#: ../core/dmi.cc:342
+msgid "5.25\" 360KB floppy"
+msgstr "Disquete 5,25\" 360KB"
+
+#: ../core/dmi.cc:344
+msgid "5.25\" 1.2MB floppy"
+msgstr "Disquete 5,25\" 1,2MB"
+
+#: ../core/dmi.cc:346
+msgid "3.5\" 720KB floppy"
+msgstr "Disquete 3,5\" 720KB"
+
+#: ../core/dmi.cc:348
+msgid "3.5\" 2.88MB floppy"
+msgstr "Disquete 3,5\" 2,88MB"
+
+#: ../core/dmi.cc:350
+msgid "Print Screen key"
+msgstr "Tecla de Imprimir Pantalla"
+
+#: ../core/dmi.cc:352
+msgid "i8042 keyboard controller"
+msgstr "Controlador de teclado i8042"
+
+#: ../core/dmi.cc:354
+msgid "INT14 serial line control"
+msgstr "Control de línea serial INT14"
+
+#: ../core/dmi.cc:356
+msgid "INT17 printer control"
+msgstr "Control de impresora INT17"
+
+#: ../core/dmi.cc:358
+msgid "INT10 CGA/Mono video"
+msgstr "Vídeo CGA/Mono INT10"
+
+#: ../core/dmi.cc:360
+msgid "NEC PC-98"
+msgstr "NEC PC-98"
+
+#: ../core/dmi.cc:372
+msgid "ACPI"
+msgstr "ACPI"
+
+#: ../core/dmi.cc:374
+msgid "USB legacy emulation"
+msgstr "Emulación del USB antiguo"
+
+#: ../core/dmi.cc:376
+msgid "AGP"
+msgstr "AGP"
+
+#: ../core/dmi.cc:378
+msgid "I2O booting"
+msgstr "Arrancada I2O"
+
+#: ../core/dmi.cc:380
+msgid "Booting from LS-120"
+msgstr "Se arranca desde LS-120"
+
+#: ../core/dmi.cc:382
+msgid "Booting from ATAPI ZIP"
+msgstr "Se arranca desde ATAPI ZIP"
+
+#: ../core/dmi.cc:384
+msgid "Booting from IEEE1394 (Firewire)"
+msgstr "Se arranca desde IEEE1394 (Firewire)"
+
+#: ../core/dmi.cc:386
+msgid "Smart battery"
+msgstr "Pila inteligente"
+
+#: ../core/dmi.cc:392
+msgid "BIOS boot specification"
+msgstr "Especificación de arrancada BIOS"
+
+#: ../core/dmi.cc:395
+msgid "Function-key initiated network service boot"
+msgstr "Una tecla de función ha iniciado una arrancada de servicio de red"
+
+#: ../core/dmi.cc:397
+msgid "UEFI specification is supported"
+msgstr "Es compatible con la especificación UEFI"
+
+#: ../core/dmi.cc:399
+msgid "This machine is a virtual machine"
+msgstr "Esta máquina es una máquina virtual"
+
+#: ../core/dmi.cc:429
+msgid "Non-burst"
+msgstr "Sin ráfaga"
+
+#: ../core/dmi.cc:431
+msgid "Burst"
+msgstr "Ráfaga"
+
+#: ../core/dmi.cc:433
+msgid "Pipeline burst"
+msgstr "Ráfaga de cañería"
+
+#: ../core/dmi.cc:435 ../core/dmi.cc:608
+msgid "Synchronous"
+msgstr "Sincrónico"
+
+#: ../core/dmi.cc:437
+msgid "Asynchronous"
+msgstr "Asincrónico"
+
+#: ../core/dmi.cc:453
+msgid "Internal"
+msgstr "Interno"
+
+#: ../core/dmi.cc:456
+msgid "External"
+msgstr "Externo"
+
+#: ../core/dmi.cc:465
+msgid "Write-through"
+msgstr "Escritura inmediata"
+
+#: ../core/dmi.cc:468
+msgid "Write-back"
+msgstr "Escritura postergada"
+
+#: ../core/dmi.cc:471
+msgid "Varies With Memory Address"
+msgstr "Varia con la dirección de memoria"
+
+#: ../core/dmi.cc:475
+msgid "cache"
+msgstr "caché"
+
+#: ../core/dmi.cc:480
+msgid "Instruction cache"
+msgstr "Caché de instrucciones"
+
+#: ../core/dmi.cc:483
+msgid "Data cache"
+msgstr "Caché de datos"
+
+#: ../core/dmi.cc:486
+msgid "Unified cache"
+msgstr "Caché unificado"
+
+#: ../core/dmi.cc:501
+msgid "System board or motherboard"
+msgstr "Placa de sistema o placa madre"
+
+#: ../core/dmi.cc:502
+msgid "ISA add-on card"
+msgstr "Tarjeta de expansión ISA"
+
+#: ../core/dmi.cc:503
+msgid "EISA add-on card"
+msgstr "Tarjeta de expansión EISA"
+
+#: ../core/dmi.cc:504
+msgid "PCI add-on card"
+msgstr "Tarjeta de expansión PCI"
+
+#: ../core/dmi.cc:505
+msgid "MCA add-on card"
+msgstr "Tarjeta de expansión MCA"
+
+#: ../core/dmi.cc:506
+msgid "PCMCIA add-on card"
+msgstr "Tarjeta de expansión PCMCIA"
+
+#: ../core/dmi.cc:507
+msgid "Proprietary add-on card"
+msgstr "Tarjeta de expansión propietaria"
+
+#: ../core/dmi.cc:508
+msgid "NuBus"
+msgstr "NuBus"
+
+#: ../core/dmi.cc:512
+msgid "PC-98/C20 add-on card"
+msgstr "Tarjeta de expansión PC-98/C20"
+
+#: ../core/dmi.cc:513
+msgid "PC-98/C24 add-on card"
+msgstr "Tarjeta de expansión PC-98/C24"
+
+#: ../core/dmi.cc:514
+msgid "PC-98/E add-on card"
+msgstr "Tarjeta de expansión PC-98/E"
+
+#: ../core/dmi.cc:515
+msgid "PC-98/Local bus add-on card"
+msgstr "Tarjeta de expansión PC-98/Bus local"
+
+#: ../core/dmi.cc:516
+msgid "PC-98/Card slot add-on card"
+msgstr "Tarjeta de expansión PC-98/Muesca de tarjeta"
+
+#: ../core/dmi.cc:533
+msgid " SIMM"
+msgstr " SIMM"
+
+#: ../core/dmi.cc:534
+msgid " SIP"
+msgstr " SIP"
+
+#: ../core/dmi.cc:535
+msgid " Chip"
+msgstr " Chip"
+
+#: ../core/dmi.cc:536
+msgid " DIP"
+msgstr " DIP"
+
+#: ../core/dmi.cc:537
+msgid " ZIP"
+msgstr " ZIP"
+
+#: ../core/dmi.cc:538
+msgid " Proprietary Card"
+msgstr "Tarjeta propietaria"
+
+#: ../core/dmi.cc:539
+msgid " DIMM"
+msgstr " DIMM"
+
+#: ../core/dmi.cc:540
+msgid " TSOP"
+msgstr " TSOP"
+
+#: ../core/dmi.cc:541
+msgid " Row of chips"
+msgstr "Fila de chips"
+
+#: ../core/dmi.cc:542
+msgid " RIMM"
+msgstr " RIMM"
+
+#: ../core/dmi.cc:543
+msgid " SODIMM"
+msgstr " SODIMM"
+
+#: ../core/dmi.cc:544
+msgid " SRIMM"
+msgstr " SRIMM"
+
+#: ../core/dmi.cc:545
+msgid " FB-DIMM"
+msgstr " FB-DIMM"
+
+#: ../core/dmi.cc:560
+msgid " DRAM"
+msgstr " DRAM"
+
+#: ../core/dmi.cc:561
+msgid " EDRAM"
+msgstr " EDRAM"
+
+#: ../core/dmi.cc:562
+msgid " VRAM"
+msgstr " VRAM"
+
+#: ../core/dmi.cc:563
+msgid " SRAM"
+msgstr " SRAM"
+
+#: ../core/dmi.cc:564
+msgid " RAM"
+msgstr " RAM"
+
+#: ../core/dmi.cc:565
+msgid " ROM"
+msgstr " ROM"
+
+#: ../core/dmi.cc:566
+msgid " FLASH"
+msgstr " FLASH"
+
+#: ../core/dmi.cc:567
+msgid " EEPROM"
+msgstr " EEPROM"
+
+#: ../core/dmi.cc:568
+msgid " FEPROM"
+msgstr " FEPROM"
+
+#: ../core/dmi.cc:569
+msgid " EPROM"
+msgstr " EPROM"
+
+#: ../core/dmi.cc:570
+msgid " CDRAM"
+msgstr " CDRAM"
+
+#: ../core/dmi.cc:571
+msgid " 3DRAM"
+msgstr " 3DRAM"
+
+#: ../core/dmi.cc:572
+msgid " SDRAM"
+msgstr " SDRAM"
+
+#: ../core/dmi.cc:573
+msgid " SGRAM"
+msgstr " SGRAM"
+
+#: ../core/dmi.cc:574
+msgid " RDRAM"
+msgstr " RDRAM"
+
+#: ../core/dmi.cc:575
+msgid " DDR"
+msgstr " DDR"
+
+#: ../core/dmi.cc:576
+msgid " DDR2"
+msgstr " DDR2"
+
+#: ../core/dmi.cc:577
+msgid " DDR2 FB-DIMM"
+msgstr " DDR2 FB-DIMM"
+
+#: ../core/dmi.cc:600
+msgid "Fast-paged"
+msgstr "Paginación rápida"
+
+#: ../core/dmi.cc:602
+msgid "Static column"
+msgstr "Columna estática"
+
+#: ../core/dmi.cc:604
+msgid "Pseudo-static"
+msgstr "Seudo-estàtica"
+
+#: ../core/dmi.cc:606
+msgid "RAMBUS"
+msgstr "RAMBUS"
+
+#: ../core/dmi.cc:610
+msgid "CMOS"
+msgstr "CMOS"
+
+#: ../core/dmi.cc:612
+msgid "EDO"
+msgstr "EDO"
+
+#: ../core/dmi.cc:614
+msgid "Window DRAM"
+msgstr "DRAM de ventana"
+
+#: ../core/dmi.cc:616
+msgid "Cache DRAM"
+msgstr "DRAM de caché"
+
+#: ../core/dmi.cc:618
+msgid "Non-volatile"
+msgstr "No volátil"
+
+#: ../core/dmi.cc:620
+msgid "Registered (Buffered)"
+msgstr "Registrada (con memoria intermedia)"
+
+#: ../core/dmi.cc:622
+msgid "Unbuffered (Unregistered)"
+msgstr "Sin memoria intermedia (no registrada)"
+
+#: ../core/dmi.cc:624
+msgid "LRDIMM"
+msgstr "LRDIMM"
+
+#: ../core/dmi.cc:637
+msgid "Desktop Computer"
+msgstr "Ordenador de mesa"
+
+#: ../core/dmi.cc:638
+msgid "Low Profile Desktop Computer"
+msgstr "Ordenador de mesa de perfil bajo"
+
+#: ../core/dmi.cc:639
+msgid "Pizza Box Computer"
+msgstr "Ordenador de caja de pizza"
+
+#: ../core/dmi.cc:640
+msgid "Mini Tower Computer"
+msgstr "Ordenador de torre pequeña"
+
+#: ../core/dmi.cc:641
+msgid "Tower Computer"
+msgstr "Ordenador de torre"
+
+#: ../core/dmi.cc:642
+msgid "Portable Computer"
+msgstr "Ordenador portable"
+
+#: ../core/dmi.cc:643
+msgid "Laptop"
+msgstr "Portátil"
+
+#: ../core/dmi.cc:644
+msgid "Notebook"
+msgstr "Portátil pequeño"
+
+#: ../core/dmi.cc:645
+msgid "Hand Held Computer"
+msgstr "Ordenador de mano"
+
+#: ../core/dmi.cc:646
+msgid "Docking Station"
+msgstr "Estación de acoplamiento"
+
+#: ../core/dmi.cc:647
+msgid "All In One"
+msgstr "Todo en uno"
+
+#: ../core/dmi.cc:648
+msgid "Sub Notebook"
+msgstr "Subportátil"
+
+#: ../core/dmi.cc:649
+msgid "Space-saving Computer"
+msgstr "Ordenador compacto"
+
+#: ../core/dmi.cc:650
+msgid "Lunch Box Computer"
+msgstr "Ordenador de fiambrera"
+
+#: ../core/dmi.cc:651
+msgid "System"
+msgstr "Sistema"
+
+#: ../core/dmi.cc:652
+msgid "Expansion Chassis"
+msgstr "Chasis de expansión"
+
+#: ../core/dmi.cc:653
+msgid "Sub Chassis"
+msgstr "Subchasis"
+
+#: ../core/dmi.cc:654
+msgid "Bus Expansion Chassis"
+msgstr "Chasis de expansión de bus"
+
+#: ../core/dmi.cc:655
+msgid "Peripheral Chassis"
+msgstr "Chasis periférico"
+
+#: ../core/dmi.cc:656
+msgid "RAID Chassis"
+msgstr "Chasis RAID"
+
+#: ../core/dmi.cc:657
+msgid "Rack Mount Chassis"
+msgstr "Chasis de montaje de bastidor"
+
+#: ../core/dmi.cc:658
+msgid "Sealed-case PC"
+msgstr "PC de estuche sellado"
+
+#: ../core/dmi.cc:659
+msgid "Multi-system"
+msgstr "Multisistema"
+
+#: ../core/dmi.cc:660
+msgid "Compact PCI"
+msgstr "PCI compacto"
+
+#: ../core/dmi.cc:661
+msgid "Advanced TCA"
+msgstr "TCA avanzado"
+
+#: ../core/dmi.cc:662
+msgid "Blade"
+msgstr "Blade"
+
+#: ../core/dmi.cc:663
+msgid "Blade enclosure"
+msgstr "Recinto de blade"
+
+#: ../core/dmi.cc:664
+msgid "Tablet"
+msgstr "Tableta"
+
+#: ../core/dmi.cc:665
+msgid "Convertible"
+msgstr "Convertible"
+
+#: ../core/dmi.cc:666
+msgid "Detachable"
+msgstr "Separable"
+
+#: ../core/dmi.cc:667
+msgid "IoT Gateway"
+msgstr "Pasarela IoT"
+
+#: ../core/dmi.cc:668
+msgid "Embedded PC"
+msgstr "PC embebido"
+
+#: ../core/dmi.cc:669
+msgid "Mini PC"
+msgstr "Mini PC"
+
+#: ../core/dmi.cc:670
+msgid "Stick PC"
+msgstr "PC de lápiz"
+
+#: ../core/dmi.cc:1045
+msgid "BIOS"
+msgstr "BIOS"
+
+#: ../core/dmi.cc:1147
+msgid "CPU"
+msgstr "CPU"
+
+#: ../core/dmi.cc:1198 ../core/dmi.cc:1312 ../core/dmi.cc:1613
+msgid "[empty]"
+msgstr "[vacío]"
+
+#: ../core/dmi.cc:1226
+msgid "64-bit capable"
+msgstr "Capaz de 64 bits"
+
+#: ../core/dmi.cc:1259
+msgid " Memory Controller"
+msgstr "Controlador de memoria"
+
+#: ../core/dmi.cc:1277 ../core/dmi.cc:1536
+msgid "empty memory bank"
+msgstr "banco de memoria vacío"
+
+#: ../core/dmi.cc:1447
+msgid "System Memory"
+msgstr "Memoria de sistema"
+
+#: ../core/dmi.cc:1453
+msgid "Video Memory"
+msgstr "Memoria de vídeo"
+
+#: ../core/dmi.cc:1457
+msgid "Flash Memory"
+msgstr "Memoria de flash"
+
+#: ../core/dmi.cc:1461
+msgid "NVRAM"
+msgstr "NVRAM"
+
+#: ../core/dmi.cc:1465
+msgid "Cache Memory"
+msgstr "Memoria de caché"
+
+#: ../core/dmi.cc:1469
+msgid "Generic Memory"
+msgstr "Memoria genérica"
+
+#: ../core/dmi.cc:1490
+msgid "Parity error correction"
+msgstr "Corrección de errores de paridad"
+
+#: ../core/dmi.cc:1494
+msgid "Single-bit error-correcting code (ECC)"
+msgstr "Código de corrección de errores de un solo bit (ECC)"
+
+#: ../core/dmi.cc:1498
+msgid "Multi-bit error-correcting code (ECC)"
+msgstr "Código de corrección de errores de varios bits (ECC)"
+
+#: ../core/dmi.cc:1502
+msgid "CRC error correction"
+msgstr "Corrección de errores CRC"
+
+#: ../core/dmi.cc:1783
+msgid "make outbound connections"
+msgstr "hace conexiones salientes"
+
+#: ../core/dmi.cc:1784
+msgid "receive inbound connections"
+msgstr "hace conexiones entrantes"
+
+#: ../core/hw.cc:1713
+msgid "<!-- generated by lshw-"
+msgstr "<!-- generado por lshw-"
+
+#: ../core/hw.cc:1728
+msgid "<!-- WARNING: not running as root -->"
+msgstr "<!-- ADVERTENCIA: no ejecutando como root -->"
+
+#: ../core/hw.cc:2249
+msgid "(none)"
+msgstr "(cap)"
+
+#: ../core/hw.cc:2252
+msgid "dma"
+msgstr "dma"
+
+#: ../core/hw.cc:2256
+msgid "irq"
+msgstr "irq"
+
+#: ../core/hw.cc:2260
+msgid "iomemory"
+msgstr "iomemory"
+
+#: ../core/hw.cc:2264
+msgid "memory"
+msgstr "memoria"
+
+#: ../core/hw.cc:2266
+msgid "(prefetchable)"
+msgstr "(precargable)"
+
+#: ../core/hw.cc:2269
+msgid "ioport"
+msgstr "ioport"
+
+#: ../core/hw.cc:2273
+#, c-format
+msgid "%lx(size=%ld)"
+msgstr "%lx(tamaño=%ld)"
+
+#: ../core/hw.cc:2276
+msgid "(unknown)"
+msgstr "(desconocido)"
+
+#: ../core/hw.cc:2446
+msgid "false"
+msgstr "falso"
+
+#: ../core/hw.cc:2446
+msgid "true"
+msgstr "verdadero"
+
+#: ../core/hw.cc:2448
+msgid "(nil)"
+msgstr "(nulo)"
+
+#: ../core/lvm.cc:132
+msgid "Linux LVM Physical Volume"
+msgstr "Volumen físico LVM de Línux"
+
+#: ../core/mem.cc:154
+msgid "System memory"
+msgstr "Memoria de sistema"
+
+#: ../core/network.cc:274
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: ../core/network.cc:276
+msgid "SLIP"
+msgstr "SLIP"
+
+#: ../core/network.cc:278
+msgid "loopback"
+msgstr "loopback"
+
+#: ../core/network.cc:280
+msgid "FDDI"
+msgstr "FDDI"
+
+#: ../core/network.cc:282
+msgid "IEEE1394"
+msgstr "IEEE1394"
+
+#: ../core/network.cc:284
+msgid "IRDA"
+msgstr "IRDA"
+
+#: ../core/network.cc:286
+msgid "PPP"
+msgstr "PPP"
+
+#: ../core/network.cc:288
+msgid "X25"
+msgstr "X25"
+
+#: ../core/network.cc:290
+msgid "IPtunnel"
+msgstr "IPtunnel"
+
+#: ../core/network.cc:292
+msgid "Framerelay.DLCI"
+msgstr "Framerelay.DLCI"
+
+#: ../core/network.cc:294
+msgid "Framerelay.AD"
+msgstr "Framerelay.AD"
+
+#: ../core/network.cc:296
+msgid "IP6tunnel"
+msgstr "IP6tunnel"
+
+#: ../core/network.cc:298
+msgid "IP6inIP4"
+msgstr "IP6inIP4"
+
+#: ../core/network.cc:364
+msgid "twisted pair"
+msgstr "par trenzado"
+
+#: ../core/network.cc:366
+msgid "AUI"
+msgstr "AUI"
+
+#: ../core/network.cc:368
+msgid "BNC"
+msgstr "BNC"
+
+#: ../core/network.cc:370
+msgid "Media Independent Interface"
+msgstr "Interfaz independiente de medios"
+
+#: ../core/network.cc:372
+msgid "optical fibre"
+msgstr "fibra óptica"
+
+#: ../core/network.cc:375
+msgid "10Mbit/s"
+msgstr "10Mbit/s"
+
+#: ../core/network.cc:380
+msgid "10Mbit/s (full duplex)"
+msgstr "10Mbit/s (dúplex completo)"
+
+#: ../core/network.cc:385
+msgid "100Mbit/s"
+msgstr "100Mbit/s"
+
+#: ../core/network.cc:390
+msgid "100Mbit/s (full duplex)"
+msgstr "100Mbit/s (dúplex completo)"
+
+#: ../core/network.cc:400 ../core/network.cc:405
+msgid "1Gbit/s (full duplex)"
+msgstr "1Gbit/s (dúplex completo)"
+
+#: ../core/network.cc:410 ../core/network.cc:415
+msgid "2.5Gbit/s (full duplex)"
+msgstr "2,5Gbit/s (dúplex completo)"
+
+#: ../core/network.cc:420
+msgid "5Gbit/s (full duplex)"
+msgstr "5Gbit/s (dúplex completo)"
+
+#: ../core/network.cc:425 ../core/network.cc:432
+msgid "10Gbit/s (full duplex)"
+msgstr "10Gbit/s (dúplex completo)"
+
+#: ../core/network.cc:438
+msgid "25Gbit/s (full duplex)"
+msgstr "25Gbit/s (dúplex completo)"
+
+#: ../core/network.cc:444
+msgid "40Gbit/s (full duplex)"
+msgstr "40Gbit/s (dúplex completo)"
+
+#: ../core/network.cc:448
+msgid "Auto-negotiation"
+msgstr "Negociación automática"
+
+#: ../core/network.cc:636 ../core/network.cc:644 ../core/network.cc:684
+msgid "Logical interface"
+msgstr "Interfaz lógica"
+
+#: ../core/network.cc:638
+msgid "Physical interface"
+msgstr "Interfaz física"
+
+#: ../core/network.cc:652
+msgid "Wireless-LAN"
+msgstr "LAN inalámbrica"
+
+#: ../core/network.cc:654 ../core/usb.cc:263
+msgid "Wireless interface"
+msgstr "Interfaz inalámbrica"
+
+#: ../core/pci.cc:736
+msgid "PCI Express"
+msgstr "PCI Expreso"
+
+#: ../core/print.cc:143 ../gui/print-gui.cc:114
+msgid " DISABLED"
+msgstr " INHABILITADO"
+
+#: ../core/print.cc:145 ../gui/print-gui.cc:116
+msgid " UNCLAIMED"
+msgstr " NO RECLAMADO"
+
+#: ../core/print.cc:178
+msgid "description"
+msgstr "descripción"
+
+#: ../core/print.cc:195 ../gui/print-gui.cc:137
+msgid "product"
+msgstr "producto"
+
+#: ../core/print.cc:212 ../gui/print-gui.cc:138
+msgid "vendor"
+msgstr "vendedor"
+
+#: ../core/print.cc:229
+msgid "physical id"
+msgstr "id físico"
+
+#: ../core/print.cc:246 ../gui/print-gui.cc:139
+msgid "bus info"
+msgstr "información de bus"
+
+#: ../core/print.cc:267 ../gui/print-gui.cc:145
+msgid "logical name"
+msgstr "nombre lógico"
+
+#: ../core/print.cc:285 ../gui/print-gui.cc:148
+msgid "version"
+msgstr "versión"
+
+#: ../core/print.cc:302
+msgid "date"
+msgstr "fecha"
+
+#: ../core/print.cc:319 ../gui/print-gui.cc:149
+msgid "serial"
+msgstr "serial"
+
+#: ../core/print.cc:336 ../gui/print-gui.cc:150
+msgid "slot"
+msgstr "muesca"
+
+#: ../core/print.cc:353 ../gui/print-gui.cc:153
+msgid "size"
+msgstr "tamaño"
+
+#: ../core/print.cc:407 ../gui/print-gui.cc:155
+msgid "capacity"
+msgstr "capacidad"
+
+#: ../core/print.cc:463
+msgid "address"
+msgstr "dirección"
+
+#: ../core/print.cc:466
+msgid "range"
+msgstr "interval"
+
+#: ../core/print.cc:477 ../gui/print-gui.cc:158
+msgid "width"
+msgstr "anchura"
+
+#: ../core/print.cc:491 ../gui/print-gui.cc:161
+msgid "clock"
+msgstr "reloj"
+
+#: ../core/print.cc:508 ../gui/print-gui.cc:168
+msgid "capabilities"
+msgstr "capabilidades"
+
+#: ../core/print.cc:529
+msgid "configuration:"
+msgstr "configuración:"
+
+#: ../core/print.cc:531
+msgid "configuration of "
+msgstr "configuración de "
+
+#: ../core/print.cc:551
+msgid "resources:"
+msgstr "recursos:"
+
+#: ../core/print.cc:553
+msgid "resources of "
+msgstr "recursos de "
+
+#: ../core/print.cc:706
+msgid "H/W path"
+msgstr "Camino H/W"
+
+#: ../core/print.cc:707 ../core/print.cc:724
+msgid "Device"
+msgstr "Dispositivo"
+
+#: ../core/print.cc:708 ../core/print.cc:725
+msgid "Class"
+msgstr "Clase"
+
+#: ../core/print.cc:709 ../core/print.cc:726
+msgid "Description"
+msgstr "Descripción"
+
+#: ../core/print.cc:723
+msgid "Bus info"
+msgstr "Información de bus"
+
+#: ../core/usb.cc:167
+msgid "Audio device"
+msgstr "Dispositivo de audio"
+
+#: ../core/usb.cc:171
+msgid "Control device"
+msgstr "Dispositivo de control"
+
+#: ../core/usb.cc:174
+msgid "MIDI"
+msgstr "MIDI"
+
+#: ../core/usb.cc:176
+msgid "Audio streaming"
+msgstr "Transmisión de audio"
+
+#: ../core/usb.cc:182
+msgid "Communication device"
+msgstr "Dispositivo de comunicación"
+
+#: ../core/usb.cc:185
+msgid "Modem"
+msgstr "Módem"
+
+#: ../core/usb.cc:186
+msgid "AT (Hayes) compatible"
+msgstr "Compatible con AT (Hayes)"
+
+#: ../core/usb.cc:188
+msgid "Ethernet networking"
+msgstr "Redes de Ethernet"
+
+#: ../core/usb.cc:189
+msgid "OBEX networking"
+msgstr "Redes OBEX"
+
+#: ../core/usb.cc:193
+msgid "Human interface device"
+msgstr "Dispositivo de interfaz humana"
+
+#: ../core/usb.cc:199
+msgid "Keyboard"
+msgstr "Teclado"
+
+#: ../core/usb.cc:202
+msgid "Mouse"
+msgstr "Ratón"
+
+#: ../core/usb.cc:209
+msgid "Printer"
+msgstr "Impresora"
+
+#: ../core/usb.cc:216
+msgid "Unidirectional"
+msgstr "Unidireccional"
+
+#: ../core/usb.cc:219
+msgid "Bidirectional"
+msgstr "Bidireccional"
+
+#: ../core/usb.cc:222
+msgid "IEEE 1284.4 compatible bidirectional"
+msgstr "Bidireccional compatible con IEEE 1284.4"
+
+#: ../core/usb.cc:229
+msgid "Mass storage device"
+msgstr "Dispositivo de almacenamiento masivo"
+
+#: ../core/usb.cc:233
+msgid "RBC (typically Flash) mass storage"
+msgstr "Almacenamiento masivo RBC (típicamente Flash)"
+
+#: ../core/usb.cc:236
+msgid "SFF-8020i, MMC-2 (ATAPI)"
+msgstr "SFF-8020i, MMC-2 (ATAPI)"
+
+#: ../core/usb.cc:239
+msgid "Floppy (UFI)"
+msgstr "Disquete (UFI)"
+
+#: ../core/usb.cc:242
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../core/usb.cc:248
+msgid "USB hub"
+msgstr "Concentrador USB"
+
+#: ../core/usb.cc:255
+msgid "Smart card reader"
+msgstr "Lector de tarjetas inteligentes"
+
+#: ../core/usb.cc:259
+msgid "Video"
+msgstr "Vídeo"
+
+#: ../core/usb.cc:266
+msgid "Bluetooth wireless interface"
+msgstr "Interfaz inalámbrica de Bluetooth"
+
+#: ../core/usb.cc:267
+msgid "Bluetooth wireless radio"
+msgstr "Radio inalámbrica de Bluetooth"
+
+#: ../core/usb.cc:272
+msgid "Generic USB device"
+msgstr "Dispositivo USB genérico"
+
+#: ../core/volumes.cc:49
+msgid "Blank volume"
+msgstr "Volumen en blanco"
+
+#: ../core/volumes.cc:50
+msgid "Windows FAT volume"
+msgstr "Volumen de Windows FAT"
+
+#: ../core/volumes.cc:51
+msgid "Windows NTFS volume"
+msgstr "Volumen de Windows NTFS"
+
+#: ../core/volumes.cc:52
+msgid "OS/2 HPFS volume"
+msgstr "Volumen de OS/2 HPFS"
+
+#: ../core/volumes.cc:53
+msgid "EXT2/EXT3 volume"
+msgstr "Volumen de EXT2/EXT3"
+
+#: ../core/volumes.cc:54
+msgid "Linux ReiserFS volume"
+msgstr "Volumen de Linux ReiserFS"
+
+#: ../core/volumes.cc:55
+msgid "Linux ROMFS volume"
+msgstr "Volumen de Linux ROMFS"
+
+#: ../core/volumes.cc:56
+msgid "Linux SquashFS volume"
+msgstr "Volumen de Linux SquashFS"
+
+#: ../core/volumes.cc:57
+msgid "Linux CramFS volume"
+msgstr "Volumen de Linux CramFS"
+
+#: ../core/volumes.cc:58
+msgid "MinixFS volume"
+msgstr "Volumen de MinixFS"
+
+#: ../core/volumes.cc:59
+msgid "System V FS volume"
+msgstr "Volumen de System V FS"
+
+#: ../core/volumes.cc:60
+msgid "Linux JFS volume"
+msgstr "Volumen de Linux JFS"
+
+#: ../core/volumes.cc:61
+msgid "Linux XFS volume"
+msgstr "Volumen de Linux XFS"
+
+#: ../core/volumes.cc:62
+msgid "ISO-9660 volume"
+msgstr "Volumen ISO-9660"
+
+#: ../core/volumes.cc:63
+msgid "X-Box DVD volume"
+msgstr "Volumen de X-Box DVD"
+
+#: ../core/volumes.cc:64
+msgid "UDF volume"
+msgstr "Volumen UDF"
+
+#: ../core/volumes.cc:65
+msgid "UFS volume"
+msgstr "Volumen UFS"
+
+#: ../core/volumes.cc:66
+msgid "HP-UX HFS volume"
+msgstr "Volumen de HP-UX HFS"
+
+#: ../core/volumes.cc:67
+msgid "VxFS volume"
+msgstr "Volumen VxFS"
+
+#: ../core/volumes.cc:68
+msgid "FFS volume"
+msgstr "Volumen FFS"
+
+#: ../core/volumes.cc:69
+msgid "BeOS BFS volume"
+msgstr "Volumen de BeOS BFS"
+
+#: ../core/volumes.cc:70
+msgid "QNX FS volume"
+msgstr "Volumen QNX FS"
+
+#: ../core/volumes.cc:71
+msgid "MacOS MFS volume"
+msgstr "Volumen de MacOS MFS"
+
+#: ../core/volumes.cc:72
+msgid "MacOS HFS+ volume"
+msgstr "Volumen de MacOS HFS+"
+
+#: ../core/volumes.cc:73
+msgid "MacOS HFS volume"
+msgstr "Volumen de MacOS HFS"
+
+#: ../core/volumes.cc:74
+msgid "MacOS APFS volume"
+msgstr "Volumen de MacOS APFS"
+
+#: ../core/volumes.cc:75
+msgid "Linux Unified Key Setup volume"
+msgstr "Volumen de Linux Unified Key Setup"
+
+#: ../core/volumes.cc:76
+msgid "Linux swap volume"
+msgstr "Volumen de Linux de intercambio"
+
+#: ../core/volumes.cc:316
+msgid "Extended Attributes"
+msgstr "Atributos extensos"
+
+#: ../core/volumes.cc:318
+msgid "4GB+ files"
+msgstr "archivos de 4GB+"
+
+#: ../core/volumes.cc:320
+msgid "16TB+ files"
+msgstr "archivos de 16TB+"
+
+#: ../core/volumes.cc:322
+msgid "directories with 65000+ subdirs"
+msgstr "directorios con 65000+ subdirectorios"
+
+#: ../core/volumes.cc:324
+msgid "needs recovery"
+msgstr "necesita recuperación"
+
+#: ../core/volumes.cc:326
+msgid "64bit filesystem"
+msgstr "sistema de archivos de 64 bits"
+
+#: ../core/volumes.cc:328
+msgid "extent-based allocation"
+msgstr "asignación basada en alcance"
+
+#: ../core/volumes.cc:336
+msgid "EXT4 volume"
+msgstr "Volumen EXT4"
+
+#: ../core/volumes.cc:342
+msgid "EXT3 volume"
+msgstr "Volumen EXT3"
+
+#: ../core/volumes.cc:371
+msgid "Encrypted volume"
+msgstr "Volumen cifrado"
+
+#: ../core/volumes.cc:644
+msgid "Contains a bootable Mac OS installation"
+msgstr "Contiene una instalación de Mac OS arrancable"
+
+#: ../core/volumes.cc:646
+msgid "Contains a bootable Mac OS X installation"
+msgstr "Contiene una instalación de Mac OS X arrancable"
+
+#: ../core/volumes.cc:1156
+msgid "initialized volume"
+msgstr "volumen inicializado"
+
+#: ../gui/print-gui.cc:191
+msgid "configuration"
+msgstr "configuración"
+
+#: ../gui/print-gui.cc:207
+msgid "resources"
+msgstr "recursos"
+
+#: ../gui/print-gui.cc:219
+msgid "this device hasn't been claimed\n"
+msgstr "no se ha reclamado este dispositivo\n"
+
+#: ../gui/print-gui.cc:222
+msgid "this device has been disabled\n"
+msgstr "se ha inhabilitado este dispositivo\n"
+
+#: ../lshw.cc:24
+#, c-format
+msgid "usage: %s [-format] [-options ...]\n"
+msgstr "uso: %s [-formato] [-opciones ...]\n"
+
+#: ../lshw.cc:25
+#, c-format
+msgid "       %s -version\n"
+msgstr "       %s -version\n"
+
+#: ../lshw.cc:27
+#, c-format
+msgid "\t-version        print program version (%s)\n"
+msgstr "\t-version        imprimir la versión del programa (%s)\n"
+
+#: ../lshw.cc:28
+#, c-format
+msgid ""
+"\n"
+"format can be\n"
+msgstr ""
+"\n"
+"el formato puede ser\n"
+
+#: ../lshw.cc:29
+#, c-format
+msgid "\t-html           output hardware tree as HTML\n"
+msgstr "\t-html           emitir el árbol de hardware como HTML\n"
+
+#: ../lshw.cc:30
+#, c-format
+msgid "\t-xml            output hardware tree as XML\n"
+msgstr "\t-xml            emitir el árbol de hardware como XML\n"
+
+#: ../lshw.cc:31
+#, c-format
+msgid "\t-json           output hardware tree as a JSON object\n"
+msgstr "\t-json           emitir el árbol de hardware como objecto JSON\n"
+
+#: ../lshw.cc:32
+#, c-format
+msgid "\t-short          output hardware paths\n"
+msgstr "\t-short          emitir los caminos del hardware\n"
+
+#: ../lshw.cc:33
+#, c-format
+msgid "\t-businfo        output bus information\n"
+msgstr "\t-businfo        emitir la información de bus\n"
+
+#: ../lshw.cc:35
+#, c-format
+msgid "\t-X              use graphical interface\n"
+msgstr "\t-X              usar la interfaz gráfica\n"
+
+#: ../lshw.cc:36
+#, c-format
+msgid ""
+"\n"
+"options can be\n"
+msgstr ""
+"\n"
+"las opciones pueden ser\n"
+
+#: ../lshw.cc:38
+#, c-format
+msgid ""
+"\t-dump filename  display output and dump collected information into a file "
+"(SQLite database)\n"
+msgstr ""
+"\t-dump archivo   mostrar la salida y verter la información recogida en un "
+"archivo (base de datos SQLite)\n"
+
+#: ../lshw.cc:40
+#, c-format
+msgid "\t-class CLASS    only show a certain class of hardware\n"
+msgstr "\t-class CLASE    solo mostrar una clase determinada de hardware\n"
+
+#: ../lshw.cc:41
+#, c-format
+msgid "\t-C CLASS        same as '-class CLASS'\n"
+msgstr "\t-C CLASE        lo mismo que '-class CLASE'\n"
+
+#: ../lshw.cc:42
+#, c-format
+msgid "\t-c CLASS        same as '-class CLASS'\n"
+msgstr "\t-c CLASE        lo mismo que '-class CLASE'\n"
+
+#: ../lshw.cc:44
+#, c-format
+msgid "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr ""
+"\t-disable PRUEBA inhabilitar una prueba (como pci, isapnp, cpuid, etc.)\n"
+
+#: ../lshw.cc:46
+#, c-format
+msgid "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr ""
+"\t-enable PRUEBA  habilitar una prueba (como pci, isapnp, cpuid, etc.)\n"
+
+#: ../lshw.cc:47
+#, c-format
+msgid "\t-quiet          don't display status\n"
+msgstr "\t-quiet          no mostrar el estado\n"
+
+#: ../lshw.cc:48
+#, c-format
+msgid ""
+"\t-sanitize       sanitize output (remove sensitive information like serial "
+"numbers, etc.)\n"
+msgstr ""
+"-sanitize       expurgar la salida (quitar información sensitiva como "
+"números de serie, etcétera)\n"
+
+#: ../lshw.cc:49
+#, c-format
+msgid "\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"
+msgstr ""
+"\t-numeric        emitir identificadores numéricos (para PCI, USB, etc.)\n"
+
+#: ../lshw.cc:50
+#, c-format
+msgid ""
+"\t-notime         exclude volatile attributes (timestamps) from output\n"
+msgstr ""
+"\t-notime         excluir atributos volátiles (marcas de tiempo) de la "
+"salida\n"
+
+#: ../lshw.cc:126
+#, c-format
+msgid "the latest version is %s\n"
+msgstr "la versión más reciente es %s\n"
+
+#: ../lshw.cc:228
+#, c-format
+msgid "WARNING: you should run this program as super-user.\n"
+msgstr "ADVERTENCIA: se debe ejecutar este programa como el superusuario.\n"
+
+#: ../lshw.cc:259
+#, c-format
+msgid ""
+"WARNING: output may be incomplete or inaccurate, you should run this program "
+"as super-user.\n"
+msgstr ""
+"ADVERTENCIA: la salida puede ser incompleta o inexacta, se debe ejecutar "
+"este programa como el superusuario.\n"
