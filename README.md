@@ -70,3 +70,5 @@ or
 in the `src/` directory
 
 Building compressed binaries requires `upx` (cf. https://upx.github.io/).
+
+CAPTCHA error trying to submit bug reports on your website at https://ezix.org/project/newticket#ticket
