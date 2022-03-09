@@ -813,6 +813,10 @@ bool scan_network(hwNode & n)
 
       existing = n.findChildByBusInfo(interface.getBusInfo());
       // Multiple NICs can exist on one PCI function.
+
+      if (existing && !existing->getBusInfo().empty() && (interface.getBusInfo() == existing->getBusInfo()) && interface.getProduct().empty())
+        interface.setProduct(existing->getProduct());
+
       // Only merge if MACs also match.
       if (existing && (existing->getSerial() == "" || interface.getSerial() == existing->getSerial()))
       {
