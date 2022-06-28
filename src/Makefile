@@ -24,7 +24,10 @@ export ZLIB
 CXX?=$(CROSS_COMPILE)c++
 PKG_CONFIG ?= pkg-config
 INCLUDES=-I./core/
-DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\" -DVERSION=\"$(VERSION)\"
+ifneq ($(NO_VERSION_CHECK), 1)
+REMOTE_VERSION_CHECK?=-DREMOTE_VERSION_CHECK
+endif
+DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\" -DVERSION=\"$(VERSION)\" $(REMOTE_VERSION_CHECK)
 CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 ifeq ($(SQLITE), 1)
 	CXXFLAGS+= -DSQLITE $(shell $(PKG_CONFIG) --cflags sqlite3)
@@ -37,7 +40,10 @@ ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
 	LDFLAGS+= -Wl,--as-needed
 endif
 LDSTATIC=-static
-LIBS+=-llshw -lresolv
+LIBS+=-llshw
+ifneq ($(NO_VERSION_CHECK), 1)
+LIBS+=-lresolv
+endif
 ifeq ($(SQLITE), 1)
 	LIBS+= $(shell $(PKG_CONFIG) --libs sqlite3)
 endif

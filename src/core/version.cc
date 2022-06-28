@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#ifdef REMOTE_VERSION_CHECK
 #include <netinet/in.h>
 #include <arpa/nameser.h>
 #include <resolv.h>
@@ -21,7 +22,7 @@
 #ifndef PACKETSZ
 #define PACKETSZ 512
 #endif
-
+#endif
 
 const char *getpackageversion()
 {
@@ -31,6 +32,7 @@ const char *getpackageversion()
   return "unknown";
 }
 
+#ifdef REMOTE_VERSION_CHECK
 static char *txtquery(const char *name, const char *domain, unsigned int *ttl)
 {
   unsigned char answer[PACKETSZ], *pt;
@@ -84,13 +86,18 @@ static char *txtquery(const char *name, const char *domain, unsigned int *ttl)
 
   return txt;
 }
+#endif
 
 const char * checkupdates()
 {
+#ifdef REMOTE_VERSION_CHECK
   static char *latest = NULL;
 
   if(!latest)
     latest = txtquery(PACKAGE, "ezix.org", NULL);
 
   return latest;
+#else
+  return NULL;
+#endif
 }
