@@ -593,7 +593,9 @@ bool scan_parisc(hwNode & node)
 
   if(core->getDescription()=="")
     core->setDescription("Motherboard");
-  pushd(DEVICESPARISC);
+
+  if(!pushd(DEVICESPARISC))
+    return false;
   scan_device(*core);
   popd();
 
