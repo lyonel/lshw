@@ -181,7 +181,12 @@ const string & def)
     result = "";
 
     while ((count = read(fd, buffer, sizeof(buffer))) > 0)
-      result += string(buffer, count);
+      if ((result.size() + count) < result.max_size())
+        result += string(buffer, count);
+      else {
+        fprintf(stderr, "WARNING: string in [%s] is too big, truncating it.\n", path.c_str());
+        break;
+      }
 
     close(fd);
   }
