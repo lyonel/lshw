@@ -50,7 +50,15 @@ bool scan_nvme(hwNode & n)
       ns.setBusInfo(guessBusInfo(n.name()));
       ns.setPhysId(n.string_attr("nsid"));
       ns.setDescription("NVMe disk");
-      ns.setLogicalName(n.name());
+      // try to guess correct logical name when native NVMe multipath is enabled for NVMe devices
+      if(!exists("/dev/"+n.name()) &&
+		      uppercase(get_string("/sys/module/nvme_core/parameters/multipath"))=="Y" &&
+		      matches(n.name(), "^nvme[0-9]+c[0-9]+n[0-9]+$")) {
+	      size_t indexc = n.name().find("c");
+	      size_t indexn = n.name().find("n", indexc);
+	      ns.setLogicalName(n.name().erase(indexc, indexn - indexc));
+      } else
+	      ns.setLogicalName(n.name());
       ns.setConfig("wwid",n.string_attr("wwid"));
       scan_disk(ns);
       device->addChild(ns);
