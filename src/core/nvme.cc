@@ -52,7 +52,7 @@ bool scan_nvme(hwNode & n)
       ns.setDescription("NVMe disk");
       // try to guess correct logical name when native NVMe multipath is enabled for NVMe devices
       if(!exists("/dev/"+n.name()) &&
-		      uppercase(get_string("/sys/module/nvme_core/parameters/multipath"))=="Y" &&
+		      uppercase(hw::strip(get_string("/sys/module/nvme_core/parameters/multipath")))=="Y" &&
 		      matches(n.name(), "^nvme[0-9]+c[0-9]+n[0-9]+$")) {
 	      size_t indexc = n.name().find("c");
 	      size_t indexn = n.name().find("n", indexc);
