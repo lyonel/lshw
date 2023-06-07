@@ -1,24 +1,24 @@
 # Korean translations for lshw
 # Copyright (C) 2023 THE lshw'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the lshw package.
-# 
+#
 # Translators:
 # Junghee Lee <daemul72@gmail.com>, 2023
-# 
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: lshw VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-22 00:36-0600\n"
-"PO-Revision-Date: 2023-06-07 04:30+0000\n"
-"Last-Translator: Junghee Lee <daemul72@gmail.com>, 2023\n"
+"PO-Revision-Date: 2023-06-07 16:00+0900\n"
+"Last-Translator: 이정희 <daemul72@gmail.com>\n"
 "Language-Team: Korean (https://app.transifex.com/marong/teams/170105/ko/)\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: ../core/abi.cc:50
 msgid "32-bit processes"
@@ -122,7 +122,7 @@ msgstr "프로세서/메모리 모듈"
 
 #: ../core/dmi.cc:288
 msgid "Processor/IO Module "
-msgstr "프로세서/IO 모듈"
+msgstr "프로세서/IO 모듈 "
 
 #: ../core/dmi.cc:289
 msgid "Interconnect Board"
@@ -406,7 +406,7 @@ msgstr " SIP"
 
 #: ../core/dmi.cc:535
 msgid " Chip"
-msgstr "칩"
+msgstr " 칩"
 
 #: ../core/dmi.cc:536
 msgid " DIP"
@@ -418,7 +418,7 @@ msgstr " ZIP"
 
 #: ../core/dmi.cc:538
 msgid " Proprietary Card"
-msgstr "전용 카드"
+msgstr " 전용 카드"
 
 #: ../core/dmi.cc:539
 msgid " DIMM"
@@ -430,7 +430,7 @@ msgstr " TSOP"
 
 #: ../core/dmi.cc:541
 msgid " Row of chips"
-msgstr "칩의 줄"
+msgstr " 칩의 줄"
 
 #: ../core/dmi.cc:542
 msgid " RIMM"
@@ -722,7 +722,7 @@ msgstr "64비트 가능"
 
 #: ../core/dmi.cc:1259
 msgid " Memory Controller"
-msgstr "메모리 컨트롤러"
+msgstr " 메모리 컨트롤러"
 
 #: ../core/dmi.cc:1277 ../core/dmi.cc:1536
 msgid "empty memory bank"
@@ -979,7 +979,7 @@ msgstr "PCI 익스프레스"
 
 #: ../core/print.cc:143 ../gui/print-gui.cc:114
 msgid " DISABLED"
-msgstr "비활성화됨"
+msgstr " 비활성화됨"
 
 #: ../core/print.cc:145 ../gui/print-gui.cc:116
 msgid " UNCLAIMED"
@@ -1043,7 +1043,7 @@ msgstr "범위"
 
 #: ../core/print.cc:477 ../gui/print-gui.cc:158
 msgid "width"
-msgstr "너비"
+msgstr "비트"
 
 #: ../core/print.cc:491 ../gui/print-gui.cc:161
 msgid "clock"
@@ -1445,7 +1445,9 @@ msgstr ""
 msgid ""
 "\t-dump filename  display output and dump collected information into a file "
 "(SQLite database)\n"
-msgstr "\t-dump filename  출력을 화면표시하고 수집된 정보를 파일로 덤프 (SQLite 데이터베이스)\n"
+msgstr ""
+"\t-dump filename  출력을 화면표시하고 수집된 정보를 파일로 덤프 (SQLite 데이"
+"터베이스)\n"
 
 #: ../lshw.cc:40
 #, c-format
@@ -1482,7 +1484,8 @@ msgstr "\t-quiet          상태 화면표시 안함\n"
 msgid ""
 "\t-sanitize       sanitize output (remove sensitive information like serial "
 "numbers, etc.)\n"
-msgstr "\t-sanitize       출력 정제하기 (일련 번호 등과 같은 민감한 정보 제거)\n"
+msgstr ""
+"\t-sanitize       출력 정제하기 (일련 번호 등과 같은 민감한 정보 제거)\n"
 
 #: ../lshw.cc:49
 #, c-format
@@ -1491,7 +1494,8 @@ msgstr "\t-numeric       숫자 ID 출력 (PCI, USB 등)\n"
 
 #: ../lshw.cc:50
 #, c-format
-msgid "\t-notime         exclude volatile attributes (timestamps) from output\n"
+msgid ""
+"\t-notime         exclude volatile attributes (timestamps) from output\n"
 msgstr "\t-notime         출력에서 휘발성 속성(타임스탬프) 제외하기\n"
 
 #: ../lshw.cc:126
@@ -1507,6 +1511,8 @@ msgstr "경고: 수퍼유저로 이 프로그램을 실행해야 합니다.\n"
 #: ../lshw.cc:259
 #, c-format
 msgid ""
-"WARNING: output may be incomplete or inaccurate, you should run this program"
-" as super-user.\n"
-msgstr "경고: 출력이 불완전하거나 부정확할 수 있으므로 이 프로그램을 수퍼유저로 실행해야 합니다.\n"
+"WARNING: output may be incomplete or inaccurate, you should run this "
+"program as super-user.\n"
+msgstr ""
+"경고: 출력이 불완전하거나 부정확할 수 있으므로 이 프로그램을 수퍼유저로 실행"
+"해야 합니다.\n"
