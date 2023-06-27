@@ -413,7 +413,12 @@ static void scan_devtree_cpu(hwNode & core)
 
           if (hw::strip(get_string(cachebase + "/device_type")) != "cache" &&
             hw::strip(get_string(cachebase + "/device_type")) != "l2-cache")
-            break;                                // oops, not a cache!
+            {
+              // free caches nodes
+              for (int k = j; k < ncache; k++)
+                free(cachelist[k]);
+              break; // oops, not a cache!
+            }
 
 	  cache.setClock(get_u32(cachebase + "/clock-frequency"));
 	  fill_cache_info("L2 Cache", cachebase, cache, icache);
