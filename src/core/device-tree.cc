@@ -1380,6 +1380,17 @@ struct ibm_model_def ibm_model_defs[] =
   {"9124", "eServer OpenPower 720", "", "rackmount"},
 };
 
+static void get_ips_model(hwNode & n)
+{
+  string product = n.getProduct();
+  if (product.empty())
+    return;
+  if (product.compare(0, 4, "IPS,") != 0)
+    return;
+
+  n.setVendor("IPS");
+}
+
 static void get_ibm_model(hwNode & n)
 {
   string product = n.getProduct();
@@ -1446,6 +1457,7 @@ bool scan_device_tree(hwNode & n)
 
   n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
   get_apple_model(n);
+  get_ips_model(n);
   get_ibm_model(n);
   if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
   {
