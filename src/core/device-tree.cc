@@ -1436,7 +1436,12 @@ bool scan_device_tree(hwNode & n)
 
   n.setSerial(get_string(DEVICETREE "/serial-number", n.getSerial()));
   if (n.getSerial() == "")
-    n.setSerial(get_string(DEVICETREE "/system-id"));
+  {
+	  if (exists(DEVICETREE "/ibm,vendor-system-id"))
+		  n.setSerial(get_string(DEVICETREE "/ibm,vendor-system-id"));
+	  else
+		  n.setSerial(get_string(DEVICETREE "/system-id"));
+  }
   fix_serial_number(n);
 
   n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
