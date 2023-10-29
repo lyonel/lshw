@@ -1427,7 +1427,11 @@ bool scan_device_tree(hwNode & n)
     core = n.getChild("core");
   }
 
-  n.setProduct(get_string(DEVICETREE "/model", n.getProduct()));
+  if (exists(DEVICETREE "/ibm,vendor-model"))
+	  n.setProduct(get_string(DEVICETREE "/ibm,vendor-model", n.getProduct()));
+  else
+	  n.setProduct(get_string(DEVICETREE "/model", n.getProduct()));
+
   n.addHint("icon", string("motherboard"));
 
   n.setSerial(get_string(DEVICETREE "/serial-number", n.getSerial()));
