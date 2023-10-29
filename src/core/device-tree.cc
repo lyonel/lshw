@@ -207,7 +207,10 @@ static void scan_devtree_bootrom(hwNode & core)
     hwNode openprom("firmware",
       hw::memory);
 
-    openprom.setProduct(get_string(DEVICETREE "/openprom/model"));
+    if (exists(DEVICETREE "/openprom/ibm,vendor-model"))
+	    openprom.setProduct(get_string(DEVICETREE "/openprom/ibm,vendor-model"));
+    else
+	    openprom.setProduct(get_string(DEVICETREE "/openprom/model"));
 
     if (exists(DEVICETREE "/openprom/supports-bootinfo"))
       openprom.addCapability("bootinfo");
