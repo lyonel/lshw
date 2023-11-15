@@ -207,7 +207,10 @@ static void scan_devtree_bootrom(hwNode & core)
     hwNode openprom("firmware",
       hw::memory);
 
-    openprom.setProduct(get_string(DEVICETREE "/openprom/model"));
+    if (exists(DEVICETREE "/openprom/ibm,vendor-model"))
+	    openprom.setProduct(get_string(DEVICETREE "/openprom/ibm,vendor-model"));
+    else
+	    openprom.setProduct(get_string(DEVICETREE "/openprom/model"));
 
     if (exists(DEVICETREE "/openprom/supports-bootinfo"))
       openprom.addCapability("bootinfo");
@@ -1380,6 +1383,17 @@ struct ibm_model_def ibm_model_defs[] =
   {"9124", "eServer OpenPower 720", "", "rackmount"},
 };
 
+static void get_ips_model(hwNode & n)
+{
+  string product = n.getProduct();
+  if (product.empty())
+    return;
+  if (product.compare(0, 4, "IPS,") != 0)
+    return;
+
+  n.setVendor("IPS");
+}
+
 static void get_ibm_model(hwNode & n)
 {
   string product = n.getProduct();
@@ -1427,16 +1441,26 @@ bool scan_device_tree(hwNode & n)
     core = n.getChild("core");
   }
 
-  n.setProduct(get_string(DEVICETREE "/model", n.getProduct()));
+  if (exists(DEVICETREE "/ibm,vendor-model"))
+	  n.setProduct(get_string(DEVICETREE "/ibm,vendor-model", n.getProduct()));
+  else
+	  n.setProduct(get_string(DEVICETREE "/model", n.getProduct()));
+
   n.addHint("icon", string("motherboard"));
 
   n.setSerial(get_string(DEVICETREE "/serial-number", n.getSerial()));
   if (n.getSerial() == "")
-    n.setSerial(get_string(DEVICETREE "/system-id"));
+  {
+	  if (exists(DEVICETREE "/ibm,vendor-system-id"))
+		  n.setSerial(get_string(DEVICETREE "/ibm,vendor-system-id"));
+	  else
+		  n.setSerial(get_string(DEVICETREE "/system-id"));
+  }
   fix_serial_number(n);
 
   n.setVendor(get_string(DEVICETREE "/copyright", n.getVendor()));
   get_apple_model(n);
+  get_ips_model(n);
   get_ibm_model(n);
   if (matches(get_string(DEVICETREE "/compatible"), "^ibm,powernv"))
   {
