@@ -487,7 +487,7 @@ string escape(const string & s)
         || s[i] == 0xA
         || s[i] == 0xD
         || s[i] >= 0x20
-        || s[i] <  0x00 )
+        || s[i] <  0x0)
       switch (s[i])
       {
         case '<':
