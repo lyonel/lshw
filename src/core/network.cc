@@ -196,16 +196,20 @@ struct ethtool_value
 
 /* Indicates what features are supported by the interface,
  * in the second word of the extended bitmap. */
-#define SUPPORTED2_25000baseKR_Full     (1 << 0)
-#define SUPPORTED2_25000baseSR_Full     (1 << 1)
-#define SUPPORTED2_1000baseX_Full       (1 << 9)
-#define SUPPORTED2_10000baseCR_Full     (1 << 10)
-#define SUPPORTED2_10000baseSR_Full     (1 << 11)
-#define SUPPORTED2_10000baseLR_Full     (1 << 12)
-#define SUPPORTED2_10000baseLRM_Full    (1 << 13)
-#define SUPPORTED2_10000baseER_Full     (1 << 14)
-#define SUPPORTED2_2500baseT_Full       (1 << 15)
-#define SUPPORTED2_5000baseT_Full       (1 << 16)
+#define SUPPORTED2_25000baseKR_Full         (1 << 0)
+#define SUPPORTED2_25000baseSR_Full         (1 << 1)
+#define SUPPORTED2_100000baseKR4_Full       (1 << 4)
+#define SUPPORTED2_100000baseSR4_Full       (1 << 5)
+#define SUPPORTED2_100000baseCR4_Full       (1 << 6)
+#define SUPPORTED2_100000baseLR4_ER4_Full   (1 << 7)
+#define SUPPORTED2_1000baseX_Full           (1 << 9)
+#define SUPPORTED2_10000baseCR_Full         (1 << 10)
+#define SUPPORTED2_10000baseSR_Full         (1 << 11)
+#define SUPPORTED2_10000baseLR_Full         (1 << 12)
+#define SUPPORTED2_10000baseLRM_Full        (1 << 13)
+#define SUPPORTED2_10000baseER_Full         (1 << 14)
+#define SUPPORTED2_2500baseT_Full           (1 << 15)
+#define SUPPORTED2_5000baseT_Full           (1 << 16)
 
 /* The forced speed, 10Mb, 100Mb, gigabit, 2.5GbE, 5GbE, 10GbE and up. */
 #define SPEED_10                10
@@ -216,6 +220,7 @@ struct ethtool_value
 #define SPEED_10000             10000
 #define SPEED_25000             25000
 #define SPEED_40000             40000
+#define SPEED_100000            100000
 
 /* Duplex, half or full. */
 #define DUPLEX_HALF             0x00
@@ -571,6 +576,12 @@ static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2
     interface.addCapability("40000bx-fd", _("40Gbit/s (full duplex)"));
     interface.setCapacity(40000000000ULL);
   }
+  if(supported2 & (SUPPORTED2_100000baseKR4_Full | SUPPORTED2_100000baseSR4_Full |
+                   SUPPORTED2_100000baseCR4_Full | SUPPORTED2_100000baseLR4_ER4_Full))
+  {
+    interface.addCapability("100000bx-fd", _("100Gbit/s (full duplex)"));
+    interface.setCapacity(100000000000ULL);
+  }
   if(supported & SUPPORTED_Autoneg)
     interface.addCapability("autonegotiation", _("Auto-negotiation"));
 
@@ -607,6 +618,10 @@ static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2
     case SPEED_40000:
       interface.setConfig("speed", "40Gbit/s");
       interface.setSize(40000000000ULL);
+      break;
+    case SPEED_100000:
+      interface.setConfig("speed", "100Gbit/s");
+      interface.setSize(100000000000ULL);
       break;
   }
   switch(duplex)
