@@ -1,3 +1,6 @@
+* lshw B.02.20
+  bug fixes
+  code cleanup
 * lshw B.02.19
   detection of NVMe disks
   detection of SD/MMC and SDIO devices
