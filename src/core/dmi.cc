@@ -1531,7 +1531,7 @@ int dmiversionrev)
           unsigned long long size = 0;
           unsigned long long clock = 0;
           u16 width = 0;
-          char bits[10];
+          char bits[12];
           string arrayhandle;
           newnode.setDescription(_("empty memory bank"));
           newnode.addHint("icon", string("memory"));

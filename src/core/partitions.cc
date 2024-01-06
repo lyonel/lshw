@@ -698,7 +698,7 @@ static bool detect_gpt(source & s, hwNode & n)
   static uint8_t buffer[BLOCKSIZE];
   static gpth gpt_header;
   uint32_t i = 0;
-  char gpt_version[8];
+  char gpt_version[13];
   uint8_t *partitions = NULL;
   uint8_t type;
 
@@ -1174,7 +1174,7 @@ static bool detect_dosmap(source & s, hwNode & n)
     signature = 0;
   if(signature)
   {
-    char buffer[8+1];
+    char buffer[16+1];
     snprintf(buffer, sizeof(buffer), "%08lx", signature);
     n.setConfig("signature", buffer);
   }

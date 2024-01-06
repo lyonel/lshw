@@ -447,7 +447,7 @@ static bool detect_reiserfs(hwNode & n, source & s)
 
 static string dos_serial(unsigned long serial)
 {
-  char buffer[16];
+  char buffer[18];
 
   snprintf(buffer, sizeof(buffer), "%04lx-%04lx", serial >> 16, serial & 0xffff);
 

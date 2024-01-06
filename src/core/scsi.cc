@@ -210,7 +210,7 @@ int channel = -1,
 int id = -1,
 int lun = -1)
 {
-  char buffer[10];
+  char buffer[12];
   string result = "SCSI:";
 
   snprintf(buffer, sizeof(buffer), "%02d", host);

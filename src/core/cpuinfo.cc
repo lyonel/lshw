@@ -23,7 +23,7 @@ static inline bool is_system_ppc_ibm(hwNode & node)
 static hwNode *getcpu(hwNode & node,
 int n = 0)
 {
-  char cpubusinfo[10];
+  char cpubusinfo[15];
   hwNode *cpu = NULL;
 
   if (n < 0)
