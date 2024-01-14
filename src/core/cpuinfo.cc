@@ -465,13 +465,13 @@ string value)
     if (id == "model name")
       cpu->setProduct(value);
     if (id == "microcode")
-      cpu->setConfig(id, stoll(value, NULL, 0));
+      cpu->setConfig(id, strtoll(value.c_str(), NULL, 0));
     if (id == "cpu family")
-      cpu->addHint(id, stoll(value, NULL, 0));
+      cpu->addHint(id, strtoll(value.c_str(), NULL, 0));
     if (id == "model")
-      cpu->addHint(id, stoll(value, NULL, 0));
+      cpu->addHint(id, strtoll(value.c_str(), NULL, 0));
     if (id == "stepping")
-      cpu->addHint(id, stoll(value, NULL, 0));
+      cpu->addHint(id, strtoll(value.c_str(), NULL, 0));
 
     family = cpu->getHint("cpu family");
     model = cpu->getHint("model");
