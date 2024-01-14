@@ -26,6 +26,10 @@ static void scan_virtio_block(hwNode & device, const sysfs::entry & entry)
   if (devname.empty())
     return;
   device.setLogicalName(devname);
+  vector<sysfs::entry> e = entry.devices();
+  if (e.size() == 1) {
+    device.setSerial(e[0].string_attr("serial"));
+  }
   scan_disk(device);
   device.claim();
 }
