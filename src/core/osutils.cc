@@ -512,6 +512,7 @@ string escapeJSON(const string & s)
   string result = "";
 
   for (unsigned int i = 0; i < s.length(); i++)
+  {
     switch (s[i])
     {
       case '\r':
@@ -526,8 +527,21 @@ string escapeJSON(const string & s)
       case '"':
         result += "\\\"";
         break;
-    default:
-      result += s[i];
+      case '\b':
+        result += "\\b";
+        break;
+      case '\f':
+        result += "\\f";
+        break;
+      case '\\':
+        result += "\\\\";
+        break;
+      default:
+      {
+        if (32 <= s[i] && s[i] < 127)
+          result += s[i];
+      }
+    }
   }
 
   return result;
