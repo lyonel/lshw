@@ -526,6 +526,9 @@ string escapeJSON(const string & s)
       case '"':
         result += "\\\"";
         break;
+      case '\\':
+        result += "\\\\";
+        break;
     default:
       result += s[i];
   }
