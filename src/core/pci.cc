@@ -566,7 +566,7 @@ long u4 = -1)
 static u_int32_t get_conf_long(struct pci_dev d,
 unsigned int pos)
 {
-  if (pos > sizeof(d.config))
+  if (pos + 3 >= sizeof(d.config))
     return 0;
 
   return d.config[pos] | (d.config[pos + 1] << 8) |
@@ -577,7 +577,7 @@ unsigned int pos)
 static u_int16_t get_conf_word(struct pci_dev d,
 unsigned int pos)
 {
-  if (pos > sizeof(d.config))
+  if (pos + 1 >= sizeof(d.config))
     return 0;
 
   return d.config[pos] | (d.config[pos + 1] << 8);
@@ -587,7 +587,7 @@ unsigned int pos)
 static u_int8_t get_conf_byte(struct pci_dev d,
 unsigned int pos)
 {
-  if (pos > sizeof(d.config))
+  if (pos >= sizeof(d.config))
     return 0;
 
   return d.config[pos];
@@ -1145,10 +1145,10 @@ bool scan_pci(hwNode & n)
       string devicepath = string(devices[i]->d_name)+"/config";
       sysfs::entry device_entry = sysfs::entry::byBus("pci", devices[i]->d_name);
       struct pci_dev d;
+      memset(&d, 0, sizeof(d));
       int fd = open(devicepath.c_str(), O_RDONLY);
       if (fd >= 0)
       {
-        memset(&d, 0, sizeof(d));
         if(read(fd, d.config, 64) == 64)
         {
           if(read(fd, d.config+64, sizeof(d.config)-64) != sizeof(d.config)-64)

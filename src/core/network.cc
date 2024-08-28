@@ -354,7 +354,7 @@ static void scan_ip(hwNode & interface)
 {
   int fd = socket(AF_INET, SOCK_DGRAM, 0);
 
-  if (fd > 0)
+  if (fd >= 0)
   {
     struct ifreq ifr;
 
