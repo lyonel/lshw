@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+"-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+"http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+ <vendor>lshw</vendor>
+ <vendor_url>http://ezix.org/project/wiki/HardwareLiSter</vendor_url>
+ <action id="org.ezix.lshw.gui.pkexec.run">
+    <description>Hardware Lister (lshw) - list hardware information</description>
+    <message>Authentication is required to run lshw-gui</message>
+    <icon_name>lshw-gui</icon_name>
+    <defaults>
+     <allow_any>no</allow_any>
+     <allow_inactive>no</allow_inactive>
+     <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">@CMAKE_INSTALL_FULL_SBINDIR@/gtk-lshw</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+ </action>
+</policyconfig>
