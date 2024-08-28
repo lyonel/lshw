@@ -594,6 +594,7 @@ static bool detect_hfsx(hwNode & n, source & s)
   uint16_t version = 0;
   uint32_t attributes = 0;
   time_t mkfstime, fscktime, wtime;
+  uint8_t uuidarray[16] = {0};
 
   hfsvolume = s;
   hfsvolume.blocksize = HFSBLOCKSIZE;
@@ -636,7 +637,8 @@ static bool detect_hfsx(hwNode & n, source & s)
   else
     n.setConfig("state", "unclean");
   
-  n.setSerial(uuid((uint8_t*)&vol->finderInfo[6]));	// finderInfo[6] and finderInfo[7] contain uuid
+  memcpy(uuidarray, (uint8_t*)&vol->finderInfo[6], 8);
+  n.setSerial(uuid(uuidarray));	// finderInfo[6] and finderInfo[7] contain uuid
 
   if(vol->finderInfo[0])
     n.addCapability("bootable");
