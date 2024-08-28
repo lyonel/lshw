@@ -300,10 +300,7 @@ void statement::prepare(const std::string & s)
       sqlite3_finalize(implementation->stmt);
   }
   else
-    implementation = new statement_i;
-
-  if(!implementation)
-    throw exception("memory exhausted");
+    throw exception("undefined statement");
 
   if(sqlite3_prepare(implementation->db->implementation->connection, s.c_str(), -1, &implementation->stmt, NULL) != SQLITE_OK)
     throw exception(implementation->db->implementation->connection);
