@@ -1145,10 +1145,10 @@ bool scan_pci(hwNode & n)
       string devicepath = string(devices[i]->d_name)+"/config";
       sysfs::entry device_entry = sysfs::entry::byBus("pci", devices[i]->d_name);
       struct pci_dev d;
+      memset(&d, 0, sizeof(d));
       int fd = open(devicepath.c_str(), O_RDONLY);
       if (fd >= 0)
       {
-        memset(&d, 0, sizeof(d));
         if(read(fd, d.config, 64) == 64)
         {
           if(read(fd, d.config+64, sizeof(d.config)-64) != sizeof(d.config)-64)
