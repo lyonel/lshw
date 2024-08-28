@@ -566,7 +566,7 @@ long u4 = -1)
 static u_int32_t get_conf_long(struct pci_dev d,
 unsigned int pos)
 {
-  if (pos > sizeof(d.config))
+  if (pos + 3 >= sizeof(d.config))
     return 0;
 
   return d.config[pos] | (d.config[pos + 1] << 8) |
@@ -577,7 +577,7 @@ unsigned int pos)
 static u_int16_t get_conf_word(struct pci_dev d,
 unsigned int pos)
 {
-  if (pos > sizeof(d.config))
+  if (pos + 1 >= sizeof(d.config))
     return 0;
 
   return d.config[pos] | (d.config[pos + 1] << 8);
@@ -587,7 +587,7 @@ unsigned int pos)
 static u_int8_t get_conf_byte(struct pci_dev d,
 unsigned int pos)
 {
-  if (pos > sizeof(d.config))
+  if (pos >= sizeof(d.config))
     return 0;
 
   return d.config[pos];
