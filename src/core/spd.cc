@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <malloc.h>
 #include <string>
 #include <dirent.h>
 #include <stdio.h>
