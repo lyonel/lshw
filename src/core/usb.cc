@@ -303,11 +303,12 @@ static bool load_usbids(const string & name)
   while(!feof(usbids))
   {
     char * buffer = NULL;
-    size_t linelen;
+    size_t bufferlen;
+    ssize_t linelen;
     unsigned t = 0;
     char *description = NULL;
 
-    if(getline(&buffer, &linelen, usbids)>0)
+    if((linelen = getline(&buffer, &bufferlen, usbids))>0)
     {
       if(buffer[linelen-1]<' ')
         buffer[linelen-1] = '\0';                 // chop \n
@@ -389,11 +390,11 @@ bool scan_usb(hwNode & n)
   while(!feof(usbdevices))
   {
     char * buffer = NULL;
-    size_t linelen;
+    size_t bufferlen;
     char strname[80+1];
     char strval[80+1];
 
-    if(getline(&buffer, &linelen, usbdevices)>0)
+    if(getline(&buffer, &bufferlen, usbdevices)>0)
     {
       string line = hw::strip(string(buffer));
       free(buffer);
