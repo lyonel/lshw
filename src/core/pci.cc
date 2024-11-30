@@ -1034,6 +1034,132 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
   return result;
 }
 
+static unsigned int parse_pci_vpd_buffer (hwNode * device,
+char *buf,
+int size)
+{
+  char key[ 3 ] = { '\0' };
+  /* Each VPD field will be at most 255 bytes long */
+  char val[ 256 ];
+  char *end = buf + size;
+  unsigned char length;
+  uint16_t len, vpd_R_data_len;
+  string field;
+
+  /*
+   * The format of the VPD Data is a series of sections, with
+   * each section containing keyword followed by length as shown
+   * below:
+   *
+   *   _ section start here
+   *  |
+   *  v
+   *  ----------------------------------------------------------
+   * | Section ID(1) | len(2) | data(len) | section1 tag(1) |   |
+   *  ----------------------------------------------------------
+   * | len (1) | key(2) | record_len(1) | data(record_len) |    |
+   *  ----------------------------------------------------------
+   * | key(2) | ....... | section2 tag(1) | len(1) | data(len)| |
+   *  ----------------------------------------------------------
+   * |.....| sectionN tag (1) | len(1) | data(len) | end tag(1) |
+   *  ----------------------------------------------------------
+   */
+
+  /* 0x82 is the value of Identifier String tag which is the first VPD
+   * tag and it provides the product name of the device.
+   * If it's not the first tag means vpd buffer is corrupt. */
+  if (*buf != 0x82)
+    return 0;
+
+  /* Increment buffer to point to offset 1 to read Product
+   * Name length
+   */
+  buf++;
+  if (buf >= end)
+    return 0;
+
+  /* Data length is 2 bytes (byte 1 LSB, byte 2 MSB) */
+  len = *buf | (buf[1] << 8);
+
+  /* Increment buffer to point to read Product Name */
+  buf += 2;
+  if (buf >= end)
+    return 0;
+
+  /* Increment buffer to point to VPD R Tag */
+  buf += len;
+  if (buf >= end)
+    return 0;
+
+  /* Increment buffer to point to VPD R Tag data length */
+  buf++;
+  if (buf >= end)
+    return 0;
+
+  vpd_R_data_len = *buf | (buf[1] << 8);
+
+  /* Increment buffer to point to first VPD keyword */
+  /* Increment by 2 because data length is of size 2 bytes */
+  buf += 2;
+  if (buf >= end)
+    return 0;
+
+  end = buf + vpd_R_data_len;
+
+  string product = "", fru = "", part = "";
+
+  /* We are only interested in the Read-Only VPD data*/
+  while( buf < end)
+  {
+    memset( key, '\0', 3 );
+    memset( val, '\0', 256 );
+
+    if( buf + 3 > end )
+      return 0;
+
+    key[ 0 ] = buf[ 0 ];
+    key[ 1 ] = buf[ 1 ];
+    length = buf[ 2 ];
+    buf += 3;
+
+    if( buf + length > end )
+      return 0;
+
+    memcpy( val, buf, length );
+    buf += length;
+    field = hw::strip(val);
+
+    string k = key;
+    if(k == "FN")
+      fru = val;
+    else
+    if(k == "PN")
+      part = val;
+    else
+    if(k == "SN")
+    {
+      /* Serial in network devices is the MAC address of the network card. Here we
+       * update serial for all but network devices since serial from network will
+       * get updated in node merge in "network.cc" module. If we update here, then
+       * "network.cc" won't be able to find the existing node to merge its node to
+       * and will end up creating two nodes for the same device */
+      string serial = val;
+      if (!serial.empty() && device->getClass() != hw::network)
+        device->setSerial(serial);
+    }
+  }
+
+  if (!part.empty())
+    product = "Part#" + part;
+  if (!fru.empty())
+    product += ((product.empty()?"":" ") + string("FRU#") + fru);
+
+  device->setProduct(
+    ((device->getProduct()).empty() ? "" : (device->getProduct() + " ")) + product);
+
+  return size;
+}
+
 bool scan_pci_legacy(hwNode & n)
 {
   FILE *f;
@@ -1220,6 +1346,20 @@ bool scan_pci(hwNode & n)
             }
         }
 	add_device_tree_info(*device, devices[i]->d_name);
+
+        string vpdpath = string(devices[i]->d_name)+"/vpd";
+        if (exists(vpdpath))
+        {
+          char *vpdData;
+          int size;
+
+          size = getBinaryData(vpdpath, &vpdData);
+          if (size > 0)
+          {
+            parse_pci_vpd_buffer(device, vpdData, size);
+            delete [] vpdData;
+          }
+        }
 
         result = true;
       }
