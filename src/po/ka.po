@@ -1,0 +1,1523 @@
+# Georgian translation for lshw
+# Copyright (C) 2023 lshw's authors.
+# This file is distributed under the same license as the lshw package.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lshw\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-22 00:36-0600\n"
+"PO-Revision-Date: 2023-09-07 13:53+0200\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#: ../core/abi.cc:50
+msgid "32-bit processes"
+msgstr "32-ბიტიანი პროცესები"
+
+#: ../core/abi.cc:51
+msgid "64-bit processes"
+msgstr "64-ბიტიანი პროცესები"
+
+#: ../core/cpuid.cc:285
+msgid "CPU virtualization (Vanderpool)"
+msgstr "CPU ვირტუალიზაცია (Vanderpool)"
+
+#: ../core/cpuid.cc:298 ../core/cpuid.cc:299
+msgid "Logical CPU"
+msgstr "ლოგიკური CPU"
+
+#: ../core/cpuid.cc:302
+msgid "HyperThreading"
+msgstr "HyperThreading"
+
+#: ../core/cpuid.cc:366 ../core/cpuid.cc:373 ../core/cpuid.cc:467
+msgid "L1 cache"
+msgstr "L1 კეში"
+
+#: ../core/cpuid.cc:384 ../core/cpuid.cc:391 ../core/cpuid.cc:479
+msgid "L2 cache"
+msgstr "L2 კეში"
+
+#: ../core/dmi.cc:155
+msgid "Other Battery"
+msgstr "სხვა ელემენტი"
+
+#: ../core/dmi.cc:156
+msgid "Unknown Battery"
+msgstr "უცნობი ელემენტი"
+
+#: ../core/dmi.cc:157
+msgid "Lead Acid Battery"
+msgstr "ტყვია-მჟავის ელემენტი"
+
+#: ../core/dmi.cc:158
+msgid "Nickel Cadmium Battery"
+msgstr "ნიკელ-კადმიუმის ელემენტი"
+
+#: ../core/dmi.cc:159
+msgid "Nickel Metal Hydride Battery"
+msgstr "ნიკელი-ლითონის-ჰიდრიდის ელემენტი"
+
+#: ../core/dmi.cc:160
+msgid "Lithium Ion Battery"
+msgstr "ლითიუმ-იონის ელემენტი"
+
+#: ../core/dmi.cc:161
+msgid "Zinc Air Battery"
+msgstr "თუთია-ჰაერის ელემენტი"
+
+#: ../core/dmi.cc:162
+msgid "Lithium Polymer Battery"
+msgstr "ლითიუმ-პოლიმერის ელემენტი"
+
+#: ../core/dmi.cc:167
+msgid "Battery"
+msgstr "კვების ელემენტი"
+
+#: ../core/dmi.cc:279
+msgid "Server Blade"
+msgstr "ბლეიდ-სერვერი"
+
+#: ../core/dmi.cc:280
+msgid "Connectivity Switch"
+msgstr "დაკავშირების კომუტატორი"
+
+#: ../core/dmi.cc:281
+msgid "System Management Module"
+msgstr "სისტემის მართვის მოდული"
+
+#: ../core/dmi.cc:282
+msgid "Processor Module"
+msgstr "პროცესორის მოდული"
+
+#: ../core/dmi.cc:283
+msgid "I/O Module"
+msgstr "I/O მოდული"
+
+#: ../core/dmi.cc:284
+msgid "Memory Module"
+msgstr "მეხსიერების მოდული"
+
+#: ../core/dmi.cc:285
+msgid "Daughter Board"
+msgstr "დამხმარე დაფა"
+
+#: ../core/dmi.cc:286 ../core/dmi.cc:1094
+msgid "Motherboard"
+msgstr "მთავარი დაფა"
+
+#: ../core/dmi.cc:287
+msgid "Processor/Memory Module"
+msgstr "პროცესორის/მეხსიერების მოდული"
+
+#: ../core/dmi.cc:288
+msgid "Processor/IO Module "
+msgstr "პროცესორის/IO მოდული "
+
+#: ../core/dmi.cc:289
+msgid "Interconnect Board"
+msgstr "მაკავშირებელი დაფა"
+
+#: ../core/dmi.cc:306
+msgid "ISA bus"
+msgstr "ISA მატარებელი"
+
+#: ../core/dmi.cc:308
+msgid "MCA bus"
+msgstr "MCA მატარებელი"
+
+#: ../core/dmi.cc:310
+msgid "EISA bus"
+msgstr "EISA მატარებელი"
+
+#: ../core/dmi.cc:312
+msgid "PCI bus"
+msgstr "PCI მატარებელი"
+
+#: ../core/dmi.cc:314
+msgid "PCMCIA/PCCard"
+msgstr "PCMCIA/PCCard"
+
+#: ../core/dmi.cc:316
+msgid "Plug-and-Play"
+msgstr "Plug-and-Play"
+
+#: ../core/dmi.cc:318
+msgid "Advanced Power Management"
+msgstr "კვების დამატებითი მართვა"
+
+#: ../core/dmi.cc:320
+msgid "BIOS EEPROM can be upgraded"
+msgstr "BIOS EEPROM განახლებადია"
+
+#: ../core/dmi.cc:322
+msgid "BIOS shadowing"
+msgstr "BIOS-ის დაჩრდილვა"
+
+#: ../core/dmi.cc:324
+msgid "VESA video extensions"
+msgstr "VESA ვიდეო გაფართოებები"
+
+#: ../core/dmi.cc:326
+msgid "ESCD"
+msgstr "ESCD"
+
+#: ../core/dmi.cc:328
+msgid "Booting from CD-ROM/DVD"
+msgstr "CD/DVD-ROM-დან ჩატვირთვა"
+
+#: ../core/dmi.cc:330
+msgid "Selectable boot path"
+msgstr "არჩევადი ჩატვირთვის ბილიკი"
+
+#: ../core/dmi.cc:332
+msgid "BIOS ROM is socketed"
+msgstr "BIOS ROM სოკეტში ზის"
+
+#: ../core/dmi.cc:334
+msgid "Booting from PCMCIA"
+msgstr "მიმდინარეობს PCMCIA-დან ჩატვირთვა"
+
+#: ../core/dmi.cc:336
+msgid "Enhanced Disk Drive extensions"
+msgstr "გაუმჯობესებული დისკის ამძრავის გაფართოებები"
+
+#: ../core/dmi.cc:338
+msgid "NEC 9800 floppy"
+msgstr "დისკეტა NEC 9800"
+
+#: ../core/dmi.cc:340
+msgid "Toshiba floppy"
+msgstr "Toshiba-ის დისკეტა"
+
+#: ../core/dmi.cc:342
+msgid "5.25\" 360KB floppy"
+msgstr "5.25\" 360KB დისკეტა"
+
+#: ../core/dmi.cc:344
+msgid "5.25\" 1.2MB floppy"
+msgstr "5.25\" 1.2MB დისკეტა"
+
+#: ../core/dmi.cc:346
+msgid "3.5\" 720KB floppy"
+msgstr "3.5\" 720KB დისკეტა"
+
+#: ../core/dmi.cc:348
+msgid "3.5\" 2.88MB floppy"
+msgstr "3.5\" 2.88MB დისკეტა"
+
+#: ../core/dmi.cc:350
+msgid "Print Screen key"
+msgstr "ღილაკი Print Screen"
+
+#: ../core/dmi.cc:352
+msgid "i8042 keyboard controller"
+msgstr "კლავიატურის კონტროლერი i8042"
+
+#: ../core/dmi.cc:354
+msgid "INT14 serial line control"
+msgstr "INT14 სერიული ხაზის კონტროლი"
+
+#: ../core/dmi.cc:356
+msgid "INT17 printer control"
+msgstr "INT17 პრინტერის კონტროლი"
+
+#: ../core/dmi.cc:358
+msgid "INT10 CGA/Mono video"
+msgstr "INT10 CGA/Mono ვიდეო"
+
+#: ../core/dmi.cc:360
+msgid "NEC PC-98"
+msgstr "NEC PC-98"
+
+#: ../core/dmi.cc:372
+msgid "ACPI"
+msgstr "ACPI"
+
+#: ../core/dmi.cc:374
+msgid "USB legacy emulation"
+msgstr "მოძველებული USB-ის ემულაცია"
+
+#: ../core/dmi.cc:376
+msgid "AGP"
+msgstr "AGP"
+
+#: ../core/dmi.cc:378
+msgid "I2O booting"
+msgstr "I2O ჩატვირთვა"
+
+#: ../core/dmi.cc:380
+msgid "Booting from LS-120"
+msgstr "მიმდინარეობს ჩატვირთვა LS-120-დან"
+
+#: ../core/dmi.cc:382
+msgid "Booting from ATAPI ZIP"
+msgstr "მიმდინარეობს ჩატვირთვა ATAPI ZIP-დან"
+
+#: ../core/dmi.cc:384
+msgid "Booting from IEEE1394 (Firewire)"
+msgstr "მიმდინარეობს ჩატვირთვა IEEE1394-დან (Firewire)"
+
+#: ../core/dmi.cc:386
+msgid "Smart battery"
+msgstr "ჭკვიანი ელემენტი"
+
+#: ../core/dmi.cc:392
+msgid "BIOS boot specification"
+msgstr "BIOS-ის ჩატვირთვის სპეციფიკაცია"
+
+#: ../core/dmi.cc:395
+msgid "Function-key initiated network service boot"
+msgstr "Function-ღილაკით ინიცირებული ქსელური სერვისის ჩატვირთვა"
+
+#: ../core/dmi.cc:397
+msgid "UEFI specification is supported"
+msgstr "UEFI სპეციფიკაცია მხარდაჭერილი არაა"
+
+#: ../core/dmi.cc:399
+msgid "This machine is a virtual machine"
+msgstr "ეს მანქანა ვირტუალური მანქანაა"
+
+#: ../core/dmi.cc:429
+msgid "Non-burst"
+msgstr "არა-იმპულსური"
+
+#: ../core/dmi.cc:431
+msgid "Burst"
+msgstr "იმპულსი"
+
+#: ../core/dmi.cc:433
+msgid "Pipeline burst"
+msgstr "ფაიფლაინის იმპულსი"
+
+#: ../core/dmi.cc:435 ../core/dmi.cc:608
+msgid "Synchronous"
+msgstr "სინქრონული"
+
+#: ../core/dmi.cc:437
+msgid "Asynchronous"
+msgstr "ასინქრონული"
+
+#: ../core/dmi.cc:453
+msgid "Internal"
+msgstr "შიდა"
+
+#: ../core/dmi.cc:456
+msgid "External"
+msgstr "გარე"
+
+#: ../core/dmi.cc:465
+msgid "Write-through"
+msgstr "გამჭოლად-ჩაწერადი"
+
+#: ../core/dmi.cc:468
+msgid "Write-back"
+msgstr "Write-back"
+
+#: ../core/dmi.cc:471
+msgid "Varies With Memory Address"
+msgstr "იცვლება მეხსიერების მისამართთან ერთად"
+
+#: ../core/dmi.cc:475
+msgid "cache"
+msgstr "კეში"
+
+#: ../core/dmi.cc:480
+msgid "Instruction cache"
+msgstr "ინსტრუქციის კეში"
+
+#: ../core/dmi.cc:483
+msgid "Data cache"
+msgstr "მონაცემების კეში"
+
+#: ../core/dmi.cc:486
+msgid "Unified cache"
+msgstr "გაერთიანებული კეში"
+
+#: ../core/dmi.cc:501
+msgid "System board or motherboard"
+msgstr "სისტემის ან მთავარი დაფა"
+
+#: ../core/dmi.cc:502
+msgid "ISA add-on card"
+msgstr "ISA დამატებითი ბარათი"
+
+#: ../core/dmi.cc:503
+msgid "EISA add-on card"
+msgstr "EISA დამატებითი ბარათი"
+
+#: ../core/dmi.cc:504
+msgid "PCI add-on card"
+msgstr "PCI დამატებითი ბარათი"
+
+#: ../core/dmi.cc:505
+msgid "MCA add-on card"
+msgstr "MCA დამატებითი ბარათი"
+
+#: ../core/dmi.cc:506
+msgid "PCMCIA add-on card"
+msgstr "PCMCIA დამატებითი ბარათი"
+
+#: ../core/dmi.cc:507
+msgid "Proprietary add-on card"
+msgstr "მესამე პირების შექმნილი დამატებითი ბარათი"
+
+#: ../core/dmi.cc:508
+msgid "NuBus"
+msgstr "NuBus"
+
+#: ../core/dmi.cc:512
+msgid "PC-98/C20 add-on card"
+msgstr "PC-98/C20 დამატებითი ბარათი"
+
+#: ../core/dmi.cc:513
+msgid "PC-98/C24 add-on card"
+msgstr "PC-98/C24 დამატებითი ბარათი"
+
+#: ../core/dmi.cc:514
+msgid "PC-98/E add-on card"
+msgstr "PC-98/E დამატებითი ბარათი"
+
+#: ../core/dmi.cc:515
+msgid "PC-98/Local bus add-on card"
+msgstr "PC-98/ლოკალური მატარებლის დამატებითი ბარათი"
+
+#: ../core/dmi.cc:516
+msgid "PC-98/Card slot add-on card"
+msgstr "PC-98/ბარათის სლოტის დამატებითი ბარათი"
+
+#: ../core/dmi.cc:533
+msgid " SIMM"
+msgstr " SIMM"
+
+#: ../core/dmi.cc:534
+msgid " SIP"
+msgstr " SIP"
+
+#: ../core/dmi.cc:535
+msgid " Chip"
+msgstr " Chip"
+
+#: ../core/dmi.cc:536
+msgid " DIP"
+msgstr " DIP"
+
+#: ../core/dmi.cc:537
+msgid " ZIP"
+msgstr " ZIP"
+
+#: ../core/dmi.cc:538
+msgid " Proprietary Card"
+msgstr " მესამე პირების შექმნილი ბარათი"
+
+#: ../core/dmi.cc:539
+msgid " DIMM"
+msgstr " DIMM"
+
+#: ../core/dmi.cc:540
+msgid " TSOP"
+msgstr " TSOP"
+
+#: ../core/dmi.cc:541
+msgid " Row of chips"
+msgstr " ჩიპების მწკრივი"
+
+#: ../core/dmi.cc:542
+msgid " RIMM"
+msgstr " RIMM"
+
+#: ../core/dmi.cc:543
+msgid " SODIMM"
+msgstr " SODIMM"
+
+#: ../core/dmi.cc:544
+msgid " SRIMM"
+msgstr " SRIMM"
+
+#: ../core/dmi.cc:545
+msgid " FB-DIMM"
+msgstr " FB-DIMM"
+
+#: ../core/dmi.cc:560
+msgid " DRAM"
+msgstr " DRAM"
+
+#: ../core/dmi.cc:561
+msgid " EDRAM"
+msgstr " EDRAM"
+
+#: ../core/dmi.cc:562
+msgid " VRAM"
+msgstr " VRAM"
+
+#: ../core/dmi.cc:563
+msgid " SRAM"
+msgstr " SRAM"
+
+#: ../core/dmi.cc:564
+msgid " RAM"
+msgstr " RAM"
+
+#: ../core/dmi.cc:565
+msgid " ROM"
+msgstr " ROM"
+
+#: ../core/dmi.cc:566
+msgid " FLASH"
+msgstr " FLASH"
+
+#: ../core/dmi.cc:567
+msgid " EEPROM"
+msgstr " EEPROM"
+
+#: ../core/dmi.cc:568
+msgid " FEPROM"
+msgstr " FEPROM"
+
+#: ../core/dmi.cc:569
+msgid " EPROM"
+msgstr " EPROM"
+
+#: ../core/dmi.cc:570
+msgid " CDRAM"
+msgstr " CDRAM"
+
+#: ../core/dmi.cc:571
+msgid " 3DRAM"
+msgstr " 3DRAM"
+
+#: ../core/dmi.cc:572
+msgid " SDRAM"
+msgstr " SDRAM"
+
+#: ../core/dmi.cc:573
+msgid " SGRAM"
+msgstr " SGRAM"
+
+#: ../core/dmi.cc:574
+msgid " RDRAM"
+msgstr " RDRAM"
+
+#: ../core/dmi.cc:575
+msgid " DDR"
+msgstr " DDR"
+
+#: ../core/dmi.cc:576
+msgid " DDR2"
+msgstr " DDR2"
+
+#: ../core/dmi.cc:577
+msgid " DDR2 FB-DIMM"
+msgstr " DDR2 FB-DIMM"
+
+#: ../core/dmi.cc:600
+msgid "Fast-paged"
+msgstr "სწრაფგვერდიანი"
+
+#: ../core/dmi.cc:602
+msgid "Static column"
+msgstr "სტატიკური სვეტი"
+
+#: ../core/dmi.cc:604
+msgid "Pseudo-static"
+msgstr "ფსევდოსტატიკური"
+
+#: ../core/dmi.cc:606
+msgid "RAMBUS"
+msgstr "RAMBUS"
+
+#: ../core/dmi.cc:610
+msgid "CMOS"
+msgstr "CMOS"
+
+#: ../core/dmi.cc:612
+msgid "EDO"
+msgstr "EDO"
+
+#: ../core/dmi.cc:614
+msgid "Window DRAM"
+msgstr "ფანჯრული DRAM"
+
+#: ../core/dmi.cc:616
+msgid "Cache DRAM"
+msgstr "კეშის DRAM"
+
+#: ../core/dmi.cc:618
+msgid "Non-volatile"
+msgstr "არააქროლადი"
+
+#: ../core/dmi.cc:620
+msgid "Registered (Buffered)"
+msgstr "რეგისტრირებული (ბუფერით)"
+
+#: ../core/dmi.cc:622
+msgid "Unbuffered (Unregistered)"
+msgstr "ბუფერის გარეშე (დაურეგისტრირებელი)"
+
+#: ../core/dmi.cc:624
+msgid "LRDIMM"
+msgstr "LRDIMM"
+
+#: ../core/dmi.cc:637
+msgid "Desktop Computer"
+msgstr "სამაგიდო კომპიუტერი"
+
+#: ../core/dmi.cc:638
+msgid "Low Profile Desktop Computer"
+msgstr "დაბალი პროფილის სამაგიდო კომპიუტერი"
+
+#: ../core/dmi.cc:639
+msgid "Pizza Box Computer"
+msgstr "პიცისყუთის ზომის კომპიუერი"
+
+#: ../core/dmi.cc:640
+msgid "Mini Tower Computer"
+msgstr "კომპიუტერი პატარა ყუთით"
+
+#: ../core/dmi.cc:641
+msgid "Tower Computer"
+msgstr "კომპიუტერის კორპუსი"
+
+#: ../core/dmi.cc:642
+msgid "Portable Computer"
+msgstr "გადატანადი კომპიუტერი"
+
+#: ../core/dmi.cc:643
+msgid "Laptop"
+msgstr "ლეპტოპი"
+
+#: ../core/dmi.cc:644
+msgid "Notebook"
+msgstr "ნოუთბუქი"
+
+#: ../core/dmi.cc:645
+msgid "Hand Held Computer"
+msgstr "ხელში დასაჭერი კომპიუტერი"
+
+#: ../core/dmi.cc:646
+msgid "Docking Station"
+msgstr "სამაგრი დაფა"
+
+#: ../core/dmi.cc:647
+msgid "All In One"
+msgstr "ყველა-ერთში"
+
+#: ../core/dmi.cc:648
+msgid "Sub Notebook"
+msgstr "ქვე-ნოუთბუქი"
+
+#: ../core/dmi.cc:649
+msgid "Space-saving Computer"
+msgstr "პატარა ზომის კომპიუტერი"
+
+#: ../core/dmi.cc:650
+msgid "Lunch Box Computer"
+msgstr "სადილის ყუთის ზომის კომპიუტერი"
+
+#: ../core/dmi.cc:651
+msgid "System"
+msgstr "სისტემა"
+
+#: ../core/dmi.cc:652
+msgid "Expansion Chassis"
+msgstr "გაფართოების კორპუსი"
+
+#: ../core/dmi.cc:653
+msgid "Sub Chassis"
+msgstr "ქვე-კორპუსი"
+
+#: ../core/dmi.cc:654
+msgid "Bus Expansion Chassis"
+msgstr "მატარებლის გაფართოების შასი"
+
+#: ../core/dmi.cc:655
+msgid "Peripheral Chassis"
+msgstr "გარე კორპუსი"
+
+#: ../core/dmi.cc:656
+msgid "RAID Chassis"
+msgstr "RAID შასი"
+
+#: ../core/dmi.cc:657
+msgid "Rack Mount Chassis"
+msgstr "რეკში ჩასადგმელი შასი"
+
+#: ../core/dmi.cc:658
+msgid "Sealed-case PC"
+msgstr "დალუქული PC"
+
+#: ../core/dmi.cc:659
+msgid "Multi-system"
+msgstr "მრავალსისტემიანი ყუთი"
+
+#: ../core/dmi.cc:660
+msgid "Compact PCI"
+msgstr "კომპაქტური PCI"
+
+#: ../core/dmi.cc:661
+msgid "Advanced TCA"
+msgstr "დამატებითი TCA"
+
+#: ../core/dmi.cc:662
+msgid "Blade"
+msgstr "ბლეიდი"
+
+#: ../core/dmi.cc:663
+msgid "Blade enclosure"
+msgstr "კალათი"
+
+#: ../core/dmi.cc:664
+msgid "Tablet"
+msgstr "ტაბლეტი"
+
+#: ../core/dmi.cc:665
+msgid "Convertible"
+msgstr "გარდაქმნადი"
+
+#: ../core/dmi.cc:666
+msgid "Detachable"
+msgstr "მოძრობადი"
+
+#: ../core/dmi.cc:667
+msgid "IoT Gateway"
+msgstr "IoT ნაგულისხმები რაუტერი"
+
+#: ../core/dmi.cc:668
+msgid "Embedded PC"
+msgstr "ჩაშენებული PC"
+
+#: ../core/dmi.cc:669
+msgid "Mini PC"
+msgstr "მინი PC"
+
+#: ../core/dmi.cc:670
+msgid "Stick PC"
+msgstr "კომპიუტერი ჩიპზე"
+
+#: ../core/dmi.cc:1045
+msgid "BIOS"
+msgstr "BIOS"
+
+#: ../core/dmi.cc:1147
+msgid "CPU"
+msgstr "CPU"
+
+#: ../core/dmi.cc:1198 ../core/dmi.cc:1312 ../core/dmi.cc:1613
+msgid "[empty]"
+msgstr "[ცარიელი]"
+
+#: ../core/dmi.cc:1226
+msgid "64-bit capable"
+msgstr "შეუძლია 64-ბიტიანი გამოთვლა"
+
+#: ../core/dmi.cc:1259
+msgid " Memory Controller"
+msgstr " მეხსიერების კონტროლერი"
+
+#: ../core/dmi.cc:1277 ../core/dmi.cc:1536
+msgid "empty memory bank"
+msgstr "ცარიელი მეხსიერების სოკეტი"
+
+#: ../core/dmi.cc:1447
+msgid "System Memory"
+msgstr "სისტემური მეხსიერება"
+
+#: ../core/dmi.cc:1453
+msgid "Video Memory"
+msgstr "ვიდეო მეხსიერება"
+
+#: ../core/dmi.cc:1457
+msgid "Flash Memory"
+msgstr "ფლეშ-მეხსიერება"
+
+#: ../core/dmi.cc:1461
+msgid "NVRAM"
+msgstr "NVRAM"
+
+#: ../core/dmi.cc:1465
+msgid "Cache Memory"
+msgstr "ქეშის მეხსიერება"
+
+#: ../core/dmi.cc:1469
+msgid "Generic Memory"
+msgstr "ზოგადი მეხსიერება"
+
+#: ../core/dmi.cc:1490
+msgid "Parity error correction"
+msgstr "პარიტეტის შეცდომის გასწორება"
+
+#: ../core/dmi.cc:1494
+msgid "Single-bit error-correcting code (ECC)"
+msgstr "ერთბიტიანი შეცდომის-შესწორების კოდი (ECC)"
+
+#: ../core/dmi.cc:1498
+msgid "Multi-bit error-correcting code (ECC)"
+msgstr "მრავალბიტიანი შეცდომის-შესწორების კოდი (ECC)"
+
+#: ../core/dmi.cc:1502
+msgid "CRC error correction"
+msgstr "CRC შეცდომის გასწორება"
+
+#: ../core/dmi.cc:1783
+msgid "make outbound connections"
+msgstr "გამავალი მიერთებების შექმნა"
+
+#: ../core/dmi.cc:1784
+msgid "receive inbound connections"
+msgstr "შემომავალი მიერთებების მიღება"
+
+#: ../core/hw.cc:1713
+msgid "<!-- generated by lshw-"
+msgstr "<!-- გენერირებულია: lshw-"
+
+#: ../core/hw.cc:1728
+msgid "<!-- WARNING: not running as root -->"
+msgstr "<!-- გაფრთხილება: არაა გაშვებული root მომხმარებლით -->"
+
+#: ../core/hw.cc:2249
+msgid "(none)"
+msgstr "(არაფერი)"
+
+#: ../core/hw.cc:2252
+msgid "dma"
+msgstr "dma"
+
+#: ../core/hw.cc:2256
+msgid "irq"
+msgstr "irq"
+
+#: ../core/hw.cc:2260
+msgid "iomemory"
+msgstr "iomemory"
+
+#: ../core/hw.cc:2264
+msgid "memory"
+msgstr "მეხსიერება"
+
+#: ../core/hw.cc:2266
+msgid "(prefetchable)"
+msgstr "(წინასწარ-გამოთხოვნადი)"
+
+#: ../core/hw.cc:2269
+msgid "ioport"
+msgstr "ioport"
+
+#: ../core/hw.cc:2273
+#, c-format
+msgid "%lx(size=%ld)"
+msgstr "%lx(ზომა=%ld)"
+
+#: ../core/hw.cc:2276
+msgid "(unknown)"
+msgstr "(უცნობი)"
+
+#: ../core/hw.cc:2446
+msgid "false"
+msgstr "მცდარი"
+
+#: ../core/hw.cc:2446
+msgid "true"
+msgstr "სიმართლე"
+
+#: ../core/hw.cc:2448
+msgid "(nil)"
+msgstr "(nil)"
+
+#: ../core/lvm.cc:132
+msgid "Linux LVM Physical Volume"
+msgstr "Linux LVM-ის ფიზიკური ტომი"
+
+#: ../core/mem.cc:154
+msgid "System memory"
+msgstr "სისტემური მეხსიერება"
+
+#: ../core/network.cc:274
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: ../core/network.cc:276
+msgid "SLIP"
+msgstr "SLIP"
+
+#: ../core/network.cc:278
+msgid "loopback"
+msgstr "loopback"
+
+#: ../core/network.cc:280
+msgid "FDDI"
+msgstr "FDDI"
+
+#: ../core/network.cc:282
+msgid "IEEE1394"
+msgstr "IEEE1394"
+
+#: ../core/network.cc:284
+msgid "IRDA"
+msgstr "IRDA"
+
+#: ../core/network.cc:286
+msgid "PPP"
+msgstr "PPP"
+
+#: ../core/network.cc:288
+msgid "X25"
+msgstr "X25"
+
+#: ../core/network.cc:290
+msgid "IPtunnel"
+msgstr "IPtunnel"
+
+#: ../core/network.cc:292
+msgid "Framerelay.DLCI"
+msgstr "Framerelay.DLCI"
+
+#: ../core/network.cc:294
+msgid "Framerelay.AD"
+msgstr "Framerelay.AD"
+
+#: ../core/network.cc:296
+msgid "IP6tunnel"
+msgstr "IP6tunnel"
+
+#: ../core/network.cc:298
+msgid "IP6inIP4"
+msgstr "IP6inIP4"
+
+#: ../core/network.cc:364
+msgid "twisted pair"
+msgstr "დახვეული წყვილი"
+
+#: ../core/network.cc:366
+msgid "AUI"
+msgstr "AUI"
+
+#: ../core/network.cc:368
+msgid "BNC"
+msgstr "BNC"
+
+#: ../core/network.cc:370
+msgid "Media Independent Interface"
+msgstr "მედიაზე დამოუკიდებელი ინტერფეისი"
+
+#: ../core/network.cc:372
+msgid "optical fibre"
+msgstr "ოპტიკურბოჭკოვანი"
+
+#: ../core/network.cc:375
+msgid "10Mbit/s"
+msgstr "10მბიტ/წმ"
+
+#: ../core/network.cc:380
+msgid "10Mbit/s (full duplex)"
+msgstr "10მბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:385
+msgid "100Mbit/s"
+msgstr "100მბიტ/წმ"
+
+#: ../core/network.cc:390
+msgid "100Mbit/s (full duplex)"
+msgstr "100მბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:400 ../core/network.cc:405
+msgid "1Gbit/s (full duplex)"
+msgstr "1გბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:410 ../core/network.cc:415
+msgid "2.5Gbit/s (full duplex)"
+msgstr "2.5გბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:420
+msgid "5Gbit/s (full duplex)"
+msgstr "5გბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:425 ../core/network.cc:432
+msgid "10Gbit/s (full duplex)"
+msgstr "10გბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:438
+msgid "25Gbit/s (full duplex)"
+msgstr "25გბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:444
+msgid "40Gbit/s (full duplex)"
+msgstr "40გბიტ/წმ (სრული დუპლექსი)"
+
+#: ../core/network.cc:448
+msgid "Auto-negotiation"
+msgstr "ავტომატური-მოლაპარაკება"
+
+#: ../core/network.cc:636 ../core/network.cc:644 ../core/network.cc:684
+msgid "Logical interface"
+msgstr "ლოგიკური ინტერფეისი"
+
+#: ../core/network.cc:638
+msgid "Physical interface"
+msgstr "ფიზიკური ინტერფეისი"
+
+#: ../core/network.cc:652
+msgid "Wireless-LAN"
+msgstr "Wireless-LAN"
+
+#: ../core/network.cc:654 ../core/usb.cc:263
+msgid "Wireless interface"
+msgstr "უსადენო ინტერფეისი"
+
+#: ../core/pci.cc:736
+msgid "PCI Express"
+msgstr "PCI Express"
+
+#: ../core/print.cc:143 ../gui/print-gui.cc:114
+msgid " DISABLED"
+msgstr " გამორთულია"
+
+#: ../core/print.cc:145 ../gui/print-gui.cc:116
+msgid " UNCLAIMED"
+msgstr " UNCLAIMED"
+
+#: ../core/print.cc:178
+msgid "description"
+msgstr "აღწერა"
+
+#: ../core/print.cc:195 ../gui/print-gui.cc:137
+msgid "product"
+msgstr "პროდუქტი"
+
+#: ../core/print.cc:212 ../gui/print-gui.cc:138
+msgid "vendor"
+msgstr "მომწოდებელი"
+
+#: ../core/print.cc:229
+msgid "physical id"
+msgstr "ფიზიკური ID"
+
+#: ../core/print.cc:246 ../gui/print-gui.cc:139
+msgid "bus info"
+msgstr "მატარებელის ინფორმაცია"
+
+#: ../core/print.cc:267 ../gui/print-gui.cc:145
+msgid "logical name"
+msgstr "ლოგიკური სახელი"
+
+#: ../core/print.cc:285 ../gui/print-gui.cc:148
+msgid "version"
+msgstr "ვერსია"
+
+#: ../core/print.cc:302
+msgid "date"
+msgstr "თარიღი"
+
+#: ../core/print.cc:319 ../gui/print-gui.cc:149
+msgid "serial"
+msgstr "მიმდევრობითი"
+
+#: ../core/print.cc:336 ../gui/print-gui.cc:150
+msgid "slot"
+msgstr "სლოტი"
+
+#: ../core/print.cc:353 ../gui/print-gui.cc:153
+msgid "size"
+msgstr "ზომა"
+
+#: ../core/print.cc:407 ../gui/print-gui.cc:155
+msgid "capacity"
+msgstr "მოცულობა"
+
+#: ../core/print.cc:463
+msgid "address"
+msgstr "მისამართი"
+
+#: ../core/print.cc:466
+msgid "range"
+msgstr "დიაპაზონი"
+
+#: ../core/print.cc:477 ../gui/print-gui.cc:158
+msgid "width"
+msgstr "სიგანე"
+
+#: ../core/print.cc:491 ../gui/print-gui.cc:161
+msgid "clock"
+msgstr "საათი"
+
+#: ../core/print.cc:508 ../gui/print-gui.cc:168
+msgid "capabilities"
+msgstr "შესაძლებლობები"
+
+#: ../core/print.cc:529
+msgid "configuration:"
+msgstr "კონფიგურაცია:"
+
+#: ../core/print.cc:531
+msgid "configuration of "
+msgstr "კონფიგურაცია ჩანაწერისთვის "
+
+#: ../core/print.cc:551
+msgid "resources:"
+msgstr "რესურსები:"
+
+#: ../core/print.cc:553
+msgid "resources of "
+msgstr "რესურსი ჩანაწერისთვის "
+
+#: ../core/print.cc:706
+msgid "H/W path"
+msgstr "აპარ. ბილიკი"
+
+#: ../core/print.cc:707 ../core/print.cc:724
+msgid "Device"
+msgstr "მოწყობილობა"
+
+#: ../core/print.cc:708 ../core/print.cc:725
+msgid "Class"
+msgstr "კლასი"
+
+#: ../core/print.cc:709 ../core/print.cc:726
+msgid "Description"
+msgstr "აღწერა"
+
+#: ../core/print.cc:723
+msgid "Bus info"
+msgstr "მატარებელის ინფორმაცია"
+
+#: ../core/usb.cc:167
+msgid "Audio device"
+msgstr "აუდიო მოწყობილობა"
+
+#: ../core/usb.cc:171
+msgid "Control device"
+msgstr "კონტროლის მოწყობილობა"
+
+#: ../core/usb.cc:174
+msgid "MIDI"
+msgstr "MIDI"
+
+#: ../core/usb.cc:176
+msgid "Audio streaming"
+msgstr "აუდიო სტრიმინგი"
+
+#: ../core/usb.cc:182
+msgid "Communication device"
+msgstr "კომუნიკაციის მოწყობილობა"
+
+#: ../core/usb.cc:185
+msgid "Modem"
+msgstr "მოდემი"
+
+#: ../core/usb.cc:186
+msgid "AT (Hayes) compatible"
+msgstr "AT (Hayes) თავსებადი"
+
+#: ../core/usb.cc:188
+msgid "Ethernet networking"
+msgstr "Ethernet ქსელი"
+
+#: ../core/usb.cc:189
+msgid "OBEX networking"
+msgstr "OBEX ქსელი"
+
+#: ../core/usb.cc:193
+msgid "Human interface device"
+msgstr "ადამიანთან ურთიერთობის მოწყობილობა"
+
+#: ../core/usb.cc:199
+msgid "Keyboard"
+msgstr "კლავიატურა"
+
+#: ../core/usb.cc:202
+msgid "Mouse"
+msgstr "თაგუნა"
+
+#: ../core/usb.cc:209
+msgid "Printer"
+msgstr "პრინტერი"
+
+#: ../core/usb.cc:216
+msgid "Unidirectional"
+msgstr "ცალმხრივი"
+
+#: ../core/usb.cc:219
+msgid "Bidirectional"
+msgstr "ორმხრივი"
+
+#: ../core/usb.cc:222
+msgid "IEEE 1284.4 compatible bidirectional"
+msgstr "IEEE 1284.4 თავსებადი ორმხრივი"
+
+#: ../core/usb.cc:229
+msgid "Mass storage device"
+msgstr "დიდი საცავის მოწყობილობა"
+
+#: ../core/usb.cc:233
+msgid "RBC (typically Flash) mass storage"
+msgstr "RBC (როგორც წესი, Flash) დიდი საცავი"
+
+#: ../core/usb.cc:236
+msgid "SFF-8020i, MMC-2 (ATAPI)"
+msgstr "SFF-8020i, MMC-2 (ATAPI)"
+
+#: ../core/usb.cc:239
+msgid "Floppy (UFI)"
+msgstr "დისკეტა (UFI)"
+
+#: ../core/usb.cc:242
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../core/usb.cc:248
+msgid "USB hub"
+msgstr "USB კომუტატორი"
+
+#: ../core/usb.cc:255
+msgid "Smart card reader"
+msgstr "ჭკვიანი ბარათის წამკითხველი"
+
+#: ../core/usb.cc:259
+msgid "Video"
+msgstr "ვიდეო"
+
+#: ../core/usb.cc:266
+msgid "Bluetooth wireless interface"
+msgstr "ბლუთუზის უსადენო ინტერფეისი"
+
+#: ../core/usb.cc:267
+msgid "Bluetooth wireless radio"
+msgstr "ბლუთუზის უსადენო რადიო"
+
+#: ../core/usb.cc:272
+msgid "Generic USB device"
+msgstr "ზოგადი USB მოწყობილობა"
+
+#: ../core/volumes.cc:49
+msgid "Blank volume"
+msgstr "ცარიელი ტომი"
+
+#: ../core/volumes.cc:50
+msgid "Windows FAT volume"
+msgstr "Windows-ის FAT ტომი"
+
+#: ../core/volumes.cc:51
+msgid "Windows NTFS volume"
+msgstr "Windows-ის NTFS ტომი"
+
+#: ../core/volumes.cc:52
+msgid "OS/2 HPFS volume"
+msgstr "OS/2-ის HPFS ტომი"
+
+#: ../core/volumes.cc:53
+msgid "EXT2/EXT3 volume"
+msgstr "EXT2/EXT3 ტომი"
+
+#: ../core/volumes.cc:54
+msgid "Linux ReiserFS volume"
+msgstr "Linux ReiserFS ტომი"
+
+#: ../core/volumes.cc:55
+msgid "Linux ROMFS volume"
+msgstr "Linux ROMFS ტომი"
+
+#: ../core/volumes.cc:56
+msgid "Linux SquashFS volume"
+msgstr "Linux SquashFS ტომი"
+
+#: ../core/volumes.cc:57
+msgid "Linux CramFS volume"
+msgstr "Linux CramFS ტომი"
+
+#: ../core/volumes.cc:58
+msgid "MinixFS volume"
+msgstr "MinixFS ტომი"
+
+#: ../core/volumes.cc:59
+msgid "System V FS volume"
+msgstr "System V FS ტომი"
+
+#: ../core/volumes.cc:60
+msgid "Linux JFS volume"
+msgstr "Linux JFS ტომი"
+
+#: ../core/volumes.cc:61
+msgid "Linux XFS volume"
+msgstr "Linux XFS ტომი"
+
+#: ../core/volumes.cc:62
+msgid "ISO-9660 volume"
+msgstr "ISO-9660 ტომი"
+
+#: ../core/volumes.cc:63
+msgid "X-Box DVD volume"
+msgstr "X-Box DVD ტომი"
+
+#: ../core/volumes.cc:64
+msgid "UDF volume"
+msgstr "UDF ტომი"
+
+#: ../core/volumes.cc:65
+msgid "UFS volume"
+msgstr "UFS ტომი"
+
+#: ../core/volumes.cc:66
+msgid "HP-UX HFS volume"
+msgstr "HP-UX HFS ტომი"
+
+#: ../core/volumes.cc:67
+msgid "VxFS volume"
+msgstr "VxFS ტომი"
+
+#: ../core/volumes.cc:68
+msgid "FFS volume"
+msgstr "FFS ტომი"
+
+#: ../core/volumes.cc:69
+msgid "BeOS BFS volume"
+msgstr "BeOS BFS ტომი"
+
+#: ../core/volumes.cc:70
+msgid "QNX FS volume"
+msgstr "QNX FS ტომი"
+
+#: ../core/volumes.cc:71
+msgid "MacOS MFS volume"
+msgstr "MacOS MFS ტომი"
+
+#: ../core/volumes.cc:72
+msgid "MacOS HFS+ volume"
+msgstr "MacOS HFS+ ტომი"
+
+#: ../core/volumes.cc:73
+msgid "MacOS HFS volume"
+msgstr "MacOS HFS ტომი"
+
+#: ../core/volumes.cc:74
+msgid "MacOS APFS volume"
+msgstr "MacOS APFS ტომი"
+
+#: ../core/volumes.cc:75
+msgid "Linux Unified Key Setup volume"
+msgstr "Linux Unified Key Setup ტომი"
+
+#: ../core/volumes.cc:76
+msgid "Linux swap volume"
+msgstr "Linux swap ტომი"
+
+#: ../core/volumes.cc:316
+msgid "Extended Attributes"
+msgstr "გაფართოებული ატრიბუტები"
+
+#: ../core/volumes.cc:318
+msgid "4GB+ files"
+msgstr "4GB+ ფაილები"
+
+#: ../core/volumes.cc:320
+msgid "16TB+ files"
+msgstr "16TB+ ფაილები"
+
+#: ../core/volumes.cc:322
+msgid "directories with 65000+ subdirs"
+msgstr "საქაღალდეები 65000+ ქვესაქაღალდით"
+
+#: ../core/volumes.cc:324
+msgid "needs recovery"
+msgstr "სჭირდება აღდგენა"
+
+#: ../core/volumes.cc:326
+msgid "64bit filesystem"
+msgstr "64-ბიტიანი ფაილური სისტემა"
+
+#: ../core/volumes.cc:328
+msgid "extent-based allocation"
+msgstr ""
+
+#: ../core/volumes.cc:336
+msgid "EXT4 volume"
+msgstr "EXT4 ტომი"
+
+#: ../core/volumes.cc:342
+msgid "EXT3 volume"
+msgstr "EXT3 ტომი"
+
+#: ../core/volumes.cc:371
+msgid "Encrypted volume"
+msgstr "დაშიფრული ტომი"
+
+#: ../core/volumes.cc:644
+msgid "Contains a bootable Mac OS installation"
+msgstr "შეიცავს ჩატვირთვად Mac OS-ს"
+
+#: ../core/volumes.cc:646
+msgid "Contains a bootable Mac OS X installation"
+msgstr "შეიცავს ჩატვირთვად Mac OS X-ს"
+
+#: ../core/volumes.cc:1156
+msgid "initialized volume"
+msgstr "ინიციალიზებული ტომი"
+
+#: ../gui/print-gui.cc:191
+msgid "configuration"
+msgstr "მორგება"
+
+#: ../gui/print-gui.cc:207
+msgid "resources"
+msgstr "რესურსები"
+
+#: ../gui/print-gui.cc:219
+msgid "this device hasn't been claimed\n"
+msgstr "ეს მოწყობილობა არ გამოთხოვილა\n"
+
+#: ../gui/print-gui.cc:222
+msgid "this device has been disabled\n"
+msgstr "ეს მოწყობილობა გათიშულია\n"
+
+#: ../lshw.cc:24
+#, c-format
+msgid "usage: %s [-format] [-options ...]\n"
+msgstr "გამოყენება: %s [-ფორმატი] [-პარამეტრები ...]\n"
+
+#: ../lshw.cc:25
+#, c-format
+msgid "       %s -version\n"
+msgstr "       %s -version\n"
+
+#: ../lshw.cc:27
+#, c-format
+msgid "\t-version        print program version (%s)\n"
+msgstr "\t-version        პროგრამის ვერსიის გამოტანა (%s)\n"
+
+#: ../lshw.cc:28
+#, c-format
+msgid ""
+"\n"
+"format can be\n"
+msgstr ""
+"\n"
+"ფორმატი შეიძლება იყოს\n"
+
+#: ../lshw.cc:29
+#, c-format
+msgid "\t-html           output hardware tree as HTML\n"
+msgstr "\t-html           აპარატურის ხის HTML-ში გამოტანა\n"
+
+#: ../lshw.cc:30
+#, c-format
+msgid "\t-xml            output hardware tree as XML\n"
+msgstr "\t-xml            აპარატურის ხის XML-ში გამოტანა\n"
+
+#: ../lshw.cc:31
+#, c-format
+msgid "\t-json           output hardware tree as a JSON object\n"
+msgstr "\t-json           აპარაურის ხის JSON ობიექტად გატანა\n"
+
+#: ../lshw.cc:32
+#, c-format
+msgid "\t-short          output hardware paths\n"
+msgstr "\t-short          აპარატურის ბილიკების გამოტანა\n"
+
+#: ../lshw.cc:33
+#, c-format
+msgid "\t-businfo        output bus information\n"
+msgstr "\t-businfo        მატარებლის ინფორმაციის გამოტანა\n"
+
+#: ../lshw.cc:35
+#, c-format
+msgid "\t-X              use graphical interface\n"
+msgstr "\t-X              გრაფიკული ინტერფეისის გამოყენება\n"
+
+#: ../lshw.cc:36
+#, c-format
+msgid ""
+"\n"
+"options can be\n"
+msgstr ""
+"\n"
+"პარამეტრები შეიძლება იყოს\n"
+
+#: ../lshw.cc:38
+#, c-format
+msgid ""
+"\t-dump filename  display output and dump collected information into a file "
+"(SQLite database)\n"
+msgstr ""
+"\t-dump ფაილისსახელი  გამოტანის ჩვენება და მოგროვებული ინფორმაციის ფაილში "
+"(SQLite ბაზაში) შენახვა\n"
+
+#: ../lshw.cc:40
+#, c-format
+msgid "\t-class CLASS    only show a certain class of hardware\n"
+msgstr "\t-class კლასი    მხოლოდ მითითებული კლასის აპარატურის ჩვენება\n"
+
+#: ../lshw.cc:41
+#, c-format
+msgid "\t-C CLASS        same as '-class CLASS'\n"
+msgstr "\t-C კლასი        იგივე, რაც '-class კლასი'\n"
+
+#: ../lshw.cc:42
+#, c-format
+msgid "\t-c CLASS        same as '-class CLASS'\n"
+msgstr "\t-c კლასი        იგივე, რაც '-class კლასი'\n"
+
+#: ../lshw.cc:44
+#, c-format
+msgid "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr ""
+"\t-disable ტესტი   მითითებული ტესტის (მაგ pci, isapnp, cpuid, ა.შ.) "
+"გამორთვა\n"
+
+#: ../lshw.cc:46
+#, c-format
+msgid "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr ""
+"\t-enable ტესტი   მითითებული ტესტის (მაგ pci, isapnp, cpuid, ა.შ.) ჩართვა\n"
+
+#: ../lshw.cc:47
+#, c-format
+msgid "\t-quiet          don't display status\n"
+msgstr "\t-quiet          სტატუსი გამოტანილი არ იქნება\n"
+
+#: ../lshw.cc:48
+#, c-format
+msgid ""
+"\t-sanitize       sanitize output (remove sensitive information like serial "
+"numbers, etc.)\n"
+msgstr ""
+"\t-sanitize       გამოტანის გასაგზავნად დამუშავება (წაიშლება ისეთი "
+"ინფორმაცია, როგორიცაა სერიული ნომრები და ა.შ.)\n"
+
+#: ../lshw.cc:49
+#, c-format
+msgid "\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"
+msgstr ""
+"\t-numeric        რიცხვითი ID-ების გამოტანა (PCI, USB, და ა.შ. "
+"მატარებლებისთვის)\n"
+
+#: ../lshw.cc:50
+#, c-format
+msgid ""
+"\t-notime         exclude volatile attributes (timestamps) from output\n"
+msgstr ""
+"\t-notime         გამოტანიდან აქროლადი ატრიბუტების(დროის შტამპების) ამოღება\n"
+
+#: ../lshw.cc:126
+#, c-format
+msgid "the latest version is %s\n"
+msgstr "უკანასკნელი ვერსიაა %s\n"
+
+#: ../lshw.cc:228
+#, c-format
+msgid "WARNING: you should run this program as super-user.\n"
+msgstr "გაფრთხილება: ეს პროგრამა ზემომხმარებლით უნდა გაუშვათ.\n"
+
+#: ../lshw.cc:259
+#, c-format
+msgid ""
+"WARNING: output may be incomplete or inaccurate, you should run this program "
+"as super-user.\n"
+msgstr ""
+"გაფრთხილება: გამოტანილი ინფორმაცია შეიძლება არასრული ან არასწორი იყოს. ეს "
+"პროგრამა ზემომხმარებლით უნდა გაუშვათ.\n"
