@@ -333,9 +333,9 @@ bool scan_fb(hwNode & n)
       break;
   }
 
-  for (unsigned int j = 0; j < fbdevs; j++)
+  for (unsigned int j = 0; j < MAX_FB; j++)
   {
-    close(fd[j]);
+    if(fd[j] >= 3) close(fd[j]);
   }
 
   return false;
