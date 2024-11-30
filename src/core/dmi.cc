@@ -961,6 +961,9 @@ static const char *dmi_processor_family(uint16_t code)
     case 0x140: return "WinChip";
     case 0x15E: return "DSP";
     case 0x1F4: return "Video Processor";
+    case 0x200: return "RV32";
+    case 0x201: return "RV64";
+    case 0x202: return "RV128";
     default: return "";
   }
 }
