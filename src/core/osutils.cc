@@ -421,7 +421,7 @@ bool matches(const string & s, const string & pattern, int cflags)
 }
 
 
-string readlink(const string & path)
+string readsymlink(const string & path)
 {
   char buffer[PATH_MAX+1];
 

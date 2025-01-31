@@ -1169,8 +1169,8 @@ bool scan_pci(hwNode & n)
         device->setBusInfo(devices[i]->d_name);
         if(exists(string(devices[i]->d_name)+"/driver"))
         {
-          string drivername = readlink(string(devices[i]->d_name)+"/driver");
-          string modulename = readlink(string(devices[i]->d_name)+"/driver/module");
+          string drivername = readsymlink(string(devices[i]->d_name)+"/driver");
+          string modulename = readsymlink(string(devices[i]->d_name)+"/driver/module");
 
           device->setConfig("driver", shortname(drivername));
           if(exists(modulename))
