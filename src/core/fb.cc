@@ -6,6 +6,7 @@
 
 #include "version.h"
 #include "fb.h"
+#include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -239,12 +240,9 @@ bool scan_fb(hwNode & n)
 
       if (ioctl(fd[i], FBIOGET_FSCREENINFO, &fbi) == 0)
       {
-        fbdev =
-          n.
-          findChildByResource(hw::resource::
-          iomem((unsigned long) fbi.smem_start,
-          fbi.smem_len));
-
+        std::string path = "/sys/class/graphics/fb" + std::to_string(i) + "/device";
+        std::string pci = shortname(realpath(path));
+        fbdev = n.findChildByBusInfo("pci@" + pci);
         if (fbdev)
         {
           char devname[20];
