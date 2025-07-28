@@ -189,6 +189,7 @@ static string sysfstobusinfo(const string & path)
 
 string entry::businfo() const
 {
+  if(!This) return "";
   string result = sysfstobusinfo(This->devpath);
   if (result.empty())
     result = sysfstobusinfo(dirname(This->devpath));

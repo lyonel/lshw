@@ -6,6 +6,8 @@
 
 #include "version.h"
 #include "fb.h"
+#include "sysfs.h"
+#include "osutils.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -239,11 +241,16 @@ bool scan_fb(hwNode & n)
 
       if (ioctl(fd[i], FBIOGET_FSCREENINFO, &fbi) == 0)
       {
+        fbdev = n.findChildByBusInfo(sysfs::entry::byClass("graphics", "fb"+tostring(i)).businfo());
+
+        if(!fbdev)
+        {
         fbdev =
           n.
           findChildByResource(hw::resource::
           iomem((unsigned long) fbi.smem_start,
           fbi.smem_len));
+	}
 
         if (fbdev)
         {
