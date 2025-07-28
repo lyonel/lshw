@@ -233,6 +233,7 @@ bool scan_fb(hwNode & n)
 
     if (fd[i] >= 0)
     {
+      fbdevs++;
       hwNode *fbdev = NULL;
       struct fb_fix_screeninfo fbi;
 
@@ -335,7 +336,8 @@ bool scan_fb(hwNode & n)
 
   for (unsigned int j = 0; j < fbdevs; j++)
   {
-    close(fd[j]);
+    if (fd[j] >= 0)
+      close(fd[j]);
   }
 
   return false;
