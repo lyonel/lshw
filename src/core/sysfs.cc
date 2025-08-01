@@ -252,7 +252,7 @@ string entry::driver() const
   string driverlink = This->devpath + "/driver";
   if (!exists(driverlink))
     return "";
-  return shortname(readlink(driverlink));
+  return shortname(readsymlink(driverlink));
 }
 
 
