@@ -276,6 +276,49 @@ static void cpuinfo_aarch64(hwNode & node,
     }
 }
 
+static void cpuinfo_loongarch64(hwNode & node,
+string id,
+string value)
+{
+
+  if (id == "processor")
+    currentcpu++;
+
+  hwNode *cpu = getcpu(node, currentcpu);
+
+  if (cpu)
+  {
+    cpu->claim(true);
+
+    if (id == "Model Name")
+      cpu->setProduct(value);
+
+    if (id == "CPU Revision")
+      cpu->setVersion(value);
+
+    if (id == "CPU MHz" && cpu->getSize() == 0)
+    {
+      double frequency = 0.0;
+
+      frequency = atof(value.c_str());
+      cpu->setSize((unsigned long long) (frequency * 1E6));
+    }
+    if (id == "Features")
+    {
+      while (value.length() > 0)
+      {
+        size_t pos = value.find(' ');
+        string capability = (pos==string::npos)?value:value.substr(0, pos);
+        cpu->addCapability(capability);
+        if (pos == string::npos)
+          value = "";
+        else
+          value = hw::strip(value.substr(pos));
+      }
+    }
+  }
+}
+
 static void cpuinfo_ia64(hwNode & node,
 string id,
 string value)
@@ -668,6 +711,10 @@ bool scan_cpuinfo(hwNode & n)
         else if (plat == "aarch64")
         {
           cpuinfo_aarch64(n, id, value);
+        }
+        else if (plat == "loongarch64")
+        {
+          cpuinfo_loongarch64(n, id, value);
         }
         else
         {
