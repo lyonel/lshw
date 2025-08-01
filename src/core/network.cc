@@ -35,6 +35,8 @@
 #include <string.h>
 #include <string>
 #include <sys/types.h>
+#include <fstream>
+
 using namespace std;
 
 __ID("@(#) $Id$");
@@ -868,7 +870,16 @@ bool scan_network(hwNode & n)
 // get MAC address
       if (ioctl(fd, SIOCGIFHWADDR, &ifr) == 0)
       {
-        string hwaddr = getmac((unsigned char *) ifr.ifr_hwaddr.sa_data, ifr.ifr_hwaddr.sa_family);
+        string hwaddr;
+        // First try via sysfs
+        string path = "/sys/class/net/" + interface.getLogicalName() + "/address";
+        ifstream f(path.c_str());
+        if (f.good()) {   // Need to check if we have sysfs capabilities here
+          f >> hwaddr;
+        } else {
+          hwaddr = getmac((unsigned char *) ifr.ifr_hwaddr.sa_data, ifr.ifr_hwaddr.sa_family);
+        }
+        interface.setSerial(hwaddr);
         interface.addCapability(hwname(ifr.ifr_hwaddr.sa_family));
         if (ifr.ifr_hwaddr.sa_family >= 256)
           interface.addCapability("logical", _("Logical interface"));
@@ -876,8 +887,6 @@ bool scan_network(hwNode & n)
           interface.addCapability("physical", _("Physical interface"));
         interface.setDescription(string(hwname(ifr.ifr_hwaddr.sa_family)) +
           " interface");
-        interface.setSerial(hwaddr);
-
         if (isVirtual(interface.getSerial()))
           interface.addCapability("logical", _("Logical interface"));
       }
