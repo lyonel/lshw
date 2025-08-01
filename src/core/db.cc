@@ -1,6 +1,12 @@
+
 #include <string.h>
 #include <string>
 #include <stdexcept>
+
+#include "config.h"
+
+#ifdef SQLITE
+
 #include <sqlite3.h>
 
 #include "db.h"
@@ -416,3 +422,5 @@ value statement::operator[](const string & i) const
 {
   return column(i);
 }
+
+#endif /* SQLITE */
