@@ -28,7 +28,8 @@ namespace hw
     communication,
     power,
     volume,
-    generic
+    generic,
+    accelerator
   } hwClass;
 
   typedef enum { none, iomem, ioport, mem, irq, dma }
