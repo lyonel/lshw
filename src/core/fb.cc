@@ -241,7 +241,7 @@ bool scan_fb(hwNode & n)
 
       if (ioctl(fd[i], FBIOGET_FSCREENINFO, &fbi) == 0)
       {
-        fbdev = n.findChildByBusInfo(sysfs::entry::byClass("graphics", "fb"+tostring(i)).businfo());
+        fbdev = n.findChildByBusInfo(sysfs::entry::byClass("graphics", "fb"+tostring(i)+"/device").businfo());
 
         if(!fbdev)
         {
