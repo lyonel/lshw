@@ -231,6 +231,9 @@ const char *hwNode::getClassName() const
       case volume:
         return "volume";
 
+      case accelerator:
+       return "accelerator";
+
       default:
         return "generic";
     }

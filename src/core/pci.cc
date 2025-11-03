@@ -179,6 +179,9 @@ __ID("@(#) $Id$");
 #define PCI_CLASS_SERIAL_USB         0x0c03
 #define PCI_CLASS_SERIAL_FIBER       0x0c04
 
+#define PCI_BASE_CLASS_ACCELERATOR   0x12
+#define PCI_CLASS_ACCELERATOR       0x1200
+
 #define PCI_CLASS_OTHERS             0xff
 
 #define PCI_ADDR_MEM_MASK (~(pciaddr_t) 0xf)
@@ -393,6 +396,8 @@ static const char *get_class_name(unsigned int c)
       return "processor";
     case PCI_BASE_CLASS_SERIAL:
       return "serial";
+    case PCI_BASE_CLASS_ACCELERATOR:
+      return "accelerator";
   }
 
   return "generic";
@@ -907,6 +912,10 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           case PCI_BASE_CLASS_INPUT:
             deviceclass = hw::input;
             break;
+         case PCI_BASE_CLASS_ACCELERATOR:
+               deviceclass = hw::accelerator;
+               deviceicon = "accelerator";
+               break;
           case PCI_BASE_CLASS_PROCESSOR:
             deviceclass = hw::processor;
             break;
