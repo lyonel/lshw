@@ -482,10 +482,12 @@ string escape(const string & s)
 
   for (unsigned int i = 0; i < s.length(); i++)
     // #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+    // add negative value for accentuated or chinese character in po files
     if (s[i] == 0x9
         || s[i] == 0xA
         || s[i] == 0xD
-        || s[i] >= 0x20)
+        || s[i] >= 0x20
+        || s[i] <  0x0)
       switch (s[i])
       {
         case '<':
