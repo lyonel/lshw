@@ -831,7 +831,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
         if (subsys_v != 0 || subsys_d != 0)
         {
           host.setSubVendor(get_device_description(subsys_v)+(enabled("output:numeric")?" ["+tohex(subsys_v)+"]":""));
-          host.setSubProduct(get_device_description(subsys_v, subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
+          host.setSubProduct(get_device_description(d.vendor_id, d.device_id, subsys_v, subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
         }
         host.setHandle(pci_bushandle(d.bus, d.domain));
         host.setVersion(revision);
@@ -1002,7 +1002,7 @@ static hwNode *scan_pci_dev(struct pci_dev &d, hwNode & n)
           if (subsys_v != 0 || subsys_d != 0)
           {
             device->setSubVendor(get_device_description(subsys_v)+(enabled("output:numeric")?" ["+tohex(subsys_v)+"]":""));
-            device->setSubProduct(get_device_description(subsys_v, subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
+            device->setSubProduct(get_device_description(d.vendor_id, d.device_id, subsys_v, subsys_d)+(enabled("output:numeric")?" ["+tohex(subsys_v)+":"+tohex(subsys_d)+"]":""));
           }
           if (cmd & PCI_COMMAND_MASTER)
             device->addCapability("bus master", "bus mastering");
