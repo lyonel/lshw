@@ -20,6 +20,7 @@
 #include "lvm.h"
 #include "volumes.h"
 #include "osutils.h"
+#include "options.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
@@ -750,9 +751,9 @@ static bool detect_gpt(source & s, hwNode & n)
 
   n.addCapability("gpt-"+string(gpt_version), "GUID Partition Table version "+string(gpt_version));
   n.addHint("partitions", gpt_header.NumberOfPartitionEntries);
-  n.setConfig("guid", tostring(gpt_header.DiskGUID));
-  n.setHandle("GUID:" + tostring(gpt_header.DiskGUID));
-  n.addHint("guid", tostring(gpt_header.DiskGUID));
+  n.setConfig("guid",::enabled("output:sanitize")?REMOVED:tostring(gpt_header.DiskGUID));
+  n.setHandle(::enabled("output:sanitize")?"GUID:":"GUID:" + tostring(gpt_header.DiskGUID));
+  n.addHint("guid",::enabled("output:sanitize")?REMOVED:tostring(gpt_header.DiskGUID));
 
   partitions = (uint8_t*)malloc(gpt_header.NumberOfPartitionEntries * gpt_header.SizeOfPartitionEntry + BLOCKSIZE);
   if(!partitions)
