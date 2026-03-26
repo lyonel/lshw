@@ -5,6 +5,7 @@
 #include "nvme.h"
 #include "disk.h"
 #include "heuristics.h"
+#include "options.h"
 
 #include <vector>
 #include <iostream>
@@ -36,7 +37,7 @@ bool scan_nvme(hwNode & n)
     device->setProduct(e.string_attr("model"));
     device->setSerial(e.string_attr("serial"));
     device->setVersion(e.string_attr("firmware_rev"));
-    device->setConfig("nqn",e.string_attr("subsysnqn"));
+    device->setConfig("nqn",::enabled("output:sanitize")?REMOVED:e.string_attr("subsysnqn"));
     device->setConfig("state",e.string_attr("state"));
     device->setModalias(e.modalias());
 
@@ -59,7 +60,7 @@ bool scan_nvme(hwNode & n)
 	      ns.setLogicalName(n.name().erase(indexc, indexn - indexc));
       } else
 	      ns.setLogicalName(n.name());
-      ns.setConfig("wwid",n.string_attr("wwid"));
+      ns.setConfig("wwid",::enabled("output:sanitize")?REMOVED:n.string_attr("wwid"));
       scan_disk(ns);
       device->addChild(ns);
     }
