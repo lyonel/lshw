@@ -585,8 +585,12 @@ static const char *dmi_memory_device_type(u8 num)
     " LPDDR2",
     " LPDDR3",
     " LPDDR4",                                        /* 0x1E */
+    "",
+    "",
+    "",
+    " DDR5", /* 0x22 */
   };
-  if (num > 0x1E)
+  if (num > 0x22)
     return "";
   return _(memory_device_type[num]);
 }
