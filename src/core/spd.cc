@@ -10,6 +10,7 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <cstring>
+#include <cstdlib>
 
 __ID("@(#) $Id$");
 
