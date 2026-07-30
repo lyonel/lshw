@@ -579,14 +579,21 @@ static const char *dmi_memory_device_type(u8 num)
     "",
     "",
     " DDR3",
-    " FBD2",					/* 0x19 */
+    " FBD2",                                          /* 0x19 */
     " DDR4",
     " LPDDR",
     " LPDDR2",
     " LPDDR3",
     " LPDDR4",                                        /* 0x1E */
+    "",
+    " HBM",
+    " HBM2",
+    " DDR5",                                          /* 0x22 */
+    " LPDDR5",                                        /* 0x23 */
+    " HBM3",
+    " MRDIMM",                                        /* 0x25 */
   };
-  if (num > 0x1E)
+  if (num > 0x25)
     return "";
   return _(memory_device_type[num]);
 }
