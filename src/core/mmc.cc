@@ -100,10 +100,34 @@ static string manufacturer(unsigned long n)
   {
     case 0x0:
             return "";
+    case 0x1:
+	    return "Panasonic";
     case 0x2:
-	    return "Kingston";
+	    return "Kioxia";
     case 0x3:
 	    return "SanDisk";
+    case 0x9:
+	    return "ATP";
+    case 0x1b:
+	    return "Samsung";
+    case 0x1d:
+	    return "ADATA";
+    case 0x27:
+	    return "Phison";
+    case 0x28:
+	    return "Lexar";
+    case 0x31:
+	    return "Silicon Power";
+    case 0x41:
+	    return "Kingston";
+    case 0x74:
+	    return "Transcend";
+    case 0x82:
+	    return "Sony";
+    case 0x9c:
+	    return "Angelbird";
+    case 0x9f:
+	    return "Kingston";
     default:
             return "Unknown ("+tostring(n)+")";
   }
