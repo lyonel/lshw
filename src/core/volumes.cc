@@ -1009,7 +1009,10 @@ static bool detect_ntfs(hwNode & n, source & s)
   ntfsvolume = s;
   ntfsvolume.offset += mft * bytes_per_sector * sectors_per_cluster; // point to $MFT
   ntfsvolume.blocksize = mft_record_size;
-  // FIXME mft_record_size<=sizeof(buffer)
+
+  if (mft_record_size > sizeof(buffer))
+    return false;
+
   if(readlogicalblocks(ntfsvolume, buffer, MFT_VOLUME, 1)!=1)	// read $Volume
     return false;
 
@@ -1023,6 +1026,8 @@ static bool detect_ntfs(hwNode & n, source & s)
 
     while(offset < mft_record_size)
     {
+       if (offset + sizeof(attr_entry) > sizeof(buffer))
+         break;
        attr = (attr_entry*)(buffer+offset);
 
        if(attr->type == AT_END)
@@ -1032,18 +1037,26 @@ static bool detect_ntfs(hwNode & n, source & s)
          switch(le_long(&attr->type))
          {
            case AT_STANDARD_INFORMATION:
-             info = (stdinfo*)(buffer+offset+le_short(&attr->value_offset));
+             if (offset+le_short(&attr->value_offset)+sizeof(stdinfo) < sizeof(buffer)) {
+               info = (stdinfo*)(buffer+offset+le_short(&attr->value_offset));
+             }
              break;
            case AT_VOLUME_INFORMATION:
-             vi = (volinfo*)(buffer+offset+le_short(&attr->value_offset));
-             vi->flags = le_short(&vi->flags);
-             version = tostring(vi->major_ver) + "." + tostring(vi->minor_ver);
+             if (offset+le_short(&attr->value_offset)+sizeof(volinfo) < sizeof(buffer)) {
+               vi = (volinfo*)(buffer+offset+le_short(&attr->value_offset));
+               vi->flags = le_short(&vi->flags);
+               version = tostring(vi->major_ver) + "." + tostring(vi->minor_ver);
+             }
              break;
            case AT_OBJECT_ID:
-             guid = uuid((uint8_t*)buffer+offset+le_short(&attr->value_offset));
+             if (offset+le_short(&attr->value_offset)+16 < sizeof(buffer)) {
+               guid = uuid((uint8_t*)buffer+offset+le_short(&attr->value_offset));
+             }
              break;
            case AT_VOLUME_NAME:
-             name = utf8((uint16_t*)(buffer+offset+le_short(&attr->value_offset)), le_short(&attr->value_length)/2, true);
+             if (offset+le_short(&attr->value_offset)+sizeof(uint16_t) < sizeof(buffer)) {
+               name = utf8((uint16_t*)(buffer+offset+le_short(&attr->value_offset)), le_short(&attr->value_length)/2, true);
+             }
              break;
            }
        offset += le_short(&attr->length);
