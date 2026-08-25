@@ -366,7 +366,7 @@ bool scan_mmc(hwNode & n)
       card.setPhysId(strip0x(d.string_attr("rca")));
       card.setSerial(tostring(d.hex_attr("serial")));
       if(unsigned long hwrev = d.hex_attr("hwrev")) {
-	card.setVersion(tostring(hwrev)+"."+tostring(d.hex_attr("fwrev")));
+        card.setVersion(tostring(hwrev)+"."+tostring(d.hex_attr("fwrev")));
       }
       card.setDate(d.string_attr("date"));
       card.setDescription("SD/MMC Device");
@@ -374,7 +374,7 @@ bool scan_mmc(hwNode & n)
         card.setDescription("SDIO Device");
       if(d.string_attr("scr")!="")
       {
-	card.setDescription("SD Card");
+        card.setDescription("SD Card");
         card.setClass(hw::disk);
       }
 
