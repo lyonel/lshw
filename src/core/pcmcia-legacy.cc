@@ -1153,7 +1153,16 @@ bool scan_pcmcialegacy(hwNode & n)
           else if (devclassstr == "network")
             device = hwNode(devclass, hw::network);
 
-          device.setLogicalName(logicalname);
+          string dpath = string("/dev/") + hw::strip(logicalname);
+          if ((logicalname[0] != '/') && exists(dpath))
+          {
+            device.setLogicalName(dpath.c_str());
+          }
+          else
+          {
+            device.setLogicalName(logicalname);
+          }
+
           device.setConfig("driver", driver);
           device.claim();
 

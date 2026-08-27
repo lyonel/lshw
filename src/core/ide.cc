@@ -370,7 +370,16 @@ bool scan_ide(hwNode & n)
     hwNode ide("ide",
       hw::bus);
 
-    ide.setLogicalName(namelist[i]->d_name);
+    string dpath = string("/dev/") + hw::strip(namelist[i]->d_name);
+    if ((namelist[i]->d_name[0] != '/') && exists(dpath))
+    {
+      ide.setLogicalName(dpath.c_str());
+    }
+    else
+    {
+      ide.setLogicalName(namelist[i]->d_name);
+    }
+
     ide.setHandle("IDE:" + string(namelist[i]->d_name));
 
     if (exists(string(PROC_IDE"/") + namelist[i]->d_name + "/channel"))
