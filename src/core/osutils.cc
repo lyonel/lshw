@@ -181,8 +181,16 @@ const string & def)
     result = "";
 
     while ((count = read(fd, buffer, sizeof(buffer))) > 0)
+    {
+      /* Validate the string length before processing.*/
+      if (count > result.max_size())
+      {
+          fprintf(stderr, "Can`t read the string with size %lu\n", count);
+          result = def;
+          return result;
+      }
       result += string(buffer, count);
-
+    }
     close(fd);
   }
 
