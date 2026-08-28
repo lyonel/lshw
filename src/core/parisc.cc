@@ -543,7 +543,7 @@ static bool scan_device(hwNode & node, string name = "")
       newnode.setBusInfo(guessBusInfo(name));
     if(exists("driver"))
     {
-      string driver = readlink("driver");
+      string driver = readsymlink("driver");
       size_t slash = driver.rfind("/");
       newnode.setConfig("driver", driver.substr(slash==driver.npos?0:slash+1));
       newnode.claim();
