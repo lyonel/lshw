@@ -17,6 +17,7 @@ std::string realpath(const std::string & path);
 std::string dirname(const std::string & path);
 std::string shortname(const std::string & path);
 bool loadfile(const std::string & file, std::vector < std::string > &lines);
+int getBinaryData(const std::string & path, char **data);
 
 size_t splitlines(const std::string & s,
 std::vector < std::string > &lines,
