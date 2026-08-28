@@ -185,6 +185,7 @@ struct ethtool_value
 #define SUPPORTED_BNC                   (1 << 11)
 #define SUPPORTED_10000baseT_Full       (1 << 12)
 #define SUPPORTED_2500baseX_Full        (1 << 15)
+#define SUPPORTED_BACKPLANE             (1 << 16)
 #define SUPPORTED_1000baseKX_Full       (1 << 17)
 #define SUPPORTED_10000baseKX4_Full     (1 << 18)
 #define SUPPORTED_10000baseKR_Full      (1 << 19)
@@ -525,7 +526,9 @@ static void updateCapabilities(hwNode & interface, u32 supported, u32 supported2
   if(supported & SUPPORTED_MII)
     interface.addCapability("mii", _("Media Independent Interface"));
   if(supported & SUPPORTED_FIBRE)
-    interface.addCapability("fibre",_( "optical fibre"));
+    interface.addCapability("fibre", _("optical fibre"));
+  if(supported & SUPPORTED_BACKPLANE)
+    interface.addCapability("backplane", _("backplane"));
   if(supported & SUPPORTED_10baseT_Half)
   {
     interface.addCapability("10bt", _("10Mbit/s"));
