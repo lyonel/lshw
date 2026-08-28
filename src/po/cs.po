@@ -1,0 +1,1518 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-22 00:36-0600\n"
+"PO-Revision-Date: 2025-10-05 00:23+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.7\n"
+
+#: ../core/abi.cc:50
+msgid "32-bit processes"
+msgstr "32bitové procesy"
+
+#: ../core/abi.cc:51
+msgid "64-bit processes"
+msgstr "64bitové procesy"
+
+#: ../core/cpuid.cc:285
+msgid "CPU virtualization (Vanderpool)"
+msgstr "Virtualizace procesoru (Vanderpool)"
+
+#: ../core/cpuid.cc:298 ../core/cpuid.cc:299
+msgid "Logical CPU"
+msgstr "Logický procesor"
+
+#: ../core/cpuid.cc:302
+msgid "HyperThreading"
+msgstr "HyperThreading"
+
+#: ../core/cpuid.cc:366 ../core/cpuid.cc:373 ../core/cpuid.cc:467
+msgid "L1 cache"
+msgstr "Mezipaměť 1. úrovně"
+
+#: ../core/cpuid.cc:384 ../core/cpuid.cc:391 ../core/cpuid.cc:479
+msgid "L2 cache"
+msgstr "Mezipaměť 2. úrovně"
+
+#: ../core/dmi.cc:155
+msgid "Other Battery"
+msgstr "Jiná baterie"
+
+#: ../core/dmi.cc:156
+msgid "Unknown Battery"
+msgstr "Neznámý akumulátor"
+
+#: ../core/dmi.cc:157
+msgid "Lead Acid Battery"
+msgstr "Olověný akumulátor"
+
+#: ../core/dmi.cc:158
+msgid "Nickel Cadmium Battery"
+msgstr "Nikl-kadmiový akumulátor"
+
+#: ../core/dmi.cc:159
+msgid "Nickel Metal Hydride Battery"
+msgstr "Nikl-metal hydridový akumulátor"
+
+#: ../core/dmi.cc:160
+msgid "Lithium Ion Battery"
+msgstr "Lithium-iontový akumulátor"
+
+#: ../core/dmi.cc:161
+msgid "Zinc Air Battery"
+msgstr "Zinko-vzdušný článek"
+
+#: ../core/dmi.cc:162
+msgid "Lithium Polymer Battery"
+msgstr "Lithium-polymerový akumulátor"
+
+#: ../core/dmi.cc:167
+msgid "Battery"
+msgstr "Akumulátor"
+
+#: ../core/dmi.cc:279
+msgid "Server Blade"
+msgstr "„Žiletkový“ (blade) server"
+
+#: ../core/dmi.cc:280
+msgid "Connectivity Switch"
+msgstr "Přepínač konektivity"
+
+#: ../core/dmi.cc:281
+msgid "System Management Module"
+msgstr "Modul správy systému"
+
+#: ../core/dmi.cc:282
+msgid "Processor Module"
+msgstr "Modul procesoru"
+
+#: ../core/dmi.cc:283
+msgid "I/O Module"
+msgstr "Modul vstupů/výstupů"
+
+#: ../core/dmi.cc:284
+msgid "Memory Module"
+msgstr "Paměťový modul"
+
+#: ../core/dmi.cc:285
+msgid "Daughter Board"
+msgstr "Přídavná deska"
+
+#: ../core/dmi.cc:286 ../core/dmi.cc:1094
+msgid "Motherboard"
+msgstr "Základní deska"
+
+#: ../core/dmi.cc:287
+msgid "Processor/Memory Module"
+msgstr "Modul s procesorem/pamětí"
+
+#: ../core/dmi.cc:288
+msgid "Processor/IO Module "
+msgstr "Modul s procesorem / vstupy a výstupy "
+
+#: ../core/dmi.cc:289
+msgid "Interconnect Board"
+msgstr "Propojovací deska"
+
+#: ../core/dmi.cc:306
+msgid "ISA bus"
+msgstr "ISA sběrnice"
+
+#: ../core/dmi.cc:308
+msgid "MCA bus"
+msgstr "MCA sběrnice"
+
+#: ../core/dmi.cc:310
+msgid "EISA bus"
+msgstr "EISA sběrnice"
+
+#: ../core/dmi.cc:312
+msgid "PCI bus"
+msgstr "PCI sběrnice"
+
+#: ../core/dmi.cc:314
+msgid "PCMCIA/PCCard"
+msgstr "PCMCIA/PCCard"
+
+#: ../core/dmi.cc:316
+msgid "Plug-and-Play"
+msgstr "„Připoj a používej“ (PnP)"
+
+#: ../core/dmi.cc:318
+msgid "Advanced Power Management"
+msgstr "Pokročilá správa napájení (APM)"
+
+#: ../core/dmi.cc:320
+msgid "BIOS EEPROM can be upgraded"
+msgstr "BIOS v EEPROM je možné povýšit na novější verzi"
+
+#: ../core/dmi.cc:322
+msgid "BIOS shadowing"
+msgstr "Stínování BIOS"
+
+#: ../core/dmi.cc:324
+msgid "VESA video extensions"
+msgstr "VESA rozšíření zobrazení"
+
+#: ../core/dmi.cc:326
+msgid "ESCD"
+msgstr "ESCD"
+
+#: ../core/dmi.cc:328
+msgid "Booting from CD-ROM/DVD"
+msgstr "Zavádění z CD/DVD"
+
+#: ../core/dmi.cc:330
+msgid "Selectable boot path"
+msgstr "Lze vybrat popis umístění pro zavedení"
+
+#: ../core/dmi.cc:332
+msgid "BIOS ROM is socketed"
+msgstr "ROM s BIOS je v provedení s paticí"
+
+#: ../core/dmi.cc:334
+msgid "Booting from PCMCIA"
+msgstr "Zavádění z PCMCIA"
+
+#: ../core/dmi.cc:336
+msgid "Enhanced Disk Drive extensions"
+msgstr "Vylepšená rozšíření diskové jednotky"
+
+#: ../core/dmi.cc:338
+msgid "NEC 9800 floppy"
+msgstr "Disketa NEC 9800"
+
+#: ../core/dmi.cc:340
+msgid "Toshiba floppy"
+msgstr "Disketa Toshiba"
+
+#: ../core/dmi.cc:342
+msgid "5.25\" 360KB floppy"
+msgstr "5.25\" 360KB disketa"
+
+#: ../core/dmi.cc:344
+msgid "5.25\" 1.2MB floppy"
+msgstr "5.25\" 1.2MB disketa"
+
+#: ../core/dmi.cc:346
+msgid "3.5\" 720KB floppy"
+msgstr "3.5\" 720KB disketa"
+
+#: ../core/dmi.cc:348
+msgid "3.5\" 2.88MB floppy"
+msgstr "3.5\" 2.88MB disketa"
+
+#: ../core/dmi.cc:350
+msgid "Print Screen key"
+msgstr "Klávesa Print Screen"
+
+#: ../core/dmi.cc:352
+msgid "i8042 keyboard controller"
+msgstr "i8042 řadič klávesnice"
+
+#: ../core/dmi.cc:354
+msgid "INT14 serial line control"
+msgstr "INT14 řízení sériové linky"
+
+#: ../core/dmi.cc:356
+msgid "INT17 printer control"
+msgstr "INT17 řízení tiskárny"
+
+#: ../core/dmi.cc:358
+msgid "INT10 CGA/Mono video"
+msgstr "INT10 CGA/Mono zobrazení"
+
+#: ../core/dmi.cc:360
+msgid "NEC PC-98"
+msgstr "NEC PC-98"
+
+#: ../core/dmi.cc:372
+msgid "ACPI"
+msgstr "ACPI"
+
+#: ../core/dmi.cc:374
+msgid "USB legacy emulation"
+msgstr "USB emulované pro starší"
+
+#: ../core/dmi.cc:376
+msgid "AGP"
+msgstr "AGP"
+
+#: ../core/dmi.cc:378
+msgid "I2O booting"
+msgstr "I2O zavádění"
+
+#: ../core/dmi.cc:380
+msgid "Booting from LS-120"
+msgstr "Zavádění z LS-120"
+
+#: ../core/dmi.cc:382
+msgid "Booting from ATAPI ZIP"
+msgstr "Zavádění z ATAPI ZIP"
+
+#: ../core/dmi.cc:384
+msgid "Booting from IEEE1394 (Firewire)"
+msgstr "Zavádění z IEEE1394 (Firewire)"
+
+#: ../core/dmi.cc:386
+msgid "Smart battery"
+msgstr "Inteligentní akumulátor"
+
+#: ../core/dmi.cc:392
+msgid "BIOS boot specification"
+msgstr "Specifikace BIOS boot"
+
+#: ../core/dmi.cc:395
+msgid "Function-key initiated network service boot"
+msgstr "Funkční klávesou inicializované zavedení síťové služby"
+
+#: ../core/dmi.cc:397
+msgid "UEFI specification is supported"
+msgstr "Specifikace UEFI je podporována"
+
+#: ../core/dmi.cc:399
+msgid "This machine is a virtual machine"
+msgstr "Tento stroj je virtuální"
+
+#: ../core/dmi.cc:429
+msgid "Non-burst"
+msgstr "Nedávkové"
+
+#: ../core/dmi.cc:431
+msgid "Burst"
+msgstr "Dávkové"
+
+#: ../core/dmi.cc:433
+msgid "Pipeline burst"
+msgstr "Dávka zřetězení"
+
+#: ../core/dmi.cc:435 ../core/dmi.cc:608
+msgid "Synchronous"
+msgstr "Synchronní"
+
+#: ../core/dmi.cc:437
+msgid "Asynchronous"
+msgstr "Asynchronní"
+
+#: ../core/dmi.cc:453
+msgid "Internal"
+msgstr "Interní"
+
+#: ../core/dmi.cc:456
+msgid "External"
+msgstr "Externí"
+
+#: ../core/dmi.cc:465
+msgid "Write-through"
+msgstr "Zapsáno po až na disku"
+
+#: ../core/dmi.cc:468
+msgid "Write-back"
+msgstr "Zapsáno už v mezipamětí"
+
+#: ../core/dmi.cc:471
+msgid "Varies With Memory Address"
+msgstr "Lišící se s adresou v paměti"
+
+#: ../core/dmi.cc:475
+msgid "cache"
+msgstr "mezipaměť"
+
+#: ../core/dmi.cc:480
+msgid "Instruction cache"
+msgstr "Mezipaměť instrukcí"
+
+#: ../core/dmi.cc:483
+msgid "Data cache"
+msgstr "Mezipaměť dat"
+
+#: ../core/dmi.cc:486
+msgid "Unified cache"
+msgstr "Sjednocená mezipaměť"
+
+#: ../core/dmi.cc:501
+msgid "System board or motherboard"
+msgstr "Systémová nebo hlavní deska"
+
+#: ../core/dmi.cc:502
+msgid "ISA add-on card"
+msgstr "ISA přídavná karta"
+
+#: ../core/dmi.cc:503
+msgid "EISA add-on card"
+msgstr "EISA přídavná karta"
+
+#: ../core/dmi.cc:504
+msgid "PCI add-on card"
+msgstr "PCI přídavná karta"
+
+#: ../core/dmi.cc:505
+msgid "MCA add-on card"
+msgstr "MCA přídavná karta"
+
+#: ../core/dmi.cc:506
+msgid "PCMCIA add-on card"
+msgstr "PCMCIA přídavná karta"
+
+#: ../core/dmi.cc:507
+msgid "Proprietary add-on card"
+msgstr "Proprietární přídavná karta"
+
+#: ../core/dmi.cc:508
+msgid "NuBus"
+msgstr "NuBus"
+
+#: ../core/dmi.cc:512
+msgid "PC-98/C20 add-on card"
+msgstr "PC-98/C20 přídavná karta"
+
+#: ../core/dmi.cc:513
+msgid "PC-98/C24 add-on card"
+msgstr "PC-98/C24 přídavná karta"
+
+#: ../core/dmi.cc:514
+msgid "PC-98/E add-on card"
+msgstr "PC-98/E přídavná karta"
+
+#: ../core/dmi.cc:515
+msgid "PC-98/Local bus add-on card"
+msgstr "PC-98/Local bus přídavná karta"
+
+#: ../core/dmi.cc:516
+msgid "PC-98/Card slot add-on card"
+msgstr "PC-98/Card slot přídavná karta"
+
+#: ../core/dmi.cc:533
+msgid " SIMM"
+msgstr " SIMM"
+
+#: ../core/dmi.cc:534
+msgid " SIP"
+msgstr " SIP"
+
+#: ../core/dmi.cc:535
+msgid " Chip"
+msgstr " Čip"
+
+#: ../core/dmi.cc:536
+msgid " DIP"
+msgstr " DIP"
+
+#: ../core/dmi.cc:537
+msgid " ZIP"
+msgstr " ZIP"
+
+#: ../core/dmi.cc:538
+msgid " Proprietary Card"
+msgstr " Proprietární karta"
+
+#: ../core/dmi.cc:539
+msgid " DIMM"
+msgstr " DIMM"
+
+#: ../core/dmi.cc:540
+msgid " TSOP"
+msgstr " TSOP"
+
+#: ../core/dmi.cc:541
+msgid " Row of chips"
+msgstr " Řada čipů"
+
+#: ../core/dmi.cc:542
+msgid " RIMM"
+msgstr " RIMM"
+
+#: ../core/dmi.cc:543
+msgid " SODIMM"
+msgstr " SODIMM"
+
+#: ../core/dmi.cc:544
+msgid " SRIMM"
+msgstr " SRIMM"
+
+#: ../core/dmi.cc:545
+msgid " FB-DIMM"
+msgstr " FB-DIMM"
+
+#: ../core/dmi.cc:560
+msgid " DRAM"
+msgstr " DRAM"
+
+#: ../core/dmi.cc:561
+msgid " EDRAM"
+msgstr " EDRAM"
+
+#: ../core/dmi.cc:562
+msgid " VRAM"
+msgstr " VRAM"
+
+#: ../core/dmi.cc:563
+msgid " SRAM"
+msgstr " SRAM"
+
+#: ../core/dmi.cc:564
+msgid " RAM"
+msgstr " RAM"
+
+#: ../core/dmi.cc:565
+msgid " ROM"
+msgstr " ROM"
+
+#: ../core/dmi.cc:566
+msgid " FLASH"
+msgstr " FLASH"
+
+#: ../core/dmi.cc:567
+msgid " EEPROM"
+msgstr " EEPROM"
+
+#: ../core/dmi.cc:568
+msgid " FEPROM"
+msgstr " FEPROM"
+
+#: ../core/dmi.cc:569
+msgid " EPROM"
+msgstr " EPROM"
+
+#: ../core/dmi.cc:570
+msgid " CDRAM"
+msgstr " CDRAM"
+
+#: ../core/dmi.cc:571
+msgid " 3DRAM"
+msgstr " 3DRAM"
+
+#: ../core/dmi.cc:572
+msgid " SDRAM"
+msgstr " SDRAM"
+
+#: ../core/dmi.cc:573
+msgid " SGRAM"
+msgstr " SGRAM"
+
+#: ../core/dmi.cc:574
+msgid " RDRAM"
+msgstr " RDRAM"
+
+#: ../core/dmi.cc:575
+msgid " DDR"
+msgstr " DDR"
+
+#: ../core/dmi.cc:576
+msgid " DDR2"
+msgstr " DDR2"
+
+#: ../core/dmi.cc:577
+msgid " DDR2 FB-DIMM"
+msgstr " DDR2 FB-DIMM"
+
+#: ../core/dmi.cc:600
+msgid "Fast-paged"
+msgstr "Fast-paged"
+
+#: ../core/dmi.cc:602
+msgid "Static column"
+msgstr "Statický sloupec"
+
+#: ../core/dmi.cc:604
+msgid "Pseudo-static"
+msgstr "Pseudostatický"
+
+#: ../core/dmi.cc:606
+msgid "RAMBUS"
+msgstr "RAMBUS"
+
+#: ../core/dmi.cc:610
+msgid "CMOS"
+msgstr "CMOS"
+
+#: ../core/dmi.cc:612
+msgid "EDO"
+msgstr "EDO"
+
+#: ../core/dmi.cc:614
+msgid "Window DRAM"
+msgstr "DRAM okna"
+
+#: ../core/dmi.cc:616
+msgid "Cache DRAM"
+msgstr "DRAM mezipaměti"
+
+#: ../core/dmi.cc:618
+msgid "Non-volatile"
+msgstr "Uchovávající data i bez napájení"
+
+#: ../core/dmi.cc:620
+msgid "Registered (Buffered)"
+msgstr "Opatřené registry (vyrovnávací pamětí)"
+
+#: ../core/dmi.cc:622
+msgid "Unbuffered (Unregistered)"
+msgstr "Bez vyrovnávací paměti (bez registrů)"
+
+#: ../core/dmi.cc:624
+msgid "LRDIMM"
+msgstr "LRDIMM"
+
+#: ../core/dmi.cc:637
+msgid "Desktop Computer"
+msgstr "Stolní počítač"
+
+#: ../core/dmi.cc:638
+msgid "Low Profile Desktop Computer"
+msgstr "Stolní počítač v nízké skříňce"
+
+#: ../core/dmi.cc:639
+msgid "Pizza Box Computer"
+msgstr "Počítač ve skříňce ve formátu „krabice od pizzy“"
+
+#: ../core/dmi.cc:640
+msgid "Mini Tower Computer"
+msgstr "Minivěžový počítač"
+
+#: ../core/dmi.cc:641
+msgid "Tower Computer"
+msgstr "Věžový počítač"
+
+#: ../core/dmi.cc:642
+msgid "Portable Computer"
+msgstr "Přenosný počítač"
+
+#: ../core/dmi.cc:643
+msgid "Laptop"
+msgstr "Notebook"
+
+#: ../core/dmi.cc:644
+msgid "Notebook"
+msgstr "Notebook"
+
+#: ../core/dmi.cc:645
+msgid "Hand Held Computer"
+msgstr "Počítač do ruky"
+
+#: ../core/dmi.cc:646
+msgid "Docking Station"
+msgstr "Dokovací stanice"
+
+#: ../core/dmi.cc:647
+msgid "All In One"
+msgstr "Počítač vestavěný v obrazovce"
+
+#: ../core/dmi.cc:648
+msgid "Sub Notebook"
+msgstr "Miniaturní notebook"
+
+#: ../core/dmi.cc:649
+msgid "Space-saving Computer"
+msgstr "Na prostor úsporný počítač"
+
+#: ../core/dmi.cc:650
+msgid "Lunch Box Computer"
+msgstr "Počítač ve skříňce ve formátu „krabička na jídlo“"
+
+#: ../core/dmi.cc:651
+msgid "System"
+msgstr "Systém"
+
+#: ../core/dmi.cc:652
+msgid "Expansion Chassis"
+msgstr "Rozšiřující skříň"
+
+#: ../core/dmi.cc:653
+msgid "Sub Chassis"
+msgstr "Dílčí skříň"
+
+#: ../core/dmi.cc:654
+msgid "Bus Expansion Chassis"
+msgstr "Skříň s rozšířením sběrnice"
+
+#: ../core/dmi.cc:655
+msgid "Peripheral Chassis"
+msgstr "Skříň pro periferie"
+
+#: ../core/dmi.cc:656
+msgid "RAID Chassis"
+msgstr "RAID skříň"
+
+#: ../core/dmi.cc:657
+msgid "Rack Mount Chassis"
+msgstr "Skříň do datového rozvaděče"
+
+#: ../core/dmi.cc:658
+msgid "Sealed-case PC"
+msgstr "Počítač se zapečetěnou skříní"
+
+#: ../core/dmi.cc:659
+msgid "Multi-system"
+msgstr "Vícesystémové"
+
+#: ../core/dmi.cc:660
+msgid "Compact PCI"
+msgstr "Kompaktní PCI"
+
+#: ../core/dmi.cc:661
+msgid "Advanced TCA"
+msgstr "Pokročilé TSA"
+
+#: ../core/dmi.cc:662
+msgid "Blade"
+msgstr "„Žiletka“ (blade)"
+
+#: ../core/dmi.cc:663
+msgid "Blade enclosure"
+msgstr "Skříň pro „žiletkové“ servery"
+
+#: ../core/dmi.cc:664
+msgid "Tablet"
+msgstr "Tablet"
+
+#: ../core/dmi.cc:665
+msgid "Convertible"
+msgstr "Proměnitelné"
+
+#: ../core/dmi.cc:666
+msgid "Detachable"
+msgstr "Odpojitelné"
+
+#: ../core/dmi.cc:667
+msgid "IoT Gateway"
+msgstr "Brána IoT"
+
+#: ../core/dmi.cc:668
+msgid "Embedded PC"
+msgstr "Průmyslový počítač"
+
+#: ../core/dmi.cc:669
+msgid "Mini PC"
+msgstr "Minipočítač"
+
+#: ../core/dmi.cc:670
+msgid "Stick PC"
+msgstr "Počítač ve formátu podobném větší „USB flash“"
+
+#: ../core/dmi.cc:1045
+msgid "BIOS"
+msgstr "BIOS"
+
+#: ../core/dmi.cc:1147
+msgid "CPU"
+msgstr "Procesor"
+
+#: ../core/dmi.cc:1198 ../core/dmi.cc:1312 ../core/dmi.cc:1613
+msgid "[empty]"
+msgstr "[prázdné]"
+
+#: ../core/dmi.cc:1226
+msgid "64-bit capable"
+msgstr "schopné 64bitů"
+
+#: ../core/dmi.cc:1259
+msgid " Memory Controller"
+msgstr " Paměťový řadič"
+
+#: ../core/dmi.cc:1277 ../core/dmi.cc:1536
+msgid "empty memory bank"
+msgstr "prázdná paměťová banka"
+
+#: ../core/dmi.cc:1447
+msgid "System Memory"
+msgstr "Systémová paměť"
+
+#: ../core/dmi.cc:1453
+msgid "Video Memory"
+msgstr "Paměť pro zobrazování"
+
+#: ../core/dmi.cc:1457
+msgid "Flash Memory"
+msgstr "Flash paměť"
+
+#: ../core/dmi.cc:1461
+msgid "NVRAM"
+msgstr "NVRAM"
+
+#: ../core/dmi.cc:1465
+msgid "Cache Memory"
+msgstr "Paměť mezipaměti"
+
+#: ../core/dmi.cc:1469
+msgid "Generic Memory"
+msgstr "Obecná paměť"
+
+#: ../core/dmi.cc:1490
+msgid "Parity error correction"
+msgstr "Korekce chyb parity"
+
+#: ../core/dmi.cc:1494
+msgid "Single-bit error-correcting code (ECC)"
+msgstr "Opravující jednobitovou chybu (ECC)"
+
+#: ../core/dmi.cc:1498
+msgid "Multi-bit error-correcting code (ECC)"
+msgstr "Opravující vícebitovou chybu (ECC)"
+
+#: ../core/dmi.cc:1502
+msgid "CRC error correction"
+msgstr "Oprava chyb odhalených kontrolním součtem"
+
+#: ../core/dmi.cc:1783
+msgid "make outbound connections"
+msgstr "vytvořit odchozí spojení"
+
+#: ../core/dmi.cc:1784
+msgid "receive inbound connections"
+msgstr "přijmout příchozí spojení"
+
+#: ../core/hw.cc:1713
+msgid "<!-- generated by lshw-"
+msgstr "<!-- vytvořeno nástrojem lshw-"
+
+#: ../core/hw.cc:1728
+msgid "<!-- WARNING: not running as root -->"
+msgstr "<!-- VAROVÁNÍ: nespuštěno pod oprávněními správce (root) -->"
+
+#: ../core/hw.cc:2249
+msgid "(none)"
+msgstr "(žádné)"
+
+#: ../core/hw.cc:2252
+msgid "dma"
+msgstr "dma"
+
+#: ../core/hw.cc:2256
+msgid "irq"
+msgstr "irq"
+
+#: ../core/hw.cc:2260
+msgid "iomemory"
+msgstr "paměť vstupu/výstupu"
+
+#: ../core/hw.cc:2264
+msgid "memory"
+msgstr "paměť"
+
+#: ../core/hw.cc:2266
+msgid "(prefetchable)"
+msgstr "(přednačítatelné)"
+
+#: ../core/hw.cc:2269
+msgid "ioport"
+msgstr "vstupně/výstupní port"
+
+#: ../core/hw.cc:2273
+#, c-format
+msgid "%lx(size=%ld)"
+msgstr "%lx(velikost=%ld)"
+
+#: ../core/hw.cc:2276
+msgid "(unknown)"
+msgstr "(neznámé)"
+
+#: ../core/hw.cc:2446
+msgid "false"
+msgstr "není tomu tak"
+
+#: ../core/hw.cc:2446
+msgid "true"
+msgstr "je tomu tak"
+
+#: ../core/hw.cc:2448
+msgid "(nil)"
+msgstr "(nula)"
+
+#: ../core/lvm.cc:132
+msgid "Linux LVM Physical Volume"
+msgstr "Fyzický svazek Linux LVM"
+
+#: ../core/mem.cc:154
+msgid "System memory"
+msgstr "Systémová paměť"
+
+#: ../core/network.cc:274
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: ../core/network.cc:276
+msgid "SLIP"
+msgstr "SLIP"
+
+#: ../core/network.cc:278
+msgid "loopback"
+msgstr "rozhraní zpětné smyčky"
+
+#: ../core/network.cc:280
+msgid "FDDI"
+msgstr "FDDI"
+
+#: ../core/network.cc:282
+msgid "IEEE1394"
+msgstr "IEEE1394"
+
+#: ../core/network.cc:284
+msgid "IRDA"
+msgstr "IRDA"
+
+#: ../core/network.cc:286
+msgid "PPP"
+msgstr "PPP"
+
+#: ../core/network.cc:288
+msgid "X25"
+msgstr "X25"
+
+#: ../core/network.cc:290
+msgid "IPtunnel"
+msgstr "IPtunnel"
+
+#: ../core/network.cc:292
+msgid "Framerelay.DLCI"
+msgstr "Framerelay.DLCI"
+
+#: ../core/network.cc:294
+msgid "Framerelay.AD"
+msgstr "Framerelay.AD"
+
+#: ../core/network.cc:296
+msgid "IP6tunnel"
+msgstr "IP6tunnel"
+
+#: ../core/network.cc:298
+msgid "IP6inIP4"
+msgstr "IP6inIP4"
+
+#: ../core/network.cc:364
+msgid "twisted pair"
+msgstr "kroucené páry"
+
+#: ../core/network.cc:366
+msgid "AUI"
+msgstr "AUI"
+
+#: ../core/network.cc:368
+msgid "BNC"
+msgstr "BNC"
+
+#: ../core/network.cc:370
+msgid "Media Independent Interface"
+msgstr "Rozhraní nezávislé na médiu"
+
+#: ../core/network.cc:372
+msgid "optical fibre"
+msgstr "optické vlákno"
+
+#: ../core/network.cc:375
+msgid "10Mbit/s"
+msgstr "10Mbit/s"
+
+#: ../core/network.cc:380
+msgid "10Mbit/s (full duplex)"
+msgstr "10Mbit/s (plný duplex)"
+
+#: ../core/network.cc:385
+msgid "100Mbit/s"
+msgstr "100Mbit/s"
+
+#: ../core/network.cc:390
+msgid "100Mbit/s (full duplex)"
+msgstr "100Mbit/s (plný duplex)"
+
+#: ../core/network.cc:400 ../core/network.cc:405
+msgid "1Gbit/s (full duplex)"
+msgstr "1Gbit/s (plný duplex)"
+
+#: ../core/network.cc:410 ../core/network.cc:415
+msgid "2.5Gbit/s (full duplex)"
+msgstr "2.5Gbit/s (plný duplex)"
+
+#: ../core/network.cc:420
+msgid "5Gbit/s (full duplex)"
+msgstr "5Gbit/s (plný duplex)"
+
+#: ../core/network.cc:425 ../core/network.cc:432
+msgid "10Gbit/s (full duplex)"
+msgstr "10Gbit/s (plný duplex)"
+
+#: ../core/network.cc:438
+msgid "25Gbit/s (full duplex)"
+msgstr "25Gbit/s (plný duplex)"
+
+#: ../core/network.cc:444
+msgid "40Gbit/s (full duplex)"
+msgstr "40Gbit/s (plný duplex)"
+
+#: ../core/network.cc:448
+msgid "Auto-negotiation"
+msgstr "Automatické dojednání"
+
+#: ../core/network.cc:636 ../core/network.cc:644 ../core/network.cc:684
+msgid "Logical interface"
+msgstr "Logické rozhraní"
+
+#: ../core/network.cc:638
+msgid "Physical interface"
+msgstr "Fyzické rozhraní"
+
+#: ../core/network.cc:652
+msgid "Wireless-LAN"
+msgstr "Bezdrátová síť"
+
+#: ../core/network.cc:654 ../core/usb.cc:263
+msgid "Wireless interface"
+msgstr "Bezdrátové rozhraní"
+
+#: ../core/pci.cc:736
+msgid "PCI Express"
+msgstr "PCI Express"
+
+#: ../core/print.cc:143 ../gui/print-gui.cc:114
+msgid " DISABLED"
+msgstr " ZAKÁZÁNO"
+
+#: ../core/print.cc:145 ../gui/print-gui.cc:116
+msgid " UNCLAIMED"
+msgstr " NETVRZENO"
+
+#: ../core/print.cc:178
+msgid "description"
+msgstr "popis"
+
+#: ../core/print.cc:195 ../gui/print-gui.cc:137
+msgid "product"
+msgstr "produkt"
+
+#: ../core/print.cc:212 ../gui/print-gui.cc:138
+msgid "vendor"
+msgstr "výrobce"
+
+#: ../core/print.cc:229
+msgid "physical id"
+msgstr "fyzický identifikátor"
+
+#: ../core/print.cc:246 ../gui/print-gui.cc:139
+msgid "bus info"
+msgstr "informace o sběrnici"
+
+#: ../core/print.cc:267 ../gui/print-gui.cc:145
+msgid "logical name"
+msgstr "logický název"
+
+#: ../core/print.cc:285 ../gui/print-gui.cc:148
+msgid "version"
+msgstr "verze"
+
+#: ../core/print.cc:302
+msgid "date"
+msgstr "datum"
+
+#: ../core/print.cc:319 ../gui/print-gui.cc:149
+msgid "serial"
+msgstr "sériové číslo"
+
+#: ../core/print.cc:336 ../gui/print-gui.cc:150
+msgid "slot"
+msgstr "slot"
+
+#: ../core/print.cc:353 ../gui/print-gui.cc:153
+msgid "size"
+msgstr "velikost"
+
+#: ../core/print.cc:407 ../gui/print-gui.cc:155
+msgid "capacity"
+msgstr "kapacita"
+
+#: ../core/print.cc:463
+msgid "address"
+msgstr "adresa"
+
+#: ../core/print.cc:466
+msgid "range"
+msgstr "rozsah"
+
+#: ../core/print.cc:477 ../gui/print-gui.cc:158
+msgid "width"
+msgstr "šířka"
+
+#: ../core/print.cc:491 ../gui/print-gui.cc:161
+msgid "clock"
+msgstr "takt"
+
+#: ../core/print.cc:508 ../gui/print-gui.cc:168
+msgid "capabilities"
+msgstr "schopnosti"
+
+#: ../core/print.cc:529
+msgid "configuration:"
+msgstr "uspořádání:"
+
+#: ../core/print.cc:531
+msgid "configuration of "
+msgstr "uspořádání "
+
+#: ../core/print.cc:551
+msgid "resources:"
+msgstr "prostředky:"
+
+#: ../core/print.cc:553
+msgid "resources of "
+msgstr "prostředky "
+
+#: ../core/print.cc:706
+msgid "H/W path"
+msgstr "Popis umístění hardware"
+
+#: ../core/print.cc:707 ../core/print.cc:724
+msgid "Device"
+msgstr "Zařízení"
+
+#: ../core/print.cc:708 ../core/print.cc:725
+msgid "Class"
+msgstr "Třída"
+
+#: ../core/print.cc:709 ../core/print.cc:726
+msgid "Description"
+msgstr "Popis"
+
+#: ../core/print.cc:723
+msgid "Bus info"
+msgstr "Informace o sběrnici"
+
+#: ../core/usb.cc:167
+msgid "Audio device"
+msgstr "Zvukové zařízení"
+
+#: ../core/usb.cc:171
+msgid "Control device"
+msgstr "Řídící zařízení"
+
+#: ../core/usb.cc:174
+msgid "MIDI"
+msgstr "MIDI"
+
+#: ../core/usb.cc:176
+msgid "Audio streaming"
+msgstr "Vysílání zvuku"
+
+#: ../core/usb.cc:182
+msgid "Communication device"
+msgstr "Komunikační zařízení"
+
+#: ../core/usb.cc:185
+msgid "Modem"
+msgstr "Modem"
+
+#: ../core/usb.cc:186
+msgid "AT (Hayes) compatible"
+msgstr "Kompatibilní s AT (Hayes)"
+
+#: ../core/usb.cc:188
+msgid "Ethernet networking"
+msgstr "Ethernetové síťování"
+
+#: ../core/usb.cc:189
+msgid "OBEX networking"
+msgstr "OBEX síťování"
+
+#: ../core/usb.cc:193
+msgid "Human interface device"
+msgstr "Zařízení standardu HID"
+
+#: ../core/usb.cc:199
+msgid "Keyboard"
+msgstr "Klávesnice"
+
+#: ../core/usb.cc:202
+msgid "Mouse"
+msgstr "Myš"
+
+#: ../core/usb.cc:209
+msgid "Printer"
+msgstr "Tiskárna"
+
+#: ../core/usb.cc:216
+msgid "Unidirectional"
+msgstr "Jednosměrné"
+
+#: ../core/usb.cc:219
+msgid "Bidirectional"
+msgstr "Obousměrné"
+
+#: ../core/usb.cc:222
+msgid "IEEE 1284.4 compatible bidirectional"
+msgstr "obousměrné, kompatibilní s IEEE 1284.4"
+
+#: ../core/usb.cc:229
+msgid "Mass storage device"
+msgstr "Zařízení velkokapacitního úložiště"
+
+#: ../core/usb.cc:233
+msgid "RBC (typically Flash) mass storage"
+msgstr "RBC (typicky flash) velkokapacitní úložiště"
+
+#: ../core/usb.cc:236
+msgid "SFF-8020i, MMC-2 (ATAPI)"
+msgstr "SFF-8020i, MMC-2 (ATAPI)"
+
+#: ../core/usb.cc:239
+msgid "Floppy (UFI)"
+msgstr "Disketa (UFI)"
+
+#: ../core/usb.cc:242
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../core/usb.cc:248
+msgid "USB hub"
+msgstr "USB hub"
+
+#: ../core/usb.cc:255
+msgid "Smart card reader"
+msgstr "Čtečka Smart karet"
+
+#: ../core/usb.cc:259
+msgid "Video"
+msgstr "Zobrazení"
+
+#: ../core/usb.cc:266
+msgid "Bluetooth wireless interface"
+msgstr "Bezdrátové rozhraní Bluetooth"
+
+#: ../core/usb.cc:267
+msgid "Bluetooth wireless radio"
+msgstr "Bezdrátový vysílač Bluetooth"
+
+#: ../core/usb.cc:272
+msgid "Generic USB device"
+msgstr "Obecné USB zařízení"
+
+#: ../core/volumes.cc:49
+msgid "Blank volume"
+msgstr "Prázdný svazek"
+
+#: ../core/volumes.cc:50
+msgid "Windows FAT volume"
+msgstr "Svazek Windows FAT"
+
+#: ../core/volumes.cc:51
+msgid "Windows NTFS volume"
+msgstr "Svazek Windows NTFS"
+
+#: ../core/volumes.cc:52
+msgid "OS/2 HPFS volume"
+msgstr "Svazek OS/2 HPFS"
+
+#: ../core/volumes.cc:53
+msgid "EXT2/EXT3 volume"
+msgstr "Svazek EXT2/EXT3"
+
+#: ../core/volumes.cc:54
+msgid "Linux ReiserFS volume"
+msgstr "Svazek Linux ReiserFS"
+
+#: ../core/volumes.cc:55
+msgid "Linux ROMFS volume"
+msgstr "Svazek Linux ROMFS"
+
+#: ../core/volumes.cc:56
+msgid "Linux SquashFS volume"
+msgstr "Svazek Linux SquashFS"
+
+#: ../core/volumes.cc:57
+msgid "Linux CramFS volume"
+msgstr "Svazek Linux CramFS"
+
+#: ../core/volumes.cc:58
+msgid "MinixFS volume"
+msgstr "Svazek MinixFS"
+
+#: ../core/volumes.cc:59
+msgid "System V FS volume"
+msgstr "Svazek Systém V FS"
+
+#: ../core/volumes.cc:60
+msgid "Linux JFS volume"
+msgstr "Svazek Linux JFS"
+
+#: ../core/volumes.cc:61
+msgid "Linux XFS volume"
+msgstr "Svazek Linux XFS"
+
+#: ../core/volumes.cc:62
+msgid "ISO-9660 volume"
+msgstr "Svazek ISO-9660"
+
+#: ../core/volumes.cc:63
+msgid "X-Box DVD volume"
+msgstr "Svazek X-Box DVD"
+
+#: ../core/volumes.cc:64
+msgid "UDF volume"
+msgstr "UDF svazek"
+
+#: ../core/volumes.cc:65
+msgid "UFS volume"
+msgstr "UFS svazek"
+
+#: ../core/volumes.cc:66
+msgid "HP-UX HFS volume"
+msgstr "Svazek HP-UX HFS"
+
+#: ../core/volumes.cc:67
+msgid "VxFS volume"
+msgstr "Svazek VxFS"
+
+#: ../core/volumes.cc:68
+msgid "FFS volume"
+msgstr "Svazek FFS"
+
+#: ../core/volumes.cc:69
+msgid "BeOS BFS volume"
+msgstr "Svazek BeOS BFS"
+
+#: ../core/volumes.cc:70
+msgid "QNX FS volume"
+msgstr "Svazek QNX FS"
+
+#: ../core/volumes.cc:71
+msgid "MacOS MFS volume"
+msgstr "Svazek MacOS MFS"
+
+#: ../core/volumes.cc:72
+msgid "MacOS HFS+ volume"
+msgstr "Svazek MacOS HFS+"
+
+#: ../core/volumes.cc:73
+msgid "MacOS HFS volume"
+msgstr "Svazek MacOS HFS"
+
+#: ../core/volumes.cc:74
+msgid "MacOS APFS volume"
+msgstr "Svazek MacOS APFS"
+
+#: ../core/volumes.cc:75
+msgid "Linux Unified Key Setup volume"
+msgstr "Svazek Linux „Uspořádání s jednotným klíčem“"
+
+#: ../core/volumes.cc:76
+msgid "Linux swap volume"
+msgstr "Svazek Linux swap"
+
+#: ../core/volumes.cc:316
+msgid "Extended Attributes"
+msgstr "Rozšířené atributy"
+
+#: ../core/volumes.cc:318
+msgid "4GB+ files"
+msgstr "Soubory 4GB+"
+
+#: ../core/volumes.cc:320
+msgid "16TB+ files"
+msgstr "Soubory 16TB+"
+
+#: ../core/volumes.cc:322
+msgid "directories with 65000+ subdirs"
+msgstr "složky s více než 65000 podsložkami"
+
+#: ../core/volumes.cc:324
+msgid "needs recovery"
+msgstr "potřebuje opravu"
+
+#: ../core/volumes.cc:326
+msgid "64bit filesystem"
+msgstr "64bitový souborový systém"
+
+#: ../core/volumes.cc:328
+msgid "extent-based allocation"
+msgstr "přidělování založené na rozšířeních (extent)"
+
+#: ../core/volumes.cc:336
+msgid "EXT4 volume"
+msgstr "EXT4 svazek"
+
+#: ../core/volumes.cc:342
+msgid "EXT3 volume"
+msgstr "EXT3 svazek"
+
+#: ../core/volumes.cc:371
+msgid "Encrypted volume"
+msgstr "Šifrovaný svazek"
+
+#: ../core/volumes.cc:644
+msgid "Contains a bootable Mac OS installation"
+msgstr "Obsahuje zaveditelnou instalaci macOS"
+
+#: ../core/volumes.cc:646
+msgid "Contains a bootable Mac OS X installation"
+msgstr "Obsahuje zaveditelnou instalaci Mac OS X"
+
+#: ../core/volumes.cc:1156
+msgid "initialized volume"
+msgstr "inicializovaný svazek"
+
+#: ../gui/print-gui.cc:191
+msgid "configuration"
+msgstr "nastavení"
+
+#: ../gui/print-gui.cc:207
+msgid "resources"
+msgstr "prostředky"
+
+#: ../gui/print-gui.cc:219
+msgid "this device hasn't been claimed\n"
+msgstr "toto zařízení nebylo tvrzené\n"
+
+#: ../gui/print-gui.cc:222
+msgid "this device has been disabled\n"
+msgstr "toto zařízení bylo zakázáno\n"
+
+#: ../lshw.cc:24
+#, c-format
+msgid "usage: %s [-format] [-options ...]\n"
+msgstr "použití: %s [-format] [-options ...]\n"
+
+#: ../lshw.cc:25
+#, c-format
+msgid "       %s -version\n"
+msgstr "       %s -version\n"
+
+#: ../lshw.cc:27
+#, c-format
+msgid "\t-version        print program version (%s)\n"
+msgstr "\t-version        vypsat informaci o verzi (%s)\n"
+
+#: ../lshw.cc:28
+#, c-format
+msgid ""
+"\n"
+"format can be\n"
+msgstr ""
+"\n"
+"formát může být\n"
+
+#: ../lshw.cc:29
+#, c-format
+msgid "\t-html           output hardware tree as HTML\n"
+msgstr "\t-html           vypsat strom hardware jako HTML\n"
+
+#: ../lshw.cc:30
+#, c-format
+msgid "\t-xml            output hardware tree as XML\n"
+msgstr "\t-html           vypsat strom hardware jako XML\r\n"
+
+#: ../lshw.cc:31
+#, c-format
+msgid "\t-json           output hardware tree as a JSON object\n"
+msgstr "\t-html           vypsat strom hardware jako JSON objekt\r\n"
+
+#: ../lshw.cc:32
+#, c-format
+msgid "\t-short          output hardware paths\n"
+msgstr "\t-short          vypsat popisy umístění hardwaru\n"
+
+#: ../lshw.cc:33
+#, c-format
+msgid "\t-businfo        output bus information\n"
+msgstr "\t-businfo        vypsat informace o sběrnici\n"
+
+#: ../lshw.cc:35
+#, c-format
+msgid "\t-X              use graphical interface\n"
+msgstr "\t-X              použít grafické rozhraní\n"
+
+#: ../lshw.cc:36
+#, c-format
+msgid ""
+"\n"
+"options can be\n"
+msgstr ""
+"\n"
+"volby mohou být\n"
+
+#: ../lshw.cc:38
+#, c-format
+msgid ""
+"\t-dump filename  display output and dump collected information into a file "
+"(SQLite database)\n"
+msgstr ""
+"\t-dump nazev_souboru  zobrazí výstup a vypíše shromážděné informace do "
+"souboru (databáze SQLite)\n"
+
+#: ../lshw.cc:40
+#, c-format
+msgid "\t-class CLASS    only show a certain class of hardware\n"
+msgstr "\t-class TŘÍDA    zobrazit pouze určitou třídu zařízení\n"
+
+#: ../lshw.cc:41
+#, c-format
+msgid "\t-C CLASS        same as '-class CLASS'\n"
+msgstr "\t-C TŘÍDA        stejné jako „-class TŘÍDA“\n"
+
+#: ../lshw.cc:42
+#, c-format
+msgid "\t-c CLASS        same as '-class CLASS'\n"
+msgstr "\t-c TŘÍDA        stejné jako „-class TŘÍDA“\r\n"
+
+#: ../lshw.cc:44
+#, c-format
+msgid "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr "\t-disable TEST   zakázat test (např. pci, isapnp, cpuid, atd.)\n"
+
+#: ../lshw.cc:46
+#, c-format
+msgid "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc.)\n"
+msgstr "\t-enable TEST    povolit test (např. pci, isapnp, cpuid, adt.)\n"
+
+#: ../lshw.cc:47
+#, c-format
+msgid "\t-quiet          don't display status\n"
+msgstr "\t-quiet          nezobrazovat stav\n"
+
+#: ../lshw.cc:48
+#, c-format
+msgid ""
+"\t-sanitize       sanitize output (remove sensitive information like serial "
+"numbers, etc.)\n"
+msgstr ""
+"\t-sanitize       „dezinfikovat“ výstup (odebrat citlivé informace jako "
+"např. sériová čísla, atp.)\n"
+
+#: ../lshw.cc:49
+#, c-format
+msgid "\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"
+msgstr "\t-numeric        vypsat číselné identifikátory (pro PCI, USB, atp.)\n"
+
+#: ../lshw.cc:50
+#, c-format
+msgid ""
+"\t-notime         exclude volatile attributes (timestamps) from output\n"
+msgstr ""
+"\t-notime         vynechat z výstupu proměnlivé atributy (časová razítka)\n"
+
+#: ../lshw.cc:126
+#, c-format
+msgid "the latest version is %s\n"
+msgstr "nejnovější verze je %s\n"
+
+#: ../lshw.cc:228
+#, c-format
+msgid "WARNING: you should run this program as super-user.\n"
+msgstr "VAROVÁNÍ: tato aplikace by měla být spouštěna s oprávněními správce.\n"
+
+#: ../lshw.cc:259
+#, c-format
+msgid ""
+"WARNING: output may be incomplete or inaccurate, you should run this program "
+"as super-user.\n"
+msgstr ""
+"VAROVÁNÍ: výstup může být neúplný nebo nepřesný – tento program by měl být "
+"spouštěn s oprávněními správce.\n"
