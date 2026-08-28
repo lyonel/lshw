@@ -1,0 +1,1275 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-08 14:02+0200\n"
+"PO-Revision-Date: 2021-04-12 18:18+0300\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: tr_TR\n"
+
+#: ../core/abi.cc:49
+msgid "32-bit processes"
+msgstr "32-bit işlemci"
+
+#: ../core/abi.cc:50
+msgid "64-bit processes"
+msgstr "64-bit işlemci"
+
+#: ../core/cpuid.cc:284
+msgid "CPU virtualization (Vanderpool)"
+msgstr "CPU sanallaştırma (Vanderpool)"
+
+#: ../core/cpuid.cc:297 ../core/cpuid.cc:298
+msgid "Logical CPU"
+msgstr "Mantıksal CPU"
+
+#: ../core/cpuid.cc:301
+msgid "HyperThreading"
+msgstr ""
+
+#: ../core/cpuid.cc:365 ../core/cpuid.cc:372 ../core/cpuid.cc:466
+msgid "L1 cache"
+msgstr "L1 önbelleği"
+
+#: ../core/cpuid.cc:383 ../core/cpuid.cc:390 ../core/cpuid.cc:478
+msgid "L2 cache"
+msgstr "L2 önbelleği"
+
+#: ../core/dmi.cc:141
+msgid "Other"
+msgstr "Diğer"
+
+#: ../core/dmi.cc:142
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
+#: ../core/dmi.cc:143
+msgid "Lead Acid"
+msgstr "Kurşun Asit"
+
+#: ../core/dmi.cc:144
+msgid "Nickel Cadmium"
+msgstr "Nikel kadmiyum"
+
+#: ../core/dmi.cc:145
+msgid "Nickel Metal Hydride"
+msgstr "Nikel metal hidrür"
+
+#: ../core/dmi.cc:146
+msgid "Lithium Ion"
+msgstr "Lityum İyon"
+
+#: ../core/dmi.cc:147
+msgid "Zinc Air"
+msgstr "Çinko Hava"
+
+#: ../core/dmi.cc:148
+msgid "Lithium Polymer"
+msgstr "Lityum polimer"
+
+#: ../core/dmi.cc:262
+msgid "Server Blade"
+msgstr "Sunucu Blade"
+
+#: ../core/dmi.cc:263
+msgid "Connectivitiy Switch"
+msgstr "Bağlantı Anahtarı"
+
+#: ../core/dmi.cc:264
+msgid "System Management Module"
+msgstr "Sistem Yönetim Modülü"
+
+#: ../core/dmi.cc:265
+msgid "Processor Module"
+msgstr "İşlemci Modülü"
+
+#: ../core/dmi.cc:266
+msgid "I/O Module"
+msgstr "I/O Modülü"
+
+#: ../core/dmi.cc:267
+msgid "Memory Module"
+msgstr "Bellek modülü"
+
+#: ../core/dmi.cc:268
+msgid "Daughter Board"
+msgstr "Yardımcı kart"
+
+#: ../core/dmi.cc:269 ../core/dmi.cc:1031
+msgid "Motherboard"
+msgstr "Anakart"
+
+#: ../core/dmi.cc:270
+msgid "Processor/Memory Module"
+msgstr "İşlemci / Bellek Modülü"
+
+#: ../core/dmi.cc:271
+msgid "Processor/IO Module "
+msgstr "İşlemci / IO Modülü "
+
+#: ../core/dmi.cc:272
+msgid "Interconnect Board"
+msgstr "Ara Bağlantı Kartı"
+
+#: ../core/dmi.cc:289
+msgid "ISA bus"
+msgstr ""
+
+#: ../core/dmi.cc:291
+msgid "MCA bus"
+msgstr ""
+
+#: ../core/dmi.cc:293
+msgid "EISA bus"
+msgstr ""
+
+#: ../core/dmi.cc:295
+msgid "PCI bus"
+msgstr ""
+
+#: ../core/dmi.cc:297
+msgid "PCMCIA/PCCard"
+msgstr ""
+
+#: ../core/dmi.cc:299
+msgid "Plug-and-Play"
+msgstr "Tak ve oyna"
+
+#: ../core/dmi.cc:301
+msgid "Advanced Power Management"
+msgstr "Gelişmiş Güç Yönetimi"
+
+#: ../core/dmi.cc:303
+msgid "BIOS EEPROM can be upgraded"
+msgstr "BIOS EEPROM yükseltilebilir"
+
+#: ../core/dmi.cc:305
+msgid "BIOS shadowing"
+msgstr "BIOS gölgelendirme"
+
+#: ../core/dmi.cc:307
+msgid "VESA video extensions"
+msgstr "VESA video uzantıları"
+
+#: ../core/dmi.cc:309
+msgid "ESCD"
+msgstr ""
+
+#: ../core/dmi.cc:311
+msgid "Booting from CD-ROM/DVD"
+msgstr "CD-ROM / DVD'den önyükleme"
+
+#: ../core/dmi.cc:313
+msgid "Selectable boot path"
+msgstr "Seçilebilir önyükleme yolu"
+
+#: ../core/dmi.cc:315
+msgid "BIOS ROM is socketed"
+msgstr "BIOS ROM soketli"
+
+#: ../core/dmi.cc:317
+msgid "Booting from PCMCIA"
+msgstr "PCMCIA'dan önyükleme"
+
+#: ../core/dmi.cc:319
+msgid "Enhanced Disk Drive extensions"
+msgstr "Gelişmiş Disk Sürücüsü uzantıları"
+
+#: ../core/dmi.cc:321
+msgid "NEC 9800 floppy"
+msgstr ""
+
+#: ../core/dmi.cc:323
+msgid "Toshiba floppy"
+msgstr ""
+
+#: ../core/dmi.cc:325
+msgid "5.25\" 360KB floppy"
+msgstr ""
+
+#: ../core/dmi.cc:327
+msgid "5.25\" 1.2MB floppy"
+msgstr ""
+
+#: ../core/dmi.cc:329
+msgid "3.5\" 720KB floppy"
+msgstr ""
+
+#: ../core/dmi.cc:331
+msgid "3.5\" 2.88MB floppy"
+msgstr ""
+
+#: ../core/dmi.cc:333
+msgid "Print Screen key"
+msgstr "Print Screen tuşu"
+
+#: ../core/dmi.cc:335
+msgid "i8042 keyboard controller"
+msgstr "i8042 klavye denetleyicisi"
+
+#: ../core/dmi.cc:337
+msgid "INT14 serial line control"
+msgstr "INT14 seri hat kontrolü"
+
+#: ../core/dmi.cc:339
+msgid "INT17 printer control"
+msgstr "INT17 yazıcı kontrolü"
+
+#: ../core/dmi.cc:341
+msgid "INT10 CGA/Mono video"
+msgstr ""
+
+#: ../core/dmi.cc:343
+msgid "NEC PC-98"
+msgstr ""
+
+#: ../core/dmi.cc:355
+msgid "ACPI"
+msgstr ""
+
+#: ../core/dmi.cc:357
+msgid "USB legacy emulation"
+msgstr "USB eski öykünmesi"
+
+#: ../core/dmi.cc:359
+msgid "AGP"
+msgstr ""
+
+#: ../core/dmi.cc:361
+msgid "I2O booting"
+msgstr "I2O önyükleme"
+
+#: ../core/dmi.cc:363
+msgid "Booting from LS-120"
+msgstr "LS-120'den önyükleme"
+
+#: ../core/dmi.cc:365
+msgid "Booting from ATAPI ZIP"
+msgstr "ATAPI ZIP'tan önyükleme"
+
+#: ../core/dmi.cc:367
+msgid "Booting from IEEE1394 (Firewire)"
+msgstr "IEEE1394'ten (Firewire) önyükleme"
+
+#: ../core/dmi.cc:369
+msgid "Smart battery"
+msgstr "Akıllı pil"
+
+#: ../core/dmi.cc:375
+msgid "BIOS boot specification"
+msgstr "BIOS önyükleme özelliği"
+
+#: ../core/dmi.cc:378
+msgid "Function-key initiated network service boot"
+msgstr "İşlev tuşu ile başlatılan ağ hizmeti önyüklemesi"
+
+#: ../core/dmi.cc:401
+msgid "Non-burst"
+msgstr ""
+
+#: ../core/dmi.cc:403
+msgid "Burst"
+msgstr ""
+
+#: ../core/dmi.cc:405
+msgid "Pipeline burst"
+msgstr ""
+
+#: ../core/dmi.cc:407 ../core/dmi.cc:570
+msgid "Synchronous"
+msgstr "Senkron"
+
+#: ../core/dmi.cc:409
+msgid "Asynchronous"
+msgstr "Asenkron"
+
+#: ../core/dmi.cc:425
+msgid "Internal"
+msgstr "İç"
+
+#: ../core/dmi.cc:428
+msgid "External"
+msgstr "Dış"
+
+#: ../core/dmi.cc:437
+msgid "Write-trough"
+msgstr "Yazma"
+
+#: ../core/dmi.cc:440
+msgid "Write-back"
+msgstr ""
+
+#: ../core/dmi.cc:443
+msgid "Varies With Memory Address"
+msgstr "Bellek Adresine Göre Değişir"
+
+#: ../core/dmi.cc:447
+msgid "cache"
+msgstr "önbellek"
+
+#: ../core/dmi.cc:452
+msgid "Instruction cache"
+msgstr "Talimat önbelleği"
+
+#: ../core/dmi.cc:455
+msgid "Data cache"
+msgstr "Veri önbelleği"
+
+#: ../core/dmi.cc:458
+msgid "Unified cache"
+msgstr "Birleşik önbellek"
+
+#: ../core/dmi.cc:473
+msgid "System board or motherboard"
+msgstr "Sistem kartı veya anakart"
+
+#: ../core/dmi.cc:474
+msgid "ISA add-on card"
+msgstr "ISA eklenti kartı"
+
+#: ../core/dmi.cc:475
+msgid "EISA add-on card"
+msgstr "EISA eklenti kartı"
+
+#: ../core/dmi.cc:476
+msgid "PCI add-on card"
+msgstr "PCI eklenti kartı"
+
+#: ../core/dmi.cc:477
+msgid "MCA add-on card"
+msgstr "MCA eklenti kartı"
+
+#: ../core/dmi.cc:478
+msgid "PCMCIA add-on card"
+msgstr "PCMCIA eklenti kartı"
+
+#: ../core/dmi.cc:479
+msgid "Proprietary add-on card"
+msgstr "Tescilli eklenti kartı"
+
+#: ../core/dmi.cc:480
+msgid "NuBus"
+msgstr ""
+
+#: ../core/dmi.cc:484
+msgid "PC-98/C20 add-on card"
+msgstr "PC-98 / C20 eklenti kartı"
+
+#: ../core/dmi.cc:485
+msgid "PC-98/C24 add-on card"
+msgstr "PC-98 / C24 eklenti kartı"
+
+#: ../core/dmi.cc:486
+msgid "PC-98/E add-on card"
+msgstr "PC-98 / E eklenti kartı"
+
+#: ../core/dmi.cc:487
+msgid "PC-98/Local bus add-on card"
+msgstr "PC-98 / Yerel veri yolu eklenti kartı"
+
+#: ../core/dmi.cc:488
+msgid "PC-98/Card slot add-on card"
+msgstr "PC-98 / Kart yuvası eklenti kartı"
+
+#: ../core/dmi.cc:505
+msgid " SIMM"
+msgstr ""
+
+#: ../core/dmi.cc:506
+msgid " SIP"
+msgstr ""
+
+#: ../core/dmi.cc:507
+msgid " Chip"
+msgstr ""
+
+#: ../core/dmi.cc:508
+msgid " DIP"
+msgstr ""
+
+#: ../core/dmi.cc:509
+msgid " ZIP"
+msgstr ""
+
+#: ../core/dmi.cc:510
+msgid " Proprietary Card"
+msgstr " Tescilli Kart"
+
+#: ../core/dmi.cc:511
+msgid " DIMM"
+msgstr ""
+
+#: ../core/dmi.cc:512
+msgid " TSOP"
+msgstr ""
+
+#: ../core/dmi.cc:513
+msgid " Row of chips"
+msgstr ""
+
+#: ../core/dmi.cc:514
+msgid " RIMM"
+msgstr ""
+
+#: ../core/dmi.cc:515
+msgid " SODIMM"
+msgstr ""
+
+#: ../core/dmi.cc:516
+msgid " SRIMM"
+msgstr ""
+
+#: ../core/dmi.cc:517
+msgid " FB-DIMM"
+msgstr ""
+
+#: ../core/dmi.cc:532
+msgid " DRAM"
+msgstr ""
+
+#: ../core/dmi.cc:533
+msgid " EDRAM"
+msgstr ""
+
+#: ../core/dmi.cc:534
+msgid " VRAM"
+msgstr ""
+
+#: ../core/dmi.cc:535
+msgid " SRAM"
+msgstr ""
+
+#: ../core/dmi.cc:536
+msgid " RAM"
+msgstr ""
+
+#: ../core/dmi.cc:537
+msgid " ROM"
+msgstr ""
+
+#: ../core/dmi.cc:538
+msgid " FLASH"
+msgstr ""
+
+#: ../core/dmi.cc:539
+msgid " EEPROM"
+msgstr ""
+
+#: ../core/dmi.cc:540
+msgid " FEPROM"
+msgstr ""
+
+#: ../core/dmi.cc:541
+msgid " EPROM"
+msgstr ""
+
+#: ../core/dmi.cc:542
+msgid " CDRAM"
+msgstr ""
+
+#: ../core/dmi.cc:543
+msgid " 3DRAM"
+msgstr ""
+
+#: ../core/dmi.cc:544
+msgid " SDRAM"
+msgstr ""
+
+#: ../core/dmi.cc:545
+msgid " SGRAM"
+msgstr ""
+
+#: ../core/dmi.cc:546
+msgid " RDRAM"
+msgstr ""
+
+#: ../core/dmi.cc:547
+msgid " DDR"
+msgstr ""
+
+#: ../core/dmi.cc:548
+msgid " DDR2"
+msgstr ""
+
+#: ../core/dmi.cc:549
+msgid " DDR2 FB-DIMM"
+msgstr ""
+
+#: ../core/dmi.cc:562
+msgid "Fast-paged"
+msgstr "Hızlı sayfalı"
+
+#: ../core/dmi.cc:564
+msgid "Static column"
+msgstr "Statik sütun"
+
+#: ../core/dmi.cc:566
+msgid "Pseudo-static"
+msgstr "Sözde statik"
+
+#: ../core/dmi.cc:568
+msgid "RAMBUS"
+msgstr ""
+
+#: ../core/dmi.cc:572
+msgid "CMOS"
+msgstr ""
+
+#: ../core/dmi.cc:574
+msgid "EDO"
+msgstr ""
+
+#: ../core/dmi.cc:576
+msgid "Window DRAM"
+msgstr ""
+
+#: ../core/dmi.cc:578
+msgid "Cache DRAM"
+msgstr ""
+
+#: ../core/dmi.cc:580
+msgid "Non-volatile"
+msgstr ""
+
+#: ../core/dmi.cc:593
+msgid "Desktop Computer"
+msgstr "Masaüstü bilgisayar"
+
+#: ../core/dmi.cc:594
+msgid "Low Profile Desktop Computer"
+msgstr "Düşük Profilli Masaüstü Bilgisayar"
+
+#: ../core/dmi.cc:595
+msgid "Pizza Box Computer"
+msgstr "Pizza Kutusu Bilgisayarı"
+
+#: ../core/dmi.cc:596
+msgid "Mini Tower Computer"
+msgstr "Mini Tower Bilgisayar"
+
+#: ../core/dmi.cc:597
+msgid "Tower Computer"
+msgstr "Kule Bilgisayar"
+
+#: ../core/dmi.cc:598
+msgid "Portable Computer"
+msgstr "Taşınabilir bilgisayar"
+
+#: ../core/dmi.cc:599
+msgid "Laptop"
+msgstr "Dizüstü"
+
+#: ../core/dmi.cc:600
+msgid "Notebook"
+msgstr "Defter Bilgisayar"
+
+#: ../core/dmi.cc:601
+msgid "Hand Held Computer"
+msgstr "El bilgisayarı"
+
+#: ../core/dmi.cc:602
+msgid "Docking Station"
+msgstr "Yerleştirme İstasyonu"
+
+#: ../core/dmi.cc:603
+msgid "All In One"
+msgstr "Hepsi bir arada"
+
+#: ../core/dmi.cc:604
+msgid "Sub Notebook"
+msgstr "Alt Defter"
+
+#: ../core/dmi.cc:605
+msgid "Space-saving Computer"
+msgstr "Yerden Tasarruflu Bilgisayar"
+
+#: ../core/dmi.cc:606
+msgid "Lunch Box Computer"
+msgstr "Yemek Kutusu Bilgisayarı"
+
+#: ../core/dmi.cc:607
+msgid "System"
+msgstr "Sistem"
+
+#: ../core/dmi.cc:608
+msgid "Expansion Chassis"
+msgstr "Genişletme Kasası"
+
+#: ../core/dmi.cc:609
+msgid "Sub Chassis"
+msgstr "Alt Kasa"
+
+#: ../core/dmi.cc:610
+msgid "Bus Expansion Chassis"
+msgstr "Bus Genişletme Kasası"
+
+#: ../core/dmi.cc:611
+msgid "Peripheral Chassis"
+msgstr "Çevresel Kasa"
+
+#: ../core/dmi.cc:612
+msgid "RAID Chassis"
+msgstr "RAID Kasa"
+
+#: ../core/dmi.cc:613
+msgid "Rack Mount Chassis"
+msgstr "Raf Tipi Kasa"
+
+#: ../core/dmi.cc:614
+msgid "Sealed-case PC"
+msgstr "Mühürlü kasalı PC"
+
+#: ../core/dmi.cc:615
+msgid "Multi-system"
+msgstr "Çoklu sistem"
+
+#: ../core/dmi.cc:988
+msgid "BIOS"
+msgstr ""
+
+#: ../core/dmi.cc:1084
+msgid "CPU"
+msgstr ""
+
+#: ../core/dmi.cc:1131 ../core/dmi.cc:1218 ../core/dmi.cc:1460
+msgid "[empty]"
+msgstr ""
+
+#: ../core/dmi.cc:1165
+msgid " Memory Controller"
+msgstr " Bellek Denetleyici"
+
+#: ../core/dmi.cc:1183 ../core/dmi.cc:1391
+msgid "empty memory bank"
+msgstr "boş hafıza bankası"
+
+#: ../core/dmi.cc:1345
+msgid "System Memory"
+msgstr "Sistem Belleği"
+
+#: ../core/dmi.cc:1350
+msgid "Video Memory"
+msgstr "Video belleği"
+
+#: ../core/dmi.cc:1353
+msgid "Flash Memory"
+msgstr "Flash Bellek"
+
+#: ../core/dmi.cc:1356
+msgid "NVRAM"
+msgstr ""
+
+#: ../core/dmi.cc:1359
+msgid "Cache Memory"
+msgstr "Ön bellek"
+
+#: ../core/dmi.cc:1363
+msgid "Generic Memory"
+msgstr "Genel Bellek"
+
+#: ../core/dmi.cc:1609
+msgid "make outbound connections"
+msgstr "giden bağlantıları almak"
+
+#: ../core/dmi.cc:1610
+msgid "receive inbound connections"
+msgstr "gelen bağlantıları almak"
+
+#: ../core/hw.cc:1615
+msgid "<!-- generated by lshw-"
+msgstr "<! - lshw tarafından oluşturulmuştur-"
+
+#: ../core/hw.cc:1630
+msgid "<!-- WARNING: not running as root -->"
+msgstr "<! - UYARI: root olarak çalıştırılmıyor ->"
+
+#: ../core/hw.cc:2102
+msgid "(none)"
+msgstr "(hiçbiri)"
+
+#: ../core/hw.cc:2105
+msgid "dma"
+msgstr ""
+
+#: ../core/hw.cc:2109
+msgid "irq"
+msgstr ""
+
+#: ../core/hw.cc:2113
+msgid "iomemory"
+msgstr ""
+
+#: ../core/hw.cc:2117
+msgid "memory"
+msgstr "bellek"
+
+#: ../core/hw.cc:2119
+msgid "(prefetchable)"
+msgstr "önceden getirilebilir"
+
+#: ../core/hw.cc:2122
+msgid "ioport"
+msgstr ""
+
+#: ../core/hw.cc:2126
+#, c-format
+msgid "%lx(size=%ld)"
+msgstr ""
+
+#: ../core/hw.cc:2129
+msgid "(unknown)"
+msgstr "(Bilinmeyen)"
+
+#: ../core/hw.cc:2299
+msgid "false"
+msgstr "yanlış"
+
+#: ../core/hw.cc:2299
+msgid "true"
+msgstr "doğru"
+
+#: ../core/hw.cc:2301
+msgid "(nil)"
+msgstr ""
+
+#: ../core/mem.cc:125
+msgid "System memory"
+msgstr "Sistem Belleği"
+
+#: ../core/network.cc:211
+msgid "Ethernet"
+msgstr ""
+
+#: ../core/network.cc:213
+msgid "SLIP"
+msgstr ""
+
+#: ../core/network.cc:215
+msgid "loopback"
+msgstr "geridöngü"
+
+#: ../core/network.cc:217
+msgid "FDDI"
+msgstr ""
+
+#: ../core/network.cc:219
+msgid "IEEE1394"
+msgstr ""
+
+#: ../core/network.cc:221
+msgid "IRDA"
+msgstr ""
+
+#: ../core/network.cc:223
+msgid "PPP"
+msgstr ""
+
+#: ../core/network.cc:225
+msgid "X25"
+msgstr ""
+
+#: ../core/network.cc:227
+msgid "IPtunnel"
+msgstr ""
+
+#: ../core/network.cc:229
+msgid "Framerelay.DLCI"
+msgstr "Çerçeve Rölesi DLCI"
+
+#: ../core/network.cc:231
+msgid "Framerelay.AD"
+msgstr ""
+
+#: ../core/network.cc:233
+msgid "IP6tunnel"
+msgstr ""
+
+#: ../core/network.cc:235
+msgid "IP6inIP4"
+msgstr ""
+
+#: ../core/network.cc:372 ../core/network.cc:380 ../core/network.cc:512
+msgid "Logical interface"
+msgstr "Mantıksal arayüz"
+
+#: ../core/network.cc:374
+msgid "Physical interface"
+msgstr "Fiziksel arayüz"
+
+#: ../core/network.cc:388
+msgid "Wireless-LAN"
+msgstr "Kablosuz-LAN"
+
+#: ../core/network.cc:390 ../core/usb.cc:261
+msgid "Wireless interface"
+msgstr "Kablosuz arayüz"
+
+#: ../core/network.cc:411
+msgid "twisted pair"
+msgstr "bükülmüş çift"
+
+#: ../core/network.cc:413
+msgid "AUI"
+msgstr ""
+
+#: ../core/network.cc:415
+msgid "BNC"
+msgstr ""
+
+#: ../core/network.cc:417
+msgid "Media Independant Interface"
+msgstr "Medyadan Bağımsız Arayüz"
+
+#: ../core/network.cc:419
+msgid "optical fibre"
+msgstr "optik fiber"
+
+#: ../core/network.cc:422
+msgid "10Mbit/s"
+msgstr ""
+
+#: ../core/network.cc:427
+msgid "10Mbit/s (full duplex)"
+msgstr ""
+
+#: ../core/network.cc:432
+msgid "100Mbit/s"
+msgstr ""
+
+#: ../core/network.cc:437
+msgid "100Mbit/s (full duplex)"
+msgstr ""
+
+#: ../core/network.cc:447
+msgid "1Gbit/s (full duplex)"
+msgstr ""
+
+#: ../core/network.cc:451
+msgid "Auto-negotiation"
+msgstr "Otomatik anlaşma"
+
+#: ../core/pci.cc:725
+msgid "PCI Express"
+msgstr ""
+
+#: ../core/print.cc:143 ../gui/print-gui.cc:116
+msgid " DISABLED"
+msgstr " ENGELLİ"
+
+#: ../core/print.cc:145 ../gui/print-gui.cc:118
+msgid " UNCLAIMED"
+msgstr " REDDEDİLMEDİ"
+
+#: ../core/print.cc:175
+msgid "description"
+msgstr "açıklama"
+
+#: ../core/print.cc:189 ../gui/print-gui.cc:139
+msgid "product"
+msgstr "ürün"
+
+#: ../core/print.cc:203 ../gui/print-gui.cc:140
+msgid "vendor"
+msgstr "satıcı"
+
+#: ../core/print.cc:217
+msgid "physical id"
+msgstr "fiziksel kimlik"
+
+#: ../core/print.cc:231 ../gui/print-gui.cc:141
+msgid "bus info"
+msgstr "bus bilgi"
+
+#: ../core/print.cc:249 ../gui/print-gui.cc:147
+msgid "logical name"
+msgstr "mantıksal isim"
+
+#: ../core/print.cc:264 ../gui/print-gui.cc:150
+msgid "version"
+msgstr "versiyon"
+
+#: ../core/print.cc:278 ../gui/print-gui.cc:151
+msgid "serial"
+msgstr "seri"
+
+#: ../core/print.cc:292 ../gui/print-gui.cc:152
+msgid "slot"
+msgstr "yuva"
+
+#: ../core/print.cc:306 ../gui/print-gui.cc:155
+msgid "size"
+msgstr "boyut"
+
+#: ../core/print.cc:360 ../gui/print-gui.cc:157
+msgid "capacity"
+msgstr "kapasite"
+
+#: ../core/print.cc:416
+msgid "address"
+msgstr "adres"
+
+#: ../core/print.cc:419
+msgid "range"
+msgstr "aralık"
+
+#: ../core/print.cc:430 ../gui/print-gui.cc:160
+msgid "width"
+msgstr "genişlik"
+
+#: ../core/print.cc:444 ../gui/print-gui.cc:163
+msgid "clock"
+msgstr "saat"
+
+#: ../core/print.cc:461 ../gui/print-gui.cc:170
+msgid "capabilities"
+msgstr "yetenekler"
+
+#: ../core/print.cc:482
+msgid "configuration:"
+msgstr "konfigürasyon:"
+
+#: ../core/print.cc:484
+msgid "configuration of "
+msgstr "konfigürasyonu "
+
+#: ../core/print.cc:504
+msgid "resources:"
+msgstr "kaynaklar:"
+
+#: ../core/print.cc:506
+msgid "resources of "
+msgstr "kaynakları "
+
+#: ../core/print.cc:659
+msgid "H/W path"
+msgstr "H/W yolu"
+
+#: ../core/print.cc:660 ../core/print.cc:677
+msgid "Device"
+msgstr "Cihaz"
+
+#: ../core/print.cc:661 ../core/print.cc:678
+msgid "Class"
+msgstr "Sınıf"
+
+#: ../core/print.cc:662 ../core/print.cc:679
+msgid "Description"
+msgstr "Açıklama"
+
+#: ../core/print.cc:676
+msgid "Bus info"
+msgstr "Bus bilgi"
+
+#: ../core/usb.cc:165
+msgid "Audio device"
+msgstr "Ses aygıtı"
+
+#: ../core/usb.cc:169
+msgid "Control device"
+msgstr "Kontrol aygıtı"
+
+#: ../core/usb.cc:172
+msgid "MIDI"
+msgstr ""
+
+#: ../core/usb.cc:174
+msgid "Audio streaming"
+msgstr "Ses akışı"
+
+#: ../core/usb.cc:180
+msgid "Communication device"
+msgstr "İletişim cihazı"
+
+#: ../core/usb.cc:183
+msgid "Modem"
+msgstr ""
+
+#: ../core/usb.cc:184
+msgid "AT (Hayes) compatible"
+msgstr "AT (Hayes) uyumlu"
+
+#: ../core/usb.cc:186
+msgid "Ethernet networking"
+msgstr "Ethernet ağı"
+
+#: ../core/usb.cc:187
+msgid "OBEX networking"
+msgstr "OBEX ağı"
+
+#: ../core/usb.cc:191
+msgid "Human interface device"
+msgstr "İnsan arayüz cihazı"
+
+#: ../core/usb.cc:197
+msgid "Keyboard"
+msgstr "Klavye"
+
+#: ../core/usb.cc:200
+msgid "Mouse"
+msgstr "Fare"
+
+#: ../core/usb.cc:207
+msgid "Printer"
+msgstr "Yazıcı"
+
+#: ../core/usb.cc:214
+msgid "Unidirectional"
+msgstr "Tek yönlü"
+
+#: ../core/usb.cc:217
+msgid "Bidirectional"
+msgstr "Çift yönlü"
+
+#: ../core/usb.cc:220
+msgid "IEEE 1284.4 compatible bidirectional"
+msgstr "IEEE 1284.4 uyumlu çift yönlü"
+
+#: ../core/usb.cc:227
+msgid "Mass storage device"
+msgstr "Yığın depolama cihazı"
+
+#: ../core/usb.cc:231
+msgid "RBC (typically Flash) mass storage"
+msgstr "RBC (tipik olarak Flash) yığın depolama)"
+
+#: ../core/usb.cc:234
+msgid "SFF-8020i, MMC-2 (ATAPI)"
+msgstr ""
+
+#: ../core/usb.cc:237
+msgid "Floppy (UFI)"
+msgstr "Disket (UFI)"
+
+#: ../core/usb.cc:240
+msgid "SCSI"
+msgstr ""
+
+#: ../core/usb.cc:246
+msgid "USB hub"
+msgstr ""
+
+#: ../core/usb.cc:253
+msgid "Smart card reader"
+msgstr "Akıllı kart okuyucu"
+
+#: ../core/usb.cc:257
+msgid "Video"
+msgstr ""
+
+#: ../core/usb.cc:264
+msgid "Bluetooth wireless interface"
+msgstr "Bluetooth kablosuz arayüzü"
+
+#: ../core/usb.cc:265
+msgid "Bluetooth wireless radio"
+msgstr "Bluetooth kablosuz radyo"
+
+#: ../core/usb.cc:270
+msgid "Generic USB device"
+msgstr "Genel USB cihazı"
+
+#: ../core/volumes.cc:308
+msgid "Extended Attributes"
+msgstr "Genişletilmiş Özellikler"
+
+#: ../core/volumes.cc:310
+msgid "4GB+ files"
+msgstr "4GB + dosya"
+
+#: ../core/volumes.cc:312
+msgid "16TB+ files"
+msgstr "16TB+ dosya"
+
+#: ../core/volumes.cc:314
+msgid "directories with 65000+ subdirs"
+msgstr "65000+ alt dizine sahip dizinler"
+
+#: ../core/volumes.cc:316
+msgid "needs recovery"
+msgstr "iyileşmeye ihtiyacı var"
+
+#: ../core/volumes.cc:318
+msgid "64bit filesystem"
+msgstr "64bit dosya sistemi"
+
+#: ../core/volumes.cc:320
+msgid "extent-based allocation"
+msgstr "kapsam tabanlı tahsis"
+
+#: ../core/volumes.cc:328
+msgid "EXT4 volume"
+msgstr "EXT4 birim"
+
+#: ../core/volumes.cc:334
+msgid "EXT3 volume"
+msgstr "EXT3 birim"
+
+#: ../core/volumes.cc:363
+msgid "Encrypted volume"
+msgstr "Şifrelenmiş birim"
+
+#: ../core/volumes.cc:635
+msgid "Contains a bootable Mac OS installation"
+msgstr "Önyüklenebilir bir Mac OS kurulumu içerir"
+
+#: ../core/volumes.cc:637
+msgid "Contains a bootable Mac OS X installation"
+msgstr "Önyüklenebilir bir Mac OS X kurulumu içerir"
+
+#: ../core/volumes.cc:1074
+msgid "initialized volume"
+msgstr "başlatılmış birim"
+
+#: ../core/volumes.cc:1076
+msgid "volume"
+msgstr "ses"
+
+#: ../gui/print-gui.cc:193
+msgid "configuration"
+msgstr "konfigürasyon"
+
+#: ../gui/print-gui.cc:209
+msgid "resources"
+msgstr "kaynaklar"
+
+#: ../gui/print-gui.cc:221
+msgid "this device hasn't been claimed\n"
+msgstr "bu cihaz üzerinde hak iddia edilmedi\n"
+
+#: ../gui/print-gui.cc:224
+msgid "this device has been disabled\n"
+msgstr "bu cihaz devre dışı bırakıldı\n"
+
+#: ../lshw.cc:24
+#, c-format
+msgid "usage: %s [-format] [-options ...]\n"
+msgstr "kullanım:% s [-format] [-seçenek …]\n"
+
+#: ../lshw.cc:25
+#, c-format
+msgid "       %s -version\n"
+msgstr "       %s sürümü\n"
+
+#: ../lshw.cc:27
+#, c-format
+msgid "\t-version        print program version (%s)\n"
+msgstr " -version     baskı programı sürümü (% s)\n"
+
+#: ../lshw.cc:28
+#, c-format
+msgid ""
+"\n"
+"format can be\n"
+msgstr ""
+"\n"
+"format olabilir\n"
+
+#: ../lshw.cc:29
+#, c-format
+msgid "\t-html           output hardware tree as HTML\n"
+msgstr " -html       donanım ağacını HTML olarak çıkar\n"
+
+#: ../lshw.cc:30
+#, c-format
+msgid "\t-xml            output hardware tree as XML\n"
+msgstr " -xml          XML olarak donanım ağacını çıktı\n"
+
+#: ../lshw.cc:31
+#, c-format
+msgid "\t-short          output hardware paths\n"
+msgstr " -kısa         çıktı donanım yolları\n"
+
+#: ../lshw.cc:32
+#, c-format
+msgid "\t-businfo        output bus information\n"
+msgstr " -businfo        çıkış veriyolu bilgisi\n"
+
+#: ../lshw.cc:34
+#, c-format
+msgid "\t-X              use graphical interface\n"
+msgstr " -X         grafik arayüz kullanır\n"
+
+#: ../lshw.cc:35
+#, c-format
+msgid ""
+"\n"
+"options can be\n"
+msgstr ""
+"\n"
+"seçenekler olabilir\n"
+
+#: ../lshw.cc:37
+#, c-format
+msgid "\t-class CLASS    only show a certain class of hardware\n"
+msgstr " -class CLASS       yalnızca belirli bir donanım sınıfını gösterir\n"
+
+#: ../lshw.cc:38
+#, c-format
+msgid "\t-C CLASS        same as '-class CLASS'\n"
+msgstr " -C CLASS,        ‘-class CLASS’ ile aynıdır\n"
+
+#: ../lshw.cc:39
+#, c-format
+msgid "\t-c CLASS        same as '-class CLASS'\n"
+msgstr " -c CLASS,         ‘-class CLASS’ ile aynıdır\n"
+
+#: ../lshw.cc:41
+#, c-format
+msgid "\t-disable TEST   disable a test (like pci, isapnp, cpuid, etc. )\n"
+msgstr ""
+" -devre dışı TEST      bir testi devre dışı bırakır (pci, isapnp, cpuid "
+"vb.)\n"
+
+#: ../lshw.cc:43
+#, c-format
+msgid "\t-enable TEST    enable a test (like pci, isapnp, cpuid, etc. )\n"
+msgstr " -enable TEST       bir testi etkinleştirir (pci, isapnp, cpuid vb.)\n"
+
+#: ../lshw.cc:44
+#, c-format
+msgid "\t-quiet          don't display status\n"
+msgstr " -sessiz       durumu görüntüleme\n"
+
+#: ../lshw.cc:45
+#, c-format
+msgid ""
+"\t-sanitize       sanitize output (remove sensitive information like serial "
+"numbers, etc.)\n"
+msgstr ""
+" - çıktıları       sterilize edin (seri numaraları vb. gibi hassas bilgileri "
+"kaldırın)\n"
+
+#: ../lshw.cc:46
+#, c-format
+msgid "\t-numeric        output numeric IDs (for PCI, USB, etc.)\n"
+msgstr " -numerik        çıkış sayısal kimlikleri (PCI, USB vb. için)\n"
+
+#: ../lshw.cc:119
+#, c-format
+msgid "the latest version is %s\n"
+msgstr "en son sürüm %s\n"
+
+#: ../lshw.cc:215
+#, c-format
+msgid "WARNING: you should run this program as super-user.\n"
+msgstr "UYARI: Bu programı süper kullanıcı olarak çalıştırmalısınız.\n"
+
+#: ../lshw.cc:243
+#, c-format
+msgid ""
+"WARNING: output may be incomplete or inaccurate, you should run this program "
+"as super-user.\n"
+msgstr ""
+"UYARI: çıktı eksik veya yanlış olabilir, bu programı süper kullanıcı olarak "
+"çalıştırmalısınız.\n"
