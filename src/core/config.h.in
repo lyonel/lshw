@@ -13,27 +13,15 @@
 #define N_(String) gettext_noop (String)
 #endif
 
-#ifndef PACKAGE
-#define PACKAGE "lshw"
-#endif
+#define PACKAGE "@PROJECT_NAME@"
+#define VERSION "@VERSION@"
 
-#ifndef PREFIX
-#define PREFIX "/usr"
-#endif
+#define SBINDIR "@SBINDIR@"
+#define DATADIR "@DATADIR@"
+#define MANDIR "@MANDIR@"
+#define LOCALEDIR "@LOCALEDIR@"
 
-#ifndef SBINDIR
-#define SBINDIR PREFIX"/sbin"
-#endif
+#cmakedefine SQLITE 1
+#cmakedefine ZLIB 1
 
-#ifndef DATADIR
-#define DATADIR PREFIX"/share/lshw"
-#endif
-
-#ifndef MANDIR
-#define MANDIR PREFIX"/share/man"
-#endif
-
-#ifndef LOCALEDIR
-#define LOCALEDIR PREFIX"/share/locale"
-#endif
 #endif

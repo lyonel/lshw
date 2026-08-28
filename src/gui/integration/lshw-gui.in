@@ -1,0 +1,5 @@
+#! /bin/bash
+
+/usr/bin/pkexec @CMAKE_INSTALL_FULL_SBINDIR@/gtk-lshw
+
+
