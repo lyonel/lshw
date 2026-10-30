@@ -1081,14 +1081,14 @@ void hwNode::setLogicalName(const string & name)
     for (unsigned i = 0; i < This->logicalnames.size(); i++)
       if (This->logicalnames[i] == n || This->logicalnames[i] == "/dev/" + n)
         return;                                   // nothing to add, this logical name already exists
-    if ((name[0] != '/') && exists("/dev/" + n))
+    if ((name[0] != '/') && (This->deviceclass != hw::network) && exists("/dev/" + n))
     {
       This->logicalnames.push_back("/dev/" + n);
     }
     else
       This->logicalnames.push_back((n[0]=='/')?n:shortname(n));
 
-    if(This->dev == "")
+    if((This->dev == "") && (This->deviceclass != hw::network))
       This->dev = get_devid(n);
   }
 }
